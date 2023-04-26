@@ -1,0 +1,20 @@
+server:
+  port: 9011
+
+spring:
+  application:
+    name: educate-manage-uat #在注册中心显示的名字
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.99.97.14
+        namespace: 41c1bc49-bf18-4f03-8995-7492c3ba22a4
+        register-enabled: false
+      config:
+        server-addr: 47.99.97.14
+        namespace: 41c1bc49-bf18-4f03-8995-7492c3ba22a4
+        prefix: educate-manage-uat
+        file-extension: yml
+        shared-dataids: cdn-common.yml
+        refreshable-dataids: cdn-common.yml
+

@@ -1,0 +1,347 @@
+server:
+  tomcat.uri-encoding: UTF-8
+  servlet:
+    context-path: /manage
+businessSwitch:
+  #发送短信是否在header里面返回短信验证码（测试环境启用）
+  smsSwitch: true
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  jackson:
+    time-zone: GMT+8
+  data:
+    mongodb:
+      uri: mongodb://onelive:onelive#123@13.125.211.33:27017/onelive
+  datasource:
+    #使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    # 连接超时时间（毫秒）
+    timeout: 18000
+    database: 10
+    host: redis.91momo50.vip
+    port: 6379
+    password: liveR45ERww
+    lettuce:
+      pool:
+        max-active: -1
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+  rabbitmq:
+    host: 190.92.241.217
+    port: 5672
+    username: guest
+    password: gueSt898
+    virtual-host: /
+    publisher-confirm-type: correlated #发布消息成功到交换器后会触发回调方法
+    #发送失败回退，对应RabbitTemplate.ReturnCallback接口
+    publisher-returns: true
+    #手动提交ack
+    listener:
+      direct:
+        #NONE（默认）：自动；AUTO：根据情况确认；MANUAL：手动确认
+        acknowledge-mode: manual
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1 #设置每次请求的处理消息数
+      #ssl: #如果是购买线上亚马逊的服务，http的走5672，https的走5671(需要开启这个配置)
+      #enabled: true
+  elasticsearch:
+    rest:
+      uris: http://159.138.3.42:9200
+      username: admin
+      password: Admin1025
+      charSet: UTF-8
+
+
+google:
+  switch: false
+
+#session加密key
+userSessionKey:
+
+fl:
+  secretKey: c1kgVioySoUVimtw
+
+feign: #feign对hystrix的支持开启
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 60000 # 针对okhttp连接超时时间
+        #readTimeout: 120000  # 针对okhttp连接读取超时时间
+        readTimeout: 10000
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+          strategy: THREAD
+
+ribbon:
+  eager-load:
+    enabled: true
+  clients: onelive-third
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule #配置规则 最空闲连接策略 选择请求中并发最少的provider
+  OkToRetryOnAllOperations: false #对所有请求都进行重试
+  MaxAutoRetriesNextServer: 1 #切换实例的重试次数
+  MaxAutoRetries: 1 #对当前实例的重试次数
+
+manage.snowflake.workId: 2
+
+#AWS(区域,账号),上传
+upload:
+  awsRegion: ap-east-1
+  awsAccessKeyId: AKIAZ4BYM26ZETO3QQEB
+  awsSecretSccessKey: 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
+  #视频存储桶
+  awsBucketNameVideo: unilive1
+  #图片存储桶
+  awsBucketNamePhoto: unilive1
+  #文件存储桶
+  awsBucketNameFile: unilive1
+  #aws访问前缀
+  awsS3PrefixUrl: https://unilive1.s3.ap-east-1.amazonaws.com
+  #是否切换到阿里华为云
+  isChangeOtherCloud: true
+
+
+#云通讯短信
+ytx:
+  appId: 8aaf070877807ed8017789f3dd5701be
+  sid: 8aaf070877807ed8017789f3dc7201b8
+  token: 6446e59b85b342c8af5c7b079e773605
+  serverIp: app.cloopen.com
+  serverPort: 8883
+  templateId: 946579
+
+
+
+# 自定义的主数据源配置信息
+master:
+  datasource:
+    #druid相关配置
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      #配置基本属性
+      url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
+      username: root
+      password: ks892734ksj8s89sd7d897df
+      initialSize: 20 # 初始化时建立物理连接的个数
+      minIdle: 20  # 最小连接池数量
+      maxActive: 100 # 最大连接池数量
+      maxWait: 60000 # 获取连接时最大等待时间
+      timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接
+      minEvictableIdleTimeMillis: 30000 #连接保持空闲而不被驱逐的最小时间 5分钟
+      validationQuery: SELECT 'x' # 用来检测连接是否有效的sql，要求是一个查询语句
+      testWhileIdle: true # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测
+      testOnBorrow: false # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      poolPreparedStatements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大
+      maxPoolPreparedStatementPerConnectionSize: 20
+# 自定义的从数据源配置信息
+slave:
+  datasource:
+    #druid相关配置
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      #配置基本属性
+      url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
+      username: root
+      password: ks892734ksj8s89sd7d897df
+      initialSize: 20 # 初始化时建立物理连接的个数
+      minIdle: 20  # 最小连接池数量
+      maxActive: 100 # 最大连接池数量
+      maxWait: 60000 # 获取连接时最大等待时间
+      timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接
+      minEvictableIdleTimeMillis: 30000 #连接保持空闲而不被驱逐的最小时间 5分钟
+      validationQuery: SELECT 'x' # 用来检测连接是否有效的sql，要求是一个查询语句
+      testWhileIdle: true # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检
+      testOnBorrow: false # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      poolPreparedStatements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说
+      maxPoolPreparedStatementPerConnectionSize: 20
+
+
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 20000
+
+
+tools:
+  ipDatabase: /opt/GeoLite2-City.mmdb
+
+#m3u8视频转换配置
+m3u8:
+  convertor:
+    base-path: /file/m3u8/
+    temp-path: /file/temp/
+    big-path: /file/big/
+    proxy: m3u8/
+
+ali:
+  oss:
+    end-point: oss-cn-hongkong.aliyuncs.com
+    access-key-id: LTAI5t772EUvWdB3Vis6PKcU
+    access-key-secret: VrWgD4xjExzaJBInTajsfa3ac80bpe
+    bucket-name: apol
+    vedio-file-dir: vedio/
+    picture-file-dir: picture/
+    others-file-dir: others/
+    my-host-url: http://${ali.oss.bucket-name}.${ali.oss.end-point}/
+game:
+  byg:
+    targetUrl: http://k49ed.ajta1.com
+    appId: 9x6NXj1D2dej
+    appSecret: fILt026Bbq2bH6KdiN66PqIYoyHSpNDv
+    appPayId: 9FR3rf9k449e
+    appPaySecret: t78gek0hV9om06M0v701kuud87w0M4Lb
+  bsg:
+    url: https://api.yly0707.com/Api/interface
+    BSGChannelId: 1351
+    AESKey: iPEjDKWD4PfBKzsb
+    MD5Key: 2yEGhxCs6YeMtGZP
+
+withdrawal:
+  ant:
+    req.url: http://service.niuniudf.com/api
+    merchantKey: 518DB1D151E82AABE821732ECE34B2C5
+
+
+hw:
+  obs:
+    enable: true
+    end-point: obs.ap-southeast-1.myhuaweicloud.com
+    access-key-id: XNEGQ1PUFNF5CD9UNZWE
+    access-key-secret: AwkcUXlqQ589Th9HzB5YsjSwilGRz5NoSPBaeGFl
+    img-bucket-name: test-apollo-img
+    vd-bucket-name: test-apollo-vd
+    ot-bucket-name: test-apollo-img
+    video-file-dir: video/
+    picture-file-dir: picture/
+    others-file-dir: others/
+    prefix-url: http://%s.${hw.obs.end-point}/
+    expire-time: 300
+    protocol: https
+
+cdn:
+  ali:
+    img:
+      url: s3.yxzd.net
+      key1: 8aaf070877807ed8017789f3d56441be
+      key2: 8aaf070877807ed8017789f3d56441rt
+      expire-time: 1800
+    vd:
+      url: s4.yxzd.net
+      key1: 8aaf070877807ed8017789f3d56441be
+      key2: 8aaf070877807ed8017789f3d56441rt
+      expire-time: 1800
+  hw:
+    img:
+      url: img.91momo50.vip
+      key1: 8aaf070877807ed8017789f3d56441be
+      key2: 8aaf070877807ed8017789f3d56441rt
+      expire-time: 1800
+    vd:
+      url: vd.91momo50.vip
+      key1: 8aaf070877807ed8017789f3d56441be
+      key2: 8aaf070877807ed8017789f3d56441rt
+      expire-time: 1800
+  aws:
+    apks3:
+      url: https://axhk62.xyz/
+    apkasyn:
+      url: https://axhk62.xyz/
+
+
+# 声网
+agora:
+  # URL 最后需要带上 /
+  baseUrl: https://api.agora.io/dev/v2/project/
+  appId: c30b10fa91e949b0b47800dd87def391
+  appCertificate: 9ebfb1f71c444b9b87f735ea89d9e937
+  expireTimestamp: 0
+  customerKey: ced82bf6a1d3457d82dac25926c2b2be
+  customerSecret: 9fe94a9dd05042178a623f33ce8791c6
+
+auth:
+  basic:
+    server:
+      username: uni
+      password: ksjdf90283lk3249008
+      # 白名单可以逗号分隔多个IP
+      whiteIP:
+      # url拦截可以逗号分隔多个地址
+      pathPatterns: /manage/unilive-manage/**
+
+# 写主 读从配置
+datasources:
+  - type: master
+    name: master1
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      #配置基本属性
+      url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
+      username: root
+      password: ks892734ksj8s89sd7d897df
+      initialSize: 20 # 初始化时建立物理连接的个数
+      minIdle: 20  # 最小连接池数量
+      maxActive: 100 # 最大连接池数量
+      maxWait: 60000 # 获取连接时最大等待时间
+      timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接
+      minEvictableIdleTimeMillis: 30000 #连接保持空闲而不被驱逐的最小时间 5分钟
+      validationQuery: SELECT 'x' # 用来检测连接是否有效的sql，要求是一个查询语句
+      testWhileIdle: true # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测
+      testOnBorrow: false # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      poolPreparedStatements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 增加其他配置需在 DruidDataSourceConfig 类中同步添加属性
+
+
+  - type: slave
+    name: slave1
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      #配置基本属性
+      url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
+      username: root
+      password: ks892734ksj8s89sd7d897df
+      initialSize: 20 # 初始化时建立物理连接的个数
+      minIdle: 20  # 最小连接池数量
+      maxActive: 100 # 最大连接池数量
+      maxWait: 60000 # 获取连接时最大等待时间
+      timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接
+      minEvictableIdleTimeMillis: 30000 #连接保持空闲而不被驱逐的最小时间 5分钟
+      validationQuery: SELECT 'x' # 用来检测连接是否有效的sql，要求是一个查询语句
+      testWhileIdle: true # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检
+      testOnBorrow: false # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      poolPreparedStatements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 增加其他配置需在 DruidDataSourceConfig 类中同步添加属性
+
+sensitiveWord:
+  version: 2023-03-18 12:33:26
