@@ -19,3 +19,4 @@ spring:
         refreshable-dataids: cdn-common.yml
         username: nacos
         password: 1234567
+

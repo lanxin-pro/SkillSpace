@@ -7,11 +7,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.99.97.14
+        server-addr: 47.99.97.14:8848
         namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
         register-enabled: false
       config:
-        server-addr: 47.99.97.14
+        server-addr: 47.99.97.14:8848
         namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
         prefix: educate-manage
         file-extension: yml
