@@ -36,7 +36,7 @@
     </properties>
 
     <!--当前版本加上这个是错误的-->
-    <!--<dependencyManagement>
+<!--    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.educate.dependencies</groupId>

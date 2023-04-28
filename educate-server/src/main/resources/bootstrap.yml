@@ -3,20 +3,20 @@ server:
 
 spring:
   application:
-    name: educate-manage #在注册中心显示的名字
+    name: educate-server
   cloud:
     nacos:
       discovery:
-        server-addr: 47.99.97.14
+        server-addr: 47.99.97.14:8848
         namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
         register-enabled: false
       config:
-        server-addr: 47.99.97.14
+        server-addr: 47.99.97.14:8848
         namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
         prefix: educate-server
         file-extension: yml
         shared-dataids: cdn-common.yml
         refreshable-dataids: cdn-common.yml
-        username: nacos
-        password: 1234567
+        username: p-naxida
+        password: 123456
 
