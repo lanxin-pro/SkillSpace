@@ -14,7 +14,9 @@
     "vue-router": "^4.1.6",
     "vuex": "^4.0.2",
     "element-plus": "2.3.3",
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "vite-plugin-windicss": "^1.8.10",
+    "vue-types": "^5.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

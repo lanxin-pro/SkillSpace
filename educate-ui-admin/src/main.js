@@ -4,6 +4,9 @@ import ElementPlus from 'element-plus' // 导入ElementPlus模块
 import 'element-plus/dist/index.css' // 导入ElementPlus全局样式
 import router from './router' // 导入router
 import Logger from '@/utils/Logger' // 日志
+import '@/plugins/windi.css'
+import '@/plugins/animate.css' // 引入动画
+import '@/styles/index.scss' // 引入全局样式
 Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
 
 
