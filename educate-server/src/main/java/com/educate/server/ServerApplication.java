@@ -8,8 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Author: j-sentinel
  * @Date: 2023/4/26 21:43
  */
+@SuppressWarnings("SpringComponentScan") // 忽略 IDEA 无法识别 ${yudao.info.base-package}
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"${lanxin.info.base-package}.server", "${lanxin.info.base-package}.module"})
 public class ServerApplication {
 
     public static void main(String[] args) {

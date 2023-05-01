@@ -5,20 +5,21 @@
     <parent>
         <artifactId>skill-space</artifactId>
         <groupId>com.educate</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>educate-module-system</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>educate-module-system-api</module>
         <module>educate-module-system-biz</module>
     </modules>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
-
+    <name>${project.artifactId}</name>
+    <description>
+        system 模块下，我们放通用业务，支撑上层的核心业务。
+        例如说：用户、部门、权限、数据字典等等
+    </description>
 </project>
