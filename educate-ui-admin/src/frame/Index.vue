@@ -6,13 +6,10 @@
 </template>
 
 <script setup>
-
-
-
 </script>
 
 <style>
-  .sidebar-logo-container.collapse + .el-scrollbar .el-submenu [class^=el-icon-]{
-    width:100%;
-  }
+.sidebar-logo-container.collapse + .el-scrollbar .el-submenu [class^=el-icon-]{
+  width:100%;
+}
 </style>

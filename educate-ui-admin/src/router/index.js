@@ -1,7 +1,7 @@
 // vue-router 4.x版本以後才能這樣寫
 import { createRouter, createWebHistory } from 'vue-router'
 // 首页通用组件
-import Frame from '@/frame'
+import Frame from '@/frame/Index.vue'
 
 // 定义路由配置规则
 const routes = [
