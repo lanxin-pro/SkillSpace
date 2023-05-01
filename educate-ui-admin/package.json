@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "dev": "vue-cli-service serve --mode dev",
-    "i": "pnpm install",
-    "uat": "vue-cli-service serve --mode uat"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
