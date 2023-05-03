@@ -25,6 +25,7 @@
         <dependency>
             <groupId>com.educate</groupId>
             <artifactId>educate-spring-boot-starter-banner</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

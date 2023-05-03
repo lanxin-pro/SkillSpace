@@ -19,6 +19,7 @@
         <dependency>
             <groupId>com.educate</groupId>
             <artifactId>educate-common</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
