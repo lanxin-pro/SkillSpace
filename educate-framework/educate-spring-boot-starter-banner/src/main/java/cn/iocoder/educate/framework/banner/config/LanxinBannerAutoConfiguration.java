@@ -1,6 +1,6 @@
-package com.educate.lanxin.framework.banner.config;
+package cn.iocoder.educate.framework.banner.config;
 
-import com.educate.lanxin.framework.banner.core.BannerApplicationRunner;
+import cn.iocoder.educate.framework.banner.core.BannerApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

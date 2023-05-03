@@ -1,4 +1,4 @@
-package com.educate.server;
+package cn.iocoder.educate.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.educate.lanxin.framework.banner.core;
+package cn.iocoder.educate.framework.banner.core;
 
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;

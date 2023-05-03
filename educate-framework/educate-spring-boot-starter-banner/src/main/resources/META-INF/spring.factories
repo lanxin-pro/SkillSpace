@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.educate.lanxin.framework.banner.config.LanxinBannerAutoConfiguration\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.iocoder.educate.framework.banner.config.LanxinBannerAutoConfiguration\
