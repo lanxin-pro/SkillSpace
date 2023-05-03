@@ -17,6 +17,7 @@
         <revision>1.0.0-SNAPSHOT</revision>
         <!-- 统一依赖管理 -->
         <spring.boot.version>2.3.3.RELEASE</spring.boot.version>
+        <spring.websocket.version>2.7.8</spring.websocket.version>
         <!-- Web 相关 -->
         <springdoc.version>1.6.14</springdoc.version>
         <knife4j.version>4.0.0</knife4j.version>
@@ -450,7 +451,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-websocket</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.websocket.version}</version>
             </dependency>
         </dependencies>
 

@@ -39,7 +39,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!--当前版本加上这个是错误的-->
     <dependencyManagement>
         <dependencies>
             <dependency>
