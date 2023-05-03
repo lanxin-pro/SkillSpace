@@ -7,9 +7,10 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/3 9:33
+ * 理论而言我加不加@Configuration都是一模一样的
  */
 @Configuration
-public class LanxinBannerAutoConfiguration {
+public class EducateBannerAutoConfiguration {
 
     @Bean
     public BannerApplicationRunner bannerApplicationRunner(){
