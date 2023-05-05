@@ -70,6 +70,11 @@
         <jimureport.version>1.5.6</jimureport.version>
         <xercesImpl.version>2.12.2</xercesImpl.version>
         <wx-java-mp.version>4.3.0</wx-java-mp.version>
+        <!-- DB 相关  Spring2.7.8自带的依赖 -->
+        <mysql-connector-j>8.0.32</mysql-connector-j>
+        <com.oracle.database.jdbc>21.5.0.0</com.oracle.database.jdbc>
+        <org.postgresql>42.3.8</org.postgresql>
+        <com.microsoft.sqlserver>10.2.3.jre8</com.microsoft.sqlserver>
     </properties>
 
     <dependencyManagement>
@@ -452,6 +457,27 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-websocket</artifactId>
                 <version>${spring.websocket.version}</version>
+            </dependency>
+            <!-- DB 相关  Spring2.7.8自带的依赖 -->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.oracle.database.jdbc</groupId>
+                <artifactId>ojdbc8</artifactId>
+                <version>${com.oracle.database.jdbc}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${org.postgresql}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${com.microsoft.sqlserver}</version>
             </dependency>
         </dependencies>
 
