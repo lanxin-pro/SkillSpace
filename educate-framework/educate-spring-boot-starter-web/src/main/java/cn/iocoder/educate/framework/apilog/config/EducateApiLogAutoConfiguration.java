@@ -4,7 +4,6 @@ import cn.iocoder.educate.framework.apilog.core.filter.ApiAccessLogFilter;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkService;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkServiceImpl;
 import cn.iocoder.educate.module.infra.api.logger.ApiAccessLogApi;
-import cn.iocoder.educate.module.infra.api.logger.dto.ApiAccessLogCreateReqDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -16,16 +15,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EducateApiLogAutoConfiguration {
-
-    /**
-     * ApiAccessLogApi避免apiAccessLogApi没有注册bean
-     * 对代码更加优雅的处理
-     * @return
-     */
-    @Bean
-    public ApiAccessLogApi accessLog(){
-        return (apiAccessLogCreateReqDTO) -> {};
-    }
 
     /**
      * 加上这个可以直接给#{apiAccessLogFilter}的参数注入bean了

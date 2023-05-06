@@ -1,5 +1,6 @@
 package cn.iocoder.educate.server;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -10,7 +11,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SuppressWarnings("SpringComponentScan") // 忽略 IDEA 无法识别 ${yudao.info.base-package}
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = {"${lanxin.info.base-package}.server", "${lanxin.info.base-package}.module"})
+@SpringBootApplication(scanBasePackages = {"cn.iocoder.educate.server", "cn.iocoder.educate.module"})
 public class ServerApplication {
 
     public static void main(String[] args) {
