@@ -1,6 +1,9 @@
 package cn.iocoder.educate.module.system.dal.dataobject.logger;
 
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
+import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.framework.operatelog.core.enums.OperateTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

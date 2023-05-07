@@ -3,7 +3,10 @@ package cn.iocoder.educate.framework.apilog.config;
 import cn.iocoder.educate.framework.apilog.core.filter.ApiAccessLogFilter;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkService;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkServiceImpl;
+import cn.iocoder.educate.framework.apilog.core.service.ApiErrorLogFrameworkService;
+import cn.iocoder.educate.framework.apilog.core.service.ApiErrorLogFrameworkServiceImpl;
 import cn.iocoder.educate.module.infra.api.logger.ApiAccessLogApi;
+import cn.iocoder.educate.module.infra.api.logger.ApiErrorLogApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,11 @@ public class EducateApiLogAutoConfiguration {
     @Bean
     public ApiAccessLogFrameworkService apiAccessLogFrameworkService(ApiAccessLogApi apiAccessLogApi) {
         return new ApiAccessLogFrameworkServiceImpl(apiAccessLogApi);
+    }
+
+    @Bean
+    public ApiErrorLogFrameworkService apiErrorLogFrameworkService(ApiErrorLogApi apiErrorLogApi) {
+        return new ApiErrorLogFrameworkServiceImpl(apiErrorLogApi);
     }
 
 

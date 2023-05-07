@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 cn.iocoder.educate.framework.swagger.config.EducateSwaggerAutoConfiguration,\
-cn.iocoder.educate.framework.apilog.config.EducateApiLogAutoConfiguration
+cn.iocoder.educate.framework.apilog.config.EducateApiLogAutoConfiguration,\
+cn.iocoder.educate.framework.web.config.EducateWebAutoConfiguration

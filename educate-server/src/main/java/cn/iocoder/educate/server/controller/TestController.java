@@ -29,4 +29,11 @@ public class TestController {
     public String getConfig() {
         return name;
     }
+
+    @GetMapping("/e1")
+    @Operation(summary = "错误的测试")
+    public String geterror() {
+        int a = 1 / 0;
+        return name;
+    }
 }

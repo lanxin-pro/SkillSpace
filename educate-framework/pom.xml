@@ -17,6 +17,7 @@
         <module>educate-spring-boot-starter-banner</module>
         <module>eduacte-spring-boot-starter-mybatis</module>
         <module>educate-spring-boot-starter-biz-operatelog</module>
+        <module>educate-spring-boot-starter-redis</module>
     </modules>
 
     <description>

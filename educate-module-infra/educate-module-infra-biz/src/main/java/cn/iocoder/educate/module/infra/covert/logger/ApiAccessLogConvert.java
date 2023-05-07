@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface ApiAccessLogConvert {
 
-    ApiAccessLogConvert  INSTANCE = Mappers.getMapper(ApiAccessLogConvert.class);
+    ApiAccessLogConvert INSTANCE = Mappers.getMapper(ApiAccessLogConvert.class);
 
     ApiAccessLogDO convert(ApiAccessLogCreateReqDTO bean);
 }
