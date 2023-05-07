@@ -44,6 +44,15 @@ public class WebFrameworkUtils {
     }
 
     /**
+     * 获取用户的类型
+     * @return
+     */
+    public static Integer getLoginUserType(){
+        HttpServletRequest request = getRequest();
+        return getLoginUserType(request);
+    }
+
+    /**
      * 获得当前用户的类型
      * 注意：该方法仅限于 web 相关的 framework 组件使用！！！
      *
