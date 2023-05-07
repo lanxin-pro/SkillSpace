@@ -148,9 +148,10 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理 Resilience4j 限流抛出的异常
+     * 不知道为什么这个会报错RequestNotPermitted
      */
     @ExceptionHandler(value = RequestNotPermitted.class)
-    public CommonResult<?> requestNotPermittedExceptionHandler(HttpServletRequest req, RequestNotPermitted ex) {
+    public CommonResult<?> requestNotPermittedExceptionHandler(HttpServletRequest req, Exception ex) {
         log.warn("[requestNotPermittedExceptionHandler][url({}) 访问过于频繁]", req.getRequestURL(), ex);
         return CommonResult.error(TOO_MANY_REQUESTS);
     }
@@ -159,9 +160,11 @@ public class GlobalExceptionHandler {
      * 处理 Spring Security 权限不足的异常
      *
      * 来源是，使用 @PreAuthorize 注解，AOP 进行权限拦截
+     *
+     * 不知道为什么这个AccessDeniedException会报错
      */
     @ExceptionHandler(value = AccessDeniedException.class)
-    public CommonResult<?> accessDeniedExceptionHandler(HttpServletRequest req, AccessDeniedException ex) {
+    public CommonResult<?> accessDeniedExceptionHandler(HttpServletRequest req, Exception ex) {
         log.warn("[accessDeniedExceptionHandler][userId({}) 无法访问 url({})]", WebFrameworkUtils.getLoginUserId(req),
                 req.getRequestURL(), ex);
         return CommonResult.error(FORBIDDEN);

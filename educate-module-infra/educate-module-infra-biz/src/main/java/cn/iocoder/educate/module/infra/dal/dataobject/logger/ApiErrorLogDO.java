@@ -1,11 +1,12 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.logger;
 
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.module.infra.enums.logger.ApiErrorLogProcessStatusEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 /**

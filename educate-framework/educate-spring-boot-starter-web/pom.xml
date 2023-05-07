@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>educate-spring-boot-starter-web</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Web 框架，全局异常、API 日志等</description>
 
     <dependencies>
         <dependency>
@@ -48,7 +52,7 @@
         <!-- 业务组件 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>educate-module-infra-api</artifactId>
+            <artifactId>educate-module-infra-api</artifactId> <!-- 需要使用它，进行操作日志的记录 -->
             <version>${revision}</version>
         </dependency>
 
