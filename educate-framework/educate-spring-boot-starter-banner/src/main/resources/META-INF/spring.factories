@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.iocoder.educate.framework.banner.config.EducateBannerAutoConfiguration\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.iocoder.educate.framework.banner.config.EducateBannerAutoConfiguration\

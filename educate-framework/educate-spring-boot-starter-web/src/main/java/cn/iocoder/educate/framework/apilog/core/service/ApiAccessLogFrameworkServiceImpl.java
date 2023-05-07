@@ -20,8 +20,8 @@ public class ApiAccessLogFrameworkServiceImpl implements ApiAccessLogFrameworkSe
 
     @Override
     @Async
-    public void createApiAccessLog(ApiAccessLog accessLog) {
-        ApiAccessLogCreateReqDTO apiAccessLogCreateReqDTO = BeanUtil.copyProperties(accessLog, ApiAccessLogCreateReqDTO.class);
+    public void createApiAccessLog(ApiAccessLog apiAccessLog) {
+        ApiAccessLogCreateReqDTO apiAccessLogCreateReqDTO = BeanUtil.copyProperties(apiAccessLog, ApiAccessLogCreateReqDTO.class);
         apiAccessLogApi.createApiAccessLog(apiAccessLogCreateReqDTO);
     }
 }

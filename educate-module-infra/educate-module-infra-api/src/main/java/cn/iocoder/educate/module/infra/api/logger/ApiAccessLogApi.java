@@ -8,5 +8,9 @@ import cn.iocoder.educate.module.infra.api.logger.dto.ApiAccessLogCreateReqDTO;
  */
 public interface ApiAccessLogApi {
 
+    /**
+     * 创建 API 访问日志
+     * @param apiAccessLogCreateReqDTO 创建信息
+     */
     void createApiAccessLog(ApiAccessLogCreateReqDTO apiAccessLogCreateReqDTO);
 }

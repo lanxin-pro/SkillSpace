@@ -28,7 +28,7 @@ import java.util.Map;
  * 目前版本有个缺点就是无论什么请求都会进入来执行日志
  */
 @Slf4j
-public class ApiAccessLogFilter extends OncePerRequestFilter {
+    public class ApiAccessLogFilter extends OncePerRequestFilter {
 
     private final String applicationName;
 
