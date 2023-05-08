@@ -49,7 +49,6 @@ public class IdTypeEnvironmentPostProcessor implements EnvironmentPostProcessor,
         // 如果获取不到 DbType，则不进行处理
         DbType dbType = getDbType(environment);
         if(ObjectUtil.isEmpty(dbType)){
-            log.info("切换源失败，正在重新尝试中...");
             return;
         }
 
