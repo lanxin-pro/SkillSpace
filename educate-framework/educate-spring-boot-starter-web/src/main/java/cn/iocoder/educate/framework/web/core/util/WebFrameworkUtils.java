@@ -94,4 +94,7 @@ public class WebFrameworkUtils {
         return servletRequestAttributes.getRequest();
     }
 
+    public static void setCommonResult(HttpServletRequest request, Object result) {
+        request.setAttribute(REQUEST_ATTRIBUTE_COMMON_RESULT, result);
+    }
 }
