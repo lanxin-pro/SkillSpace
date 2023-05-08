@@ -148,6 +148,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理 Resilience4j 限流抛出的异常
+     *
      * 不知道为什么这个会报错RequestNotPermitted
      */
     @ExceptionHandler(value = RequestNotPermitted.class)
