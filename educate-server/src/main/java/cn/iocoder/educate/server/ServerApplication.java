@@ -10,7 +10,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SuppressWarnings("SpringComponentScan") // 忽略 IDEA 无法识别 ${lanxin.info.base-package}
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = {"${lanxin.info.base-package}.server", "${lanxin.info.base-package}.module"})
+@SpringBootApplication(scanBasePackages = {
+        "${lanxin.info.base-package}.server",
+        "${lanxin.info.base-package}.module",
+        "com.xingyuv.captcha.config"
+})
 public class ServerApplication {
 
     public static void main(String[] args) {
