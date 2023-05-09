@@ -40,15 +40,15 @@
       <!--   右边界   -->
       <div class="flex-1 p-30px <sm:p-10px dark:bg-v-dark relative">
         <!-- 右上角的主题、语言选择 -->
-        <div class="flex justify-between items-center text-white @2xl:justify-end @xl:justify-end">
-          <div class="flex items-center @2xl:hidden @xl:hidden">
+<!--        <div class="flex justify-between items-center text-white @2xl:justify-end @xl:justify-end">
+          <div class="flex items-center">
             <img alt="" class="w-48px h-48px mr-10px" src="@/assets/imgs/logo.png" />
             <span class="text-20px font-bold">{{ vue_title }}</span>
           </div>
           <div class="flex justify-end items-center space-x-10px">
 
           </div>
-        </div>
+        </div>-->
         <!-- 右边的登录界面 -->
         <Transition appear enter-active-class="animate__animated animate__bounceInRight">
           <div
@@ -62,6 +62,7 @@
     </div>
 
   </div>
+
   </div>
 </template>
 

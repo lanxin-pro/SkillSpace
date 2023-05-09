@@ -19,8 +19,8 @@
         <el-form-item v-if="loginData.tenantEnable === 'true'" prop="tenantName">
           <el-input
               v-model="loginData.loginForm.tenantName"
-              :placeholder="租户"
-              :prefix-icon="iconHouse"
+              placeholder="请输入租户名称"
+              prefix-icon="House"
               type="primary"
               link
           />
@@ -30,8 +30,8 @@
         <el-form-item prop="username">
           <el-input
               v-model="loginData.loginForm.username"
-              :placeholder="用户名"
-              :prefix-icon="iconAvatar"
+              placeholder="请输入用户名名称"
+              prefix-icon="Avatar"
           />
         </el-form-item>
       </el-col>
@@ -39,8 +39,8 @@
         <el-form-item prop="password">
           <el-input
               v-model="loginData.loginForm.password"
-              :placeholder="密码"
-              :prefix-icon="iconLock"
+              placeholder="请输入密码"
+              prefix-icon="Lock"
               show-password
               type="password"
               @keyup.enter="getCode()"
@@ -113,15 +113,21 @@
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
           <div class="flex justify-between w-[100%]">
-            <Icon
-                v-for="(item, key) in socialList"
+            <template v-for="(item, key) in socialList">
+              <svg class="alibabaiconfont" aria-hidden="true">
+                <use :xlink:href="item.icon"></use>
+              </svg>
+            </template>
+
+<!--            <Icon
+
                 :key="key"
                 :icon="item.icon"
                 :size="30"
-                class="cursor-pointer anticon"
+                class=""
                 color="#999"
                 @click="doSocialLogin(item.type)"
-            />
+            />-->
           </div>
         </el-form-item>
       </el-col>
@@ -136,6 +142,8 @@
             </el-link>
             <el-link href="http://static.yudao.iocoder.cn/mp/Aix9975.jpeg" target="_blank">
               🤝外包咨询
+
+
             </el-link>
           </div>
         </el-form-item>
@@ -145,8 +153,11 @@
 </template>
 
 <script setup>
+import '@/assets/icons/login/iconfont.css' // 阿里图标
+import '@/assets/icons/login/iconfont.js' // 阿里图标
 import { reactive,ref } from 'vue'
 import { XButton } from '@/components/XButton/index.js'
+import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
 
@@ -154,6 +165,7 @@ import { ElLoading } from 'element-plus'
 const getShow = ref(true)
 const loginLoading = ref(false)
 const verify = ref()
+const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
 // 表单提交数据
 const loginData = reactive({
   isShowPassword: false,
@@ -169,16 +181,11 @@ const loginData = reactive({
 })
 // 其他登录方式
 const socialList = [
-  { icon: 'ant-design:github-filled', type: 0 },
-  { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 }
+  { icon: '#icon-github', type: 0 },
+  { icon: '#icon-weixin', type: 30 },
+  { icon: '#icon-zhifubao', type: 0 },
+  { icon: '#icon-dingding', type: 20 }
 ]
-
-
-
-
-
 
 
 
@@ -203,4 +210,21 @@ const handleLogin = async ()=>{
 
 <style scoped>
 
+.alibabaiconfont{
+  cursor: pointer;
+  width: 6em;
+  height: 2em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.alibabaiconfont:last-child{
+  width: 6em;
+  height: 2.3em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  position: relative;
+  top: -2px;
+}
 </style>

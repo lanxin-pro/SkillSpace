@@ -2,11 +2,13 @@ import { createApp } from 'vue' // 导入vue实例createApp方法，用于创建
 import App from './App.vue'
 import ElementPlus from 'element-plus' // 导入ElementPlus模块
 import 'element-plus/dist/index.css' // 导入ElementPlus全局样式
+import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 导入ElementPlus全局图标库
 import router from './router' // 导入router
 import Logger from '@/utils/Logger' // 日志
 import '@/plugins/windi.css'
 import '@/plugins/animate.css' // 引入动画
 import '@/styles/index.scss' // 引入全局样式
+import 'nprogress/nprogress.css' // 导入进度条样式动画
 Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
 
 
@@ -16,4 +18,9 @@ Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
 const app = createApp(App)
 app.use(ElementPlus)
 app.use(router)
+app.use(ElementPlus) // 使用ElementPlus
+// 注册element-plus所有图标组件
+for(const [key,component] of Object.entries(ElementPlusIconsVue)){
+    app.component(key,component)
+}
 app.mount('#app')

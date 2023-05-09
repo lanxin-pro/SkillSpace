@@ -14,9 +14,13 @@
     "vue-router": "^4.1.6",
     "vuex": "^4.0.2",
     "element-plus": "2.3.3",
+    "@element-plus/icons-vue": "^2.0.8",
     "dayjs": "^1.11.7",
     "vite-plugin-windicss": "^1.8.10",
-    "vue-types": "^5.0.2"
+    "vue-types": "^5.0.2",
+    "nprogress": "^0.2.0",
+    "crypto-js": "^4.1.1",
+    "axios": "^0.27.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
