@@ -1,0 +1,34 @@
+package cn.iocoder.educate.module.system.controller.admin.auth;
+
+import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.module.system.controller.admin.BaseController;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import javax.annotation.Resource;
+import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
+
+/**
+ * @Author: j-sentinel
+ * @Date: 2023/5/8 18:04
+ */
+@Validated
+@RequestMapping("/auth")
+@Tag(name = "管理后台 - 认证")
+public class AuthController extends BaseController {
+
+    @Resource
+    private AdminAuthService authService;
+
+    @PostMapping("/login")
+    @Operation(summary = "使用账号密码登录")
+    public CommonResult<AuthLoginRespVO> login(AuthLoginReqVO authLoginReqVO){
+        return success(authService.login(authLoginReqVO));
+    }
+
+}

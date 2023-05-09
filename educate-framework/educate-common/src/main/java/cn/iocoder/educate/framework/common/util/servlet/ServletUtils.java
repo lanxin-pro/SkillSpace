@@ -1,6 +1,7 @@
 package cn.iocoder.educate.framework.common.util.servlet;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -21,6 +22,7 @@ public class ServletUtils {
      * @param request
      * @return
      */
+    @SuppressWarnings("NullPointerException")
     public static boolean isJsonRequest(ServletRequest request) {
         return StrUtil.startWithIgnoreCase(request.getContentType(), MediaType.APPLICATION_JSON_VALUE);
     }
@@ -30,6 +32,13 @@ public class ServletUtils {
      * @return ua
      */
     public static String getUserAgent(HttpServletRequest request) {
+        String ua = request.getHeader("User-Agent");
+        return ua != null ? ua : "";
+    }
+
+    @SuppressWarnings("NullPointerException")
+    public static String getUserAgent() {
+        HttpServletRequest request = getRequest();
         String ua = request.getHeader("User-Agent");
         return ua != null ? ua : "";
     }
@@ -45,6 +54,18 @@ public class ServletUtils {
             return null;
         }
         return ((ServletRequestAttributes) requestAttributes).getRequest();
+    }
+
+    /**
+     * 把这个封装成工具类的原因是他要request
+     * @return
+     */
+    public static String getClientIP() {
+        HttpServletRequest request = getRequest();
+        if (request == null) {
+            return null;
+        }
+        return ServletUtil.getClientIP(request);
     }
 
 }
