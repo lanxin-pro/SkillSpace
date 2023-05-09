@@ -44,6 +44,7 @@ public class EducateWebAutoConfiguration implements WebMvcConfigurer {
 
     /**
      * 设置 API 前缀，仅仅匹配 controller 包下的
+     * 我就admin/app下面添加标识
      * @param configurer 配置
      * @param api        API 配置
      */

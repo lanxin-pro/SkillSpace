@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkSer
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkServiceImpl;
 import cn.iocoder.educate.framework.apilog.core.service.ApiErrorLogFrameworkService;
 import cn.iocoder.educate.framework.apilog.core.service.ApiErrorLogFrameworkServiceImpl;
+import cn.iocoder.educate.framework.web.config.WebProperties;
 import cn.iocoder.educate.module.infra.api.logger.ApiAccessLogApi;
 import cn.iocoder.educate.module.infra.api.logger.ApiErrorLogApi;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,9 +45,9 @@ public class EducateApiLogAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(prefix = "educate.access-log",value = "enable",matchIfMissing = true)
-    public ApiAccessLogFilter apiAccessLogFilter(@Value("${spring.application.name}") String applicationName,
+    public ApiAccessLogFilter apiAccessLogFilter(WebProperties webProperties, @Value("${spring.application.name}") String applicationName,
                                                  ApiAccessLogFrameworkService apiAccessLogFrameworkService){
-        return new ApiAccessLogFilter(applicationName,apiAccessLogFrameworkService);
+        return new ApiAccessLogFilter(webProperties,applicationName,apiAccessLogFrameworkService);
     }
 
 }

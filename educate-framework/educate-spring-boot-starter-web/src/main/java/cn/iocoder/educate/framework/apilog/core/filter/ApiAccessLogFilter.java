@@ -10,6 +10,7 @@ import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkSer
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.util.monitor.TracerUtils;
 import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
+import cn.iocoder.educate.framework.web.config.WebProperties;
 import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,16 +26,16 @@ import java.util.Map;
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/3 20:23
- * 目前版本有个缺点就是无论什么请求都会进入来执行日志
  */
 @Slf4j
-    public class ApiAccessLogFilter extends OncePerRequestFilter {
+public class ApiAccessLogFilter extends ApiRequestFilter {
 
     private final String applicationName;
 
     private final ApiAccessLogFrameworkService apiAccessLogFrameworkService;
 
-    public ApiAccessLogFilter(String applicationName, ApiAccessLogFrameworkService apiAccessLogFrameworkService) {
+    public ApiAccessLogFilter(WebProperties webProperties, String applicationName, ApiAccessLogFrameworkService apiAccessLogFrameworkService) {
+        super(webProperties);
         this.applicationName = applicationName;
         this.apiAccessLogFrameworkService = apiAccessLogFrameworkService;
     }
@@ -49,6 +50,7 @@ import java.util.Map;
         String requestBody = ServletUtils.isJsonRequest(request) ? ServletUtil.getBody(request) : null;
 
         try {
+            // 继续过滤器，这里会报错？？？
             filterChain.doFilter(request, response);
             // 正常执行，记录日志
             createApiAccessLog(request, response,beginTime, queryString, requestBody, null);
