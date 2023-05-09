@@ -1,7 +1,6 @@
 package cn.iocoder.educate.module.system.controller.admin.auth;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
-import cn.iocoder.educate.module.system.controller.admin.BaseController;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
@@ -10,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -18,9 +19,10 @@ import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
  * @Date: 2023/5/8 18:04
  */
 @Validated
+@RestController
 @RequestMapping("/auth")
 @Tag(name = "管理后台 - 认证")
-public class AuthController extends BaseController {
+public class AuthController {
 
     @Resource
     private AdminAuthService authService;
