@@ -19,5 +19,6 @@ spring:
         refreshable-dataids: cdn-common.yml
         username: p-naxida
         password: 123456
-
-
+aj:
+  captcha:
+    type:

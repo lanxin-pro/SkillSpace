@@ -161,11 +161,11 @@ import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
 
-
 const getShow = ref(true)
 const loginLoading = ref(false)
 const verify = ref()
-const captchaType = ref('blockPuzzle') // blockPuzzle 滑块 clickWord 点击文字
+const captcha = import.meta.env.VITE_CAPTCHATYPE
+const captchaType = ref(captcha)
 // 表单提交数据
 const loginData = reactive({
   isShowPassword: false,

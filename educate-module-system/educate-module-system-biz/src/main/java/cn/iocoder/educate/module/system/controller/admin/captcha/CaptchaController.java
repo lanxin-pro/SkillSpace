@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +33,13 @@ public class CaptchaController {
         assert request.getRemoteHost() != null;
         data.setBrowserInfo(getRemoteId(request));
         return captchaService.get(data);
+    }
+
+    @PostMapping("/check")
+    @Operation(summary = "校验验证码")
+    public ResponseModel check(@RequestBody CaptchaVO data, HttpServletRequest request) {
+        data.setBrowserInfo(getRemoteId(request));
+        return captchaService.check(data);
     }
 
     public static String getRemoteId(HttpServletRequest request) {

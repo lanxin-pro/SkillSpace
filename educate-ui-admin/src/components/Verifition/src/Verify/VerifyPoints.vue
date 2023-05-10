@@ -170,10 +170,10 @@ const canvasClick = (e) => {
         token: backToken.value
       }
       reqCheck(data).then((res) => {
-        if (res.repCode == '0000') {
+        if (res.data.repCode == '0000') {
           barAreaColor.value = '#4cae4c'
           barAreaBorderColor.value = '#5cb85c'
-          text.value = t('captcha.success')
+          text.value = '验证成功'
           bindingClick.value = false
           if (mode.value == 'pop') {
             setTimeout(() => {
@@ -186,7 +186,7 @@ const canvasClick = (e) => {
           proxy.$parent.$emit('error', proxy)
           barAreaColor.value = '#d9534f'
           barAreaBorderColor.value = '#d9534f'
-          text.value = t('captcha.fail')
+          text.value = '验证失败'
           setTimeout(() => {
             refresh()
           }, 700)
@@ -226,13 +226,14 @@ const getPictrue = async () => {
   let data = {
     captchaType: captchaType.value
   }
-  const res = await getCode(data)
+  const response = await getCode(data)
+  const res = response.data
   if (res.repCode == '0000') {
     pointBackImgBase.value = res.repData.originalImageBase64
     backToken.value = res.repData.token
     secretKey.value = res.repData.secretKey
     poinTextList.value = res.repData.wordList
-    text.value = t('captcha.point') + '【' + poinTextList.value.join(',') + '】'
+    text.value = '请依次点击' + '【' + poinTextList.value.join(',') + '】'
   } else {
     text.value = res.repMsg
   }

@@ -288,7 +288,7 @@ const end = () => {
       token: backToken.value
     }
     reqCheck(data).then((res) => {
-      if (res.repCode == '0000') {
+      if (res.data.repCode == '0000') {
         moveBlockBackgroundColor.value = '#5cb85c'
         leftBarBorderColor.value = '#5cb85c'
         iconColor.value = '#fff'
@@ -303,7 +303,7 @@ const end = () => {
         }
         passFlag.value = true
         tipWords.value = `${((endMovetime.value - startMoveTime.value) / 1000).toFixed(2)}s
-            ${t('captcha.success')}`
+            验证成功`
         var captchaVerification = secretKey.value
             ? aesEncrypt(
                 backToken.value + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 }),
@@ -325,7 +325,7 @@ const end = () => {
           refresh()
         }, 1000)
         proxy.$parent.$emit('error', proxy)
-        tipWords.value = "测试推算是错误"
+        tipWords.value = "验证失败"
         setTimeout(() => {
           tipWords.value = ''
         }, 1000)
