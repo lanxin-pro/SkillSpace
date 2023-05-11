@@ -1,5 +1,4 @@
 <template>
-  <div class="fullscreen">
   <!--
   class属性中，"h-[100%]"用于将该元素高度设置为100%；
   "relative"表示将该元素设置为相对定位；
@@ -63,7 +62,6 @@
 
   </div>
 
-  </div>
 </template>
 
 <script setup>
@@ -74,13 +72,6 @@ const vue_title = import.meta.env.VITE_APP_TITLE
 </script>
 
 <style scoped lang="scss">
-.fullscreen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 
 .v-login {
   &__left {

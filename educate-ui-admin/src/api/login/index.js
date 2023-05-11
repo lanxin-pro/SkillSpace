@@ -38,7 +38,8 @@ export async function reqCheck(data){
  */
 export function login(username, password, captchaVerification, socialType, socialCode, socialState){
     const data = {
-
+        username,
+        password,
         captchaVerification,
         // 社交相关
         socialType,

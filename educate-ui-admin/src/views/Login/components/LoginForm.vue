@@ -250,9 +250,9 @@ const handleLogin = async (captchaParams)=>{
           .then(()=>{
           router.push({path: redirect.value || "/"}).catch(()=>{
             console.log("路由error")
-          }).catch(()=>{
-            loginLoading.value = false
           })
+      }).catch(()=>{
+        loginLoading.value = false
       }).finally(()=>{
         setTimeout(() => {
           const loadingInstance = ElLoading.service()
