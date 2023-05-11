@@ -7,11 +7,9 @@ import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
 /**
@@ -20,7 +18,7 @@ import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
  */
 @Validated
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/system/auth")
 @Tag(name = "管理后台 - 认证")
 public class AuthController {
 
@@ -29,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "使用账号密码登录")
-    public CommonResult<AuthLoginRespVO> login(AuthLoginReqVO authLoginReqVO){
+    public CommonResult<AuthLoginRespVO> login(@RequestBody @Valid AuthLoginReqVO authLoginReqVO){
         return success(authService.login(authLoginReqVO));
     }
 

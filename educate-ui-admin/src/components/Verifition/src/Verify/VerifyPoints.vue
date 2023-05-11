@@ -226,8 +226,7 @@ const getPictrue = async () => {
   let data = {
     captchaType: captchaType.value
   }
-  const response = await getCode(data)
-  const res = response.data
+  const res = await getCode(data)
   if (res.repCode == '0000') {
     pointBackImgBase.value = res.repData.originalImageBase64
     backToken.value = res.repData.token

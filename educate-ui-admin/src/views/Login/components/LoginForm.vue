@@ -155,17 +155,37 @@
 <script setup>
 import '@/assets/icons/login/iconfont.css' // 阿里图标
 import '@/assets/icons/login/iconfont.js' // 阿里图标
+import store from '@/store'
+import router from '@/router'
 import { reactive,ref } from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
+import {
+  getPassword,
+  getRememberMe, getTenantName,
+  getUsername,
+  removePassword, removeRememberMe, removeTenantName,
+  removeUsername,
+  setPassword, setRememberMe, setTenantId, setTenantName,
+  setUsername
+} from "@/utils/auth";
 
+
+const formLogin = ref()
 const getShow = ref(true)
 const loginLoading = ref(false)
 const verify = ref()
 const captcha = import.meta.env.VITE_CAPTCHATYPE
 const captchaType = ref(captcha)
+const redirect = ref()
+// 校验
+const LoginRules = {
+  tenantName: [{ required: true, message: "租户名称不能为空", trigger: "change" }],
+  username: [{ required: true, message: "用户名不能为空", trigger: "change" }],
+  password: [{ required: true, message: "密码不能为空", trigger: "change" }]
+}
 // 表单提交数据
 const loginData = reactive({
   isShowPassword: false,
@@ -176,7 +196,8 @@ const loginData = reactive({
     username: 'j-sentinel',
     password: '123456',
     captchaVerification: '',
-    rememberMe: false
+    rememberMe: false,
+    loginType: "uname",
   }
 })
 // 其他登录方式
@@ -203,7 +224,43 @@ const getCode = async () => {
 }
 
 // 登录
-const handleLogin = async ()=>{
+const handleLogin = async (captchaParams)=>{
+  loginLoading.value = true
+  formLogin.value.validate(valid => {
+    if(valid){
+      // 系统加载的遮罩层
+      ElLoading.service({
+        lock: true,
+        text: '正在加载系统中...',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      if(loginData.loginForm.rememberMe){
+        setUsername(loginData.loginForm.username)
+        setPassword(loginData.loginForm.password)
+        setRememberMe(loginData.loginForm.rememberMe)
+        setTenantName(loginData.loginForm.tenantName)
+      }else{
+        removeUsername()
+        removePassword()
+        removeRememberMe()
+        removeTenantName()
+      }
+      loginData.loginForm.captchaVerification = captchaParams.captchaVerification
+      store.dispatch(loginData.loginForm.loginType === "sms" ? "user/SmsLogin" : "user/Login",loginData.loginForm)
+          .then(()=>{
+          router.push({path: redirect.value || "/"}).catch(()=>{
+            console.log("路由error")
+          }).catch(()=>{
+            loginLoading.value = false
+          })
+      }).finally(()=>{
+        setTimeout(() => {
+          const loadingInstance = ElLoading.service()
+          loadingInstance.close()
+        }, 400)
+      })
+    }
+  })
 
 }
 </script>
