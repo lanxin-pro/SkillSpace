@@ -10,7 +10,8 @@ export default {
             name: '',
             avatar: '',
             roles: [],
-            permissions: []
+            permissions: [],
+            nickname: ''
         }
     },
     // 定义修改状态管理的方法
@@ -62,7 +63,12 @@ export default {
     // 对state数据的改造和加工处理。给未来的页面和组件进行调用。
     // 从而达到一个封装的目录
     getters: {
-
+        getAvatar(state){
+            return state.avatar
+        },
+        getNickname(state){
+            return state.nickname
+        },
     }
 
 

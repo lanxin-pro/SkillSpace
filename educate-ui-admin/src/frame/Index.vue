@@ -1,15 +1,31 @@
 <template>
-  我是一个frame1无
-  <div class="app-wrapper">
-    我是一个frame2div
+  <div class="app-wrapper" >
+    <div class="drawer-bg" @click="handleClickOutside"/>
+    <sidebar class="sidebar-container" />
+    <div class="main-container">
+      <div>
+        <navbar/>
+        <tags-view/>
+      </div>
+      <app-main/>
+      <right-panel>
+        <settings/>
+      </right-panel>
+    </div>
   </div>
 </template>
 
 <script setup>
+import RightPanel from '@/components/RightPanel/index.vue'
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import variables from '@/assets/styles/variables.scss'
+
+const handleClickOutside = ()=>{
+
+}
 </script>
 
-<style>
-.sidebar-logo-container.collapse + .el-scrollbar .el-submenu [class^=el-icon-]{
-  width:100%;
-}
+<style lang="scss" scoped>
+
+
 </style>
