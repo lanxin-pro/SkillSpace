@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "10f2abcd-cac5-4a2c-9802-25fa1bc29d60",
+		"name": "SpringSecurity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "授权服务器（获取令牌）",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "112233",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "clientapp",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "yunai",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1024",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "授权服务器（校验令牌）",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "112233",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "clientapp",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "267e2658-dd78-4399-b20c-ae9efe5c5d70",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/check_token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"check_token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
