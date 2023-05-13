@@ -33,17 +33,14 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         oauthServer.checkTokenAccess("isAuthenticated()");
-//        oauthServer.tokenKeyAccess("isAuthenticated()")
-//                .checkTokenAccess("isAuthenticated()");
-//        oauthServer.tokenKeyAccess("permitAll()")
-//                .checkTokenAccess("permitAll()");
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("clientapp").secret("112233") // Client 账号、密码。
-                .authorizedGrantTypes("password") // 密码模式
+                .authorizedGrantTypes("authorization_code") // 授权码模式
+                .redirectUris("http://127.0.0.1:9090/callback") // 授权码模式
                 .scopes("read_userinfo", "read_contacts") // 可授权的 Scope
 //                .and().withClient() // 可以继续配置新的 Client
         ;
