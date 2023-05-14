@@ -49,7 +49,19 @@ export default {
     getters: {
         getSidebarLogo(state){
             return state.sidebarLogo
-        }
+        },
+        getTheme(state){
+            return state.theme
+        },
+        getSideTheme(state){
+            return state.sideTheme
+        },
+        getTagsView(state){
+            return state.tagsView
+        },
+        getFixeHeader(state){
+            return state.fixedHeader
+        },
     }
 
 
