@@ -1,9 +1,10 @@
 <template>
-  <div :class="classObj.value" class="app-wrapper" :style="{'--current-color': theme}">
+  <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <sidebar v-if="!sidebar.hide" class="sidebar-container" />
+<!--  为什么这里的Sidebar要大写？？？  -->
+    <Sidebar v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{hasTagsView: needTagsView,sidebarHide: sidebar.hide}" class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{'fixed-header': fixedHeader}">
         <navbar/>
         <tags-view  v-if="needTagsView"/>
       </div>
@@ -18,17 +19,18 @@
 <script setup>
 import RightPanel from '@/components/RightPanel/index.vue'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
-import variables from '@/assets/styles/variables.scss'
 import store from '@/store'
 import { computed } from 'vue'
 
 
 
-const variable = variables
 const theme = store.getters['settings/getTheme']
 const sideTheme = store.getters['settings/getSideTheme']
 const sidebar = store.getters['app/getSidebar']
+console.log("sidebar的状态",sidebar.opened)
+console.log("sidebar.hide的状态",sidebar.hide)
 const device = store.getters['app/getDevice']
+console.log("device的状态",device)
 const needTagsView = store.getters['settings/getTagsView']
 const fixedHeader = store.getters['settings/getFixeHeader']
 
@@ -58,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/mixin.scss";
-@import "@/assets/styles/variables.scss";
+@import "@/assets/styles/variables.module.scss";
 
 .app-wrapper {
   @include clearfix;

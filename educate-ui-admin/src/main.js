@@ -8,6 +8,7 @@ import Logger from '@/utils/Logger' // 日志
 import '@/plugins/windi.css'
 import '@/plugins/animate.css' // 引入动画
 import '@/styles/index.scss' // 引入全局样式
+import '@/assets/styles/index.scss' // 引入全局样式
 import 'nprogress/nprogress.css' // 导入进度条样式动画
 import plugins from './plugins' // plugins
 Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)

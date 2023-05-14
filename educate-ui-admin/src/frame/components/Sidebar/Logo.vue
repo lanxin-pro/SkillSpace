@@ -13,31 +13,33 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import logoImg from '@/assets/logo/logo.png'
-import variables from '@/assets/styles/variables.scss'
+import { computed,ref } from 'vue'
+import store from '@/store'
+
+const title = ref('纳西妲')
+const logo = logoImg
+defineProps({
+  collapse: {
+    type: Boolean,
+    required: true
+  }
+})
+const sideTheme = computed(()=>{
+  return store.getters['settings/getSideTheme']
+})
+
+
+</script>
+<script>
+import variables from '@/assets/styles/variables.module.scss'
 
 export default {
-  name: 'SidebarLogo',
-  props: {
-    collapse: {
-      type: Boolean,
-      required: true
-    }
-  },
   computed: {
     variables() {
       return variables;
     },
-    sideTheme() {
-      return this.$store.state.settings.sideTheme
-    }
-  },
-  data() {
-    return {
-      title: '芋道管理系统',
-      logo: logoImg
-    }
   }
 }
 </script>
