@@ -6,6 +6,10 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
+    <div class="middle-menu">
+
+    </div>
+
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
@@ -131,6 +135,7 @@ const toggleSideBar = ()=>{
     vertical-align: top;
   }
 
+
   .right-menu {
     float: right;
     height: 100%;
@@ -144,7 +149,7 @@ const toggleSideBar = ()=>{
       display: inline-block;
       padding: 0 8px;
       height: 100%;
-      font-size: 18px;
+      font-size: 27px;
       color: #5a5e66;
       vertical-align: text-bottom;
 
