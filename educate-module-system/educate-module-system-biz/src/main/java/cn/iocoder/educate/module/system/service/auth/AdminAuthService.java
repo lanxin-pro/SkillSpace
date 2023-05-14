@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.auth;
 
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,15 @@ import javax.validation.Valid;
  * 提供用户的登录、登出的能力
  */
 public interface AdminAuthService {
+
+    /**
+     * 验证账号 + 密码。如果通过，则返回用户
+     *
+     * @param username 账号
+     * @param password 密码
+     * @return 用户
+     */
+    AdminUserDO authenticate(String username, String password);
 
     /**
      * 账号登录

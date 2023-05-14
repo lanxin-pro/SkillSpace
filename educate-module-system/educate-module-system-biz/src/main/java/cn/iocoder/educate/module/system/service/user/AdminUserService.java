@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.user;
 
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/9 8:44
@@ -7,5 +9,25 @@ package cn.iocoder.educate.module.system.service.user;
  */
 public interface AdminUserService {
 
+    /**
+     * 更新用户的最后登陆信息
+     * @param userId 用户编号
+     * @param clientIP 登陆 IP
+     */
     void updateUserLogin(Long userId, String clientIP);
+
+    /**
+     * 通过用户名查询用户
+     * @param username 用户名
+     * @return 用户对象信息
+     */
+    AdminUserDO getUserByUsername(String username);
+
+    /**
+     * 判断密码是否匹配
+     * @param rawPassword 未加密的密码
+     * @param encodedPassword 加密后的密码
+     * @return 是否匹配
+     */
+    boolean isPasswordMatch(String rawPassword, String encodedPassword);
 }
