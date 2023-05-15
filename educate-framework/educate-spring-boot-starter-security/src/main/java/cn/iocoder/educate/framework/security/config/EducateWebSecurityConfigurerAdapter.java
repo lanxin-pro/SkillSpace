@@ -1,4 +1,5 @@
 package cn.iocoder.educate.framework.security.config;
+
 import cn.iocoder.educate.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.iocoder.educate.framework.security.core.handler.AuthenticationEntryPointImpl;
 import com.google.common.collect.HashMultimap;
