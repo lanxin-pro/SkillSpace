@@ -8,17 +8,12 @@ spring:
     nacos:
       discovery:
         server-addr: 47.99.97.14:8848
-        namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
+        namespace: 0e3f74b9-87ee-4444-9d0f-b71dd1d8cf78
         register-enabled: false
       config:
         server-addr: 47.99.97.14:8848
-        namespace: 95367b3b-4944-46f0-848c-f5efd7519e80
+        namespace: 0e3f74b9-87ee-4444-9d0f-b71dd1d8cf78
         prefix: educate-server
         file-extension: yml
         shared-dataids: cdn-common.yml
         refreshable-dataids: cdn-common.yml
-        username: p-naxida
-        password: 123456
-aj:
-  captcha:
-    type:
