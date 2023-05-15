@@ -1,8 +1,9 @@
 package cn.iocoder.educate.framework.security.config;
+import cn.iocoder.educate.framework.security.core.handler.AccessDeniedHandlerImpl;
+import cn.iocoder.educate.framework.security.core.handler.AuthenticationEntryPointImpl;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,7 +37,6 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
     @Resource
     private ApplicationContext applicationContext;
 
-
     /**
      * 配置 URL 的安全配置
      * <p>
@@ -58,8 +58,8 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
      * @throws Exception
      */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
                 // 开启跨域访问
                 .cors().and()
                 // CSRF 禁用，因为不使用 Session
@@ -69,16 +69,16 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 // 防止将报头添加到响应中
                 .headers().frameOptions().disable().and()
                 // 一堆自定义的 Spring Security 处理器                认证失败处理类
-                .exceptionHandling().authenticationEntryPoint(null)
+                .exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPointImpl())
                 // 权限不够处理器
-                .accessDeniedHandler(null);
+                .accessDeniedHandler(new AccessDeniedHandlerImpl());
         // 登录暂时不使用 Spring Security 的拓展点，主要考虑一方面拓展多用户、多种登录方式相对复杂，一方面用户的学习成本较高
 
 
         // 获得 @PermitAll 带来的 URL 列表，免登录
         Multimap<HttpMethod, String> permitAllUrls = getPermitAllUrlsFromAnnotations();
 
-        http
+        httpSecurity
                 // 1.全局共享的规则
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
