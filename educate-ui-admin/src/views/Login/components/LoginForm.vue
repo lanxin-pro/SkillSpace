@@ -157,11 +157,14 @@ import '@/assets/icons/login/iconfont.css' // 阿里图标
 import '@/assets/icons/login/iconfont.js' // 阿里图标
 import store from '@/store'
 import router from '@/router'
-import { reactive,ref } from 'vue'
+import {computed, reactive, ref, unref} from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
+import { LoginStateEnum, useLoginState } from './useLogin.js'
+const { setLoginState,getLoginState } = useLoginState()
+
 import {
   getPassword,
   getRememberMe, getTenantName,
@@ -174,7 +177,7 @@ import {
 
 
 const formLogin = ref()
-const getShow = ref(true)
+
 const loginLoading = ref(false)
 const verify = ref()
 const captcha = import.meta.env.VITE_CAPTCHATYPE
@@ -208,7 +211,7 @@ const socialList = [
   { icon: '#icon-dingding', type: 20 }
 ]
 
-
+const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 
 
 // 获取验证码

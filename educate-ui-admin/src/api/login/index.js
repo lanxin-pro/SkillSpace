@@ -52,3 +52,16 @@ export function login(username, password, captchaVerification, socialType, socia
         data: data
     })
 }
+
+// 获取登录验证码
+export function sendSmsCode(mobile,scene){
+    const data = {
+        mobile,
+        scene
+    }
+    return request({
+        url: '/system/auth/send-sms-code',
+        method: 'post',
+        data: data
+    })
+}

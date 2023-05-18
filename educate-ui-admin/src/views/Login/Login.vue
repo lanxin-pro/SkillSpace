@@ -49,14 +49,20 @@
           </div>
         </div>-->
         <!-- 右边的登录界面 -->
-        <Transition appear enter-active-class="animate__animated animate__bounceInRight">
           <div
               class="h-full flex items-center m-auto w-[100%] @2xl:max-w-500px @xl:max-w-500px @md:max-w-500px @lg:max-w-500px"
           >
-            <!-- 账号登录 -->
-            <LoginForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+
+            <Transition appear enter-active-class="animate__animated animate__bounceInRight">
+              <!-- 账号登录 -->
+              <LoginForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+            </Transition>
+
+            <!-- 手机登录 -->
+            <Transition appear enter-active-class="animate__animated animate__bounceInRight">
+              <MobileForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+            </Transition>
           </div>
-        </Transition>
       </div>
     </div>
 
@@ -65,7 +71,7 @@
 </template>
 
 <script setup>
-import { LoginForm } from './components'
+import { LoginForm, MobileForm } from './components'
 const prefixCls = "v-login"
 const vue_title = import.meta.env.VITE_APP_TITLE
 
