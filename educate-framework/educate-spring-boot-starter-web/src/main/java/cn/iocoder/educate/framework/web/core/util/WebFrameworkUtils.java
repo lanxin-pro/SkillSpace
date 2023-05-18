@@ -1,6 +1,8 @@
 package cn.iocoder.educate.framework.web.core.util;
 
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.web.config.WebProperties;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,6 +21,17 @@ public class WebFrameworkUtils {
     private static final String REQUEST_ATTRIBUTE_LOGIN_USER_TYPE = "login_user_type";
 
     private static final String REQUEST_ATTRIBUTE_COMMON_RESULT = "common_result";
+
+    private static WebProperties properties;
+
+    /**
+     * 初始化？？？
+     * 如果直接写的话，确实无法触发初始化，但是我把这个注入bean后就可以了
+     * @param webProperties
+     */
+    public WebFrameworkUtils(WebProperties webProperties) {
+        WebFrameworkUtils.properties = webProperties;
+    }
 
     /**
      * 获得当前用户的编号，从请求中
@@ -41,6 +54,26 @@ public class WebFrameworkUtils {
     public static Long getLoginUserId() {
         HttpServletRequest request = getRequest();
         return getLoginUserId(request);
+    }
+
+    /**
+     * 设置用户的id
+     *
+     * @param request
+     * @param userId
+     */
+    public static void setLoginUserId(ServletRequest request, Long userId) {
+        request.setAttribute(REQUEST_ATTRIBUTE_LOGIN_USER_ID, userId);
+    }
+
+    /**
+     * 设置用户类型
+     *
+     * @param request 请求
+     * @param userType 用户类型
+     */
+    public static void setLoginUserType(ServletRequest request, Integer userType) {
+        request.setAttribute(REQUEST_ATTRIBUTE_LOGIN_USER_TYPE, userType);
     }
 
     /**
@@ -67,6 +100,15 @@ public class WebFrameworkUtils {
         Integer userType = (Integer) request.getAttribute(REQUEST_ATTRIBUTE_LOGIN_USER_TYPE);
         if (userType != null) {
             return userType;
+        }
+        // 2. 其次，基于 URL 前缀的约定，就是用户APP和后端管理页面的admin来区分的
+        String prefix = properties.getAdminApi().getPrefix();
+        prefix = "/" + properties.getPrePath() + prefix;
+        if (request.getRequestURI().startsWith(prefix)) {
+            return UserTypeEnum.ADMIN.getValue();
+        }
+        if (request.getRequestURI().startsWith(properties.getAppApi().getPrefix())) {
+            return UserTypeEnum.MEMBER.getValue();
         }
         return null;
     }

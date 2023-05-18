@@ -27,13 +27,15 @@ public class OperateLogDO extends BaseDO {
 
     /**
      * {@link #javaMethodArgs} 的最大长度
+     * 如果超过长度就加 ...
      */
-    public static final Integer JAVA_METHOD_ARGS_MAX_LENGTH = 8000;
+    public static final Integer JAVA_METHOD_ARGS_MAX_LENGTH = 7997;
 
     /**
      * {@link #resultData} 的最大长度
+     * 如果超过长度就加 ...
      */
-    public static final Integer RESULT_MAX_LENGTH = 4000;
+    public static final Integer RESULT_MAX_LENGTH = 3997;
 
     /**
      * 日志主键

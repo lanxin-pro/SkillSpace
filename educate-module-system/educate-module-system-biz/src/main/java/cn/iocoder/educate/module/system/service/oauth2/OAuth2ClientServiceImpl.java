@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.system.service.oauth2;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import cn.iocoder.educate.module.system.dal.mysql.oauth2.OAuth2ClientMapper;
@@ -64,7 +66,20 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
         if(ObjectUtil.notEqual(oAuth2ClientDO.getStatus(), CommonStatusEnum.ENABLE.getStatus())){
             throw exception(OAUTH2_CLIENT_DISABLE);
         }
+        // 校验客户端密钥
+        if (StrUtil.isNotEmpty(clientSecret) && ObjectUtil.notEqual(oAuth2ClientDO.getSecret(), clientSecret)) {
+            throw exception(OAUTH2_CLIENT_CLIENT_SECRET_ERROR);
+        }
+        // 校验授权方式
+        if (StrUtil.isNotEmpty(authorizedGrantType) && !CollUtil.contains(oAuth2ClientDO.getAuthorizedGrantTypes(), authorizedGrantType)) {
+            throw exception(OAUTH2_CLIENT_AUTHORIZED_GRANT_TYPE_NOT_EXISTS);
+        }
+        // 校验授权范围
+        if (CollUtil.isNotEmpty(scopes) && !CollUtil.containsAll(oAuth2ClientDO.getScopes(), scopes)) {
+            throw exception(OAUTH2_CLIENT_SCOPE_OVER);
+        }
 
-        return null;
+
+        return oAuth2ClientDO;
     }
 }

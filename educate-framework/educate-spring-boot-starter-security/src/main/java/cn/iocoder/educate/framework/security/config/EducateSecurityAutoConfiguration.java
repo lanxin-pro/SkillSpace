@@ -1,6 +1,7 @@
 package cn.iocoder.educate.framework.security.config;
 
 import cn.iocoder.educate.framework.security.core.aop.PreAuthenticatedAspect;
+import cn.iocoder.educate.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.iocoder.educate.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.iocoder.educate.framework.security.core.handler.AuthenticationEntryPointImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,11 @@ public class EducateSecurityAutoConfiguration {
     @Bean
     public AccessDeniedHandler accessDeniedHandler(){
         return new AccessDeniedHandlerImpl();
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter(){
+        return new TokenAuthenticationFilter();
     }
 
     /**

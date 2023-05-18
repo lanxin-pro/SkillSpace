@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.apilog.core.service.ApiErrorLogFrameworkServ
 import cn.iocoder.educate.framework.common.enums.WebFilterOrderEnum;
 import cn.iocoder.educate.framework.web.core.handler.GlobalExceptionHandler;
 import cn.iocoder.educate.framework.web.core.handler.GlobalResponseBodyHandler;
+import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -68,6 +69,17 @@ public class EducateWebAutoConfiguration implements WebMvcConfigurer {
         return new GlobalResponseBodyHandler();
     }
 
+    /**
+     * 由于 WebFrameworkUtils 需要使用到 webProperties 属性，所以注册为一个 Bean
+     *
+     * @param webProperties
+     * @return
+     */
+    @Bean
+    @SuppressWarnings("InstantiationOfUtilityClass")
+    public WebFrameworkUtils webFrameworkUtils(WebProperties webProperties){
+        return new WebFrameworkUtils(webProperties);
+    }
 
     // ========== Filter 相关 ==========
 

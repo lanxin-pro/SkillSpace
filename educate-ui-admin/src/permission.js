@@ -12,7 +12,7 @@ router.beforeEach((to,from,next)=>{
     showFullLoading()
     // 获取token
     if(getAccessToken()){
-        console.log("错误，不存在token")
+        console.log("token验证")
     }else{
         // 没有token
         console.log(to.path)

@@ -1,4 +1,5 @@
 import { login }  from '@/api/login/index.js'
+import {setToken} from "@/utils/auth";
 
 export default {
     // 指定当前文件作为命名空间
@@ -52,6 +53,8 @@ export default {
             const socialType = userInfo.socialType
             try{
                 const serverResponse = await login(username, password, captchaVerification, socialType, socialCode, socialState)
+                // 设置 token
+                setToken(serverResponse.data)
                 return Promise.resolve(serverResponse)
             }catch(err){
                 return Promise.reject(err)

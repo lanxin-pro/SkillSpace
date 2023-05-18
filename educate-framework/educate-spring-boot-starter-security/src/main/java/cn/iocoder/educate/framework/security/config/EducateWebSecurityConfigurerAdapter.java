@@ -1,5 +1,6 @@
 package cn.iocoder.educate.framework.security.config;
 
+import cn.iocoder.educate.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.iocoder.educate.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.iocoder.educate.framework.security.core.handler.AuthenticationEntryPointImpl;
 import com.google.common.collect.HashMultimap;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -37,6 +39,9 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
 
     @Resource
     private ApplicationContext applicationContext;
+
+    @Resource
+    private TokenAuthenticationFilter authenticationTokenFilter;
 
     /**
      * 配置 URL 的安全配置
@@ -93,6 +98,8 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
                 .antMatchers("/websocket/message").permitAll()
                 .anyRequest().authenticated();
+
+        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 

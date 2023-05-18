@@ -3,6 +3,7 @@ package cn.iocoder.educate.framework.web.config;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -16,8 +17,11 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @Validated
-@ConfigurationProperties(prefix = "yudao.web")
+@ConfigurationProperties(prefix = "lanxin.web")
 public class WebProperties {
+
+    @NotNull(message = "pre前缀不能为空")
+    private String prePath = "server";
 
     @NotNull(message = "APP API 不能为空")
     private Api appApi = new Api("/app-api", "**.controller.app.**");
