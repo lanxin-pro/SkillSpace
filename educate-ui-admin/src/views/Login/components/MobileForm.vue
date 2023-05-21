@@ -49,11 +49,12 @@
               >
                 <!-- <el-button class="w-[100%]"> -->
                 <template #append>
+                  <!--     style="cursor: pointer"   将鼠标光标的形状改为小手图标       -->
                   <span
                       v-if="mobileCodeTimer <= 0"
                       class="getMobileCode"
                       style="cursor: pointer"
-                      @click="getSmsCode"
+                      @click="getCode"
                   >
                     获取验证码
                   </span>
@@ -75,7 +76,7 @@
               title="登录"
               class="w-[100%]"
               type="primary"
-              @click="getCode()"
+              @click="handleLogin()"
           />
         </el-form-item>
       </el-col>
@@ -94,7 +95,7 @@
           :captchaType="captchaType"
           :imgSize="{ width: '400px', height: '200px' }"
           mode="pop"
-          @success="handleLogin"
+          @success="getSmsCode"
       />
     </el-row>
   </el-form>
@@ -108,7 +109,7 @@ import { computed, reactive, ref, unref} from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
-import { ElLoading } from 'element-plus'
+import { ElLoading,ElMessage } from 'element-plus'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
 const { handleBackLogin,getLoginState } = useLoginState()
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.MOBILE)
@@ -133,7 +134,8 @@ const loginData = reactive({
     uuid: '',
     tenantName: '字节跳动',
     mobileNumber: '',
-    code: ''
+    code: '',
+    scene: 21
   }
 })
 // 校验
@@ -153,32 +155,55 @@ const rules = {
         }, trigger: "blur"
       }
   ],
-  code: [
-      { required: true, trigger: "blur", message: "验证码不能为空"}
-  ],
 }
 const getCode = async () => {
   // 情况一，未开启：则直接登录
   if (loginData.captchaEnable === 'false') {
-    await handleLogin({})
+    await getSmsCode({})
   } else {
     // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
     // 弹出验证码
-    verify.value.show()
+    formSmsLogin.value.validate( async (valid) => {
+      if(valid) {
+        verify.value.show()
+      }
+    })
   }
 }
 
 const handleLogin = (()=>{
-
+  formSmsLogin.value.validate( async (valid) => {
+    d
+  })
 })
 
 // 获取验证码
 const getSmsCode = (()=>{
+  // 防止越过上面的代码来刷新
   if (mobileCodeTimer.value > 0) return;
   formSmsLogin.value.validate( async (valid) => {
     if(valid){
-      console.log("成功")
-      await sendSmsCode()
+      try {
+        await sendSmsCode(loginData.loginForm.mobileNumber,loginData.loginForm.scene,loginData.loginForm.uuid,loginData.loginForm.code)
+        ElMessage({
+          type: 'success',
+          duration: 4 * 1000,
+          message: "获取验证码成功"
+        })
+        mobileCodeTimer.value = 120
+        let msgTimer = setInterval(() => {
+          mobileCodeTimer.value = mobileCodeTimer.value - 1;
+          if (mobileCodeTimer.value <= 0) {
+            clearInterval(msgTimer);
+          }
+        }, 1000);
+      }catch (error){
+        ElMessage({
+          type: 'error',
+          duration: 0,
+          message: error
+        })
+      }
     }
   })
 })

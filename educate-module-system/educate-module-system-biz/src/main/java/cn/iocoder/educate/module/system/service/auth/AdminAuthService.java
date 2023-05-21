@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.auth;
 
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
 import javax.validation.Valid;
@@ -33,4 +34,10 @@ public interface AdminAuthService {
      */
     AuthLoginRespVO login(@Valid AuthLoginReqVO reqVO);
 
+    /**
+     * 短信验证码发送
+     *
+     * @param reqVO 发送请求
+     */
+    void sendSmsCode(AuthSmsSendReqVO reqVO);
 }

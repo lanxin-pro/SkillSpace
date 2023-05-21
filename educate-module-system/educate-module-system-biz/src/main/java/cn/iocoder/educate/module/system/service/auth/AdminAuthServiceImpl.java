@@ -4,12 +4,16 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
+import cn.iocoder.educate.framework.common.exception.ErrorCode;
 import cn.iocoder.educate.framework.common.util.monitor.TracerUtils;
 import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.educate.framework.common.util.validation.ValidationUtils;
 import cn.iocoder.educate.module.system.api.logger.dto.LoginLogCreateReqDTO;
+import cn.iocoder.educate.module.system.api.sms.SmsCodeApi;
+import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
 import cn.iocoder.educate.module.system.convert.auth.AuthConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
@@ -57,6 +61,9 @@ public class AdminAuthServiceImpl implements AdminAuthService{
     @Resource
     private Validator validate;
 
+    @Resource
+    private SmsCodeApi smsCodeApi;
+
     /**
      * 验证码的开关，默认为 true
      */
@@ -99,6 +106,18 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         }
         // 创建 Token 令牌，记录登录日志
         return createTokenAfterLoginSuccess(adminUserDO.getId(), adminUserDO.getUsername(), LoginLogTypeEnum.LOGIN_USERNAME);
+    }
+
+    @Override
+    public void sendSmsCode(AuthSmsSendReqVO reqVO) {
+        // 登录场景，验证是否存在，用户是否绑定了手机号
+        AdminUserDO userByMobile = adminUserService.getUserByMobile(reqVO.getMobile());
+        if(userByMobile == null){
+            throw exception(ErrorCodeConstants.AUTH_MOBILE_NOT_EXISTS);
+        }
+        SmsCodeSendReqDTO smsCodeSendReqDTO = AuthConvert.INSTANCE.convert(reqVO).setCreateIp(ServletUtils.getClientIP());
+        // 发送验证码
+        smsCodeApi.sendSmsCode(smsCodeSendReqDTO);
     }
 
     private AuthLoginRespVO createTokenAfterLoginSuccess(Long userId, String username, LoginLogTypeEnum loginTypeEnum) {

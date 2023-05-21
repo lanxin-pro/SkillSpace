@@ -46,4 +46,12 @@ public class AdminUserServiceImpl implements AdminUserService{
     public boolean isPasswordMatch(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword,encodedPassword);
     }
+
+    @Override
+    public AdminUserDO getUserByMobile(String mobile) {
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getMobile,mobile);
+        AdminUserDO adminUserDO = adminUserMapper.selectOne(adminUserDOLambdaQueryWrapper);
+        return adminUserDO;
+    }
 }

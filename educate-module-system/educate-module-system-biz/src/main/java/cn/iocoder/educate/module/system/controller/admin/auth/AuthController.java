@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.system.controller.admin.auth;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +32,14 @@ public class AuthController {
     @PermitAll
     public CommonResult<AuthLoginRespVO> login(@RequestBody @Valid AuthLoginReqVO authLoginReqVO){
         return success(authService.login(authLoginReqVO));
+    }
+
+    @PostMapping("/send-sms-code")
+    @PermitAll
+    @Operation(summary = "发送手机验证码")
+    public CommonResult<Boolean> sendLoginSmsCode(@RequestBody @Valid AuthSmsSendReqVO reqVO) {
+        authService.sendSmsCode(reqVO);
+        return success(true);
     }
 
 }

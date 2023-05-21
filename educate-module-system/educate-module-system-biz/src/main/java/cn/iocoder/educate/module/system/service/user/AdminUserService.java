@@ -30,4 +30,11 @@ public interface AdminUserService {
      * @return 是否匹配
      */
     boolean isPasswordMatch(String rawPassword, String encodedPassword);
+
+    /**
+     * 通过手机号获取用户
+     * @param mobile
+     * @return
+     */
+    AdminUserDO getUserByMobile(String mobile);
 }
