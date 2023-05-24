@@ -19,7 +19,7 @@
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item v-if="loginData.tenantEnable === 'true'" prop="tenantName">
           <el-input
-              v-model="loginData.loginForm.tenantName"
+              v-model.trim="loginData.loginForm.tenantName"
               placeholder="请输入租户名称"
               prefix-icon="House"
               type="primary"
@@ -31,7 +31,7 @@
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item prop="mobileNumber">
           <el-input
-              v-model="loginData.loginForm.mobileNumber"
+              v-model.trim="loginData.loginForm.mobileNumber"
               placeholder="请输入手机号"
               prefix-icon="Cellphone"
           />
@@ -43,7 +43,7 @@
           <el-row :gutter="5" justify="space-between" style="width: 100%">
             <el-col :span="24">
               <el-input
-                  v-model="loginData.loginForm.code"
+                  v-model.trim="loginData.loginForm.code"
                   placeholder="请输入验证码"
                   prefix-icon="CircleCheck"
               >
@@ -173,7 +173,16 @@ const getCode = async () => {
 
 const handleLogin = (()=>{
   formSmsLogin.value.validate( async (valid) => {
-    d
+    if(valid){
+      if(loginData.loginForm.code == null || loginData.loginForm.code == ''){
+        ElMessage({
+          type: 'error',
+          duration: 4 * 1000,
+          message: "哎呀你干嘛，验证码不能为空啦"
+        })
+      }
+
+    }
   })
 })
 
@@ -200,7 +209,7 @@ const getSmsCode = (()=>{
       }catch (error){
         ElMessage({
           type: 'error',
-          duration: 0,
+          duration: 10 * 1000,
           message: error
         })
       }

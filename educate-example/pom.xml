@@ -11,6 +11,7 @@
         <module>lab-68-demo02-authorization-server-with-resource-owner-password-credentials</module>
         <module>lab-68-demo02-resource-server</module>
         <module>educate-sso-demo-by-code</module>
+        <module>lab-01-demo01-rabbitmq-java</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -66,7 +66,7 @@ request.interceptors.response.use(async res => {
             console.log(msg)
         } else {
             ElNotification.error({
-                title: msg
+                title: "异常：" + msg
             })
         }
         return Promise.reject('error')
