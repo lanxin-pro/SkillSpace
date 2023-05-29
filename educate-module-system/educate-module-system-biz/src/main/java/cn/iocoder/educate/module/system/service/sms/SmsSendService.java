@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.iocoder.educate.module.system.mq.message.sms.SmsSendMessage;
+
 import java.util.Map;
 
 /**
@@ -19,4 +21,12 @@ public interface SmsSendService {
      */
     Long sendSingleSms(String mobile, Long userId, Integer userType,
                        String templateCode, Map<String, Object> templateParams);
+
+    /**
+     * 执行真正的短信发送
+     * 注意，该方法仅仅提供给 MQ Consumer 使用
+     *
+     * @param message
+     */
+    void doSendSms(SmsSendMessage message);
 }
