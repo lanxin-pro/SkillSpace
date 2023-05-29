@@ -39,14 +39,13 @@ public class SmsCodeServiceImpl implements SmsCodeService{
 
     @Override
     public void sendSmsCode(SmsCodeSendReqDTO reqDTO) {
-        // 获取短信的配置信息 @InEnum(SmsSceneEnum.class) 可以根据Integer获取当前枚举的全部信息
+        // 获取短信的配置信息
         SmsSceneEnum codeByScene = SmsSceneEnum.getCodeByScene(reqDTO.getScene());
         Assert.notNull(codeByScene, "验证码场景({}) 查找不到配置", reqDTO.getScene());
         // 创建验证码
         String code = createSmsCode(reqDTO.getMobile(), reqDTO.getScene(), reqDTO.getCreateIp());
         // 发送验证码
         smsSendService.sendSingleSms(reqDTO.getMobile(), null, null,
-                // 快速的创建一个键值对(看hutu源码)
                 codeByScene.getTemplateCode(), MapUtil.of("code", code));
     }
 

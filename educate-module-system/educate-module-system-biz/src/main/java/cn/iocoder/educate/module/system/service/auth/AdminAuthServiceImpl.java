@@ -115,7 +115,6 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         if(userByMobile == null){
             throw exception(ErrorCodeConstants.AUTH_MOBILE_NOT_EXISTS);
         }
-        // 对象转换
         SmsCodeSendReqDTO smsCodeSendReqDTO = AuthConvert.INSTANCE.convert(reqVO).setCreateIp(ServletUtils.getClientIP());
         // 发送验证码
         smsCodeApi.sendSmsCode(smsCodeSendReqDTO);

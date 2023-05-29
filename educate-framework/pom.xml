@@ -22,7 +22,6 @@
         <module>educate-spring-boot-starter-biz-tenant</module>
         <module>educate-spring-boot-starter-security</module>
         <module>educate-spring-boot-starter-mq</module>
-        <module>educate-spring-boot-starter-biz-sms</module>
     </modules>
 
     <description>
