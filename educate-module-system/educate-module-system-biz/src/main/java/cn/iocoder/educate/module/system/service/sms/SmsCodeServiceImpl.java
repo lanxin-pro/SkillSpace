@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * 短信验证码 Service 实现类
@@ -27,6 +28,8 @@ import java.time.LocalDateTime;
 @Service
 @Validated
 public class SmsCodeServiceImpl implements SmsCodeService{
+
+    private static final Integer VAR_ONE_HOUR = 1;
 
     @Resource
     private SmsCodeProperties smsCodeProperties;
@@ -74,9 +77,12 @@ public class SmsCodeServiceImpl implements SmsCodeService{
             if(sameDay && lastSmsCode.getTodayIndex() >= smsCodeProperties.getSendMaximumQuantityPerDay()){
                 throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_EXCEED_SEND_MAXIMUM_QUANTITY_PER_DAY);
             }
+            // 是否当前1小时
+            boolean sameHour = LocalDateTimeUtil.isIn(LocalDateTime.now(),lastSmsCode.getCreateTime(),
+                    LocalDateTimeUtil.offset(LocalDateTime.now(),VAR_ONE_HOUR, ChronoUnit.HOURS));
             // 设置同一个ip时间段固定发送多少条
             String lastIp = lastSmsCode.getCreateIp();
-            if(sameDay && ServletUtils.getClientIP().equals(lastIp)  && lastSmsCode.getIpIndex() >= smsCodeProperties.getSendMaximumQuantityPerIp()){
+            if(sameHour && ServletUtils.getClientIP().equals(lastIp)  && lastSmsCode.getIpIndex() >= smsCodeProperties.getSendMaximumQuantityPerIp()){
                 throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_SEND_TOO_FAST);
             }
         }
@@ -99,7 +105,8 @@ public class SmsCodeServiceImpl implements SmsCodeService{
                 .ipIndex(
                         ObjUtil.isNotEmpty(lastSmsCode)
                         &&
-                        LocalDateTimeUtil.isSameDay(lastSmsCode.getCreateTime(), LocalDateTime.now())
+                        LocalDateTimeUtil.isIn(LocalDateTime.now(),lastSmsCode.getCreateTime(),
+                            LocalDateTimeUtil.offset(LocalDateTime.now(),VAR_ONE_HOUR, ChronoUnit.HOURS))
                         ?
                         lastSmsCode.getIpIndex() + 1 : 1)
                 .createIp(createIp)

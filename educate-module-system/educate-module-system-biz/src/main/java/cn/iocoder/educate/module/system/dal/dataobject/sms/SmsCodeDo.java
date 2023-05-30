@@ -52,7 +52,7 @@ public class SmsCodeDo extends BaseDO{
     private Integer todayIndex;
 
     /**
-     * ip发送的第几条
+     * 只统计一小时内ip发送的第几条
      */
     private Integer ipIndex;
 
