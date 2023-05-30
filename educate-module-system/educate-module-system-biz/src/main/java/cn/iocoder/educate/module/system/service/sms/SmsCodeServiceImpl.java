@@ -83,7 +83,7 @@ public class SmsCodeServiceImpl implements SmsCodeService{
             // 设置同一个ip时间段固定发送多少条
             String lastIp = lastSmsCode.getCreateIp();
             if(sameHour && ServletUtils.getClientIP().equals(lastIp)  && lastSmsCode.getIpIndex() >= smsCodeProperties.getSendMaximumQuantityPerIp()){
-                throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_SEND_TOO_FAST);
+                throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_EXCEED_SEND_IP_QUANTITY_PER_HOUR);
             }
         }
         // 创建验证码记录
@@ -101,7 +101,8 @@ public class SmsCodeServiceImpl implements SmsCodeService{
                         LocalDateTimeUtil.isSameDay(lastSmsCode.getCreateTime(), LocalDateTime.now())
                         ?
                         lastSmsCode.getTodayIndex() + 1 : 1)
-                // 设置今日发送的ip数量
+                // 设置每小时发送的ip数量
+                // TODO j-sentinel 这里有一些BUG，就是我这个IP他是一种续期的逻辑
                 .ipIndex(
                         ObjUtil.isNotEmpty(lastSmsCode)
                         &&

@@ -98,6 +98,7 @@ public interface ErrorCodeConstants {
     ErrorCode SMS_CODE_SEND_TOO_FAST = new ErrorCode(1002014005, "短信发送过于频率");
     ErrorCode SMS_CODE_IS_EXISTS = new ErrorCode(1002014006, "手机号已被使用");
     ErrorCode SMS_CODE_IS_UNUSED = new ErrorCode(1002014007, "验证码未被使用");
+    ErrorCode SMS_CODE_EXCEED_SEND_IP_QUANTITY_PER_HOUR = new ErrorCode(1002014008, "请稍后再尝试发送验证码");
 
     // ========== 租户信息 1002015000 ==========
     ErrorCode TENANT_NOT_EXISTS = new ErrorCode(1002015000, "租户不存在");

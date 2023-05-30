@@ -1,7 +1,7 @@
 package cn.iocoder.educate.module.system.mq.message.sms;
 
 import cn.iocoder.educate.framework.common.core.KeyValue;
-import cn.iocoder.educate.framework.mq.stream.AbstractStreamMessage;
+import cn.iocoder.educate.framework.mq.core.stream.AbstractStreamMessage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;

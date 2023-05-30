@@ -24,9 +24,22 @@ public abstract class AbstractSmsClient implements SmsClient {
 
     protected AbstractSmsClient(SmsChannelProperties smsChannelProperties,SmsCodeMapping codeMapping) {
         // 自定义规则
-        this.properties = prepareProperties(properties);
+        this.properties = prepareProperties(smsChannelProperties);
         this.codeMapping = codeMapping;
     }
+
+    /**
+     * 初始化
+     */
+    public final void init() {
+        doInit();
+        log.info("[init][配置({}) 初始化完成]", properties);
+    }
+
+    /**
+     * 自定义初始化
+     */
+    protected abstract void doInit();
 
     /**
      * 在赋值给{@link this#properties}前，子类可根据需要预处理短信渠道配置
@@ -36,5 +49,9 @@ public abstract class AbstractSmsClient implements SmsClient {
      */
     protected SmsChannelProperties prepareProperties(SmsChannelProperties properties) {
         return properties;
+    }
+
+    public Long getId() {
+        return properties.getId();
     }
 }

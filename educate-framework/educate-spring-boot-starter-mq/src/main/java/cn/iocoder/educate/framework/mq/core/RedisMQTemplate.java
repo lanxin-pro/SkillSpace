@@ -1,11 +1,12 @@
 package cn.iocoder.educate.framework.mq.core;
 
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.iocoder.educate.framework.mq.stream.AbstractStreamMessage;
+import cn.iocoder.educate.framework.common.util.json.JsonUtils;
+import cn.iocoder.educate.framework.mq.core.message.AbstractRedisMessage;
+import cn.iocoder.educate.framework.mq.core.pugsub.AbstractChannelMessage;
+import cn.iocoder.educate.framework.mq.core.stream.AbstractStreamMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +22,22 @@ public class RedisMQTemplate {
 
     @Getter
     private final RedisTemplate<String, ?> redisTemplate;
+
+    /**
+     * 发送 Redis 消息，基于 Redis pub/sub 实现
+     *
+     * @param message
+     * @param <T>
+     */
+    public <T extends AbstractChannelMessage> void send(T message) {
+        try {
+            sendMessageBefore(message);
+            // 发送消息
+            redisTemplate.convertAndSend(message.getChannel(), JsonUtils.toJsonString(message));
+        } finally {
+            sendMessageAfter(message);
+        }
+    }
 
     /**
      * 发送 Redis 消息，基于 Redis Stream 实现
@@ -43,10 +60,10 @@ public class RedisMQTemplate {
 
     }
 
-    private <T extends AbstractStreamMessage> void sendMessageAfter(T message) {
+    private <T extends AbstractStreamMessage> void sendMessageAfter(AbstractRedisMessage message) {
     }
 
-    private <T extends AbstractStreamMessage> void sendMessageBefore(T message) {
+    private <T extends AbstractStreamMessage> void sendMessageBefore(AbstractRedisMessage message) {
     }
 
 

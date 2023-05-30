@@ -24,9 +24,21 @@ import java.util.HashMap;
 public class SmsClientFactoryImpl implements SmsClientFactory {
 
     /**
+     * 短信客户端 Map
      *
+     *  key：渠道编号，使用 {@link SmsChannelProperties#getId()}
      */
     private final HashMap<Long, AbstractSmsClient> channelIdClients = new HashMap<>();
+
+    /**
+     * 短信客户端 Map
+     *
+     * key：渠道编码，使用 {@link SmsChannelProperties#getCode()} ()}
+     *
+     * 注意，一些场景下，需要获得某个渠道类型的客户端，所以需要使用它。
+     * 例如说，解析短信接收结果，是相对通用的，不需要使用某个渠道编号的 {@link #channelIdClients}
+     */
+    private final HashMap<String, AbstractSmsClient> channelCodeClients = new HashMap<>();
 
     public SmsClientFactoryImpl() {
         // 初始化 channelCodeClients 集合
@@ -37,13 +49,19 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
                             .setApiKey("default default").setApiSecret("default");
                     // 创建 Sms 客户端
                     AbstractSmsClient smsClient = createSmsClient(smsChannelProperties);
+                    channelCodeClients.put(channel.getCode(), smsClient);
                 });
 
     }
 
     @Override
     public void createOrUpdateSmsClient(SmsChannelProperties smsChannelProperties1) {
-
+        AbstractSmsClient abstractSmsClient = channelIdClients.get(smsChannelProperties1.getId());
+        if(abstractSmsClient == null){
+            abstractSmsClient = createSmsClient(smsChannelProperties1);
+            abstractSmsClient.init();
+            channelIdClients.put(abstractSmsClient.getId(),abstractSmsClient);
+        }
     }
 
     private AbstractSmsClient createSmsClient(SmsChannelProperties properties) {

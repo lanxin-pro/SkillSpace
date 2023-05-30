@@ -19,4 +19,9 @@ public class TencentSmsClient extends AbstractSmsClient {
         super(properties, new TencentSmsCodeMapping());
         Assert.notEmpty(properties.getApiSecret(), "apiSecret 不能为空");
     }
+
+    @Override
+    protected void doInit() {
+
+    }
 }

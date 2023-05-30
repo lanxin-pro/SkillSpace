@@ -4,7 +4,10 @@ import cn.hutool.core.lang.Assert;
 import cn.iocoder.educate.framework.sms.core.client.SmsCodeMapping;
 import cn.iocoder.educate.framework.sms.core.client.impl.AbstractSmsClient;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
+import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,5 +33,11 @@ public class AliyunSmsClient extends AbstractSmsClient {
         super(smsChannelProperties, new AliyunSmsCodeMapping());
         Assert.notEmpty(smsChannelProperties.getApiKey(), "apiKey 不能为空");
         Assert.notEmpty(smsChannelProperties.getApiSecret(), "apiSecret 不能为空");
+    }
+
+    @Override
+    protected void doInit() {
+        IClientProfile profile = DefaultProfile.getProfile(ENDPOINT, properties.getApiKey(), properties.getApiSecret());
+        client = new DefaultAcsClient(profile);
     }
 }
