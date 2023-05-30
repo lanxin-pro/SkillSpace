@@ -1,13 +1,13 @@
 package cn.iocoder.educate.module.system.service.sms;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 import cn.iocoder.educate.module.system.dal.mysql.sms.SmsTemplateMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.ap.shaded.freemarker.template.utility.CollectionUtils;
 import org.springframework.stereotype.Service;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService{
     private volatile Map<String,SmsTemplateDO> smsTemplateCache;
 
     @Override
+    @PostConstruct
     public void initLocalCache() {
         List<SmsTemplateDO> smsTemplateList = smsTemplateMapper.selectList(new QueryWrapper<>());
         log.info("[initLocalCache][缓存短信模版，数量为:{}]", smsTemplateList.size());
@@ -48,6 +49,11 @@ public class SmsTemplateServiceImpl implements SmsTemplateService{
     @Override
     public SmsTemplateDO getSmsTemplateByCodeFromCache(String code) {
         return smsTemplateCache.get(code);
+    }
+
+    @Override
+    public String formatSmsTemplateContent(String content, Map<String, Object> templateParams) {
+        return StrUtil.format(content, templateParams);
     }
 
 }

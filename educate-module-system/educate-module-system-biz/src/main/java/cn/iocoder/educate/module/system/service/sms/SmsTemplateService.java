@@ -2,6 +2,8 @@ package cn.iocoder.educate.module.system.service.sms;
 
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 
+import java.util.Map;
+
 /**
  * 短信模板 Service 接口
  *
@@ -22,4 +24,12 @@ public interface SmsTemplateService {
      * @return 短信模板
      */
     SmsTemplateDO getSmsTemplateByCodeFromCache(String code);
+
+    /**
+     * 格式化短信内容
+     * @param content 短信模板的内容
+     * @param templateParams 内容的参数
+     * @return 格式化后的内容
+     */
+    String formatSmsTemplateContent(String content, Map<String, Object> templateParams);
 }

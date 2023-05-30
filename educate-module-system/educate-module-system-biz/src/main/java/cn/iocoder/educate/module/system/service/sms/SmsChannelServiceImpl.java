@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class SmsChannelServiceImpl implements SmsChannelService{
     private volatile Map<String, SmsChannelDO> smsChannelCache;
 
     @Override
+    @PostConstruct
     public void initLocalCache() {
         List<SmsChannelDO> channelDOS = smsChannelMapper.selectList(new QueryWrapper<>());
         log.info("[initLocalCache][缓存短信渠道，数量为:{}]", channelDOS.size());
@@ -43,6 +45,6 @@ public class SmsChannelServiceImpl implements SmsChannelService{
 
     @Override
     public SmsChannelDO getSmsChannel(Long channelId) {
-        return null;
+        return smsChannelMapper.selectById(channelId);
     }
 }
