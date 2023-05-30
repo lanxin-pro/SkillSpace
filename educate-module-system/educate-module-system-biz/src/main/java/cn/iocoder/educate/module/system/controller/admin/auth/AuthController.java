@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.controller.admin.auth;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
@@ -30,6 +31,7 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "使用账号密码登录")
     @PermitAll
+    @OperateLog(enable = false)
     public CommonResult<AuthLoginRespVO> login(@RequestBody @Valid AuthLoginReqVO authLoginReqVO){
         return success(authService.login(authLoginReqVO));
     }
@@ -37,6 +39,7 @@ public class AuthController {
     @PostMapping("/send-sms-code")
     @PermitAll
     @Operation(summary = "发送手机验证码")
+    @OperateLog(enable = false)
     public CommonResult<Boolean> sendLoginSmsCode(@RequestBody @Valid AuthSmsSendReqVO reqVO) {
         authService.sendSmsCode(reqVO);
         return success(true);
