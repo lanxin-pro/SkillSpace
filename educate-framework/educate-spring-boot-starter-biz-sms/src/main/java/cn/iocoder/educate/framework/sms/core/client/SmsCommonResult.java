@@ -1,6 +1,8 @@
 package cn.iocoder.educate.framework.sms.core.client;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.lang.Assert;
+import cn.iocoder.educate.framework.common.exception.ErrorCode;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.sms.core.enums.SmsFrameworkErrorCodeConstants;
 import lombok.Data;
@@ -38,6 +40,23 @@ public class SmsCommonResult<T> extends CommonResult<T> {
      * API 请求编号
      */
     private String apiRequestId;
+
+    public static <T> SmsCommonResult<T> build(String apiCode, String apiMsg, String apiRequestId,
+                                               T data, SmsCodeMapping codeMapping) {
+        Assert.notNull(codeMapping, "参数 codeMapping 不能为空");
+        SmsCommonResult<T> result = new SmsCommonResult<T>()
+                .setApiCode(apiCode).setApiMsg(apiMsg).setApiRequestId(apiRequestId);
+        result.setData(data);
+        // 翻译错误码
+        if (codeMapping != null) {
+            ErrorCode errorCode = codeMapping.apply(apiCode);
+            if (errorCode == null) {
+                errorCode = SmsFrameworkErrorCodeConstants.SMS_UNKNOWN;
+            }
+            result.setCode(errorCode.getCode()).setMsg(errorCode.getMsg());
+        }
+        return result;
+    }
 
     public static <T> SmsCommonResult<T> error(Throwable ex) {
         SmsCommonResult<T> result = new SmsCommonResult<>();

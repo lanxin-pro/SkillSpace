@@ -70,6 +70,11 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
         }
     }
 
+    /**
+     * 根据channelId获取客户端
+     * @param channelId 渠道编号
+     * @return
+     */
     @Override
     public SmsClient getSmsClient(Long channelId) {
         return channelIdClients.get(channelId);

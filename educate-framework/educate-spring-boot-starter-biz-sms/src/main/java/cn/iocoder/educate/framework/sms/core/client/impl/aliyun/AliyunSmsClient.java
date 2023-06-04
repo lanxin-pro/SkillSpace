@@ -2,6 +2,7 @@ package cn.iocoder.educate.framework.sms.core.client.impl.aliyun;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.common.util.collection.MapUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
@@ -66,6 +67,18 @@ public class AliyunSmsClient extends AbstractSmsClient {
         return invoke(request, response -> new SmsSendRespDTO().setSerialNo(response.getBizId()));
     }
 
+    /**
+     * 这四个是核心字段
+     * PhoneNumbers接收短信的手机号码
+     * SignName短信签名名称
+     * TemplateCode短信模板CODE
+     * TemplateParam短信模板变量对应的实际值
+     * @param request
+     * @param responseConsumer
+     * @param <T>
+     * @param <R>
+     * @return
+     */
     private <T extends AcsResponse, R> SmsCommonResult<R> invoke(AcsRequest<T> request, Function<T, R> responseConsumer) {
         try {
             // 执行发送. 由于阿里云 sms 短信没有统一的 Response，但是有统一的 code、message、requestId 属性，所以只好反射
@@ -78,9 +91,10 @@ public class AliyunSmsClient extends AbstractSmsClient {
             if (Objects.equals(code, "OK")) { // 请求成功的情况下
                 data = responseConsumer.apply(sendResult);
             }
-            return null;
+            // 拼接结果
+            return SmsCommonResult.build(code, message, requestId, data, codeMapping);
         } catch (ClientException ex) {
-            return null;
+            return SmsCommonResult.build(ex.getErrCode(), formatResultMsg(ex), ex.getRequestId(), null, codeMapping);
         }
     }
 
@@ -88,5 +102,12 @@ public class AliyunSmsClient extends AbstractSmsClient {
     protected void doInit() {
         IClientProfile profile = DefaultProfile.getProfile(ENDPOINT, properties.getApiKey(), properties.getApiSecret());
         client = new DefaultAcsClient(profile);
+    }
+
+    private static String formatResultMsg(ClientException ex) {
+        if (StrUtil.isEmpty(ex.getErrorDescription())) {
+            return ex.getErrMsg();
+        }
+        return ex.getErrMsg() + " => " + ex.getErrorDescription();
     }
 }
