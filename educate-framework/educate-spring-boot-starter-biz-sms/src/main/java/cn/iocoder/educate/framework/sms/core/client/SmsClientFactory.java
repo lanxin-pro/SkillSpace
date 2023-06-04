@@ -15,4 +15,11 @@ public interface SmsClientFactory {
      * @param smsChannelProperties1
      */
     void createOrUpdateSmsClient(SmsChannelProperties smsChannelProperties1);
+
+    /**
+     * 获得短信 Client
+     * @param channelId 渠道编号
+     * @return 短信 Client
+     */
+    SmsClient getSmsClient(Long channelId);
 }

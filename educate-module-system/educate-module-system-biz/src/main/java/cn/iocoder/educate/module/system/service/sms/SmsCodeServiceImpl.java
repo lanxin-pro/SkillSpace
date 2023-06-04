@@ -79,7 +79,7 @@ public class SmsCodeServiceImpl implements SmsCodeService{
             }
             // 是否当前1小时
             boolean sameHour = LocalDateTimeUtil.isIn(LocalDateTime.now(),lastSmsCode.getCreateTime(),
-                    LocalDateTimeUtil.offset(LocalDateTime.now(),VAR_ONE_HOUR, ChronoUnit.HOURS));
+                    LocalDateTimeUtil.offset(lastSmsCode.getCreateTime(),VAR_ONE_HOUR, ChronoUnit.HOURS));
             // 设置同一个ip时间段固定发送多少条
             String lastIp = lastSmsCode.getCreateIp();
             if(sameHour && ServletUtils.getClientIP().equals(lastIp)  && lastSmsCode.getIpIndex() >= smsCodeProperties.getSendMaximumQuantityPerIp()){
@@ -107,7 +107,7 @@ public class SmsCodeServiceImpl implements SmsCodeService{
                         ObjUtil.isNotEmpty(lastSmsCode)
                         &&
                         LocalDateTimeUtil.isIn(LocalDateTime.now(),lastSmsCode.getCreateTime(),
-                            LocalDateTimeUtil.offset(LocalDateTime.now(),VAR_ONE_HOUR, ChronoUnit.HOURS))
+                            LocalDateTimeUtil.offset(lastSmsCode.getCreateTime(),VAR_ONE_HOUR, ChronoUnit.HOURS))
                         ?
                         lastSmsCode.getIpIndex() + 1 : 1)
                 .createIp(createIp)

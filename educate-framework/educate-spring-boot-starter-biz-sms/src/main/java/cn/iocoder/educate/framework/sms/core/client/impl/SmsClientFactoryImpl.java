@@ -1,5 +1,6 @@
 package cn.iocoder.educate.framework.sms.core.client.impl;
 
+import cn.iocoder.educate.framework.sms.core.client.SmsClient;
 import cn.iocoder.educate.framework.sms.core.client.SmsClientFactory;
 import cn.iocoder.educate.framework.sms.core.client.impl.aliyun.AliyunSmsClient;
 import cn.iocoder.educate.framework.sms.core.client.impl.debug.DebugDingTalkSmsClient;
@@ -26,12 +27,16 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
     /**
      * 短信客户端 Map
      *
+     * 首轮加载这个肯定是空的，需要赋值
+     *
      *  key：渠道编号，使用 {@link SmsChannelProperties#getId()}
      */
     private final HashMap<Long, AbstractSmsClient> channelIdClients = new HashMap<>();
 
     /**
      * 短信客户端 Map
+     *
+     * 首轮加载的时候，会把 {@link SmsChannelEnum} 枚举全部加载
      *
      * key：渠道编码，使用 {@link SmsChannelProperties#getCode()} ()}
      *
@@ -46,6 +51,7 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
                 .forEach(channel -> {
                     // 创建一个空的 SmsChannelProperties 对象
                     SmsChannelProperties smsChannelProperties = new SmsChannelProperties().setCode(channel.getCode())
+                            // 首轮加载的 apiKey 肯定是没有的
                             .setApiKey("default default").setApiSecret("default");
                     // 创建 Sms 客户端
                     AbstractSmsClient smsClient = createSmsClient(smsChannelProperties);
@@ -62,6 +68,11 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
             abstractSmsClient.init();
             channelIdClients.put(abstractSmsClient.getId(),abstractSmsClient);
         }
+    }
+
+    @Override
+    public SmsClient getSmsClient(Long channelId) {
+        return channelIdClients.get(channelId);
     }
 
     private AbstractSmsClient createSmsClient(SmsChannelProperties properties) {

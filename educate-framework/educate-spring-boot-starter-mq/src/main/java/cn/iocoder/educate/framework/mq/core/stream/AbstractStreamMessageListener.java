@@ -73,6 +73,14 @@ public abstract class AbstractStreamMessageListener<T extends AbstractStreamMess
     public void onMessage(ObjectRecord<String, String> message) {
         // 消费消息
         T messageObj = JsonUtils.parseObject(message.getValue(), messageType);
+        onMessage(messageObj);
+        // ack 消息消费完成
+        redisMQTemplate.getRedisTemplate().opsForStream().acknowledge(group, message);
+        // TODO j-sentinel：需要额外考虑以下几个点：
+        // 1. 处理异常的情况
+        // 2. 发送日志；以及事务的结合
+        // 3. 消费日志；以及通用的幂等性
+        // 4. 消费失败的重试，https://zhuanlan.zhihu.com/p/60501638
     }
 
 }

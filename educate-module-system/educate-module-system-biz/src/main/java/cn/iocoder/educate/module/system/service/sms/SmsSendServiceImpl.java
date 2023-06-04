@@ -1,9 +1,14 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.framework.sms.core.client.SmsClient;
+import cn.iocoder.educate.framework.sms.core.client.SmsClientFactory;
+import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
@@ -35,6 +40,9 @@ public class SmsSendServiceImpl implements SmsSendService {
 
     @Resource
     private SmsLogService smsLogService;
+
+    @Resource
+    private SmsClientFactory smsClientFactory;
 
     @Override
     public Long sendSingleSms(String mobile, Long userId, Integer userType, String templateCode, Map<String, Object> templateParams) {
@@ -68,7 +76,12 @@ public class SmsSendServiceImpl implements SmsSendService {
      */
     @Override
     public void doSendSms(SmsSendMessage message) {
-
+        SmsClient smsClient = smsClientFactory.getSmsClient(message.getChannelId());
+        // 获得渠道对应的 SmsClient 客户端
+        Assert.notNull(smsClient, "短信客户端({}) 不存在", message.getChannelId());
+        // 发送短信
+        SmsCommonResult<SmsSendRespDTO> smsSendRespDTOSmsCommonResult = smsClient.sendSms(message.getLogId(),
+                message.getMobile(), message.getApiTemplateId(), message.getTemplateParams());
     }
 
     /**
