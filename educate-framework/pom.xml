@@ -23,6 +23,7 @@
         <module>educate-spring-boot-starter-security</module>
         <module>educate-spring-boot-starter-mq</module>
         <module>educate-spring-boot-starter-biz-sms</module>
+        <module>educate-spring-boot-starter-test</module>
     </modules>
 
     <description>
