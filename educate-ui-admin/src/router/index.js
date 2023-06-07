@@ -38,6 +38,11 @@ const routes = [
         hidden: true
     },
     {
+        path: '/social-login',
+        component: (resolve) => import('@/views/socialLogin/Index.vue', resolve),
+        hidden: true
+    },
+    {
         path: '/401',
         component: (resolve) => import('@/views/error/401.vue',resolve),
         hidden: true

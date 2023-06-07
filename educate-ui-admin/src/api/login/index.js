@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export async function getCode(data){
     return await request({
-        url: "system/captcha/get",
+        url: "/system/captcha/get",
         method: 'post',
         data
     })
@@ -20,7 +20,7 @@ export async function getCode(data){
  */
 export async function reqCheck(data){
     return await request({
-        url: "system/captcha/check",
+        url: "/system/captcha/check",
         method: 'post',
         data
     })
@@ -53,7 +53,12 @@ export function login(username, password, captchaVerification, socialType, socia
     })
 }
 
-// 获取登录验证码
+/**
+ * 获取登录验证码
+ * @param mobile
+ * @param scene
+ * @returns {*}
+ */
 export function sendSmsCode(mobile,scene){
     const data = {
         mobile,
@@ -63,5 +68,33 @@ export function sendSmsCode(mobile,scene){
         url: '/system/auth/send-sms-code',
         method: 'post',
         data: data
+    })
+}
+
+/**
+ * 使用租户名，获得租户编号
+ * @param name
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export function getTenantIdByName(name) {
+    return request({
+        url: '/system/tenant/get-id-by-name',
+        method: 'get',
+        params: {
+            name
+        }
+    })
+}
+
+/**
+ * 社交授权的跳转
+ * @param type
+ * @param redirectUri
+ * @returns {*}
+ */
+export function socialAuthRedirect(type,redirectUri){
+    return request({
+        url: '/system/auth/social-auth-redirect?type=' + type + '&redirectUri=' + redirectUri,
+        method: 'get',
     })
 }

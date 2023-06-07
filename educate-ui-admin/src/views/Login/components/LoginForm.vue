@@ -114,7 +114,7 @@
         <el-form-item>
           <div class="flex justify-between w-[100%]">
             <template v-for="(item, key) in socialList">
-              <svg class="alibabaiconfont" aria-hidden="true">
+              <svg class="alibabaiconfont" aria-hidden="true" @click="doSocialLogin(item)">
                 <use :xlink:href="item.icon"></use>
               </svg>
             </template>
@@ -157,12 +157,17 @@ import '@/assets/icons/login/iconfont.css' // 阿里图标
 import '@/assets/icons/login/iconfont.js' // 阿里图标
 import store from '@/store'
 import router from '@/router'
-import {computed, reactive, ref, unref} from 'vue'
+import { useRouter } from 'vue-router'
+import { computed, reactive, ref, unref,watch } from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
+import * as LoginApi from '@/api/login/index.js'
+import useMessage  from '@/plugins/modal.js'
+import * as authUtils from '@/utils/auth.js'
+
 const { setLoginState,getLoginState } = useLoginState()
 
 import {
@@ -205,8 +210,8 @@ const loginData = reactive({
 })
 // 其他登录方式
 const socialList = [
-  { icon: '#icon-github', type: 0 },
   { icon: '#icon-weixin', type: 30 },
+  { icon: '#icon-github', type: 0 },
   { icon: '#icon-zhifubao', type: 0 },
   { icon: '#icon-dingding', type: 20 }
 ]
@@ -264,8 +269,37 @@ const handleLogin = async (captchaParams)=>{
       })
     }
   })
-
 }
+// 社交登录
+const doSocialLogin = async (social)=>{
+  if(social.type === 0){
+    useMessage.msgError('此方式未配置')
+  }else{
+    loginLoading.value = true
+    if(loginData.tenantEnable === 'true'){
+      await useMessage.prompt('请输入租户的名称').then(async ({value}) => {
+        const response = await LoginApi.getTenantIdByName(value)
+        authUtils.setTenantId(response.data)
+      })
+    }
+    // 计算 redirectUri
+    const redirectUri =
+        location.origin + '/social-login?type=' + social.type + '&redirect=' + (redirect.value || '/')
+    // 进行跳转
+    const res = await LoginApi.socialAuthRedirect(social.type, encodeURIComponent(redirectUri))
+    window.location.href = res.data
+  }
+}
+
+watch(
+    () => useRouter().currentRoute.value,
+    (route) => {
+      redirect.value = route?.query?.redirect
+    },
+    {
+      immediate: true
+    }
+)
 </script>
 
 <style scoped>

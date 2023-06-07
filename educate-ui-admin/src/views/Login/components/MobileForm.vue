@@ -135,7 +135,9 @@ const loginData = reactive({
     tenantName: '字节跳动',
     mobileNumber: '',
     code: '',
-    scene: 21
+    // 21 阿里云
+    // 22 钉钉
+    scene: 22
   }
 })
 // 校验

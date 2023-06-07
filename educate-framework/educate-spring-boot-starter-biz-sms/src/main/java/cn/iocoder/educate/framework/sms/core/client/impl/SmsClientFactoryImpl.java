@@ -60,6 +60,10 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
 
     }
 
+    /**
+     * 被初始化调用
+     * @param smsChannelProperties1
+     */
     @Override
     public void createOrUpdateSmsClient(SmsChannelProperties smsChannelProperties1) {
         AbstractSmsClient abstractSmsClient = channelIdClients.get(smsChannelProperties1.getId());
@@ -67,6 +71,8 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
             abstractSmsClient = createSmsClient(smsChannelProperties1);
             abstractSmsClient.init();
             channelIdClients.put(abstractSmsClient.getId(),abstractSmsClient);
+        }else{
+            // abstractSmsClient.refresh(smsChannelProperties1);
         }
     }
 

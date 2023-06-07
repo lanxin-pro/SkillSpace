@@ -18,7 +18,8 @@ public enum SmsSceneEnum implements IntArrayValuable {
     MEMBER_UPDATE_MOBILE(2, "user-sms-reset-password", "会员用户 - 修改手机"),
     MEMBER_FORGET_PASSWORD(3, "user-sms-update-mobile", "会员用户 - 忘记密码"),
 
-    ADMIN_MEMBER_LOGIN(21, "admin-sms-login", "后台用户 - 手机号登录");
+    ADMIN_ALIYUN_MEMBER_LOGIN(21, "admin-aliyun-sms-login", "后台用户 - 手机号登录"),
+    ADMIN_DEBUG_MEMBER_LOGIN(22, "admin-debug-ding-sms-login", "后台用户 - 手机号登录");
 
     /**
      * 验证场景的编号

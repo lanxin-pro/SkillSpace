@@ -55,7 +55,8 @@ public class AliyunSmsClient extends AbstractSmsClient {
     }
 
     @Override
-    protected SmsCommonResult<SmsSendRespDTO> doSendSms(Long sendLogId, String mobile, String apiTemplateId, List<KeyValue<String, Object>> templateParams) throws Throwable {
+    protected SmsCommonResult<SmsSendRespDTO> doSendSms(Long sendLogId, String mobile,
+                                                        String apiTemplateId, List<KeyValue<String, Object>> templateParams) {
         // 构建参数
         SendSmsRequest request = new SendSmsRequest();
         request.setPhoneNumbers(mobile);

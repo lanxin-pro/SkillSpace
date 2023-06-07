@@ -6,7 +6,10 @@ import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
+import cn.iocoder.educate.module.system.service.social.SocialUserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,9 @@ public class AuthController {
     @Resource
     private AdminAuthService authService;
 
+    @Resource
+    private SocialUserService socialUserService;
+
     @PostMapping("/login")
     @Operation(summary = "使用账号密码登录")
     @PermitAll
@@ -43,6 +49,24 @@ public class AuthController {
     public CommonResult<Boolean> sendLoginSmsCode(@RequestBody @Valid AuthSmsSendReqVO reqVO) {
         authService.sendSmsCode(reqVO);
         return success(true);
+    }
+
+
+
+    // ========== 社交登录相关 ==========
+
+    @GetMapping("/social-auth-redirect")
+    @PermitAll
+    @Operation(summary = "社交授权的跳转")
+    @Parameters({
+            @Parameter(name = "type", description = "社交类型", required = true),
+            @Parameter(name = "redirectUri", description = "回调路径")
+    })
+    @OperateLog(enable = false)
+    public CommonResult<String> socialLogin(@RequestParam("type") Integer type,
+                                            @RequestParam("redirectUri") String redirectUri) {
+        String socialUserServiceAuthorizeUrl = socialUserService.getAuthorizeUrl(type, redirectUri);
+        return CommonResult.success(socialUserServiceAuthorizeUrl);
     }
 
 }
