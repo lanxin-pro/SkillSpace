@@ -89,7 +89,7 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
                 // 设置 @PermitAll 无需认证  最后转换成字符串数组
-//                .antMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
+                .antMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
                 .antMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
 //                .antMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
 //                .antMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll();
