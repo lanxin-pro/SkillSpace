@@ -30,11 +30,14 @@ const routes = [
     {
         path: '/Login',
         hidden: true,
+        name: 'Login',
         component: (resolve) => import('@/views/Login/Login.vue',resolve),
     },
     {
-        path: '/404',
-        component: (resolve) => import('@/views/error/404.vue',resolve),
+        path: '/ssoAccredit',
+        // 地址和登录页面一样，但是name不一样，route.name如果是SSOLogin的话，就会触发监听器
+        component: (resolve) => import('@/views/Login/Login.vue', resolve),
+        name: 'SSOAccreditLogin',
         hidden: true
     },
     {
@@ -45,6 +48,11 @@ const routes = [
     {
         path: '/401',
         component: (resolve) => import('@/views/error/401.vue',resolve),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: (resolve) => import('@/views/error/404.vue',resolve),
         hidden: true
     },
     {

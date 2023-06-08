@@ -62,6 +62,11 @@
             <Transition appear enter-active-class="animate__animated animate__bounceInRight">
               <MobileForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
             </Transition>
+
+            <!-- SSO三方登录 -->
+            <Transition appear enter-active-class="animate__animated animate__bounceInRight">
+              <SSOLogin class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+            </Transition>
           </div>
       </div>
     </div>
@@ -71,7 +76,7 @@
 </template>
 
 <script setup>
-import { LoginForm, MobileForm } from './components'
+import { LoginForm, MobileForm , SSOLogin } from './components'
 const prefixCls = "v-login"
 const vue_title = import.meta.env.VITE_APP_TITLE
 

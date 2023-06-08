@@ -1,13 +1,13 @@
 <template>
-aa三方
+后续单页面再看
 </template>
 
-<script>
-export default {
-  name: "Index"
-}
+<script setup>
+
+
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 
 </style>

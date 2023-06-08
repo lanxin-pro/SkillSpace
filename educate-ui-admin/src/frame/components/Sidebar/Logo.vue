@@ -18,7 +18,7 @@ import logoImg from '@/assets/logo/logo.png'
 import { computed,ref } from 'vue'
 import store from '@/store'
 
-const title = ref('纳西妲')
+const title = ref('沐智课堂')
 const logo = logoImg
 defineProps({
   collapse: {
