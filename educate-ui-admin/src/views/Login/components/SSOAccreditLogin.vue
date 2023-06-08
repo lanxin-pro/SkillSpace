@@ -17,8 +17,6 @@ const ssoVisible = computed(() => {
   return unref(getLoginState) === LoginStateEnum.SSO_ACCREDIT
 })
 
-console.log("当前的",currentRoute.value.name)
-
 /**
  * 监听当前路由为 SSOAccreditLogin 时，进行数据的初始化
  */
