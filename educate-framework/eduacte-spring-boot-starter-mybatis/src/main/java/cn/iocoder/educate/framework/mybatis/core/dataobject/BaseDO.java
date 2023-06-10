@@ -9,9 +9,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * 基础实体对象
+ * 所有DO类都必须继承
+ *
  * @Author: j-sentinel
  * @Date: 2023/5/7 10:18
- * 基础实体对象
  */
 @Data
 public abstract class BaseDO implements Serializable {

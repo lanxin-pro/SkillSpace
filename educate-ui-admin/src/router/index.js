@@ -34,10 +34,10 @@ const routes = [
         component: (resolve) => import('@/views/Login/Login.vue',resolve),
     },
     {
-        path: '/ssoAccredit',
+        path: '/sso',
         // 地址和登录页面一样，但是name不一样，route.name如果是SSOLogin的话，就会触发监听器
         component: (resolve) => import('@/views/Login/Login.vue', resolve),
-        name: 'SSOAccreditLogin',
+        name: 'SSOLogin',
         hidden: true
     },
     {

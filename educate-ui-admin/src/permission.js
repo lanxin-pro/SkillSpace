@@ -5,7 +5,7 @@ import {showFullLoading,hideFullLoading} from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
 
 // 增加三方登陆 测试方便我添加了sso的白名单
-const whiteList = ['/login', '/social-login',  '/auth-redirect', '/bind', '/register', '/oauthLogin/gitee','/ssoAccredit']
+const whiteList = ['/login', '/social-login',  '/auth-redirect', '/bind', '/register', '/oauthLogin/gitee','/sso']
 
 router.beforeEach((to,from,next)=>{
     // 开启动画
