@@ -161,7 +161,11 @@ const rules = {
 const getCode = async () => {
   // 情况一，未开启：则直接登录
   if (loginData.captchaEnable === 'false') {
-    await getSmsCode({})
+    formSmsLogin.value.validate( async (valid) => {
+      if(valid) {
+        await getSmsCode()
+      }
+    })
   } else {
     // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
     // 弹出验证码
