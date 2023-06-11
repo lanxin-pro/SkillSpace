@@ -104,7 +104,7 @@ export function addBeginAndEndTime(params, dateRange, propName) {
 export function sprintf(str) {
   const args = arguments
   let flag = true
-  const i = 1
+  let i = 1
   str = str.replace(/%s/g, function () {
     const arg = args[i++]
     if (typeof arg === 'undefined') {
