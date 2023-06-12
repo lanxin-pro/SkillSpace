@@ -4,6 +4,8 @@ import ElementPlus from 'element-plus' // 导入ElementPlus模块
 import 'element-plus/dist/index.css' // 导入ElementPlus全局样式
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 导入ElementPlus全局图标库
 import router from './router' // 导入router
+import store from './store' // 导入store
+import { setupStore } from '@/piniastore' // 导入pinia相关操作
 import Logger from '@/utils/Logger' // 日志
 import '@/plugins/windi.css'
 import '@/plugins/animate.css' // 引入动画
@@ -19,8 +21,10 @@ Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
 
 
 const app = createApp(App)
+setupStore(app)
 app.use(ElementPlus)
 app.use(router)
+app.use(store)
 app.use(ElementPlus) // 使用ElementPlus
 app.use(plugins) // plugins
 // 注册element-plus所有图标组件
