@@ -1,8 +1,6 @@
 package cn.iocoder.educate.module.system.controller.admin.oauth2;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
-import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.open.OAuth2OpenAuthorizeInfoRespVO;
 import cn.iocoder.educate.module.system.convert.oauth2.OAuth2OpenConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ApproveDO;
@@ -15,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -69,14 +64,6 @@ public class OAuth2OpenController {
         // 拼接返回
         OAuth2OpenAuthorizeInfoRespVO convert = OAuth2OpenConvert.INSTANCE.convert(client, approves);
         return CommonResult.success(convert);
-    }
-
-    @PostMapping("/social-login")
-    @PermitAll
-    @Operation(summary = "社交快捷登录，使用 code 授权码", description = "适合未登录的用户，但是社交账号已绑定用户")
-    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
-    public CommonResult<AuthLoginRespVO> socialQuickLogin(@RequestBody @Valid String reqVO) {
-        return null;
     }
 
 }

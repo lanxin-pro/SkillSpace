@@ -98,3 +98,22 @@ export function socialAuthRedirect(type,redirectUri){
         method: 'get',
     })
 }
+
+/**
+ * 社交快捷登录，使用 code 授权码
+ * @param type
+ * @param code
+ * @param state
+ * @returns {*}
+ */
+export function socialLogin(type, code, state) {
+    return request({
+        url: '/system/auth/social-login',
+        method: 'post',
+        data: {
+            type,
+            code,
+            state
+        }
+    })
+}

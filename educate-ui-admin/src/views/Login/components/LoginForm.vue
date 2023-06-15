@@ -156,6 +156,7 @@
 import '@/assets/icons/login/iconfont.css' // 阿里图标
 import '@/assets/icons/login/iconfont.js' // 阿里图标
 import store from '@/store'
+import { useStore } from '@/piniastore/modules/user.js'
 import router from '@/router'
 import { useRouter } from 'vue-router'
 import { computed, reactive, ref, unref,watch } from 'vue'
@@ -169,6 +170,7 @@ import useMessage  from '@/plugins/modal.js'
 import * as authUtils from '@/utils/auth.js'
 
 const { setLoginState,getLoginState } = useLoginState()
+let pinia = useStore()
 
 import {
   getPassword,
@@ -179,7 +181,6 @@ import {
   setPassword, setRememberMe, setTenantId, setTenantName,
   setUsername
 } from "@/utils/auth";
-
 
 const formLogin = ref()
 
@@ -223,11 +224,19 @@ const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
 const getCode = async () => {
   // 情况一，未开启：则直接登录
   if (loginData.captchaEnable === 'false') {
-    await handleLogin({})
+    formLogin.value.validate(async valid => {
+      if(valid){
+        await handleLogin({})
+      }
+    })
   } else {
     // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
     // 弹出验证码
-    verify.value.show()
+    formLogin.value.validate(valid => {
+      if(valid){
+        verify.value.show()
+      }
+    })
   }
 }
 
@@ -285,6 +294,7 @@ const doSocialLogin = async (social)=>{
     // 计算 redirectUri
     const redirectUri =
         location.origin + '/social-login?type=' + social.type + '&redirect=' + (redirect.value || '/')
+    pinia.setSocialLogin(social.type)
     // 进行跳转
     const res = await LoginApi.socialAuthRedirect(social.type, encodeURIComponent(redirectUri))
     window.location.href = res.data

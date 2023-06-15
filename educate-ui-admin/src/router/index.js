@@ -42,6 +42,12 @@ const routes = [
     },
     {
         path: '/social-login',
+        component: (resolve) => import('@/views/Login/Login.vue', resolve),
+        name: 'socialLogin',
+        hidden: true
+    },
+    {
+        path: '/social-login',
         component: (resolve) => import('@/views/socialLogin/Index.vue', resolve),
         hidden: true
     },

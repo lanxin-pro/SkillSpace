@@ -14,6 +14,7 @@ import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSocialLoginReqVO;
 import cn.iocoder.educate.module.system.convert.auth.AuthConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
@@ -23,6 +24,7 @@ import cn.iocoder.educate.module.system.enums.logger.LoginResultEnum;
 import cn.iocoder.educate.module.system.enums.oauth2.OAuth2ClientConstants;
 import cn.iocoder.educate.module.system.service.logger.LoginLogService;
 import cn.iocoder.educate.module.system.service.oauth2.OAuth2TokenService;
+import cn.iocoder.educate.module.system.service.social.SocialUserService;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import com.google.common.annotations.VisibleForTesting;
 import com.xingyuv.captcha.model.common.ResponseModel;
@@ -57,6 +59,9 @@ public class AdminAuthServiceImpl implements AdminAuthService{
 
     @Resource
     private LoginLogService loginLogService;
+
+    @Resource
+    private SocialUserService socialUserService;
 
     @Resource
     private Validator validate;
@@ -119,6 +124,17 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         SmsCodeSendReqDTO smsCodeSendReqDTO = AuthConvert.INSTANCE.convert(reqVO).setCreateIp(ServletUtils.getClientIP());
         // 发送验证码
         smsCodeApi.sendSmsCode(smsCodeSendReqDTO);
+    }
+
+    @Override
+    public AuthLoginRespVO socialLogin(AuthSocialLoginReqVO reqVO) {
+        // 使用 code 授权码，进行登录。然后，获得到绑定的用户编号
+        Long userId = socialUserService.getBindUserId(UserTypeEnum.ADMIN.getValue(),reqVO.getType(),
+                reqVO.getCode(),reqVO.getState());
+        if (userId == null) {
+            throw exception(ErrorCodeConstants.AUTH_THIRD_LOGIN_NOT_BIND);
+        }
+        return null;
     }
 
     private AuthLoginRespVO createTokenAfterLoginSuccess(Long userId, String username, LoginLogTypeEnum loginTypeEnum) {

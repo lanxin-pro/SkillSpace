@@ -8,11 +8,13 @@ export const LoginStateEnum = Object.freeze({
     RESET_PASSWORD: 'RESET_PASSWORD',
     MOBILE: 'MOBILE',
     QR_CODE: 'QR_CODE',
-    SSO_ACCREDIT: 'SSO_ACCREDIT'
+    SSO_ACCREDIT: 'SSO_ACCREDIT',
+    SOCIAL_ACCREDIT: 'SOCIAL_ACCREDIT'
 })
 
 // 当前的点击的登录方式默认为LOGIN
 const currentState = ref(LoginStateEnum.LOGIN)
+const socialType = ref()
 
 /**
  * 改变Login页面的显示与隐藏

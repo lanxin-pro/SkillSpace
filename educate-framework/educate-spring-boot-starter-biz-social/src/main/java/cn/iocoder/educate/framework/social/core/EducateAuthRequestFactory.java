@@ -30,6 +30,7 @@ public class EducateAuthRequestFactory extends AuthRequestFactory {
 
     /**
      * 返回 AuthRequest 对象
+     *
      * @param source
      * @return
      */

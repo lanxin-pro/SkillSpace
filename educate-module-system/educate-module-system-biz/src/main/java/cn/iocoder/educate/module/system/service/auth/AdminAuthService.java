@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.system.service.auth;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSocialLoginReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
 import javax.validation.Valid;
@@ -40,4 +41,12 @@ public interface AdminAuthService {
      * @param reqVO 发送请求
      */
     void sendSmsCode(AuthSmsSendReqVO reqVO);
+
+    /**
+     * 社交快捷登录，使用 code 授权码
+     *
+     * @param reqVO
+     * @return
+     */
+    AuthLoginRespVO socialLogin(@Valid AuthSocialLoginReqVO reqVO);
 }

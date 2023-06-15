@@ -19,6 +19,7 @@ const getFormTitle = computed(() => {
     [LoginStateEnum.MOBILE]: '手机号码',
     [LoginStateEnum.QR_CODE]: '二维码登录',
     [LoginStateEnum.SSO_ACCREDIT]: '三方授权',
+    [LoginStateEnum.SOCIAL_ACCREDIT]: '绑定账号',
   }
   // 从 titleObj 对象中获取到对应的标题文字并返回
   return titleObj[unref(getLoginState)]
