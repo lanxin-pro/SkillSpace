@@ -177,9 +177,15 @@ const handleLogin = async (captchaParams)=>{
         password: socialLoginForm.password,
         captchaVerification: captchaParams.captchaVerification
       }).then(()=>{
-        router.push({ path: this.redirect || "/" }).catch(()=>{})
-      }).catch(()=>{
+        router.push({ path: socialLoginForm.redirect || "/" }).catch(()=>{})
+      }).catch((error)=>{
+        ElComponents.msgError("[系统错误]请联系管理员message：" + error)
         socialLoginLoading.value = false
+      }).finally(()=>{
+        setTimeout(() => {
+          const loadingInstance = ElLoading.service()
+          loadingInstance.close()
+        }, 400)
       })
     }
   })

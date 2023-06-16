@@ -33,7 +33,6 @@ export const useStore = defineStore('admin-user', {
             const type = userInfo.type
             return new Promise((resolve, reject) => {
                 socialLogin(type, code, state).then(res => {
-                    console.log("user.js的pinia数据",res)
                     res = res.data
                     // 设置 token
                     setToken(res)
