@@ -11,6 +11,7 @@ import cn.iocoder.educate.framework.common.util.validation.ValidationUtils;
 import cn.iocoder.educate.module.system.api.logger.dto.LoginLogCreateReqDTO;
 import cn.iocoder.educate.module.system.api.sms.SmsCodeApi;
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
+import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
@@ -106,8 +107,8 @@ public class AdminAuthServiceImpl implements AdminAuthService{
 
         // 如果 socialType 非空，说明需要绑定社交用户
         if(reqVO.getSocialType() != null){
-            log.error("socialType登录暂时未开放");
-            throw exception(ErrorCodeConstants.AUTH_LOGIN_USER_DISABLED);
+            socialUserService.bindSocialUser(new SocialUserBindReqDTO(adminUserDO.getId(), getUserType().getValue(),
+                    reqVO.getSocialType(), reqVO.getSocialCode(), reqVO.getSocialState()));
         }
         // 创建 Token 令牌，记录登录日志
         return createTokenAfterLoginSuccess(adminUserDO.getId(), adminUserDO.getUsername(), LoginLogTypeEnum.LOGIN_USERNAME);
@@ -131,16 +132,20 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         // 使用 code 授权码，进行登录。然后，获得到绑定的用户编号
         Long userId = socialUserService.getBindUserId(UserTypeEnum.ADMIN.getValue(),reqVO.getType(),
                 reqVO.getCode(),reqVO.getState());
+        // 这个判断我在审查的认为没有必要
         if (userId == null) {
             throw exception(ErrorCodeConstants.AUTH_THIRD_LOGIN_NOT_BIND);
         }
-        return null;
+
+        // 获得用户
+        AdminUserDO user = adminUserService.getUser(userId);
+        return createTokenAfterLoginSuccess(user.getId(),user.getUsername(),LoginLogTypeEnum.LOGIN_SOCIAL);
     }
 
     private AuthLoginRespVO createTokenAfterLoginSuccess(Long userId, String username, LoginLogTypeEnum loginTypeEnum) {
         // 插入登陆日志
         createLoginLog(userId, username, loginTypeEnum, LoginResultEnum.SUCCESS);
-        // 创建访问令牌
+        // 创建访问令牌 userType 1 or 2
         OAuth2AccessTokenDO accessTokenDO = oauth2TokenService.createAccessToken(userId, getUserType().getValue(),
                 OAuth2ClientConstants.CLIENT_ID_DEFAULT, null);
         // 构建返回结果

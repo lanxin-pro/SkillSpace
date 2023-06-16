@@ -37,4 +37,11 @@ public interface AdminUserService {
      * @return
      */
     AdminUserDO getUserByMobile(String mobile);
+
+    /**
+     * 通过用户 ID 查询用户
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    AdminUserDO getUser(Long userId);
 }

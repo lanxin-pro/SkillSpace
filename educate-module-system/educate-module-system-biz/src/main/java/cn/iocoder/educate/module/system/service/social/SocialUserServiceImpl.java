@@ -6,6 +6,7 @@ import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.http.HttpUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
 import cn.iocoder.educate.framework.social.core.EducateAuthRequestFactory;
+import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserBindDO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserDO;
 import cn.iocoder.educate.module.system.dal.mysql.social.SocialUserBindMapper;
@@ -70,14 +71,34 @@ public class SocialUserServiceImpl implements SocialUserService{
         Assert.notNull(socialUser,"社交用户不能为空");
 
         // 如果未绑定的社交用户，则无法自动登录，进行报错
-        SocialUserBindDO socialUserBindDO = socialUserBindMapper.selectByUserTypeAndSocialUserId(userType, socialUser.getId());
+        SocialUserBindDO socialUserBindDO = socialUserBindMapper.selectByUserTypeAndSocialUserId(userType,
+                socialUser.getId());
         if (socialUserBindDO == null) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.AUTH_THIRD_LOGIN_NOT_BIND);
         }
-        return socialUserBindDO.getId();
+        return socialUserBindDO.getUserId();
     }
 
     /**
+     * code授权码只能用一次，页面在初始化的使用已经被使用了，但是我只需要把同样的code保存到数据库当中，接下来就可以继续使用了
+     *
+     * @param socialUserBindReqDTO 绑定信息
+     */
+    @Override
+    public void bindSocialUser(SocialUserBindReqDTO socialUserBindReqDTO) {
+        // 获得社交用户
+        SocialUserDO socialUserDO = authSocialUser(socialUserBindReqDTO.getType(), socialUserBindReqDTO.getCode(),
+                socialUserBindReqDTO.getState());
+        Assert.notNull(socialUserDO,"社交用户不能为空");
+        SocialUserBindDO socialUserBind = SocialUserBindDO.builder()
+                .userId(socialUserBindReqDTO.getUserId()).userType(socialUserBindReqDTO.getUserType())
+                .socialUserId(socialUserDO.getId()).socialType(socialUserDO.getType()).build();
+        socialUserBindMapper.insert(socialUserBind);
+    }
+
+    /**
+     * code授权码只能用一次，页面在初始化的使用已经被使用了，但是我只需要把同样的code保存到数据库当中，接下来就可以继续使用了
+     *
      * 1.页面刷新的时候每次都，从数据库中查询到的话(相同的type,code,state)，直接返回，不然我就使用code授权码来查询出钉钉的用户信息
      * 2.我重新扫码二维码有数据的时候，我应该更新用户信息，并且返回
      * 3.第一次扫码二维码的话，就是单纯的创建用户

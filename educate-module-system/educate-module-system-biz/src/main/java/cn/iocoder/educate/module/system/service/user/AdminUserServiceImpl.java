@@ -54,4 +54,9 @@ public class AdminUserServiceImpl implements AdminUserService{
         AdminUserDO adminUserDO = adminUserMapper.selectOne(adminUserDOLambdaQueryWrapper);
         return adminUserDO;
     }
+
+    @Override
+    public AdminUserDO getUser(Long userId) {
+        return adminUserMapper.selectById(userId);
+    }
 }

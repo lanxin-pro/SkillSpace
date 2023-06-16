@@ -66,7 +66,7 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
         if(ObjectUtil.notEqual(oAuth2ClientDO.getStatus(), CommonStatusEnum.ENABLE.getStatus())){
             throw exception(OAUTH2_CLIENT_DISABLE);
         }
-        // 校验客户端密钥
+        // 校验客户端密钥(密钥必须存在才会进行校验后面的逻辑)
         if (StrUtil.isNotEmpty(clientSecret) && ObjectUtil.notEqual(oAuth2ClientDO.getSecret(), clientSecret)) {
             throw exception(OAUTH2_CLIENT_CLIENT_SECRET_ERROR);
         }

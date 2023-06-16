@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.service.social;
 
 import cn.iocoder.educate.framework.common.exception.ServiceException;
+import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
 import cn.iocoder.educate.module.system.enums.social.SocialTypeEnum;
 
 /**
@@ -32,4 +33,11 @@ public interface SocialUserService {
      * @return 绑定用户编号
      */
     Long getBindUserId(Integer value, Integer type, String code, String state);
+
+    /**
+     * 绑定社交用户
+     *
+     * @param socialUserBindReqDTO 绑定信息
+     */
+    void bindSocialUser(SocialUserBindReqDTO socialUserBindReqDTO);
 }

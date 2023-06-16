@@ -113,8 +113,7 @@ onMounted(async ()=>{
       code: socialLoginForm.code,
       state: socialLoginForm.state,
     }).then(()=>{
-      //currentRoute.push({ path: socialLoginForm.redirect || "/" })
-      console.log("成功请求")
+      router.push({ path: socialLoginForm.redirect || "/" })
     }).catch((error)=>{
       socialLoginLoading.value = false
       ElComponents.msgError(error)
@@ -177,6 +176,10 @@ const handleLogin = async (captchaParams)=>{
         username: socialLoginForm.username,
         password: socialLoginForm.password,
         captchaVerification: captchaParams.captchaVerification
+      }).then(()=>{
+        router.push({ path: this.redirect || "/" }).catch(()=>{})
+      }).catch(()=>{
+        socialLoginLoading.value = false
       })
     }
   })

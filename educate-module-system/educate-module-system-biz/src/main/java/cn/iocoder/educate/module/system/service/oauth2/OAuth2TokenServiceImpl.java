@@ -90,11 +90,12 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService{
     }
 
     /**
-     * 刷新令牌
-     * @param userId
-     * @param userType
-     * @param clientDO
-     * @param scopes
+     * 创建刷新令牌
+     *
+     * @param userId 用户id
+     * @param userType 用户类型
+     * @param clientDO 客户端信息
+     * @param scopes 作用域
      * @return
      */
     private OAuth2RefreshTokenDO createOAuth2RefreshToken(Long userId, Integer userType, OAuth2ClientDO clientDO,
@@ -112,6 +113,11 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService{
         return IdUtil.fastSimpleUUID();
     }
 
+    /**
+     * 简化的UUID，去掉了横线，使用性能更好的ThreadLocalRandom生成UUID
+     *
+     * @return
+     */
     private static String generateRefreshToken() {
         return IdUtil.fastSimpleUUID();
     }
