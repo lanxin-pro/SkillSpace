@@ -113,21 +113,23 @@
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
           <div class="flex justify-between w-[100%]">
+            <Icon
+                class="cursor-pointer"
+                v-for="(item, key) in socialList"
+                color="#409eff"
+                size="30"
+                :icon="item.icon"
+                @click="doSocialLogin(item)"
+            />
+<!--
+
             <template v-for="(item, key) in socialList">
               <svg class="alibabaiconfont" aria-hidden="true" @click="doSocialLogin(item)">
                 <use :xlink:href="item.icon"></use>
               </svg>
             </template>
+            -->
 
-<!--            <Icon
-
-                :key="key"
-                :icon="item.icon"
-                :size="30"
-                class=""
-                color="#999"
-                @click="doSocialLogin(item.type)"
-            />-->
           </div>
         </el-form-item>
       </el-col>
@@ -162,6 +164,7 @@ import { useRouter } from 'vue-router'
 import { computed, reactive, ref, unref,watch } from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
+import { Icon } from '@/components/Icon'
 import { LoginFormTitle } from '../components'
 import { ElLoading } from 'element-plus'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
@@ -210,11 +213,19 @@ const loginData = reactive({
   }
 })
 // 其他登录方式
+/*
 const socialList = [
   { icon: '#icon-weixin', type: 30 },
   { icon: '#icon-github', type: 0 },
   { icon: '#icon-zhifubao', type: 0 },
   { icon: '#icon-dingding', type: 20 }
+]
+*/
+const socialList = [
+  { icon: 'ant-design:google-circle-filled', type: 0 },
+  { icon: 'ant-design:wechat-filled', type: 30 },
+  { icon: 'ant-design:github-filled', type: 0 },
+  { icon: 'ant-design:dingtalk-circle-filled', type: 20 }
 ]
 
 const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN)
