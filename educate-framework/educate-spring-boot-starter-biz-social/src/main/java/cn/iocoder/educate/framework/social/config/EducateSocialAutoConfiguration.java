@@ -1,6 +1,8 @@
 package cn.iocoder.educate.framework.social.config;
 
 import cn.iocoder.educate.framework.social.core.EducateAuthRequestFactory;
+import com.xkcoding.http.HttpUtil;
+import com.xkcoding.http.support.hutool.HutoolImpl;
 import com.xkcoding.justauth.autoconfigure.JustAuthProperties;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.cache.AuthStateCache;
@@ -32,6 +34,8 @@ public class EducateSocialAutoConfiguration {
     @Primary
     @ConditionalOnProperty(prefix = "justauth", value = "enabled", havingValue = "true", matchIfMissing = true)
     public EducateAuthRequestFactory educateAuthRequestFactory(JustAuthProperties properties, AuthStateCache authStateCache) {
+        // 需要修改 HttpUtil 使用的实现，避免类报错
+        HttpUtil.setHttp(new HutoolImpl());
         return new EducateAuthRequestFactory(properties, authStateCache);
     }
 }

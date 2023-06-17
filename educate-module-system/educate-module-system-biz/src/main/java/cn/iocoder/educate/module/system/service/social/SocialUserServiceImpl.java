@@ -54,7 +54,7 @@ public class SocialUserServiceImpl implements SocialUserService{
         AuthRequest authRequest = educateAuthRequestFactory.get(source);
         // 生成跳转地址
         String authorizeUri = authRequest.authorize(AuthStateUtils.createState());
-        return  HttpUtils.replaceUrlQuery(authorizeUri, "redirect_uri", redirectUri);
+        return HttpUtils.replaceUrlQuery(authorizeUri, "redirect_uri", redirectUri);
     }
 
     /**

@@ -50,6 +50,8 @@ public enum SocialTypeEnum implements IntArrayValuable {
      * 文档链接：https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html
      */
     WECHAT_MINI_APP(34, "WECHAT_MINI_APP"),
+
+    GOOGLE(40, "GOOGLE"),
     ;
 
     public static final int[] ARRAYS = Arrays.stream( values() )
