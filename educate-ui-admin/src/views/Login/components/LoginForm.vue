@@ -289,6 +289,10 @@ const doSocialLogin = async (social)=>{
       await useMessage.prompt('请输入租户的名称').then(async ({value}) => {
         const response = await LoginApi.getTenantIdByName(value)
         authUtils.setTenantId(response.data)
+      }).finally(() => {
+        setTimeout(() => {
+          loginLoading.value = false
+        },500)
       })
     }
     // 计算 redirectUri

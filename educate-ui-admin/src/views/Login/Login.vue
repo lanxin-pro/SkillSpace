@@ -49,6 +49,12 @@
           </div>
         </div>-->
         <!-- 右边的登录界面 -->
+        iconify测试：
+        <span class="iconify" data-icon="fa:home"></span>   <!-- Font Awesome -->
+        <span class="iconify" data-icon="noto:bird"></span> <!-- Note Icons -->
+        <span class="iconify" data-icon="mdi:alert"></span> <!-- Material Design Icons -->
+        <Icon></Icon>
+
           <div
               class="h-full flex items-center m-auto w-[100%] @2xl:max-w-500px @xl:max-w-500px @md:max-w-500px @lg:max-w-500px"
           >
@@ -83,6 +89,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@/components/Icon'
 import { LoginForm, MobileForm , SSOLogin , SocialLogin } from './components'
 const prefixCls = "v-login"
 const vue_title = import.meta.env.VITE_APP_TITLE
