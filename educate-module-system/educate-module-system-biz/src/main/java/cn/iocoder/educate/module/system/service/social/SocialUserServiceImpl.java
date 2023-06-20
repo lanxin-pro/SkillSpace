@@ -1,7 +1,5 @@
 package cn.iocoder.educate.module.system.service.social;
 
-import cn.iocoder.educate.framework.common.exception.ServiceException;
-import cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCodeConstants;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.http.HttpUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
@@ -13,7 +11,6 @@ import cn.iocoder.educate.module.system.dal.mysql.social.SocialUserBindMapper;
 import cn.iocoder.educate.module.system.dal.mysql.social.SocialUserMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.social.SocialTypeEnum;
-import com.xkcoding.justauth.AuthRequestFactory;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;

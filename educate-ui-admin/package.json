@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.8",
-    "@iconify/iconify": "^3.1.0",
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
@@ -27,7 +26,6 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.79",
     "@vitejs/plugin-vue": "^4.1.0",
     "sass": "1.54.4",
     "sass-loader": "7.3.1",

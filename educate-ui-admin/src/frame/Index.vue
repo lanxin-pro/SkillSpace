@@ -43,8 +43,10 @@ const classObj = computed(() => {
   }
 })
 
+console.log("classObj",classObj)
 const handleClickOutside = ()=>{
-  store.dispatch('app/closeSideBar',{ withoutAnimation: false })
+  console.log("点击了",handleClickOutside)
+  // store.dispatch('app/closeSideBar',{ withoutAnimation: false })
 }
 </script>
 <!-- 导入重复的组件定义 -->

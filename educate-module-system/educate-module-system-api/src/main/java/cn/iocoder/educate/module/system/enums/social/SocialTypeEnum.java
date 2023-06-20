@@ -51,7 +51,17 @@ public enum SocialTypeEnum implements IntArrayValuable {
      */
     WECHAT_MINI_APP(34, "WECHAT_MINI_APP"),
 
+    /**
+     * 谷歌登录
+     * 文档链接：https://www.justauth.cn/guide/oauth/google/
+     */
     GOOGLE(40, "GOOGLE"),
+
+    /**
+     * qq登录
+     * 文档链接：https://www.justauth.cn/guide/oauth/qq/#_1-%E7%94%B3%E8%AF%B7%E5%BA%94%E7%94%A8
+     */
+    TENCENT_QQ(50, "TENCENT_QQ"),
     ;
 
     public static final int[] ARRAYS = Arrays.stream( values() )

@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@element-plus/icons-vue':
     specifier: ^2.0.8
@@ -7,6 +11,9 @@ dependencies:
   '@iconify/iconify':
     specifier: ^3.1.0
     version: 3.1.0
+  '@purge-icons/generated':
+    specifier: ^0.9.0
+    version: 0.9.0
   animate.css:
     specifier: ^4.1.1
     version: 4.1.1
@@ -360,7 +367,6 @@ packages:
     resolution: {integrity: sha512-s2t+1oVtGDV6KtqfCXtUOhxfeYvOdDF90IVm+nMs/6bUP0HeGZLslguuL/AibpwtfL4FA/oCsIu/RhwapgAdJw==}
     dependencies:
       '@iconify/iconify': 3.1.0
-    dev: true
 
   /@sxzz/popperjs-es@2.11.7:
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
