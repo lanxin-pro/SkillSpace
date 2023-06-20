@@ -1,13 +1,32 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div
+      class="sidebar-logo-container"
+      :class="{'collapse': collapse}"
+      :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+
     <transition name="sidebarLogoFade">
+
+      <!--   collapse === !sidebar.value.opened   -->
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <h1
+            v-else
+            class="sidebar-title"
+            :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">
+
+          {{ title }}
+        </h1>
       </router-link>
+
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+<!--   这里就会与windcss冲突     -->
+        <img v-if="logo" :src="logo" style="display: inline-block" class="sidebar-logo" />
+        <h1
+            class="sidebar-title"
+            :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">
+
+          {{ title }}
+        </h1>
       </router-link>
     </transition>
   </div>
@@ -18,7 +37,8 @@ import logoImg from '@/assets/logo/logo.png'
 import { computed,ref } from 'vue'
 import store from '@/store'
 
-const title = ref('沐智课堂')
+const viteApp = import.meta.env.VITE_APP_TITLE
+const title = ref(viteApp)
 const logo = logoImg
 defineProps({
   collapse: {

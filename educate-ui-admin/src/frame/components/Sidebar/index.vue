@@ -1,6 +1,9 @@
 <template>
-  <div :class="{'has-logo': showLogo}" :style="{ backgroundColor: settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+  <div
+      :class="{'has-logo': showLogo}"
+      :style="{ backgroundColor: settings.sideTheme === 'theme-dark' ?
+      variables.menuBackground : variables.menuLightBackground }">
+    <logo v-if="showLogo" :collapse="isCollapse()" />
     <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
 <!--
   default-active	页面加载时默认激活菜单的 index
@@ -64,7 +67,7 @@ const sidebar = computed(()=>{
   return store.getters["app/getSidebar"]
 })
 const showLogo = computed(()=>{
-  return store.getters["settings/getSidebarLogo"]
+  return true
 })
 
 const isCollapse = ()=>{
