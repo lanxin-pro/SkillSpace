@@ -5,17 +5,16 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.common.exception.ErrorCode;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.monitor.TracerUtils;
 import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.educate.framework.common.util.validation.ValidationUtils;
 import cn.iocoder.educate.module.system.api.logger.dto.LoginLogCreateReqDTO;
 import cn.iocoder.educate.module.system.api.sms.SmsCodeApi;
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
+import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSocialLoginReqVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.*;
 import cn.iocoder.educate.module.system.convert.auth.AuthConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
@@ -23,6 +22,7 @@ import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.logger.LoginLogTypeEnum;
 import cn.iocoder.educate.module.system.enums.logger.LoginResultEnum;
 import cn.iocoder.educate.module.system.enums.oauth2.OAuth2ClientConstants;
+import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import cn.iocoder.educate.module.system.service.logger.LoginLogService;
 import cn.iocoder.educate.module.system.service.oauth2.OAuth2TokenService;
 import cn.iocoder.educate.module.system.service.social.SocialUserService;
@@ -140,6 +140,22 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         // 获得用户
         AdminUserDO user = adminUserService.getUser(userId);
         return createTokenAfterLoginSuccess(user.getId(),user.getUsername(),LoginLogTypeEnum.LOGIN_SOCIAL);
+    }
+
+    @Override
+    public AuthLoginRespVO smsLogin(AuthSmsLoginReqVO reqVO) {
+        SmsCodeUseReqDTO smsCodeUseReqDTO = AuthConvert.INSTANCE.convert(reqVO,
+                SmsSceneEnum.ADMIN_DEBUG_MEMBER_LOGIN.getScene(), ServletUtils.getClientIP());
+        // 校验验证码，并且打标记更新
+        smsCodeApi.useSmsCode(smsCodeUseReqDTO);
+        // 获取用户信息
+        AdminUserDO userByMobile = adminUserService.getUserByMobile(reqVO.getMobile());
+        if(userByMobile == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+        }
+
+        // 创建 Token 令牌，记录登录日志
+        return createTokenAfterLoginSuccess(userByMobile.getId(),userByMobile.getUsername(),LoginLogTypeEnum.LOGIN_MOBILE);
     }
 
     private AuthLoginRespVO createTokenAfterLoginSuccess(Long userId, String username, LoginLogTypeEnum loginTypeEnum) {

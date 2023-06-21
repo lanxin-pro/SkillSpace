@@ -8,14 +8,17 @@ import cn.hutool.core.util.RandomUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
+import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsCodeDo;
 import cn.iocoder.educate.module.system.dal.mysql.sms.SmsCodeMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import cn.iocoder.educate.module.system.framework.sms.SmsCodeProperties;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -51,6 +54,38 @@ public class SmsCodeServiceImpl implements SmsCodeService{
         smsSendService.sendSingleSms(reqDTO.getMobile(), null, null,
                 // 快速的创建一个键值对(看hutu源码)
                 codeByScene.getTemplateCode(), MapUtil.of("code", code));
+    }
+
+    @Override
+    public void useSmsCode(SmsCodeUseReqDTO smsCodeUseReqDTO) {
+        // 检测验证码是否有效
+        SmsCodeDo lastSmsCodeDo = validateSmsCode0(smsCodeUseReqDTO.getMobile(),
+                smsCodeUseReqDTO.getCode(), smsCodeUseReqDTO.getScene());
+        smsCodeMapper.updateById(SmsCodeDo.builder()
+                .id(lastSmsCodeDo.getId())
+                .used(true)
+                .usedTime(LocalDateTime.now())
+                .usedIp(smsCodeUseReqDTO.getUsedIp())
+                .build()
+        );
+    }
+
+    private SmsCodeDo validateSmsCode0(String mobile, String code, Integer scene) {
+        // 校验验证码
+        SmsCodeDo lastSmsCodeDo = smsCodeMapper.selectLastByMobile(mobile, code, scene);
+        // 若验证码不存在，抛出异常
+        if(lastSmsCodeDo == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_NOT_FOUND);
+        }
+        // 超过时间
+        if(LocalDateTimeUtil.between(lastSmsCodeDo.getCreateTime(),LocalDateTimeUtil.now()).toMillis()
+            >= smsCodeProperties.getExpireTimes().toMillis()){ // 验证码过期了
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_EXPIRED);
+        }
+        if(Boolean.TRUE.equals(lastSmsCodeDo.getUsed())){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_USED);
+        }
+        return lastSmsCodeDo;
     }
 
     /**

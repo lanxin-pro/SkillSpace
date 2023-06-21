@@ -76,7 +76,7 @@
               title="登录"
               class="w-[100%]"
               type="primary"
-              @click="handleLogin()"
+              @click.native.prevent="handleLogin()"
           />
         </el-form-item>
       </el-col>
@@ -102,12 +102,13 @@
 </template>
 
 <script setup>
-import { sendSmsCode } from '@/api/login'
+import { sendSmsCode, smsLogin } from '@/api/login'
 import store from '@/store'
 import router from '@/router'
 import { computed, reactive, ref, unref} from 'vue'
 import { XButton } from '@/components/XButton/index.js'
 import { Verify } from '@/components/Verifition/index.js'
+import { setToken } from "@/utils/auth"
 import { LoginFormTitle } from '../components'
 import { ElLoading,ElMessage } from 'element-plus'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
@@ -140,6 +141,13 @@ const loginData = reactive({
     scene: 22
   }
 })
+const smsVO = reactive({
+  loginSms: {
+    mobile: '',
+    code: ''
+  }
+})
+const redirect = ref('')
 // 校验
 const rules = {
   tenantName: [
@@ -186,6 +194,22 @@ const handleLogin = (()=>{
           duration: 4 * 1000,
           message: "哎呀你干嘛，验证码不能为空啦"
         })
+        return
+      }
+      loginLoading.value = true
+      smsVO.loginSms.mobile = loginData.loginForm.mobileNumber
+      smsVO.loginSms.code = loginData.loginForm.code
+      try {
+        const response = await smsLogin(smsVO.loginSms)
+        setToken(response.data)
+        if(!redirect.value){
+          redirect.value = '/'
+        }
+        router.push({ path: redirect.value || '/' })
+      }catch (err){
+
+      }finally {
+        loginLoading.value = false
       }
 
     }

@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.api.sms;
 
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
+import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.iocoder.educate.module.system.service.sms.SmsCodeService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -22,5 +23,10 @@ public class SmsCodeApiImpl implements SmsCodeApi {
     @Override
     public void sendSmsCode(SmsCodeSendReqDTO smsCodeSendReqDTO) {
         smsCodeService.sendSmsCode(smsCodeSendReqDTO);
+    }
+
+    @Override
+    public void useSmsCode(SmsCodeUseReqDTO smsCodeUseReqDTO) {
+        smsCodeService.useSmsCode(smsCodeUseReqDTO);
     }
 }

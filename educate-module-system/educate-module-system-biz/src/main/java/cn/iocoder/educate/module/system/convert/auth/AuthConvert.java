@@ -1,7 +1,9 @@
 package cn.iocoder.educate.module.system.convert.auth;
 
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
+import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsLoginReqVO;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import org.mapstruct.Mapper;
@@ -19,4 +21,6 @@ public interface AuthConvert {
     AuthLoginRespVO convert(OAuth2AccessTokenDO bean);
 
     SmsCodeSendReqDTO convert(AuthSmsSendReqVO bean);
+
+    SmsCodeUseReqDTO convert(AuthSmsLoginReqVO reqVO, Integer scene, String usedIp);
 }

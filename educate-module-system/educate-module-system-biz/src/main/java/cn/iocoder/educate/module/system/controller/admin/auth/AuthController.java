@@ -2,10 +2,7 @@ package cn.iocoder.educate.module.system.controller.admin.auth;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginReqVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthLoginRespVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSmsSendReqVO;
-import cn.iocoder.educate.module.system.controller.admin.auth.vo.AuthSocialLoginReqVO;
+import cn.iocoder.educate.module.system.controller.admin.auth.vo.*;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
 import cn.iocoder.educate.module.system.service.social.SocialUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +40,9 @@ public class AuthController {
         return success(authService.login(authLoginReqVO));
     }
 
+
+    // ========== 短信登录相关 ==========
+
     @PostMapping("/send-sms-code")
     @PermitAll
     @Operation(summary = "发送手机验证码")
@@ -52,6 +52,14 @@ public class AuthController {
         return success(true);
     }
 
+    @PostMapping("/sms-login")
+    @PermitAll
+    @Operation(summary = "使用短信验证码登录")
+    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
+    public CommonResult<AuthLoginRespVO> smsLogin(@RequestBody @Valid AuthSmsLoginReqVO reqVO) {
+        AuthLoginRespVO authLoginRespVO = authService.smsLogin(reqVO);
+        return success(authLoginRespVO);
+    }
 
 
     // ========== 社交登录相关 ==========

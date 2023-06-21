@@ -72,6 +72,20 @@ export function sendSmsCode(mobile,scene){
 }
 
 /**
+ * 短信验证码登录
+ * @param mobile
+ * @param scene
+ * @returns {*}
+ */
+export function smsLogin(data){
+    return request({
+        url: '/system/auth/sms-login',
+        method: 'post',
+        data: data
+    })
+}
+
+/**
  * 使用租户名，获得租户编号
  * @param name
  * @returns {Promise<AxiosResponse<any>>}
