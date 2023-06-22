@@ -15,13 +15,17 @@ import 'nprogress/nprogress.css' // 导入进度条样式动画
 import './permission.js' // 权限控制
 import plugins from './plugins' // plugins
 Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
-
-
-
+// 参考安装文档使用 {@link https://fontawesome.com/docs/web/use-with/vue/}
+// 参考文档使用 {@link https://fontawesome.com/docs/web/use-with/vue/add-icons}
+import { library } from '@fortawesome/fontawesome-svg-core' /* import the fontawesome core */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome' /* import font awesome icon component */
+import { fas } from '@fortawesome/free-solid-svg-icons' /* import specific icons */ // fas 这个库可以导入多个
+library.add(fas) /* add icons to the library */
 
 
 const app = createApp(App)
-setupStore(app)
+    .component('font-awesome-icon', FontAwesomeIcon)
+setupStore(app) // pinia
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
