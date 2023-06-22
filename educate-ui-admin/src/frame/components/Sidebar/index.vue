@@ -14,7 +14,7 @@
 -->
       <el-menu
           :default-active="activeMenu"
-          :collapse="isCollapse"
+          :collapse="isCollapse()"
           :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
           :text-color="settings.sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
           :unique-opened="true"
@@ -30,14 +30,30 @@
   redirect: 'noRedirect',
   hidden: false,
   alwaysShow: true,
-  meta: { title: '系统管理', icon : 'system' },
+  meta: { title: '系统管理', icon : 'fa-cat' },
         children: [{
         path: 'index',
         component: null,
         name: 'Test',
         meta: {
         title: '测试管理',
-        icon: 'user'
+        icon: 'fa-cat'
+        }
+        }]
+        },{
+  path: '/system/test2',
+  component: Layout,
+  redirect: 'noRedirect',
+  hidden: false,
+  alwaysShow: true,
+  meta: { title: '系统管理2', icon : 'fa-cat' },
+        children: [{
+        path: 'index2',
+        component: null,
+        name: 'Test',
+        meta: {
+        title: '测试管理2',
+        icon: 'fa-cat'
         }
         }]
         }]"

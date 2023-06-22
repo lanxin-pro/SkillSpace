@@ -32,6 +32,7 @@
             <div key="2" class="text-3xl text-white">欢迎使用本系统</div>
             <div key="3" class="mt-5 font-normal text-white text-14px">
               开箱即用的中后台管理系统
+              <font-awesome-icon icon="fa-solid fa-cat" bounce style="color: #656dd7;" />
             </div>
           </TransitionGroup>
         </div>
