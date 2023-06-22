@@ -23,8 +23,24 @@
           mode="vertical"
       >
         <!-- 根据 sidebarRouters 路由，生成菜单 -->
-        <sidebar-item
-            v-for="(route, index) in sidebarRouters"
+        <SidebarItem
+            v-for="(route, index) in [{
+  path: '/system/test',
+  component: Layout,
+  redirect: 'noRedirect',
+  hidden: false,
+  alwaysShow: true,
+  meta: { title: '系统管理', icon : 'system' },
+        children: [{
+        path: 'index',
+        component: null,
+        name: 'Test',
+        meta: {
+        title: '测试管理',
+        icon: 'user'
+        }
+        }]
+        }]"
             :key="route.path  + index"
             :item="route"
             :base-path="route.path"
@@ -39,17 +55,17 @@ import Logo from "./Logo.vue"
 import SidebarItem from "./SidebarItem.vue"
 import variables from "@/assets/styles/variables.module.scss"
 import store from '@/store'
-import { computed,getCurrentInstance } from 'vue'
+import { usePermissionStore } from '@/piniastore/modules/permission.js'
+import { computed, getCurrentInstance } from 'vue'
 
 const { appContext } = getCurrentInstance()
-
+const permissionStore = usePermissionStore()
 
 
 console.log("==========>",variables)
 
 
-
-
+const sidebarRouters = permissionStore.getRouters
 
 const activeMenu = (()=>{
   const { meta, path } = appContext.config.globalProperties.$route;
