@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
+import static java.util.Collections.singleton;
 
 /**
  * @Author: j-sentinel
@@ -82,6 +84,21 @@ public class AuthController {
                 CommonStatusEnum.ENABLE.getStatus());
         // 拼接结果返回
         return success(AuthConvert.INSTANCE.convert(user,roleList,menuList));
+    }
+
+    @GetMapping("/list-menus")
+    @Operation(summary = "获得登录用户的菜单列表")
+    @OperateLog(enable = true)
+    CommonResult<List<AuthMenuRespVO>> getMenuList() {
+        Long loginUserId = SecurityFrameworkUtils.getLoginUserId();
+        // 获得角色列表
+        Set<Long> roleIdsFrom = permissionService.getUserRoleIdsFromCache(loginUserId, CommonStatusEnum.ENABLE.getStatus());
+        // 获得用户拥有的菜单列表
+        List<MenuDO> menuList = permissionService.getRoleMenuListFromCache(roleIdsFrom,
+                SetUtils.asSet(MenuTypeEnum.DIR.getType(), MenuTypeEnum.MENU.getType()),
+                CommonStatusEnum.ENABLE.getStatus());
+        // 拼接结果返回
+        return success(AuthConvert.INSTANCE.buildMenuTree(menuList));
     }
 
 

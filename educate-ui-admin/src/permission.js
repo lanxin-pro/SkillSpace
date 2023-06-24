@@ -77,6 +77,7 @@ router.beforeEach((to,from,next)=>{
             const permissionStore = usePermissionStore()
             // 判断当前用户是否已拉取完 user_info 信息
             userStore.GetInfo().then(res => {
+                console.log("开始执行GenerateRoutes")
                 permissionStore.GenerateRoutes().then(res => {
 
                 })
