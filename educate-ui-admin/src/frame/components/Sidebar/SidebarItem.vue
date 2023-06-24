@@ -4,7 +4,8 @@
       <template #title>
         <Item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
-      <sidebar-item
+<!--   前端的循环遍历   -->
+      <SidebarItem
           v-for="(child, index) in item.children"
           :key="child.path + index"
           :is-nest="true"

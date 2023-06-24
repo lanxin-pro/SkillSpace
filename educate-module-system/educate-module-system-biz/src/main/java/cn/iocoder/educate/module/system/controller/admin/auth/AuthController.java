@@ -1,10 +1,21 @@
 package cn.iocoder.educate.module.system.controller.admin.auth;
 
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.common.util.collection.SetUtils;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
+import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.*;
+import cn.iocoder.educate.module.system.convert.auth.AuthConvert;
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
+import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
+import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
+import cn.iocoder.educate.module.system.enums.permission.MenuTypeEnum;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
+import cn.iocoder.educate.module.system.service.permission.PermissionService;
+import cn.iocoder.educate.module.system.service.permission.RoleService;
 import cn.iocoder.educate.module.system.service.social.SocialUserService;
+import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -14,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
+
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
 /**
@@ -30,6 +44,15 @@ public class AuthController {
     private AdminAuthService authService;
 
     @Resource
+    private AdminUserService userService;
+
+    @Resource
+    private RoleService roleService;
+
+    @Resource
+    private PermissionService permissionService;
+
+    @Resource
     private SocialUserService socialUserService;
 
     @PostMapping("/login")
@@ -38,6 +61,27 @@ public class AuthController {
     @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<AuthLoginRespVO> login(@RequestBody @Valid AuthLoginReqVO authLoginReqVO){
         return success(authService.login(authLoginReqVO));
+    }
+
+    @GetMapping("/get-permission-info")
+    @Operation(summary = "获取登录用户的权限信息")
+    @OperateLog(enable = true)
+    public CommonResult<AuthPermissionInfoRespVO> getPermissionInfo() {
+        // 获得用户信息
+        Long loginUserId = SecurityFrameworkUtils.getLoginUserId();
+        AdminUserDO user = userService.getUser(loginUserId);
+        if(user == null){
+            return null;
+        }
+        // 获得角色列表
+        Set<Long> roleIds = permissionService.getUserRoleIdsFromCache(loginUserId,
+                CommonStatusEnum.ENABLE.getStatus());
+        List<RoleDO> roleList = roleService.getRoleListFromCache(roleIds);
+        List<MenuDO> menuList = permissionService.getRoleMenuListFromCache(roleIds,
+                SetUtils.asSet(MenuTypeEnum.DIR.getType(),MenuTypeEnum.MENU.getType(),MenuTypeEnum.BUTTON.getType()),
+                CommonStatusEnum.ENABLE.getStatus());
+        // 拼接结果返回
+        return success(AuthConvert.INSTANCE.convert(user,roleList,menuList));
     }
 
 

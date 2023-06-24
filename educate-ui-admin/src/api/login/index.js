@@ -131,3 +131,15 @@ export function socialLogin(type, code, state) {
         }
     })
 }
+
+/**
+ * 获取用户详细信息
+ *
+ * @returns {*}
+ */
+export function getInfo() {
+    return request({
+        url: '/system/auth/get-permission-info',
+        method: 'get'
+    })
+}

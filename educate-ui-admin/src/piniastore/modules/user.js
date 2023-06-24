@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { socialLogin } from '@/api/login'
+import { socialLogin,getInfo } from '@/api/login'
 import { setToken, removeToken } from '@/utils/auth.js'
 
 // 这里我们使用的是es6 的模块化规范进行导出的。
@@ -27,7 +27,6 @@ export const useStore = defineStore('admin-user', {
         },
         // 社交登录
         SocialLogin(userInfo) {
-            console.log(userInfo)
             const code = userInfo.code
             const state = userInfo.state
             const type = userInfo.type
@@ -42,6 +41,16 @@ export const useStore = defineStore('admin-user', {
                 })
             })
         },
+        GetInfo() {
+            return new Promise(async (resolve,reject)=>{
+                try {
+                    const response = await getInfo()
+                    console.log("登录成功的结果信息",response)
+                }catch (error){
+
+                }
+            })
+        }
 
     }
 })
