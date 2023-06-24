@@ -47,7 +47,8 @@ meta: {
 }
 */
 import router from './router'
-import { useStore } from '@/piniastore/modules/user.js'
+import { useUserStore } from '@/piniastore/modules/user.js'
+import { usePermissionStore } from '@/piniastore/modules/permission.js'
 import { ElMessage } from 'element-plus'
 import { showFullLoading,hideFullLoading } from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
@@ -72,10 +73,16 @@ router.beforeEach((to,from,next)=>{
             hideFullLoading()
         }else{
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
-            const userStore = useStore()
-
+            const userStore = useUserStore()
+            const permissionStore = usePermissionStore()
             // 判断当前用户是否已拉取完 user_info 信息
-            userStore.GetInfo()
+            userStore.GetInfo().then(res => {
+                permissionStore.GenerateRoutes().then(res => {
+
+                })
+            }).catch((error) => {
+
+            })
         }
     }else{
         // 没有token

@@ -53,7 +53,7 @@
 <script setup>
 import { Verify } from '@/components/Verifition/index.js'
 import store from '@/store'
-import { useStore } from '@/piniastore/modules/user.js'
+import { useUserStore } from '@/piniastore/modules/user.js'
 import { ref,reactive,computed,unref,watch,onMounted } from 'vue'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
 import { LoginFormTitle } from './index.js'
@@ -71,7 +71,7 @@ import {
   setUsername
 } from "@/utils/auth";
 
-let pinia = useStore()
+let pinia = useUserStore()
 const captchaEnable = import.meta.env.VITE_APP_CAPTCHA_ENABLE
 const captcha = import.meta.env.VITE_CAPTCHATYPE
 const captchaType = ref(captcha)

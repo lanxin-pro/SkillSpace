@@ -156,7 +156,7 @@
 import '@/assets/icons/login/iconfont.css' // 阿里图标
 import '@/assets/icons/login/iconfont.js' // 阿里图标
 import store from '@/store'
-import { useStore } from '@/piniastore/modules/user.js'
+import { useUserStore } from '@/piniastore/modules/user.js'
 import router from '@/router'
 import { useRouter } from 'vue-router'
 import { computed, reactive, ref, unref,watch } from 'vue'
@@ -170,7 +170,7 @@ import useMessage  from '@/plugins/modal.js'
 import * as authUtils from '@/utils/auth.js'
 
 const { setLoginState,getLoginState } = useLoginState()
-let pinia = useStore()
+let pinia = useUserStore()
 
 import {
   getPassword,

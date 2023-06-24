@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
+import { getRouters } from '@/api/menu/menu.js'
+import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
+
 
 // 这里我们使用的是es6 的模块化规范进行导出的。
 
 // defineStore 方法有两个参数，第一个参数是模块化名字（也就相当于身份证一样，不能重复）
 
 // 第二个参数是选项，对象里面有三个属性，相比于vuex 少了一个 mutations.
-export const usePermissionStore = defineStore('admin-user', {
+export const usePermissionStore = defineStore('admin-permission', {
     // 开启数据持久化
     persist: true,
     state() {  // 存放的就是模块的变量
@@ -45,6 +48,13 @@ export const usePermissionStore = defineStore('admin-user', {
                 })
             })
         },
+        GenerateRoutes(){
+            return new Promise(async resolve => {
+                // 向后端请求路由数据（菜单）
+                const response = await getRouters()
+                console.log("菜单栏",response)
+            })
+        }
 
     }
 })

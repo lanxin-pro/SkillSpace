@@ -136,12 +136,14 @@ public class PermissionServiceImpl implements PermissionService{
         if(CollUtil.isEmpty(cacheRoleIds)){
             return Collections.emptySet();
         }
+        // 创建一个新的集合
         Set<Long> roleIds = new HashSet<>(cacheRoleIds);
-        // 过滤角色状态
+        // 过滤角色状态，真实的角色必须是数据库中的数据
         if(status != null){
             // 查询不到角色，或者是不开启状态 就删除
             roleIds.removeIf(roleId -> {
                 RoleDO role = roleService.getRoleFromCache(roleId);
+                // 没有该角色就返回null，有该角色必须是开启状态
                 return role == null || !status.equals(role.getStatus());
             });
         }

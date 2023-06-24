@@ -57,7 +57,8 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public List<RoleDO> getRoleListFromCache(Set<Long> roleIds) {
-        if(CollUtil.isNotEmpty(roleIds)){
+        // 是空就返回空
+        if(CollUtil.isEmpty(roleIds)){
             return Collections.emptyList();
         }
         List<RoleDO> collect = roleCache.values().stream().
@@ -72,7 +73,7 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public boolean hasAnySuperAdmin(List<RoleDO> roleListFromCache) {
-        if(CollUtil.isNotEmpty(roleListFromCache)){
+        if(CollUtil.isEmpty(roleListFromCache)){
             return false;
         }
         return roleListFromCache.stream().anyMatch(role -> {
