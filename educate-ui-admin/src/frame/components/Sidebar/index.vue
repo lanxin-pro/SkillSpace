@@ -14,49 +14,56 @@
 -->
       <el-menu
           :default-active="activeMenu"
+          mode="vertical"
           :collapse="isCollapse()"
           :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
           :text-color="settings.sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
           :unique-opened="true"
           :active-text-color="settings.theme"
           :collapse-transition="false"
-          mode="vertical"
       >
         <!-- 根据 sidebarRouters 路由，生成菜单 -->
-        <SidebarItem
+<!--        <SidebarItem
             v-for="(route, index) in [{
   path: '/system/test',
   component: Layout,
-  redirect: 'noRedirect',
+  redirect: 'noRedirect1',
   hidden: false,
   alwaysShow: true,
   meta: { title: '系统管理', icon : 'fa-cat' },
-        children: [{
-        path: 'index',
-        component: null,
-        name: 'Test',
-        meta: {
+    children: [{
+      path: 'index',
+      component: null,
+      name: 'Test',
+      meta: {
         title: '测试管理',
         icon: 'fa-cat'
-        }
-        }]
-        },{
+      }
+    }]
+  },{
   path: '/system/test2',
   component: Layout,
-  redirect: 'noRedirect',
+  redirect: 'noRedirect2',
   hidden: false,
   alwaysShow: true,
   meta: { title: '系统管理2', icon : 'fa-cat' },
         children: [{
-        path: 'index2',
-        component: null,
-        name: 'Test',
-        meta: {
-        title: '测试管理2',
-        icon: 'fa-cat'
-        }
+          path: 'index2',
+          component: null,
+          name: '1111',
+          meta: {
+            title: '测试管理2',
+            icon: 'fa-cat'
+          }
         }]
-        }]"
+    }]"
+            :key="route.path  + index"
+            :item="route"
+            :base-path="route.path"
+        />-->
+
+        <SidebarItem
+            v-for="(route, index) in sidebarRouters"
             :key="route.path  + index"
             :item="route"
             :base-path="route.path"
@@ -77,11 +84,12 @@ import { computed, getCurrentInstance } from 'vue'
 const { appContext } = getCurrentInstance()
 const permissionStore = usePermissionStore()
 
+// 如果不给计算属性的话，第一次就加载不出来
+const sidebarRouters = computed(()=>{
+  return permissionStore.getSidebarRouters
+})
 
-console.log("==========>",variables)
-
-
-const sidebarRouters = permissionStore.getRouters
+console.log("sidebarRouters=====>",sidebarRouters.value)
 
 const activeMenu = (()=>{
   const { meta, path } = appContext.config.globalProperties.$route;

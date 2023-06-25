@@ -4,6 +4,7 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { toCamelCase } from "@/utils"
 import Layout from '@/frame/Index.vue'
 import ParentView from '@/components/ParentView/index.vue'
+import { constantRoutes } from '@/router'
 
 
 // 这里我们使用的是es6 的模块化规范进行导出的。
@@ -23,16 +24,16 @@ export const usePermissionStore = defineStore('admin-permission', {
         }
     },
     getters: { // 相当于vue里面的计算属性，可以缓存数据
-        getRouters() {
-            return this.routes
-        },
+        getSidebarRouters(){
+            return this.sidebarRouters
+        }
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         setSocialLogin(socialType){
             return this.socialLoginType = socialType
         },
         getSocialLogin(){
-            return this.socialLoginType;
+            return this.socialLoginType
         },
         // 社交登录
         SocialLogin(userInfo) {
@@ -55,8 +56,19 @@ export const usePermissionStore = defineStore('admin-permission', {
             return new Promise(async resolve => {
                 // 向后端请求路由数据（菜单）
                 const response = await getRouters()
-                filterAsyncRouter(response.data)
+                const sdata = JSON.parse(JSON.stringify(response.data)) // 【重要】用于菜单中的数据
+                const rdata = JSON.parse(JSON.stringify(response.data)) // 用于最后添加到 Router 中的数据
+                const sidebarRoutes = filterAsyncRouter(sdata)
+                const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+                rewriteRoutes.push({path: '*', redirect: '/404', hidden: true})
+
+                this.SET_SIDEBAR_ROUTERS(constantRoutes.concat(sidebarRoutes))
+                resolve(rewriteRoutes)
             })
+        },
+        SET_SIDEBAR_ROUTERS(routes){
+            console.log("这个重要======================》",routes)
+            this.sidebarRouters = routes
         }
 
     }
@@ -67,8 +79,7 @@ export const usePermissionStore = defineStore('admin-permission', {
  * 将加载的menu列表，转换成 route.config 路由配置，最后添加到路由中
  */
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false){
-    console.log("=============>111111111")
-    asyncRouterMap.filter(route => {
+    return asyncRouterMap.filter(route => {
         // 将 ruoyi 后端原有耦合前端的逻辑，迁移到此处
         // 处理 meta 属性
         route.meta = {
@@ -89,7 +100,6 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false){
                 route.name = toCamelCase(pathArr[pathArr.length - 1], true)
             }
         }
-        console.log("route======================>",route)
 
         // 处理 component 属性
         if (route.children) { // 父节点
@@ -101,11 +111,9 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false){
         } else { // 根节点
             route.component = loadView(route.component)
         }
-        console.log("route.component=======================》",route.component)
         // filterChildren
         if (type && route.children) {
             route.children = filterChildren(route.children)
-            console.log("route.children==================>",route.children)
         }
         if (route.children != null && route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children, route, type)
@@ -143,5 +151,5 @@ function filterChildren(childrenMap, lastRouter = false) {
 }
 
 export const loadView = (view) => { // 路由懒加载
-    return (resolve) => require([`@/views/${view}`], resolve)
+    return (resolve) => import([`@/views/${view}`], resolve)
 }
