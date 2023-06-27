@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0 15px;" @click="toggleClick">
     <svg
-        :class="{'is-active':isActive}"
+        :class="{'is-active': isActive}"
         class="hamburger"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,11 @@
 
 <script setup>
 
-const toggleClick = defineEmits(["toggleClick"])
+const emit = defineEmits(["toggleClick"])
+
+const toggleClick = ()=>{
+  emit('toggleClick')
+}
 </script>
 
 <style scoped>

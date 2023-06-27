@@ -7,13 +7,13 @@
 
     <div :class="{hasTagsView: needTagsView,sidebarHide: sidebar.hide}" class="main-container">
       <div :class="{'fixed-header': fixedHeader}">
-        <navbar/>
-        <tags-view  v-if="needTagsView"/>
+        <Navbar/>
+        <TagsView  v-if="needTagsView"/>
       </div>
-      <app-main/>
-      <right-panel>
-        <settings/>
-      </right-panel>
+      <AppMain/>
+      <RightPanel>
+        <Settings/>
+      </RightPanel>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
                @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
@@ -90,7 +90,7 @@ const logout = ()=>{
   console.log()
    appContext.config.globalProperties.$modal.confirm('确定注销并退出系统吗？', '提示').then(() => {
     store.dispatch('LogOut').then(() => {
-      location.href = getPath('/index');
+      location.href = getPath('/index')
     })
   }).catch(() => {});
 }

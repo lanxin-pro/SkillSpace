@@ -18,8 +18,8 @@
           :collapse="isCollapse()"
           :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
           :text-color="settings.sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
-          :unique-opened="true"
           :active-text-color="settings.theme"
+          :unique-opened="true"
           :collapse-transition="false"
       >
         <!-- 根据 sidebarRouters 路由，生成菜单 -->
@@ -61,7 +61,7 @@
             :item="route"
             :base-path="route.path"
         />-->
-
+<!--    加载父级菜单    -->
         <SidebarItem
             v-for="(route, index) in sidebarRouters"
             :key="route.path  + index"
@@ -85,9 +85,7 @@ const { appContext } = getCurrentInstance()
 const permissionStore = usePermissionStore()
 
 // 如果不给计算属性的话，第一次就加载不出来
-const sidebarRouters = computed(()=>{
-  return permissionStore.getSidebarRouters
-})
+const sidebarRouters = permissionStore.getSidebarRouters
 
 console.log("sidebarRouters=====>",sidebarRouters.value)
 
@@ -95,9 +93,9 @@ const activeMenu = (()=>{
   const { meta, path } = appContext.config.globalProperties.$route;
   // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {
-    return meta.activeMenu;
+    return meta.activeMenu
   }
-  return path;
+  return path
 })
 
 const settings = computed(() => {

@@ -22,6 +22,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome' /* import font aw
 import { fas } from '@fortawesome/free-solid-svg-icons' /* import specific icons */ // fas 这个库可以导入多个
 library.add(fas) /* add icons to the library */
 
+// 关闭特定类型的警告
+console.warn = () => {}
 
 const app = createApp(App)
     .component('font-awesome-icon', FontAwesomeIcon)
