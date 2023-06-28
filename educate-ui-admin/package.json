@@ -29,7 +29,8 @@
     "vue-router": "^4.1.6",
     "vue-types": "^5.0.2",
     "vuex": "^4.0.2",
-    "web-storage-cache": "^1.1.1"
+    "web-storage-cache": "^1.1.1",
+    "screenfull": "5.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

@@ -1,21 +1,25 @@
 <template>
   <div class="navbar">
+
+
     <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
                @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
-    <div class="middle-menu">
 
-    </div>
+
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-
+        <el-tooltip content="快速搜索" effect="dark" placement="bottom">
+          <Search id="header-search" class="right-menu-item" />
+        </el-tooltip>
         <!-- 站内信 -->
-        <notify-message class="right-menu-item hover-effect" />
+        <el-tooltip content="站内信" effect="dark" placement="bottom">
+          <NotifyMessage class="right-menu-item hover-effect" />
+        </el-tooltip>
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
@@ -25,33 +29,41 @@
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <el-tooltip content="屏幕缩放" effect="dark" placement="bottom">
+          <Screenfull id="screenfull" class="right-menu-item hover-effect" />
+        </el-tooltip>
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
+          <SizeSelect id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
-          <span v-if="nickname" class="user-nickname">{{ nickname }}</span>
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/profile">
-            <el-dropdown-item>个人中心</el-dropdown-item>
-          </router-link>
-          <el-dropdown-item @click.native="setting = true">
-            <span>布局设置</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">
-            <span>退出登录</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
+      <el-tooltip content="用户信息" effect="dark" placement="bottom">
+        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+          <div class="avatar-wrapper">
+            <img :src="avatar" class="user-avatar">
+            <span v-if="nickname" class="user-nickname">{{ nickname }}</span>
+            <font-awesome-icon class="el-icon-caret-bottom"  icon="fa-solid fa-caret-down" />
+          </div>
+          <template #dropdown>
+
+            <el-dropdown-menu slot="dropdown">
+              <router-link to="/user/profile">
+                <el-dropdown-item>个人中心</el-dropdown-item>
+              </router-link>
+              <el-dropdown-item @click.native="setting = true">
+                <span>布局设置</span>
+              </el-dropdown-item>
+              <el-dropdown-item divided @click.native="logout">
+                <span>退出登录</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </el-tooltip>
+
+</div>
   </div>
 </template>
 
@@ -68,6 +80,10 @@ import NotifyMessage from '@/frame/components/Message/index.vue'
 import { getCurrentInstance,computed } from 'vue'
 import { getPath } from '@/utils/ruoyi'
 import store from '@/store'
+import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
+
+const { wsCache } = useCache()
+const wsCacheUser = wsCache.get(CACHE_KEY.USER)
 
 const { appContext } = getCurrentInstance()
 
@@ -78,10 +94,10 @@ const device = computed(()=>{
   return store.getters['app/getDevice']
 })
 const avatar = computed(()=>{
-  return store.getters['user/getAvatar']
+  return wsCacheUser.user.avatar
 })
 const nickname = computed(()=>{
-  return store.getters['user/getNickname']
+  return wsCacheUser.user.nickname
 })
 
 
@@ -99,7 +115,11 @@ const toggleSideBar = ()=>{
   store.dispatch('app/toggleSideBar')
 }
 </script>
-
+<style>
+.el-dropdown{
+  line-height: inherit;
+}
+</style>
 <style lang="scss" scoped>
 .navbar {
   height: 50px;
@@ -149,7 +169,7 @@ const toggleSideBar = ()=>{
       display: inline-block;
       padding: 0 8px;
       height: 100%;
-      font-size: 27px;
+      font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
 
@@ -187,7 +207,7 @@ const toggleSideBar = ()=>{
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 18px;
           font-size: 12px;
         }
       }

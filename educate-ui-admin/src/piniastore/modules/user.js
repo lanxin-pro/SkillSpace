@@ -28,6 +28,9 @@ export const useUserStore = defineStore('admin-user', {
     getters: { // 相当于vue里面的计算属性，可以缓存数据
         getRoles(){
             return this.roles
+        },
+        getUserAvatar(){
+            return this.user.avatar
         }
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。

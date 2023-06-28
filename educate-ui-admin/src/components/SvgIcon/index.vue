@@ -12,7 +12,7 @@ import { computed } from 'vue'
 
 const props = defineProps({
   iconClass: propTypes.string,
-  iconSize: propTypes.string.def("lg"),
+  iconSize: propTypes.string,
   iconColor: propTypes.string.def('red')
 })
 

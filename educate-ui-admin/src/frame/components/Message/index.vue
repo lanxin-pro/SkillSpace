@@ -3,11 +3,19 @@
 <!--
   placement	出现位置
 -->
-    <el-popover placement="bottom" width="600" trigger="click">
+    <el-popover
+        placement="bottom"
+        width="600"
+        trigger="click"
+    >
       <template #reference>
         <!-- icon 展示 小红点 -->
-        <el-badge slot="reference" :is-dot="unreadCount > 0" type="danger">
-          <el-icon size="22" @click="getList"><Comment /></el-icon>
+        <el-badge :is-dot="unreadCount > 0" type="danger">
+          <SvgIcon
+              style="vertical-align: text-top"
+              icon-class="fa-comment-dots"
+          />
+
         </el-badge>
       </template>
 
@@ -40,8 +48,8 @@
 <script setup>
 import {ref,onMounted,getCurrentInstance} from 'vue'
 import { parseTime } from '@/utils/ruoyi.js'
-import router from "@/router/index.js";
-
+import router from "@/router/index.js"
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 // 遮罩层
 const loading = ref(false)
@@ -66,8 +74,9 @@ const goMyList = (()=>{
 })
 </script>
 
-<style scoped>
+<style>
+/* scope是作用域。但是我想要在全局生效这个配置 */
 .el-badge__content.is-fixed {
-  top: 100px; /* 保证徽章的位置 */
+  top: 10px; /* 保证徽章的位置 */
 }
 </style>

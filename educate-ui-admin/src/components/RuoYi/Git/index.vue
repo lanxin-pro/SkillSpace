@@ -1,10 +1,20 @@
 <template>
-
+  <div>
+    <font-awesome-icon
+        @click="goto()"
+        icon="fa-brands fa-github"
+    />
+  </div>
 </template>
 
-<script>
-export default {
-  name: "index"
+<script setup>
+import { ref } from 'vue'
+
+const envUrl = import.meta.env.VITE_APP_GITHUB_URL
+const url = ref(envUrl)
+
+const goto = ()=>{
+  window.open(url.value)
 }
 </script>
 

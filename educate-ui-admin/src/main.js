@@ -20,7 +20,8 @@ Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
 import { library } from '@fortawesome/fontawesome-svg-core' /* import the fontawesome core */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome' /* import font awesome icon component */
 import { fas } from '@fortawesome/free-solid-svg-icons' /* import specific icons */ // fas 这个库可以导入多个
-library.add(fas) /* add icons to the library */
+import { fab } from '@fortawesome/free-brands-svg-icons' /* import specific icons */ // fab 这个库可以导入多个
+library.add(fas,fab) /* add icons to the library */
 
 // 关闭特定类型的警告
 console.warn = () => {}

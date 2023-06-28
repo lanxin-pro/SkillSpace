@@ -6,18 +6,19 @@
 
     <transition name="sidebarLogoFade">
 
-      <!--   collapse === !sidebar.value.opened   -->
+      <!--   collapse === !sidebar.value.opened 关闭的样式 -->
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <!--   这里就会与windcss冲突     -->
+        <img v-if="logo" :src="logo" class="sidebar-logo" style="display: inline-block" />
         <h1
             v-else
             class="sidebar-title"
             :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">
-
           {{ title }}
         </h1>
       </router-link>
 
+<!--  展开的样式    -->
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
 <!--   这里就会与windcss冲突     -->
         <img v-if="logo" :src="logo" style="display: inline-block" class="sidebar-logo" />

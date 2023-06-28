@@ -1,6 +1,11 @@
 <template>
   <div :class="{'show': show}" class="header-search">
-    1<svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
+    <SvgIcon
+        class="search-icon"
+        icon-class="fa-magnifying-glass"
+        style="color: #284c8a;"
+        @click.stop="click()"
+    />
     <el-select
         ref="headerSearchSelect"
         v-model="search"
@@ -12,14 +17,19 @@
         class="header-search-select"
         @change="change"
     >
-      <el-option v-for="option in options" :key="option.item.path" :value="option.item" :label="option.item.title.join(' > ')" />
+      <el-option
+          v-for="option in options"
+          :key="option.item.path"
+          :value="option.item"
+          :label="option.item.title.join(' > ')"
+      />
     </el-select>
   </div>
 </template>
 
 <script setup>
 import { ref,reactive,watch } from 'vue'
-
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 
 const search = ref('')
@@ -27,8 +37,14 @@ const options = ref([])
 const searchPool = ref([])
 const show = ref(false)
 const fuse = ref()
+const headerSearchSelect = ref()
 
-
+const click = ()=>{
+  show.value = !show.value
+  if(show.value){
+    headerSearchSelect.value.focus()
+  }
+}
 
 // 过滤掉可以显示在侧边栏中的路由，并生成国际化的标题
 const generateRoutes = ((routes, basePath = '/', prefixTitle = [])=>{

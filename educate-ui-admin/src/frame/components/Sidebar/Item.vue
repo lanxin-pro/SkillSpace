@@ -1,5 +1,5 @@
 <template>
-  <SvgIcon icon-color="red" :icon-class="props.icon" />
+  <SvgIcon icon-color="red" icon-size="lg" :icon-class="props.icon" />
   <span>{{props.title}}</span>
 </template>
 
