@@ -26,7 +26,9 @@ export const useUserStore = defineStore('admin-user', {
         }
     },
     getters: { // 相当于vue里面的计算属性，可以缓存数据
-
+        getRoles(){
+            return this.roles
+        }
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         setSocialLogin(socialType){
@@ -70,12 +72,13 @@ export const useUserStore = defineStore('admin-user', {
                     // 读取 data 数据
                     response = response.data
                     // 如何数据库没有头像就赋予默认值
-                    response.user = ( response.user.avatar === "" || response.user.avatar == null )
+                    response.user.avatar = ( response.user.avatar === "" || response.user.avatar == null )
                         ? import("@/assets/imgs/profile.jpg") : response.user.avatar
                     // 验证返回的roles是否是一个非空数组
                     if (response.roles && response.roles.length > 0) {
-                        console.log("本地域缓存",response)
-                        wsCache.set(CACHE_KEY.USER,response);
+                        this.roles = response.roles
+                        this.user = response.user
+                        wsCache.set(CACHE_KEY.USER,response)
                     }
                     resolve(response)
                 }catch (error){

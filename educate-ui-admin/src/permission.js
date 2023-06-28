@@ -74,16 +74,18 @@ router.beforeEach((to,from,next)=>{
         }else{
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
             const userStore = useUserStore()
-            const permissionStore = usePermissionStore()
-            // 判断当前用户是否已拉取完 user_info 信息
-            userStore.GetInfo().then(res => {
-                console.log("开始执行GenerateRoutes")
-                permissionStore.GenerateRoutes().then(res => {
+            if(userStore.getRoles.length === 0){
+                const permissionStore = usePermissionStore()
+                // 判断当前用户是否已拉取完 user_info 信息
+                userStore.GetInfo().then(res => {
+                    console.log("开始执行GenerateRoutes")
+                    permissionStore.GenerateRoutes().then(res => {
+
+                    })
+                }).catch((error) => {
 
                 })
-            }).catch((error) => {
-
-            })
+            }
         }
     }else{
         // 没有token
