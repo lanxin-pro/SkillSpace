@@ -6,6 +6,13 @@ import Layout from '@/frame/Index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import { constantRoutes } from '@/router'
 
+const loadView = (view) => {
+    if(view != null){
+        // 只能让他先加载，然后赋值。之前我的写法报错了（乱码我也不知道是什么问题呐） return ()=>import(`../../views/${view}/index.vue`)
+        const route =  `../../views/${view}/index.vue`
+        return () => import(route)
+    }
+}
 
 // 这里我们使用的是es6 的模块化规范进行导出的。
 
@@ -109,6 +116,7 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false){
                 route.component = ParentView
             }
         } else { // 根节点
+            console.log("添加的根loadView(route.component)",loadView(route.component))
             route.component = loadView(route.component)
         }
         // filterChildren
@@ -150,7 +158,3 @@ function filterChildren(childrenMap, lastRouter = false) {
     return children
 }
 
-export const loadView = (view) => { // 路由懒加载
-    console.log("路由懒加载loadView(view)==============》view",(resolve) => import(`../views/${view}.vue`, resolve))
-    return (resolve) => import(`../views/${view}.vue`, resolve)
-}

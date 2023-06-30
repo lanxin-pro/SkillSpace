@@ -81,38 +81,12 @@ router.beforeEach((to,from,next)=>{
             userStore.GetInfo().then(res => {
                 console.log("开始执行GenerateRoutes")
                 permissionStore.GenerateRoutes().then(accessRoutes => {
-                    // ---------测试
-                    accessRoutes.forEach(item => {
-                        console.log("这个是遍历出来的item属性",item)
-                        if(item.children !== undefined){
-                            console.log("这个是遍历出来的item.children属性",item.children)
-                            item.children.forEach(a=>{
-                                console.log("chil.path",a.path)
-                                console.log("chil.component",a.component)
-                            })
-
-                        }
-                    })
-
-                    // ----------真实添加
-                    accessRoutes.forEach(route=> {
-                        // 根据 roles 权限生成可访问的路由表
+                    // 根据 roles 权限生成可访问的路由表
+                    for(const route of accessRoutes){
+                        // console.log("这个是我生成的遍历后的route",route)
                         router.addRoute(route) // 动态添加可访问路由表
-                        console.log("全部路由列表router.options.route",router.options.routes)
-
-                        /*const route = {// 系统首页
-                            path: '/',
-                            component: Frame,
-                            children: [{
-                                path: '/system/menu',
-                                    component: (resolve) => import('@/views/system/menu/index.vue',resolve),
-                                name: '菜单',
-                                meta: {title: '菜单', icon: 'fa-home', affix: true}
-                            }
-                            ]
-                        }*/
-
-                    })
+                        next({...to, replace: true}) // hack方法 确保addRoutes已完成
+                    }
                 })
             }).catch((error) => {
                 console.log("出打错了",error)
