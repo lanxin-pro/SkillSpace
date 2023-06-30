@@ -60,7 +60,7 @@ export const usePermissionStore = defineStore('admin-permission', {
                 const rdata = JSON.parse(JSON.stringify(response.data)) // 用于最后添加到 Router 中的数据
                 const sidebarRoutes = filterAsyncRouter(sdata)
                 const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-                rewriteRoutes.push({path: '*', redirect: '/404', hidden: true})
+                rewriteRoutes.push({path: '/:path(.*)*', redirect: '/404', hidden: true})
 
                 this.SET_SIDEBAR_ROUTERS(constantRoutes.concat(sidebarRoutes))
                 resolve(rewriteRoutes)
@@ -151,5 +151,6 @@ function filterChildren(childrenMap, lastRouter = false) {
 }
 
 export const loadView = (view) => { // 路由懒加载
-    return (resolve) => import([`@/views/${view}`], resolve)
+    console.log("路由懒加载loadView(view)==============》view",(resolve) => import(`../views/${view}.vue`, resolve))
+    return (resolve) => import(`../views/${view}.vue`, resolve)
 }

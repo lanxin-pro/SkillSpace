@@ -85,7 +85,9 @@ const { appContext } = getCurrentInstance()
 const permissionStore = usePermissionStore()
 
 // 如果不给计算属性的话，第一次就加载不出来
-const sidebarRouters = permissionStore.getSidebarRouters
+const sidebarRouters = computed(()=>{
+  return permissionStore.getSidebarRouters
+})
 
 console.log("sidebarRouters=====>",sidebarRouters.value)
 

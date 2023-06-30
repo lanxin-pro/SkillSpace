@@ -80,9 +80,11 @@ import NotifyMessage from '@/frame/components/Message/index.vue'
 import { getCurrentInstance,computed } from 'vue'
 import { getPath } from '@/utils/ruoyi'
 import store from '@/store'
+import { useUserStore } from '@/piniastore/modules/user.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 
 const { wsCache } = useCache()
+const userStore = useUserStore()
 const wsCacheUser = wsCache.get(CACHE_KEY.USER)
 
 const { appContext } = getCurrentInstance()
@@ -94,10 +96,14 @@ const device = computed(()=>{
   return store.getters['app/getDevice']
 })
 const avatar = computed(()=>{
-  return wsCacheUser.user.avatar
+  // 这个执行时机有点快
+  // return wsCacheUser.user.avatar
+  return userStore.user.avatar
 })
 const nickname = computed(()=>{
-  return wsCacheUser.user.nickname
+  // 这个执行时机有点快
+  // return wsCacheUser.user.nickname
+  return userStore.user.nickname
 })
 
 

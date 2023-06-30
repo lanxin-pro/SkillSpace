@@ -52,6 +52,7 @@ import { usePermissionStore } from '@/piniastore/modules/permission.js'
 import { ElMessage } from 'element-plus'
 import { showFullLoading,hideFullLoading } from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
+import Frame from "@/frame/Index.vue";
 
 
 // 增加三方登陆 测试方便我添加了sso的白名单
@@ -74,18 +75,48 @@ router.beforeEach((to,from,next)=>{
         }else{
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
             const userStore = useUserStore()
-            if(userStore.getRoles.length === 0){
-                const permissionStore = usePermissionStore()
-                // 判断当前用户是否已拉取完 user_info 信息
-                userStore.GetInfo().then(res => {
-                    console.log("开始执行GenerateRoutes")
-                    permissionStore.GenerateRoutes().then(res => {
+
+            const permissionStore = usePermissionStore()
+            // 判断当前用户是否已拉取完 user_info 信息
+            userStore.GetInfo().then(res => {
+                console.log("开始执行GenerateRoutes")
+                permissionStore.GenerateRoutes().then(accessRoutes => {
+                    // ---------测试
+                    accessRoutes.forEach(item => {
+                        console.log("这个是遍历出来的item属性",item)
+                        if(item.children !== undefined){
+                            console.log("这个是遍历出来的item.children属性",item.children)
+                            item.children.forEach(a=>{
+                                console.log("chil.path",a.path)
+                                console.log("chil.component",a.component)
+                            })
+
+                        }
+                    })
+
+                    // ----------真实添加
+                    accessRoutes.forEach(route=> {
+                        // 根据 roles 权限生成可访问的路由表
+                        router.addRoute(route) // 动态添加可访问路由表
+                        console.log("全部路由列表router.options.route",router.options.routes)
+
+                        /*const route = {// 系统首页
+                            path: '/',
+                            component: Frame,
+                            children: [{
+                                path: '/system/menu',
+                                    component: (resolve) => import('@/views/system/menu/index.vue',resolve),
+                                name: '菜单',
+                                meta: {title: '菜单', icon: 'fa-home', affix: true}
+                            }
+                            ]
+                        }*/
 
                     })
-                }).catch((error) => {
-
                 })
-            }
+            }).catch((error) => {
+                console.log("出打错了",error)
+            })
         }
     }else{
         // 没有token

@@ -71,8 +71,8 @@ const hasOneShowingChild = ((children = [], parent)=>{
       return true
     }
   })
-  console.log("showingChildren",showingChildren)
-  console.log("showingChildren.length",showingChildren.length)
+/*  console.log("showingChildren",showingChildren)
+  console.log("showingChildren.length",showingChildren.length)*/
 
   // 当只有一个子路由器时，默认显示该子路由器
   if (showingChildren.length === 1) {

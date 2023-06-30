@@ -29,8 +29,8 @@ export const useUserStore = defineStore('admin-user', {
         getRoles(){
             return this.roles
         },
-        getUserAvatar(){
-            return this.user.avatar
+        getUser(){
+            return this.user
         }
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
