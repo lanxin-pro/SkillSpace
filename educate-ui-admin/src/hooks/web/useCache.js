@@ -9,6 +9,7 @@ const cacheType = 'localStorage' | 'sessionStorage'
 
 export const CACHE_KEY = {
     USER: 'user',
+    ROLE_ROUTERS: 'roleRouters',
 }
 
 export const useCache = (type = 'localStorage') => {

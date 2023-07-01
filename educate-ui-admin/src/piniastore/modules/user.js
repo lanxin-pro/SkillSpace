@@ -62,13 +62,15 @@ export const useUserStore = defineStore('admin-user', {
                     let response = await getInfo()
                     // 没有 data 数据，赋予个默认值
                     if(!response){
-                        response.data = {
-                            roles: [],
-                            user: {
-                                id: '',
-                                avatar: '',
-                                userName: '',
-                                nickname: ''
+                        response = {
+                            data: {
+                                roles: [],
+                                user: {
+                                    id: '',
+                                    avatar: '',
+                                    userName: '',
+                                    nickname: ''
+                                }
                             }
                         }
                     }

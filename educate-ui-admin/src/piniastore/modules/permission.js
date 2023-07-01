@@ -5,6 +5,8 @@ import { toCamelCase } from "@/utils"
 import Layout from '@/frame/Index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import { constantRoutes } from '@/router'
+const { wsCache } = useCache()
+
 
 const loadView = (view) => {
     if(view != null){
@@ -61,22 +63,46 @@ export const usePermissionStore = defineStore('admin-permission', {
         },
         GenerateRoutes(){
             return new Promise(async resolve => {
-                // 向后端请求路由数据（菜单）
-                const response = await getRouters()
+
+
+                let response = ''
+                if(wsCache.get(CACHE_KEY.ROLE_ROUTERS)){
+                    response = wsCache.get(CACHE_KEY.ROLE_ROUTERS)
+                }else{
+                    // 向后端请求路由数据（菜单）
+                    response = await getRouters()
+                    console.log("缓存")
+                    wsCache.set(CACHE_KEY.ROLE_ROUTERS, response)
+                }
+
+
+
                 const sdata = JSON.parse(JSON.stringify(response.data)) // 【重要】用于菜单中的数据
                 const rdata = JSON.parse(JSON.stringify(response.data)) // 用于最后添加到 Router 中的数据
                 const sidebarRoutes = filterAsyncRouter(sdata)
                 const rewriteRoutes = filterAsyncRouter(rdata, false, true)
                 rewriteRoutes.push({path: '/:path(.*)*', redirect: '/404', hidden: true})
-
+                this.SET_ROUTES(rewriteRoutes)
                 this.SET_SIDEBAR_ROUTERS(constantRoutes.concat(sidebarRoutes))
+                this.SET_DEFAULT_ROUTES(sidebarRoutes)
+                this.SET_TOPBAR_ROUTES(sidebarRoutes)
                 resolve(rewriteRoutes)
             })
+        },
+        SET_ROUTES(routes){
+            this.addRoutes = routes
+            this.routes = constantRoutes.concat(routes)
         },
         SET_SIDEBAR_ROUTERS(routes){
             console.log("这个重要======================》",routes)
             this.sidebarRouters = routes
-        }
+        },
+        SET_DEFAULT_ROUTES(routes){
+            this.defaultRoutes = constantRoutes.concat(routes)
+        },
+        SET_TOPBAR_ROUTES(routes){
+            this.topbarRouters = routes
+        },
 
     }
 })
@@ -113,6 +139,7 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false){
             if (route.parentId === 0) {
                 route.component = Layout
             } else {
+                console.log("出事了")
                 route.component = ParentView
             }
         } else { // 根节点

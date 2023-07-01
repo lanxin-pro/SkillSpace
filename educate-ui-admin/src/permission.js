@@ -72,26 +72,34 @@ router.beforeEach((to,from,next)=>{
         if(whiteList.indexOf(to.path) !== -1){
             next('/')
             hideFullLoading()
-        }else{
+        }else {
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
             const userStore = useUserStore()
-
             const permissionStore = usePermissionStore()
-            // 判断当前用户是否已拉取完 user_info 信息
-            userStore.GetInfo().then(res => {
-                console.log("开始执行GenerateRoutes")
-                permissionStore.GenerateRoutes().then(accessRoutes => {
-                    // 根据 roles 权限生成可访问的路由表
-                    for(const route of accessRoutes){
-                        // console.log("这个是我生成的遍历后的route",route)
-                        router.addRoute(route) // 动态添加可访问路由表
-                        next({...to, replace: true}) // hack方法 确保addRoutes已完成
-                    }
+
+            if(userStore.getRoles.length === 0){
+                // 判断当前用户是否已拉取完 user_info 信息
+                userStore.GetInfo().then(res => {
+                    console.log("执行了GetInfo()")
+                }).catch((error) => {
+                    console.log("出打错了1", error)
                 })
-            }).catch((error) => {
-                console.log("出打错了",error)
+            }
+            permissionStore.GenerateRoutes().then(accessRoutes => {
+                // 根据 roles 权限生成可访问的路由表
+                for (const route of accessRoutes) {
+                    console.log("这个是我生成的遍历后的route", route)
+                    router.addRoute(route) // 动态添加可访问路由表
+                    const redirectPath = from.query.redirect || to.path
+                    const redirect = decodeURIComponent(redirectPath)
+                    const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect } // hack方法 确保addRoutes已完成
+                    next(nextData)
+                }
+            }).catch((error)=>{
+                console.log("出打错了2", error)
             })
         }
+
     }else{
         // 没有token
         if (whiteList.indexOf(to.path) !== -1) {
