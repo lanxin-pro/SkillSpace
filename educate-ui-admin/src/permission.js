@@ -52,7 +52,7 @@ import { usePermissionStore } from '@/piniastore/modules/permission.js'
 import { ElMessage } from 'element-plus'
 import { showFullLoading,hideFullLoading } from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
-import Frame from "@/frame/Index.vue";
+import Frame from "@/frame/Index.vue"
 
 
 // 增加三方登陆 测试方便我添加了sso的白名单
@@ -88,7 +88,7 @@ router.beforeEach((to,from,next)=>{
             permissionStore.GenerateRoutes().then(accessRoutes => {
                 // 根据 roles 权限生成可访问的路由表
                 for (const route of accessRoutes) {
-                    console.log("这个是我生成的遍历后的route", route)
+                    console.log("这个是我生成的遍历后的route", router.getRoutes())
                     router.addRoute(route) // 动态添加可访问路由表
                     const redirectPath = from.query.redirect || to.path
                     const redirect = decodeURIComponent(redirectPath)

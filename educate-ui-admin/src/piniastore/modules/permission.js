@@ -4,7 +4,8 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { toCamelCase } from "@/utils"
 import Layout from '@/frame/Index.vue'
 import ParentView from '@/components/ParentView/index.vue'
-import { constantRoutes } from '@/router'
+import constantRoutes from '@/router/modules/remaining.js'
+
 const { wsCache } = useCache()
 
 
