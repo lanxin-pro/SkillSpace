@@ -29,10 +29,7 @@ import { computed } from 'vue'
 const theme = store.getters['settings/getTheme']
 const sideTheme = store.getters['settings/getSideTheme']
 const sidebar = store.getters['app/getSidebar']
-console.log("sidebar的状态",sidebar.opened)
-console.log("sidebar.hide的状态",sidebar.hide)
 const device = store.getters['app/getDevice']
-console.log("device的状态",device)
 const needTagsView = store.getters['settings/getTagsView']
 const fixedHeader = store.getters['settings/getFixeHeader']
 

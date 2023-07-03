@@ -85,16 +85,16 @@ router.beforeEach((to,from,next)=>{
                     console.log("出打错了1", error)
                 })
             }
-            permissionStore.GenerateRoutes().then(accessRoutes => {
-                // 根据 roles 权限生成可访问的路由表
-                for (const route of accessRoutes) {
-                    console.log("这个是我生成的遍历后的route", router.getRoutes())
+            permissionStore.GenerateRoutes().then(() => {
+                permissionStore.getAddRouters.forEach((route) => {
+                    console.log("全部路由",router.getRoutes())
                     router.addRoute(route) // 动态添加可访问路由表
-                    const redirectPath = from.query.redirect || to.path
-                    const redirect = decodeURIComponent(redirectPath)
-                    const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect } // hack方法 确保addRoutes已完成
-                    next(nextData)
-                }
+                })
+                const redirectPath = from.query.redirect || to.path
+                const redirect = decodeURIComponent(redirectPath)
+                const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
+                console.log("nextData",nextData)
+                next(nextData)
             }).catch((error)=>{
                 console.log("出打错了2", error)
             })

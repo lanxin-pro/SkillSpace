@@ -2,12 +2,16 @@ import { defineStore } from 'pinia'
 import { getRouters } from '@/api/menu/menu.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { toCamelCase } from "@/utils"
-import Layout from '@/frame/Index.vue'
+
 import ParentView from '@/components/ParentView/index.vue'
+import { cloneDeep,omit } from 'lodash-es'
 import constantRoutes from '@/router/modules/remaining.js'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const { wsCache } = useCache()
 
+/* Layout */
+export const Layout = () => import('@/frame/Index.vue')
 
 const loadView = (view) => {
     if(view != null){
@@ -36,7 +40,10 @@ export const usePermissionStore = defineStore('admin-permission', {
     getters: { // 相当于vue里面的计算属性，可以缓存数据
         getSidebarRouters(){
             return this.sidebarRouters
-        }
+        },
+        getAddRouters(){
+            return flatMultiLevelRoutes(cloneDeep(this.addRouters))
+        },
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         setSocialLogin(socialType){
@@ -72,22 +79,26 @@ export const usePermissionStore = defineStore('admin-permission', {
                 }else{
                     // 向后端请求路由数据（菜单）
                     response = await getRouters()
-                    console.log("缓存")
                     wsCache.set(CACHE_KEY.ROLE_ROUTERS, response)
                 }
 
-
-
-                const sdata = JSON.parse(JSON.stringify(response.data)) // 【重要】用于菜单中的数据
-                const rdata = JSON.parse(JSON.stringify(response.data)) // 用于最后添加到 Router 中的数据
-                const sidebarRoutes = filterAsyncRouter(sdata)
-                const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-                rewriteRoutes.push({path: '/:path(.*)*', redirect: '/404', hidden: true})
-                this.SET_ROUTES(rewriteRoutes)
-                this.SET_SIDEBAR_ROUTERS(constantRoutes.concat(sidebarRoutes))
-                this.SET_DEFAULT_ROUTES(sidebarRoutes)
-                this.SET_TOPBAR_ROUTES(sidebarRoutes)
-                resolve(rewriteRoutes)
+                let routerMap = generateRoute(response.data)
+                // 动态路由，404一定要放到最后面
+                this.addRouters = routerMap.concat([
+                    {
+                        path: '/:path(.*)*',
+                        redirect: '/404',
+                        name: '404Page',
+                        meta: {
+                            hidden: true,
+                            breadcrumb: false
+                        }
+                    }
+                ])
+                // 渲染菜单的所有路由
+                this.routers = cloneDeep(constantRoutes).concat(routerMap)
+                this.sidebarRouters = cloneDeep(constantRoutes).concat(routerMap)
+                resolve()
             })
         },
         SET_ROUTES(routes){
@@ -107,6 +118,153 @@ export const usePermissionStore = defineStore('admin-permission', {
 
     }
 })
+
+const modules = import.meta.glob('@/views/**/*.{vue,tsx}')
+
+// 后端控制路由生成
+function generateRoute(routes){
+    const res = []
+    const modulesRoutesKeys = Object.keys(modules)
+    for (const route of routes) {
+        const meta = {
+            title: route.name,
+            icon: route.icon,
+            hidden: !route.visible,
+            noCache: !route.keepAlive,
+            alwaysShow:
+                route.children &&
+                route.children.length === 1 &&
+                (route.alwaysShow !== undefined ? route.alwaysShow : true)
+        }
+        // 路由地址转首字母大写驼峰，作为路由名称，适配keepAlive
+        let data = {
+            path: route.path,
+            name:
+                route.componentName && route.componentName.length > 0
+                    ? route.componentName
+                    : toCamelCase(route.path, true),
+            redirect: route.redirect,
+            meta: meta
+        }
+        //处理顶级非目录路由
+        if (!route.children && route.parentId == 0 && route.component) {
+            data.component = Layout
+            data.meta = {}
+            data.name = toCamelCase(route.path, true) + 'Parent'
+            data.redirect = ''
+            meta.alwaysShow = true
+            const childrenData = {
+                path: '',
+                name: toCamelCase(route.path, true),
+                redirect: route.redirect,
+                meta: meta
+            }
+            const index = route?.component
+                ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
+                : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
+            childrenData.component = modules[modulesRoutesKeys[index]]
+            data.children = [childrenData]
+        } else {
+            // 目录
+            if (route.children) {
+                data.component = Layout
+                data.redirect = getRedirect(route.path, route.children)
+
+            } else {
+                // 对后端传component组件路径和不传做兼容（如果后端传component组件路径，那么path可以随便写，如果不传，component组件路径会根path保持一致）
+                const index = route?.component
+                    ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
+                    : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
+                data.component = modules[modulesRoutesKeys[index]]
+            }
+            if (route.children) {
+                data.children = generateRoute(route.children)
+            }
+        }
+        res.push(data)
+    }
+    return res
+}
+
+function getRedirect(parentPath, children){
+    if (!children || children.length == 0) {
+        return parentPath
+    }
+    const path = generateRoutePath(parentPath, children[0].path)
+    // 递归子节点
+    if (children[0].children) return getRedirect(path, children[0].children)
+}
+function generateRoutePath(parentPath, path){
+    if (parentPath.endsWith('/')) {
+        parentPath = parentPath.slice(0, -1) // 移除默认的 /
+    }
+    if (!path.startsWith('/')) {
+        path = '/' + path
+    }
+    return parentPath + path
+}
+function flatMultiLevelRoutes(routes){
+    const modules = cloneDeep(routes)
+    for (let index = 0; index < modules.length; index++) {
+        const route = modules[index]
+        if (!isMultipleRoute(route)) {
+            continue
+        }
+        promoteRouteLevel(route)
+    }
+    return modules
+}
+
+// 层级是否大于2
+function isMultipleRoute(route){
+    if (!route || !Reflect.has(route, 'children') || !route.children?.length) {
+        return false
+    }
+
+    const children = route.children
+
+    let flag = false
+    for (let index = 0; index < children.length; index++) {
+        const child = children[index]
+        if (child.children?.length) {
+            flag = true
+            break
+        }
+    }
+    return flag
+}
+
+// 生成二级路由
+function promoteRouteLevel(route){
+    let router = createRouter({
+        routes: [route],
+        history: createWebHashHistory()
+    })
+
+    const routes = router.getRoutes()
+    addToChildren(routes, route.children || [], route)
+    router = null
+
+    route.children = route.children?.map((item) => omit(item, 'children'))
+}
+
+// 添加所有子菜单
+function addToChildren(routes,children,routeModule){
+    for (let index = 0; index < children.length; index++) {
+        const child = children[index]
+        const route = routes.find((item) => item.name === child.name)
+        if (!route) {
+            continue
+        }
+        routeModule.children = routeModule.children || []
+        if (!routeModule.children.find((item) => item.name === route.name)) {
+            routeModule.children?.push(route)
+        }
+        if (child.children?.length) {
+            addToChildren(routes, child.children, routeModule)
+        }
+    }
+}
 
 /**
  * 遍历后台传来的路由字符串，转换为组件对象
