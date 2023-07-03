@@ -10,10 +10,11 @@
 </template>
 
 <script setup>
-import { getCurrentInstance,onMounted,ref } from 'vue'
+import { getCurrentInstance,onMounted,ref,watch,inject } from 'vue'
 import router from "@/router/index.js"
+import { useRouter } from 'vue-router'
 const { appContext } = getCurrentInstance()
-
+const { currentRoute } = useRouter()
 
 onMounted(()=>{
   getBreadcrumb()
@@ -46,6 +47,19 @@ const handleLink = (item)=>{
   }
   router.push(path)
 }
+watch(
+    () => currentRoute.value,
+    (route) => {
+      if (route.path.startsWith('/redirect/')) {
+        return
+      }
+      getBreadcrumb()
+    },
+    {
+      immediate: true
+    }
+)
+
 </script>
 
 <style lang="scss" scoped>
