@@ -60,7 +60,6 @@ export const useUserStore = defineStore('admin-user', {
             })
         },
         async GetInfo() {
-            console.warn("aaaa",!getAccessToken())
             if (!getAccessToken()) {
                 this.resetState()
                 return null

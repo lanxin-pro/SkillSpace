@@ -42,7 +42,6 @@ const classObj = computed(() => {
   }
 })
 
-console.log("classObj",classObj)
 const handleClickOutside = ()=>{
   console.log("点击了",handleClickOutside)
   // store.dispatch('app/closeSideBar',{ withoutAnimation: false })

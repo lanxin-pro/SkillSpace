@@ -11,8 +11,9 @@
 
 <script setup>
 import { getCurrentInstance,onMounted,ref } from 'vue'
-
+import router from "@/router/index.js"
 const { appContext } = getCurrentInstance()
+
 
 onMounted(()=>{
   getBreadcrumb()
@@ -37,7 +38,14 @@ const isDashboard = ((route)=>{
   // return name.trim() === 'Index'
   return name.trim() === '首页' // 修复 Index 重复的问题
 })
-
+const handleLink = (item)=>{
+  const { redirect, path } = item
+  if (redirect) {
+    router.push(redirect)
+    return
+  }
+  router.push(path)
+}
 </script>
 
 <style lang="scss" scoped>

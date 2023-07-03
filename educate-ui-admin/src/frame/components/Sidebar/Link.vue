@@ -16,7 +16,6 @@ export default {
   },
   computed: {
     isExternal() {
-      console.log("this.to",this.to)
       return isExternal(this.to)
     },
     type() {

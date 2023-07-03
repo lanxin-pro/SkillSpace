@@ -52,7 +52,6 @@ import { usePermissionStore } from '@/piniastore/modules/permission.js'
 import { ElMessage } from 'element-plus'
 import { showFullLoading,hideFullLoading } from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
-import Frame from "@/frame/Index.vue"
 
 
 // 增加三方登陆 测试方便我添加了sso的白名单
@@ -73,25 +72,24 @@ router.beforeEach(async (to,from,next)=>{
             next('/')
             hideFullLoading()
         }else {
+            // TODO j-sentinel： 修复的严重错误可以查看这个版本 76行 101行
+            // https://github.com/lanxin-pro/SkillSpace/blob/3614d00e61ee713810e0397f8d866298934481a2/educate-ui-admin/src/permission.js
+            // TODO j-sentinel： 可以参考ISSUES
+            // https://github.com/lanxin-pro/SkillSpace/issues/2
+
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
             const userStore = useUserStore()
             const permissionStore = usePermissionStore()
-            console.log("!userStore.getIsSetUser",!userStore.getIsSetUser)
             if (!userStore.getIsSetUser) {
-
                 // 判断当前用户是否已拉取完 user_info 信息
                 await userStore.GetInfo()
-
                 await permissionStore.GenerateRoutes()
                 permissionStore.getAddRouters.forEach((route) => {
-                    console.log("全部路由", router.getRoutes())
-                    console.log("添加路由", route)
                     router.addRoute(route) // 动态添加可访问路由表
                 })
                 const redirectPath = from.query.redirect || to.path
                 const redirect = decodeURIComponent(redirectPath)
                 const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
-                console.log(nextData)
                 next(nextData)
             } else {
                 next()

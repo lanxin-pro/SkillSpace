@@ -72,7 +72,6 @@ export const usePermissionStore = defineStore('admin-permission', {
         GenerateRoutes(){
             return new Promise(async resolve => {
 
-
                 let response = ''
                 if(wsCache.get(CACHE_KEY.ROLE_ROUTERS)){
                     response = wsCache.get(CACHE_KEY.ROLE_ROUTERS)

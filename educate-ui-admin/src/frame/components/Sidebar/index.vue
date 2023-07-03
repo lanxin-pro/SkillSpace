@@ -89,8 +89,6 @@ const sidebarRouters = computed(()=>{
   return permissionStore.getSidebarRouters
 })
 
-console.log("sidebarRouters=====>",sidebarRouters.value)
-
 const activeMenu = (()=>{
   const { meta, path } = appContext.config.globalProperties.$route;
   // if set path, the sidebar will highlight the path you set

@@ -26,6 +26,35 @@ import Frame from '@/frame/Index.vue'
 // 定义路由配置规则
 const constantRoutes = [
     {
+        path: '/redirect',
+        component: Frame,
+        hidden: true,
+        children: [
+            {
+                path: '/redirect/:path(.*)',
+                component: (resolve) => import('@/views/redirect', resolve)
+            }
+        ]
+    },
+    {
+        // 系统首页
+        path: '/',
+        component: Frame,
+        redirect: 'index',
+        children: [
+            {
+                path: '/index',
+                component: (resolve) => import('@/views/Home/Index.vue',resolve),
+                name: '首页',
+                meta: {
+                    title: '首页',
+                    icon: 'fa-house',
+                    affix: true
+                }
+            }
+        ]
+    },
+    {
         path: '/Login',
         hidden: true,
         name: 'Login',
@@ -58,19 +87,6 @@ const constantRoutes = [
         path: '/404',
         component: (resolve) => import('@/views/error/404.vue',resolve),
         hidden: true
-    },
-    {
-        // 系统首页
-        path: '/',
-        component: Frame,
-        children: [
-            {
-                path: '/Home',
-                component: (resolve) => import('@/views/Home/Index.vue',resolve),
-                name: '首页',
-                meta: { title: '首页', icon: 'fa-home', affix: true }
-            }
-        ]
     },
 
 ]
