@@ -3,6 +3,7 @@ import 'virtual:windi-components.css'
 import '@/design/index.less'
 import 'virtual:windi-utilities.css'
 import { router,setupRouter } from '@/router'
+import { setupStore } from '@/store'
 import Logger from '@/utils/Logger' // 日志
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -21,5 +22,9 @@ const app = createApp(App)
 // Configure routing
 // 配置路由
 setupRouter(app)
+
+// Configure store
+// 配置 store
+setupStore(app)
 
 app.mount('#app')

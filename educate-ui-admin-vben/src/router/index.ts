@@ -4,6 +4,8 @@ import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { basicRoutes } from './routes'
 
+// 白名单应该包含基本静态路由
+const WHITE_NAME_LIST: string[] = []
 
 // app router
 // 创建一个可以被 Vue 应用程序使用的路由实例
@@ -19,6 +21,16 @@ export const router = createRouter({
     strict: true,
     scrollBehavior: () => ({ left: 0, top: 0 })
 })
+
+// reset router
+export function resetRouter() {
+    router.getRoutes().forEach((route) => {
+        const { name } = route
+        if (name && !WHITE_NAME_LIST.includes(name as string)) {
+            router.hasRoute(name) && router.removeRoute(name)
+        }
+    })
+}
 
 // config router
 // 配置路由器
