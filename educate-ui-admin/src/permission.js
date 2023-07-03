@@ -63,7 +63,7 @@ const whiteList = ['/login', '/social-login',  '/auth-redirect', '/bind', '/regi
  * from 要去的页面
  * next() 放行
  */
-router.beforeEach((to,from,next)=>{
+router.beforeEach(async (to,from,next)=>{
     // 开启动画
     showFullLoading()
     // 获取token
@@ -76,28 +76,28 @@ router.beforeEach((to,from,next)=>{
             // 创建pinia的位置也非常的讲究，不然pinia会NullPointerException
             const userStore = useUserStore()
             const permissionStore = usePermissionStore()
+            console.log("!userStore.getIsSetUser",!userStore.getIsSetUser)
+            if (!userStore.getIsSetUser) {
 
-            if(userStore.getRoles.length === 0){
                 // 判断当前用户是否已拉取完 user_info 信息
-                userStore.GetInfo().then(res => {
-                    console.log("执行了GetInfo()")
-                }).catch((error) => {
-                    console.log("出打错了1", error)
-                })
-            }
-            permissionStore.GenerateRoutes().then(() => {
+                await userStore.GetInfo()
+
+                await permissionStore.GenerateRoutes()
                 permissionStore.getAddRouters.forEach((route) => {
-                    console.log("全部路由",router.getRoutes())
+                    console.log("全部路由", router.getRoutes())
+                    console.log("添加路由", route)
                     router.addRoute(route) // 动态添加可访问路由表
                 })
                 const redirectPath = from.query.redirect || to.path
                 const redirect = decodeURIComponent(redirectPath)
                 const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
-                console.log("nextData",nextData)
+                console.log(nextData)
                 next(nextData)
-            }).catch((error)=>{
-                console.log("出打错了2", error)
-            })
+            } else {
+                next()
+            }
+
+
         }
 
     }else{

@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import { socialLogin,getInfo } from '@/api/login'
-import { setToken, removeToken } from '@/utils/auth.js'
+import { getAccessToken,setToken, removeToken } from '@/utils/auth.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
-
 const { wsCache } = useCache()
 
 // 这里我们使用的是es6 的模块化规范进行导出的。
@@ -12,11 +11,12 @@ const { wsCache } = useCache()
 // 第二个参数是选项，对象里面有三个属性，相比于vuex 少了一个 mutations.
 export const useUserStore = defineStore('admin-user', {
     // 开启数据持久化
-    persist: true,
+    persist: false,
     state() {  // 存放的就是模块的变量
         return {
             socialLoginType: '',
             roles: [],
+            isSetUser: false,
             user: {
                 id: '',
                 avatar: '',
@@ -31,7 +31,10 @@ export const useUserStore = defineStore('admin-user', {
         },
         getUser(){
             return this.user
-        }
+        },
+        getIsSetUser() {
+            return this.isSetUser
+        },
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         setSocialLogin(socialType){
@@ -56,41 +59,33 @@ export const useUserStore = defineStore('admin-user', {
                 })
             })
         },
-        GetInfo() {
-            return new Promise(async (resolve,reject)=>{
-                try {
-                    let response = await getInfo()
-                    // 没有 data 数据，赋予个默认值
-                    if(!response){
-                        response = {
-                            data: {
-                                roles: [],
-                                user: {
-                                    id: '',
-                                    avatar: '',
-                                    userName: '',
-                                    nickname: ''
-                                }
-                            }
-                        }
-                    }
-                    // 读取 data 数据
-                    response = response.data
-                    // 如何数据库没有头像就赋予默认值
-                    response.user.avatar = ( response.user.avatar === "" || response.user.avatar == null )
-                        ? import("@/assets/imgs/profile.jpg") : response.user.avatar
-                    // 验证返回的roles是否是一个非空数组
-                    if (response.roles && response.roles.length > 0) {
-                        this.roles = response.roles
-                        this.user = response.user
-                        wsCache.set(CACHE_KEY.USER,response)
-                    }
-                    resolve(response)
-                }catch (error){
-                    reject(error)
-                }
-            })
+        async GetInfo() {
+            console.warn("aaaa",!getAccessToken())
+            if (!getAccessToken()) {
+                this.resetState()
+                return null
+            }
+            let userInfo = wsCache.get(CACHE_KEY.USER)
+            if (!userInfo) {
+                userInfo = await getInfo()
+            }
+            this.permissions = userInfo.data.permissions
+            this.roles = userInfo.data.roles
+            this.user = userInfo.data.user
+            this.isSetUser = true
+            wsCache.set(CACHE_KEY.USER, userInfo)
         },
+        resetState() {
+            this.permissions = []
+            this.roles = []
+            this.isSetUser = false
+            this.user = {
+                id: 0,
+                avatar: '',
+                nickname: ''
+            }
+        }
+
 
     }
 })

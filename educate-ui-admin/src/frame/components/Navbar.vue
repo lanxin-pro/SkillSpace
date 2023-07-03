@@ -98,12 +98,12 @@ const device = computed(()=>{
 const avatar = computed(()=>{
   // 这个执行时机有点快
   // return wsCacheUser.user.avatar
-  return userStore.user.avatar
+  return wsCacheUser.data.user.avatar
 })
 const nickname = computed(()=>{
   // 这个执行时机有点快
   // return wsCacheUser.user.nickname
-  return userStore.user.nickname
+  return wsCacheUser.data.user.nickname
 })
 
 
