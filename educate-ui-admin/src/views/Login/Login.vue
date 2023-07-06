@@ -91,7 +91,24 @@ const vue_title = import.meta.env.VITE_APP_TITLE
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+
+
+.size {
+  width: 100%;
+  height: 100%;
+}
+html,
+body {
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+  @extend .size;
+
+  #app {
+    @extend .size;
+  }
+}
 
 .v-login {
   &__left {
