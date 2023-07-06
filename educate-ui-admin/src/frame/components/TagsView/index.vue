@@ -31,7 +31,8 @@
 <script setup>
 import ScrollPane from './ScrollPane.vue'
 import path from 'path'
-import {ref,computed} from 'vue'
+import { ref,computed } from 'vue'
+import store from '@/store'
 
 const visible = ref(false)
 const top = ref(0)
@@ -39,7 +40,21 @@ const left = ref(0)
 const selectedTag = ref({})
 const affixTags = ref([])
 
-
+const visitedViews = ()=>{
+  return store.state.tagsView.visitedViews
+}
+const routes = ()=>{
+  return store.state.tagsView.routes
+}
+const theme = ()=>{
+  return store.state.tagsView.theme
+}
+const closeMenu = () => {
+  visible.value = false
+}
+const handleScroll = ()=>{
+  closeMenu()
+}
 </script>
 
 <style lang="scss" scoped>
