@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { socialLogin,getInfo } from '@/api/login'
+import { socialLogin,getInfo,logout } from '@/api/login'
 import { getAccessToken,setToken, removeToken } from '@/utils/auth.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 const { wsCache } = useCache()
@@ -16,6 +16,7 @@ export const useUserStore = defineStore('admin-user', {
         return {
             socialLoginType: '',
             roles: [],
+            permissions: [],
             isSetUser: false,
             user: {
                 id: '',
@@ -83,7 +84,14 @@ export const useUserStore = defineStore('admin-user', {
                 avatar: '',
                 nickname: ''
             }
+        },
+        async loginOut(){
+            await logout()
+            removeToken()
+            wsCache.clear()
+            this.resetState()
         }
+
 
 
     }

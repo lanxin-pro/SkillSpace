@@ -1,5 +1,5 @@
-import { login }  from '@/api/login/index.js'
-import {setToken} from "@/utils/auth";
+import { login,logout }  from '@/api/login/index.js'
+import { setToken } from "@/utils/auth";
 
 export default {
     // 指定当前文件作为命名空间

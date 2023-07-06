@@ -53,6 +53,13 @@ export function login(username, password, captchaVerification, socialType, socia
     })
 }
 
+export function logout(){
+    return request({
+        url: '/system/auth/logout',
+        method: 'post'
+    })
+}
+
 /**
  * 获取登录验证码
  * @param mobile

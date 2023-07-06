@@ -80,10 +80,13 @@ import NotifyMessage from '@/frame/components/Message/index.vue'
 import { getCurrentInstance,computed } from 'vue'
 import { getPath } from '@/utils/ruoyi'
 import store from '@/store'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '@/piniastore/modules/user.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
+import ElComponent from '@/plugins/modal.js'
 
 const { wsCache } = useCache()
+const { push, replace } = useRouter()
 const userStore = useUserStore()
 const wsCacheUser = wsCache.get(CACHE_KEY.USER)
 
@@ -109,12 +112,11 @@ const nickname = computed(()=>{
 
 
 const logout = ()=>{
-  console.log()
-   appContext.config.globalProperties.$modal.confirm('确定注销并退出系统吗？', '提示').then(() => {
-    store.dispatch('LogOut').then(() => {
-      location.href = getPath('/index')
-    })
-  }).catch(() => {});
+  ElComponent.confirm('确定注销并退出系统吗？', '提示').then(async() => {
+    await userStore.loginOut()
+    replace('/login?redirect=/index')
+    ElComponent.msgSuccess("退出成功")
+  }).catch(() => {})
 }
 
 const toggleSideBar = ()=>{

@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.dal.dataobject.oauth2;
 
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.tenant.core.db.TenantBaseDO;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;

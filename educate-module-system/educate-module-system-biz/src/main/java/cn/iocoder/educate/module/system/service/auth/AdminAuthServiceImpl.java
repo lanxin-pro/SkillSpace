@@ -24,6 +24,7 @@ import cn.iocoder.educate.module.system.enums.logger.LoginResultEnum;
 import cn.iocoder.educate.module.system.enums.oauth2.OAuth2ClientConstants;
 import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import cn.iocoder.educate.module.system.service.logger.LoginLogService;
+import cn.iocoder.educate.module.system.service.member.MemberService;
 import cn.iocoder.educate.module.system.service.oauth2.OAuth2TokenService;
 import cn.iocoder.educate.module.system.service.social.SocialUserService;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
@@ -69,6 +70,9 @@ public class AdminAuthServiceImpl implements AdminAuthService{
 
     @Resource
     private SmsCodeApi smsCodeApi;
+
+    @Resource
+    private MemberService memberService;
 
     /**
      * 验证码的开关，默认为 true
@@ -157,6 +161,43 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         // 创建 Token 令牌，记录登录日志
         return createTokenAfterLoginSuccess(userByMobile.getId(),userByMobile.getUsername(),LoginLogTypeEnum.LOGIN_MOBILE);
     }
+
+    @Override
+    public void logout(String token, Integer logType) {
+        // 删除访问令牌
+        OAuth2AccessTokenDO accessTokenDO = oauth2TokenService.removeAccessToken(token);
+        if (accessTokenDO == null) {
+            return;
+        }
+        // 删除成功，则记录登出日志
+        createLogoutLog(accessTokenDO.getUserId(), accessTokenDO.getUserType(), logType);
+    }
+
+    private void createLogoutLog(Long userId, Integer userType, Integer logType) {
+        LoginLogCreateReqDTO reqDTO = new LoginLogCreateReqDTO();
+        reqDTO.setLogType(logType);
+        reqDTO.setTraceId(TracerUtils.getTraceId());
+        reqDTO.setUserId(userId);
+        reqDTO.setUserType(userType);
+        if (ObjectUtil.equal(getUserType().getValue(), userType)) {
+            reqDTO.setUsername(getUsername(userId));
+        } else {
+            reqDTO.setUsername(memberService.getMemberUserMobile(userId));
+        }
+        reqDTO.setUserAgent(ServletUtils.getUserAgent());
+        reqDTO.setUserIp(ServletUtils.getClientIP());
+        reqDTO.setResult(LoginResultEnum.SUCCESS.getResult());
+        loginLogService.createLoginLog(reqDTO);
+    }
+
+    private String getUsername(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        AdminUserDO user = adminUserService.getUser(userId);
+        return user != null ? user.getUsername() : null;
+    }
+
 
     private AuthLoginRespVO createTokenAfterLoginSuccess(Long userId, String username, LoginLogTypeEnum loginTypeEnum) {
         // 插入登陆日志

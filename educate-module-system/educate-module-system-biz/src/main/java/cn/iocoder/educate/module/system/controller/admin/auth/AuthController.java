@@ -1,15 +1,18 @@
 package cn.iocoder.educate.module.system.controller.admin.auth;
 
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.util.collection.SetUtils;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
+import cn.iocoder.educate.framework.security.config.SecurityProperties;
 import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.*;
 import cn.iocoder.educate.module.system.convert.auth.AuthConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
+import cn.iocoder.educate.module.system.enums.logger.LoginLogTypeEnum;
 import cn.iocoder.educate.module.system.enums.permission.MenuTypeEnum;
 import cn.iocoder.educate.module.system.service.auth.AdminAuthService;
 import cn.iocoder.educate.module.system.service.permission.PermissionService;
@@ -24,13 +27,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
-import static java.util.Collections.singleton;
 
 /**
  * @Author: j-sentinel
@@ -57,12 +59,27 @@ public class AuthController {
     @Resource
     private SocialUserService socialUserService;
 
+    @Resource
+    private SecurityProperties securityProperties;
+
     @PostMapping("/login")
     @Operation(summary = "使用账号密码登录")
     @PermitAll
     @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<AuthLoginRespVO> login(@RequestBody @Valid AuthLoginReqVO authLoginReqVO){
         return success(authService.login(authLoginReqVO));
+    }
+
+    @PostMapping("/logout")
+    @PermitAll
+    @Operation(summary = "登出系统")
+    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
+    public CommonResult<Boolean> logout(HttpServletRequest request) {
+        String token = SecurityFrameworkUtils.obtainAuthorization(request, securityProperties.getTokenHeader());
+        if (StrUtil.isNotBlank(token)) {
+            authService.logout(token, LoginLogTypeEnum.LOGOUT_SELF.getType());
+        }
+        return success(true);
     }
 
     @GetMapping("/get-permission-info")

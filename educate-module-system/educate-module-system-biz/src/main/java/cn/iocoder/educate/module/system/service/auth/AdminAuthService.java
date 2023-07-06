@@ -54,4 +54,12 @@ public interface AdminAuthService {
      * @return 登录结果
      */
     AuthLoginRespVO smsLogin(AuthSmsLoginReqVO reqVO);
+
+    /**
+     * 基于 token 退出登录
+     *
+     * @param token token
+     * @param logType 登出类型
+     */
+    void logout(String token, Integer logType);
 }
