@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author: j-sentinel
@@ -46,5 +47,9 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
     }
 
 
-
+    default List<AdminUserDO> selectListByNickname(String userNickname){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.like(AdminUserDO::getNickname,userNickname);
+        return selectList(adminUserDOLambdaQueryWrapper);
+    }
 }

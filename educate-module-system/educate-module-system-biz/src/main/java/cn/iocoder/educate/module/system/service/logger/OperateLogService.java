@@ -1,6 +1,9 @@
 package cn.iocoder.educate.module.system.service.logger;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.api.logger.dto.OperateLogCreateReqDTO;
+import cn.iocoder.educate.module.system.controller.admin.logger.vo.OperateLogPageReqVO;
+import cn.iocoder.educate.module.system.dal.dataobject.logger.OperateLogDO;
 
 /**
  * @Author: j-sentinel
@@ -15,4 +18,12 @@ public interface OperateLogService {
      * @param createReqDTO 操作日志请求
      */
     void createOperateLog(OperateLogCreateReqDTO createReqDTO);
+
+    /**
+     * 获得操作日志分页列表
+     *
+     * @param reqVO 分页条件
+     * @return 操作日志分页列表
+     */
+    PageResult<OperateLogDO> getOperateLogPage(OperateLogPageReqVO reqVO);
 }

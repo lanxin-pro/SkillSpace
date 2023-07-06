@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.service.user;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +74,19 @@ public class AdminUserServiceImpl implements AdminUserService{
     public PageResult<AdminUserDO> getUserPage(UserPageReqVO reqVO) {
         // 分页的pageNo pageSize      分页条件(这个是我想要查询的ids)
         return adminUserMapper.selectPage(reqVO,getDeptCondition(reqVO.getDeptId()));
+    }
+
+    @Override
+    public List<AdminUserDO> getUserListByNickname(String userNickname) {
+        return adminUserMapper.selectListByNickname(userNickname);
+    }
+
+    @Override
+    public List<AdminUserDO> getUserList(Collection<Long> ids) {
+        if(CollUtil.isEmpty(ids)){
+            return Collections.emptyList();
+        }
+        return adminUserMapper.selectBatchIds(ids);
     }
 
     /**

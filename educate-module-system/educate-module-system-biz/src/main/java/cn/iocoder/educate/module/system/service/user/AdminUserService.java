@@ -1,8 +1,13 @@
 package cn.iocoder.educate.module.system.service.user;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @Author: j-sentinel
@@ -59,4 +64,35 @@ public interface AdminUserService {
      * @return 分页列表
      */
     PageResult<AdminUserDO> getUserPage(UserPageReqVO reqVO);
+
+    /**
+     * 获得用户列表，基于昵称模糊匹配
+     *
+     * @param userNickname 昵称
+     * @return 用户列表
+     */
+    List<AdminUserDO> getUserListByNickname(String userNickname);
+
+    /**
+     * 获得用户列表
+     *
+     * @param ids 用户编号数组
+     * @return 用户列表
+     */
+    List<AdminUserDO> getUserList(Collection<Long> ids);
+
+    /**
+     * 获得用户 Map
+     *
+     * @param userIds 用户编号数组
+     * @return 用户 Map
+     */
+    default Map<Long, AdminUserDO> getUserMap(List<Long> userIds){
+        if(CollUtil.isEmpty(userIds)){
+            return new HashMap<>();
+        }
+        return getUserList(userIds)
+                .stream()
+                .collect(Collectors.toMap(AdminUserDO::getId, Function.identity(), (v1,v2) -> v1));
+    }
 }
