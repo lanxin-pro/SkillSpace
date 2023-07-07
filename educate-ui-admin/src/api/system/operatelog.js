@@ -5,6 +5,12 @@ export const listOperateLog = (query) => {
     return request({
         url: '/system/operate-log/page',
         method: 'get',
-        params: query
+        params: {
+            module: query.title,
+            userNickname: query.operName,
+            success: query.success
+            // TODO j-sentinel 这里时间组件有些问题
+
+        }
     })
 }

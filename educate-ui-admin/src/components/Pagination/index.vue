@@ -1,20 +1,24 @@
 <!-- 基于 ruoyi-vue3 的 Pagination 重构，核心是简化无用的属性，并使用 ts 重写 -->
 <template>
-  <el-pagination
-      v-show="total > 0"
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
-      :background="true"
-      :page-sizes="[10, 20, 30, 50, 100]"
-      :pager-count="pagerCount"
-      :total="total"
-      class="float-right mt-15px mb-15px"
-      layout="total, sizes, prev, pager, next, jumper"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-  />
+  <el-config-provider :locale="zhCn">
+    <el-pagination
+        v-show="total > 0"
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="true"
+        :page-sizes="[10, 20, 30, 50, 100]"
+        :pager-count="pagerCount"
+        :total="total"
+        class="float-right mt-15px mb-15px"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+  </el-config-provider>
 </template>
 <script setup>
+// 中文简体
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { computed } from 'vue'
 
 const props = defineProps({
