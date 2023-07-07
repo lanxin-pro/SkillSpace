@@ -91,7 +91,7 @@ const vue_title = import.meta.env.VITE_APP_TITLE
 
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 
 .size {
