@@ -8,9 +8,8 @@ export const listOperateLog = (query) => {
         params: {
             module: query.title,
             userNickname: query.operName,
-            success: query.success
-            // TODO j-sentinel 这里时间组件有些问题
-
+            success: query.success,
+            startTime: query.startTime,
         }
     })
 }
