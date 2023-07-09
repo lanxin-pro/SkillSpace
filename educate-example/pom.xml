@@ -13,6 +13,7 @@
         <module>educate-sso-demo-by-code</module>
         <module>lab-01-demo01-rabbitmq-java</module>
         <module>lab-01-demo02-rabbitmq-springboot</module>
+        <module>educate-jenkins</module>
     </modules>
     <packaging>pom</packaging>
 
