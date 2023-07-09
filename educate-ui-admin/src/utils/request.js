@@ -1,7 +1,11 @@
 import axios from 'axios'
 import errorCode from '@/utils/errorCode'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import {getAccessToken} from "@/utils/auth.js";
+import { getAccessToken, getRefreshToken,setToken } from "@/utils/auth.js"
+import { getPath } from "@/utils/ruoyi.js"
+import { useUserStore } from '@/piniastore/modules/user.js'
+import { refreshToken } from '@/api/login/index.js'
+
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')
 const ignoreMsgs = [
@@ -9,7 +13,13 @@ const ignoreMsgs = [
     "刷新令牌已过期" // 使用刷新令牌，刷新获取新的访问令牌时，结果因为过期失败，此时需要忽略。否则，会导致继续 401，无法跳转到登出界面
 ]
 
-
+// 是否显示重新登录
+export let isRelogin = { show: false }
+// Axios 无感知刷新令牌，参考 https://www.dashingdog.cn/article/11 与 https://segmentfault.com/a/1190000020210980 实现
+// 请求队列
+let requestList = []
+// 是否正在刷新中
+let isRefreshToken = false
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
@@ -60,6 +70,7 @@ request.interceptors.request.use(config => {
 
 // 响应拦截器
 request.interceptors.response.use(async res => {
+
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200
     // 获取错误信息
@@ -67,7 +78,25 @@ request.interceptors.response.use(async res => {
     if (ignoreMsgs.indexOf(msg) !== -1) { // 如果是忽略的错误码，直接返回 msg 异常
         return Promise.reject(msg)
     }else if(code === 401){
-
+        // 如果未认证，并且未进行刷新令牌，说明可能是访问令牌过期了
+        if(!isRefreshToken){
+            isRefreshToken = true
+            //  如果获取不到刷新令牌，则只能执行登出操作
+            if(!getRefreshToken()){
+                return handleAuthorized()
+            }
+            // 进行访问令牌的刷新
+            try{
+                alert("刷新访问令牌")
+                const response = await refreshToken()
+                setToken(response.data)
+            }catch (error){// 为什么需要 catch 异常呢？刷新失败时，请求因为 Promise.reject 触发异常。
+                // 提示是否要登出。即不回放当前请求！不然会形成递归
+                return handleAuthorized()
+            }finally {
+                isRefreshToken = false
+            }
+        }
     }else if(code === 500){
         ElMessage({
             message: msg,
@@ -112,6 +141,30 @@ request.interceptors.response.use(async res => {
     })
     return Promise.reject(error)
 })
+
+const handleAuthorized = ()=>{
+    const store = useUserStore()
+
+    if(!isRelogin.show){
+        isRelogin.show = true
+        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+                confirmButtonText: '重新登录',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }
+        ).then(() => {
+            isRelogin.show = false
+            store.loginOut().then(() => {
+                location.href = getPath('/index')
+            })
+        }).catch(() => {
+            isRelogin.show = false
+        })
+    }
+    return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+
+}
+
 
 /*导出异步请求 */
 export default request;

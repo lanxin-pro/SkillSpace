@@ -173,6 +173,13 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         createLogoutLog(accessTokenDO.getUserId(), accessTokenDO.getUserType(), logType);
     }
 
+    @Override
+    public AuthLoginRespVO refreshToken(String refreshToken) {
+        OAuth2AccessTokenDO accessTokenDO = oauth2TokenService.refreshAccessToken(refreshToken,
+                OAuth2ClientConstants.CLIENT_ID_DEFAULT);
+        return AuthConvert.INSTANCE.convert(accessTokenDO);
+    }
+
     private void createLogoutLog(Long userId, Integer userType, Integer logType) {
         LoginLogCreateReqDTO reqDTO = new LoginLogCreateReqDTO();
         reqDTO.setLogType(logType);

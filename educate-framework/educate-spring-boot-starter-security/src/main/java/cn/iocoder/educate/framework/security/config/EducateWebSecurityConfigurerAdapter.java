@@ -87,8 +87,9 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         httpSecurity
                 // 1.全局共享的规则
                 .authorizeRequests()
+                // 1.1 静态资源，可匿名访问
                 .antMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
-                // 设置 @PermitAll 无需认证  最后转换成字符串数组
+                // 1.2 设置 @PermitAll 无需认证  最后转换成字符串数组
                 .antMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
                 .antMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
 //                .antMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()

@@ -217,7 +217,7 @@ export function getDocEnable() {
  * 获得 Vue 应用的基础路径
  */
 export function getBasePath() {
-  return process.env.VUE_APP_APP_NAME || '/';
+  return import.meta.env.VUE_APP_APP_NAME || '/';
 }
 
 /**

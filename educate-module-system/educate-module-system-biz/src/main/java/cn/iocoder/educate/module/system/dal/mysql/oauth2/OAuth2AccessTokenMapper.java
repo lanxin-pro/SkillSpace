@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @Author: 董伟豪
  * @Date: 2023/5/16 11:34
@@ -16,5 +18,11 @@ public interface OAuth2AccessTokenMapper extends BaseMapper<OAuth2AccessTokenDO>
         LambdaQueryWrapper<OAuth2AccessTokenDO> oAuth2AccessTokenDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         oAuth2AccessTokenDOLambdaQueryWrapper.eq(OAuth2AccessTokenDO::getAccessToken,accessToken);
         return selectOne(oAuth2AccessTokenDOLambdaQueryWrapper);
+    }
+
+    default List<OAuth2AccessTokenDO> selectListByRefreshToken(String refreshToken){
+        LambdaQueryWrapper<OAuth2AccessTokenDO> oAuth2AccessTokenDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        oAuth2AccessTokenDOLambdaQueryWrapper.eq(OAuth2AccessTokenDO::getRefreshToken,refreshToken);
+        return selectList(oAuth2AccessTokenDOLambdaQueryWrapper);
     }
 }

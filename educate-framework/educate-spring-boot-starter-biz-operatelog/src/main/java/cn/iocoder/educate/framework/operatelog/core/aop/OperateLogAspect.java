@@ -136,7 +136,7 @@ public class OperateLogAspect {
         if (operateLog == null || operateLog.logResultData()) {
             operateLogObj.setResultData(obtainResultData(result));
         }
-        operateLogObj.setDuration((int) LocalDateTimeUtil.between(startTime,LocalDateTime.now()).toMinutes());
+        operateLogObj.setDuration((int) (LocalDateTimeUtil.between(startTime,LocalDateTime.now()).toMillis()));
         if(result instanceof CommonResult){
             CommonResult<?> commonResult = (CommonResult<?>) result;
             operateLogObj.setResultCode(commonResult.getCode());

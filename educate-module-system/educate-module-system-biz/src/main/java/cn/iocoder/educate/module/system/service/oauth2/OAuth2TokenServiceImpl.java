@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.system.service.oauth2;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCodeConstants;
 import cn.iocoder.educate.framework.common.util.date.DateUtils;
 import cn.iocoder.educate.framework.tenant.core.context.TenantContextHolder;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil.exception0;
 
 /**
@@ -71,6 +76,42 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService{
         // 删除刷新令牌
         oauth2RefreshTokenMapper.deleteByRefreshToken(accessTokenDO.getRefreshToken());
         return accessTokenDO;
+    }
+
+    @Override
+    public OAuth2AccessTokenDO refreshAccessToken(String refreshToken, String clientIdDefault) {
+        // 查询刷新令牌
+        OAuth2RefreshTokenDO refreshTokenDO = oauth2RefreshTokenMapper.selectByRefreshToken(refreshToken);
+        if(refreshTokenDO == null){
+            throw exception0(GlobalErrorCodeConstants.BAD_REQUEST.getCode(), "无效的刷新令牌");
+        }
+        if(ObjectUtil.notEqual(clientIdDefault,refreshTokenDO.getClientId())){
+            throw exception0(GlobalErrorCodeConstants.BAD_REQUEST.getCode(), "刷新令牌的客户端编号不正确");
+        }
+        // 查询出所有跟refreshToken关联的全部访问令牌  并且移除相关的访问令牌
+        List<OAuth2AccessTokenDO> oAuth2AccessTokenDOS = oauth2AccessTokenMapper.selectListByRefreshToken(refreshToken);
+        if(CollUtil.isNotEmpty(oAuth2AccessTokenDOS)){
+            // 删除访问令牌
+            oauth2AccessTokenMapper.deleteBatchIds(oAuth2AccessTokenDOS
+                    .stream()
+                    .map(OAuth2AccessTokenDO::getId)
+                    .collect(Collectors.toSet()));
+            oauth2AccessTokenRedisDAO.deleteList(oAuth2AccessTokenDOS
+                    .stream()
+                    .map(OAuth2AccessTokenDO::getAccessToken)
+                    .collect(Collectors.toSet()));
+        }
+        // 已过期的情况下，删除刷新令牌
+        if(DateUtils.isExpired(refreshTokenDO.getExpiresTime())){
+            oauth2RefreshTokenMapper.deleteById(refreshTokenDO.getId());
+            throw exception0(GlobalErrorCodeConstants.UNAUTHORIZED.getCode(), "刷新令牌已过期");
+        }
+
+
+        // 创建 Client 匹配
+        OAuth2ClientDO clientDO = oauth2ClientService.validOAuthClientFromCache(clientIdDefault);
+
+        return createOAuth2AccessToken(refreshTokenDO,clientDO);
     }
 
     public OAuth2AccessTokenDO getAccessToken(String accessToken) {

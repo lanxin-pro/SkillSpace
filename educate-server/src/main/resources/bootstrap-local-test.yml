@@ -22,10 +22,11 @@ spring:
   redis:
     # 连接超时时间（毫秒）
     timeout: 18000
-    database: 10
+    database: 11
     host: redis.91momo50.vip
-    port: 6379
     password: liveR45ERww
+    port: 6379
+    connectionMinimumIdleSize: 2
     lettuce:
       pool:
         max-active: -1
@@ -144,8 +145,8 @@ master:
       url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
       username: root
       password: ks892734ksj8s89sd7d897df
-      initialSize: 20 # 初始化时建立物理连接的个数
-      minIdle: 20  # 最小连接池数量
+      initialSize: 2 # 初始化时建立物理连接的个数
+      minIdle: 2  # 最小连接池数量
       maxActive: 100 # 最大连接池数量
       maxWait: 60000 # 获取连接时最大等待时间
       timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接
@@ -166,8 +167,8 @@ slave:
       url: jdbc:mysql://mysql.91momo50.vip:3306/unilive?serverTimezone=Asia/Shanghai&tinyInt1isBit=false&allowMultiQueries=true
       username: root
       password: ks892734ksj8s89sd7d897df
-      initialSize: 20 # 初始化时建立物理连接的个数
-      minIdle: 20  # 最小连接池数量
+      initialSize: 2 # 初始化时建立物理连接的个数
+      minIdle: 2  # 最小连接池数量
       maxActive: 100 # 最大连接池数量
       maxWait: 60000 # 获取连接时最大等待时间
       timeBetweenEvictionRunsMillis: 60000  #间隔多久进行一次检测，检测需要关闭的空闲连接

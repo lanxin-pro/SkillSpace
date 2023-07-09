@@ -62,4 +62,12 @@ public interface AdminAuthService {
      * @param logType 登出类型
      */
     void logout(String token, Integer logType);
+
+    /**
+     * 刷新访问令牌
+     *
+     * @param refreshToken 刷新令牌
+     * @return 登录结果
+     */
+    AuthLoginRespVO refreshToken(String refreshToken);
 }

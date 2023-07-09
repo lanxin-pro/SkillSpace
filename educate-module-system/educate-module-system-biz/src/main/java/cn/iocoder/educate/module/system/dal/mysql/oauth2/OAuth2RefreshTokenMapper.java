@@ -18,4 +18,9 @@ public interface OAuth2RefreshTokenMapper extends BaseMapper<OAuth2RefreshTokenD
         return this.delete(oAuth2RefreshTokenDOLambdaQueryWrapper);
     }
 
+    default OAuth2RefreshTokenDO selectByRefreshToken(String refreshToken){
+        LambdaQueryWrapper<OAuth2RefreshTokenDO> oAuth2RefreshTokenDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        oAuth2RefreshTokenDOLambdaQueryWrapper.eq(OAuth2RefreshTokenDO::getRefreshToken,refreshToken);
+        return this.selectOne(oAuth2RefreshTokenDOLambdaQueryWrapper);
+    }
 }

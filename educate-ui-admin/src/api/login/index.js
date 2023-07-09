@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getRefreshToken } from '@/utils/auth'
 
 /**
  * 获取验证图片以及 token
@@ -148,5 +149,12 @@ export function getInfo() {
     return request({
         url: '/system/auth/get-permission-info',
         method: 'get'
+    })
+}
+
+export function refreshToken(){
+    return request({
+        url: '/system/auth/refresh-token?refreshToken=' + getRefreshToken(),
+        method: 'post'
     })
 }

@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -43,5 +47,15 @@ public class OAuth2AccessTokenRedisDAO {
 
     private static String formatKey(String accessToken) {
         return String.format("oauth2_access_token:%s", accessToken);
+    }
+
+    public void deleteList(Set<String> accessTokens) {
+        List<String> redisKeys = accessTokens
+                .stream()
+                // 每一个accessTokens都会去执行
+                .map(OAuth2AccessTokenRedisDAO::formatKey)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        stringRedisTemplate.delete(redisKeys);
     }
 }
