@@ -39,10 +39,10 @@ export const useUserStore = defineStore('admin-user', {
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         setSocialLogin(socialType){
-            return this.socialLoginType = socialType
+            return wsCache.set(CACHE_KEY.SOCIAL_LOGIN_TYPE,socialType);
         },
         getSocialLogin(){
-            return this.socialLoginType;
+            return wsCache.get(CACHE_KEY.SOCIAL_LOGIN_TYPE);
         },
         // 社交登录
         SocialLogin(userInfo) {

@@ -65,6 +65,7 @@ public class UserProfileController {
         // 获得用户基本信息
         AdminUserDO user = adminUserService.getUser(SecurityFrameworkUtils.getLoginUserId());
         UserProfileRespVO userProfileRespVO = UserConvert.INSTANCE.convert03(user);
+        // 获得用户的角色ids
         Set<Long> userRoleIdListByUserId = permissionService.getUserRoleIdListByUserId(user.getId());
         // 获得用户角色
         List<RoleDO> roleListFromCache = roleService.getRoleListFromCache(userRoleIdListByUserId);

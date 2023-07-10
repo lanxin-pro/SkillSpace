@@ -50,13 +50,28 @@
 
             <el-dropdown-menu slot="dropdown">
               <router-link to="/user/profile">
-                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item>
+                  <div>
+                    <font-awesome-icon icon="fa-solid fa-gear" style="color: #3772DA;" />
+                    个人中心
+                  </div>
+                </el-dropdown-item>
               </router-link>
               <el-dropdown-item @click.native="setting = true">
-                <span>布局设置</span>
+                <span>
+                  <div>
+                    <font-awesome-icon icon="fa-brands fa-canadian-maple-leaf" style="color: #fab1ce" />
+                    布局设置
+                  </div>
+                </span>
               </el-dropdown-item>
               <el-dropdown-item divided @click.native="logout">
-                <span>退出登录</span>
+                <span>
+                  <div>
+                    <font-awesome-icon icon="fa-regular fa-circle-xmark" style="color: #F64C2F" />
+                    退出登录
+                  </div>
+                </span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

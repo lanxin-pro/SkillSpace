@@ -141,7 +141,7 @@ public class AdminAuthServiceImpl implements AdminAuthService{
             throw exception(ErrorCodeConstants.AUTH_THIRD_LOGIN_NOT_BIND);
         }
 
-        // 获得用户
+        // 获得用户 然后根据用户id构建token，userType是用来做日志的
         AdminUserDO user = adminUserService.getUser(userId);
         return createTokenAfterLoginSuccess(user.getId(),user.getUsername(),LoginLogTypeEnum.LOGIN_SOCIAL);
     }

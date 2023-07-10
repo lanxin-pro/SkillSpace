@@ -69,7 +69,7 @@ import {
   removeUsername,
   setPassword, setRememberMe, setTenantId, setTenantName,
   setUsername
-} from "@/utils/auth";
+} from "@/utils/auth"
 
 let pinia = useUserStore()
 const captchaEnable = import.meta.env.VITE_APP_CAPTCHA_ENABLE
@@ -79,6 +79,7 @@ const verify = ref()
 const formLogin = ref()
 const socialLoginLoading = ref(false)
 const { currentRoute } = useRouter()
+
 const { setLoginState,getLoginState } = useLoginState()
 const socialLoginForm = reactive({
       loginType: "uname",

@@ -22,7 +22,8 @@ import { library } from '@fortawesome/fontawesome-svg-core' /* import the fontaw
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome' /* import font awesome icon component */
 import { fas } from '@fortawesome/free-solid-svg-icons' /* import specific icons */ // fas 这个库可以导入多个
 import { fab } from '@fortawesome/free-brands-svg-icons' /* import specific icons */ // fab 这个库可以导入多个
-library.add(fas,fab) /* add icons to the library */
+import { far } from '@fortawesome/free-regular-svg-icons' /* import specific icons */ // fab 这个库可以导入多个
+library.add(fas,fab,far) /* add icons to the library */
 
 // 关闭特定类型的警告
 console.warn = () => {}

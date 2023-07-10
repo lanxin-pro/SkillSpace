@@ -13,7 +13,7 @@
         <el-badge :is-dot="unreadCount > 0" type="danger">
           <SvgIcon
               style="vertical-align: text-top"
-              icon-class="fa-comment-dots"
+              icon-class="fa-solid fa-comment-dots"
           />
 
         </el-badge>

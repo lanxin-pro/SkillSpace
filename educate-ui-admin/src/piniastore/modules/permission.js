@@ -94,25 +94,11 @@ export const usePermissionStore = defineStore('admin-permission', {
                         }
                     }
                 ])
-                // 渲染菜单的所有路由
+                // 渲染菜单的所有路由  拼接静态路由+动态路由
                 this.routers = cloneDeep(constantRoutes).concat(routerMap)
                 this.sidebarRouters = cloneDeep(constantRoutes).concat(routerMap)
                 resolve()
             })
-        },
-        SET_ROUTES(routes){
-            this.addRoutes = routes
-            this.routes = constantRoutes.concat(routes)
-        },
-        SET_SIDEBAR_ROUTERS(routes){
-            console.log("这个重要======================》",routes)
-            this.sidebarRouters = routes
-        },
-        SET_DEFAULT_ROUTES(routes){
-            this.defaultRoutes = constantRoutes.concat(routes)
-        },
-        SET_TOPBAR_ROUTES(routes){
-            this.topbarRouters = routes
         },
 
     }

@@ -90,7 +90,7 @@ const sidebarRouters = computed(()=>{
 })
 
 const activeMenu = (()=>{
-  const { meta, path } = appContext.config.globalProperties.$route;
+  const { meta, path } = appContext.config.globalProperties.$route
   // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {
     return meta.activeMenu

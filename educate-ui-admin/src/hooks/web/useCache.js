@@ -8,6 +8,7 @@ import WebStorageCache from 'web-storage-cache'
 const cacheType = 'localStorage' | 'sessionStorage'
 
 export const CACHE_KEY = {
+    SOCIAL_LOGIN_TYPE: '',
     USER: 'user',
     ROLE_ROUTERS: 'roleRouters',
 }

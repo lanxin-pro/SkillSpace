@@ -1,8 +1,8 @@
 <template>
   <div :class="{'show': show}" class="header-search">
     <SvgIcon
-        class="search-icon"
-        icon-class="fa-magnifying-glass"
+        class="fa-solid search-icon"
+        icon-class="fa-solid fa-magnifying-glass"
         style="color: #284c8a;"
         @click.stop="click()"
     />

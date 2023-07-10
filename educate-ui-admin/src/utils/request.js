@@ -42,19 +42,19 @@ request.interceptors.request.use(config => {
     }
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
-        let url = config.url + '?';
+        let url = config.url + '?'
         for (const propName of Object.keys(config.params)) {
-            const value = config.params[propName];
+            const value = config.params[propName]
             const part = encodeURIComponent(propName) + '='
             if (value !== null && typeof(value) !== "undefined") {
                 if (typeof value === 'object') {
                     for (const key of Object.keys(value)) {
-                        let params = propName + '[' + key + ']';
+                        let params = propName + '[' + key + ']'
                         const subPart = encodeURIComponent(params) + '='
-                        url += subPart + encodeURIComponent(value[key]) + "&";
+                        url += subPart + encodeURIComponent(value[key]) + "&"
                     }
                 } else {
-                    url += part + encodeURIComponent(value) + "&";
+                    url += part + encodeURIComponent(value) + "&"
                 }
             }
         }

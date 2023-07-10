@@ -17,7 +17,7 @@ const props = defineProps({
 })
 
 const iconName = computed(()=>{
-  return "fa-solid " + props.iconClass
+  return props.iconClass
 })
 </script>
 

@@ -48,12 +48,45 @@ const constantRoutes = [
                 name: '首页',
                 meta: {
                     title: '首页',
-                    icon: 'fa-house',
+                    icon: 'fa-solid fa-house',
                     affix: true
                 }
             }
         ]
     },
+    {
+        path: '/user',
+        component: Frame,
+        name: 'UserInfo',
+        hidden: true,
+        children: [
+            {
+                path: 'profile',
+                component: () => import('@/views/system/user/profile/index.vue'),
+                name: 'Profile',
+                meta: {
+                    canTo: true,
+                    hidden: true,
+                    noTagsView: false,
+                    icon: 'fa-solid fa-user-tie',
+                    title: '个人中心'
+                }
+            },
+            {
+                path: 'notify-message',
+                component: () => import('@/views/system/notify/my/index.vue'),
+                name: 'MyNotifyMessage',
+                meta: {
+                    canTo: true,
+                    hidden: true,
+                    noTagsView: false,
+                    icon: 'fa-solid fa-envelope',
+                    title: '我的站内信'
+                }
+            }
+        ]
+    },
+
     {
         path: '/Login',
         hidden: true,

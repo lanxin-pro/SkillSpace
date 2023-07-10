@@ -167,9 +167,12 @@ public class SocialUserServiceImpl implements SocialUserService{
      * @return 授权的用户
      */
     private AuthUser getAuthUser(Integer type, String code, String state) {
+        // 给Type 可以返回标识
         AuthRequest authRequest = educateAuthRequestFactory.get(SocialTypeEnum.valueOfType(type).getSource());
+        // 构建
         AuthCallback authCallback = AuthCallback.builder()
                 .code(code).state(state).build();
+        // 使用code授权码
         AuthResponse<?> authResponse = authRequest.login(authCallback);
         log.info("[getAuthUser][请求社交平台 type({}) request({}) response({})]", type,
                 JsonUtils.toJsonString(authCallback), JsonUtils.toJsonString(authResponse));
