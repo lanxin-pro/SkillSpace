@@ -30,6 +30,14 @@ public interface PermissionService {
     Set<Long> getUserRoleIdsFromCache(Long loginUserId, @Nullable Integer status);
 
     /**
+     * 获得用户拥有的角色编号集合
+     *
+     * @param userId
+     * @return
+     */
+    Set<Long> getUserRoleIdListByUserId(Long userId);
+
+    /**
      * 获得角色们拥有的菜单列表，从缓存中获取
      *
      * 任一参数为空时，则返回为空

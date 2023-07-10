@@ -2,7 +2,10 @@ package cn.iocoder.educate.module.system.service.social;
 
 import cn.iocoder.educate.framework.common.exception.ServiceException;
 import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
+import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserDO;
 import cn.iocoder.educate.module.system.enums.social.SocialTypeEnum;
+
+import java.util.List;
 
 /**
  * 社交用户 Service 接口，例如说社交平台的授权登录
@@ -40,4 +43,13 @@ public interface SocialUserService {
      * @param socialUserBindReqDTO 绑定信息
      */
     void bindSocialUser(SocialUserBindReqDTO socialUserBindReqDTO);
+
+    /**
+     * 获得指定用户的社交用户列表
+     *
+     * @param userId 用户编号
+     * @param userType 用户类型
+     * @return 社交用户列表
+     */
+    List<SocialUserDO> getSocialUserList(Long userId, Integer userType);
 }

@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.service.social;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.http.HttpUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
@@ -21,6 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Author: j-sentinel
@@ -91,6 +97,22 @@ public class SocialUserServiceImpl implements SocialUserService{
                 .userId(socialUserBindReqDTO.getUserId()).userType(socialUserBindReqDTO.getUserType())
                 .socialUserId(socialUserDO.getId()).socialType(socialUserDO.getType()).build();
         socialUserBindMapper.insert(socialUserBind);
+    }
+
+    @Override
+    public List<SocialUserDO> getSocialUserList(Long userId, Integer userType) {
+        // 获得绑定
+        List<SocialUserBindDO> socialUserBinds = socialUserBindMapper.selectListByUserIdAndUserType(userId,userType);
+        if(CollUtil.isEmpty(socialUserBinds)){
+            return Collections.emptyList();
+        }
+        Set<Long> collect = socialUserBinds
+                .stream()
+                .map(SocialUserBindDO::getSocialUserId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        // 获得社交用户
+        return socialUserMapper.selectBatchIds(collect);
     }
 
     /**

@@ -150,6 +150,13 @@ public class PermissionServiceImpl implements PermissionService{
         return roleIds;
     }
 
+    @Override
+    public Set<Long> getUserRoleIdListByUserId(Long userId) {
+        List<UserRoleDO> userRoleDOS = userRoleMapper.selectListByUserId(userId);
+
+        return null;
+    }
+
     /**
      * @param roleIds 角色编号数组
      * @param menusType 菜单类型数组

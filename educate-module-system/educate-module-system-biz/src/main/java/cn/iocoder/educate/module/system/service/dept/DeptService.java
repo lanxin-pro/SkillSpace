@@ -63,4 +63,12 @@ public interface DeptService {
         List<DeptDO> deptList = getDeptList(deptIds);
         return deptList.stream().collect(Collectors.toMap(DeptDO::getId, Function.identity(),(v1,v2) -> v1));
     }
+
+    /**
+     * 获得部门信息
+     *
+     * @param deptId 部门编号
+     * @return 部门信息
+     */
+    DeptDO getDept(Long deptId);
 }

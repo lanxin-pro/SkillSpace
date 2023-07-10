@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
 
@@ -50,6 +51,7 @@ public class DeptServiceImpl implements DeptService {
     private DeptMapper deptMapper;
 
     @Override
+    @PostConstruct
     public void initLocalCache() {
         // 第一步：查询数据
         List<DeptDO> deptDOS = deptMapper.selectList(new LambdaQueryWrapper<>());
@@ -88,6 +90,11 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public List<DeptDO> getDeptList(Collection<Long> ids) {
         return deptMapper.selectBatchIds(ids);
+    }
+
+    @Override
+    public DeptDO getDept(Long deptId) {
+        return deptMapper.selectById(deptId);
     }
 
     /**
