@@ -62,6 +62,7 @@ const open = () => {
 
 const close = () => {
   cropperModelRef.value.closeModal()
+  console.log("cropperModelRef.value.closeModal()",cropperModelRef.value)
 }
 // 导出方法
 defineExpose({

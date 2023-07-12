@@ -52,7 +52,7 @@
         </div>
       </div>
       <template #footer>
-        <el-button type="primary" @click="handleOk">确认并上传</el-button>
+        <el-button type="primary" @click="handleOk()">确认并上传</el-button>
       </template>
     </Dialog>
   </div>
@@ -63,6 +63,7 @@ import { ref } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import { propTypes } from '@/utils/propTypes'
 import CropperImage from './Cropper.vue'
+import { dataURLtoBlob } from '@/utils/filt.js'
 
 const props = defineProps({
   // 图片的img
@@ -82,7 +83,8 @@ let scaleY = 1
 
 
 const handleOk = async ()=>{
-  console.log('handleOK')
+  const blob = dataURLtoBlob(previewSource.value)
+  emit('uploadSuccess', { source: previewSource.value, data: blob, filename: filename })
 }
 const handleCropend = ({ imgBase64 })=>{
   previewSource.value = imgBase64

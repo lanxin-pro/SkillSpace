@@ -22,9 +22,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
@@ -84,5 +83,11 @@ public class UserProfileController {
         List<SocialUserDO> socialUsers = socialUserService.getSocialUserList(user.getId(), UserTypeEnum.ADMIN.getValue());
         userProfileRespVO.setSocialUsers(UserConvert.INSTANCE.convertList03(socialUsers));
         return CommonResult.success(userProfileRespVO);
+    }
+
+    @RequestMapping(value = "/update-avatar", method = {RequestMethod.POST, RequestMethod.PUT}) // 解决 uni-app 不支持 Put 上传文件的问题
+    @Operation(summary = "上传用户个人头像")
+    public CommonResult<String> updateUserAvatar(@RequestParam("avatarFile") MultipartFile file) {
+        return CommonResult.success("success");
     }
 }
