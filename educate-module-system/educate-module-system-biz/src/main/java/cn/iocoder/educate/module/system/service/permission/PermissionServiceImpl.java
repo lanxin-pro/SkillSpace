@@ -153,8 +153,11 @@ public class PermissionServiceImpl implements PermissionService{
     @Override
     public Set<Long> getUserRoleIdListByUserId(Long userId) {
         List<UserRoleDO> userRoleDOS = userRoleMapper.selectListByUserId(userId);
-
-        return null;
+        return userRoleDOS
+                .stream()
+                .map(UserRoleDO::getRoleId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     /**

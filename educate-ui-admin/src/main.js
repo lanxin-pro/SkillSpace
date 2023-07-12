@@ -8,6 +8,7 @@ import store from './store' // 导入store
 import { setupStore } from '@/piniastore' // 导入pinia相关操作
 import Logger from '@/utils/Logger' // 日志
 import '@/plugins/windi.css'
+import '@/styles/ruoyi.scss'
 import '@/plugins/animate.css' // 引入动画
 import '@/styles/index.scss' // 引入全局样式
 import '@/assets/styles/index.scss' // 引入全局样式

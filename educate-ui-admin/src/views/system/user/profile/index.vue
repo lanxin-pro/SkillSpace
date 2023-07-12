@@ -8,12 +8,12 @@
           </div>
           <div>
             <div class="text-center">
-              <UserAvatar :user="user" />
+              <UserAvatar :img="user?.avatar" />
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
                 <SvgIcon icon-class="fa-solid fa-user-pen" style="color: #437397" /> 用户名称
-                <div class="pull-right">{{ user.username }}</div>
+                <div class="pull-right">{{ user.nickname }}</div>
               </li>
               <li class="list-group-item">
                 <SvgIcon icon-class="fa-solid fa-mobile-screen" style="color: #F29A43" /> 手机号码
@@ -86,7 +86,7 @@ onMounted(()=>{
 
 const getUser = (async ()=>{
   const response = await getUserProfile()
-  console.log('response',response)
+  user.value = response.data
 })
 </script>
 
