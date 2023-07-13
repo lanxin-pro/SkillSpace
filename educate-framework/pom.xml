@@ -25,6 +25,7 @@
         <module>educate-spring-boot-starter-biz-sms</module>
         <module>educate-spring-boot-starter-test</module>
         <module>educate-spring-boot-starter-biz-social</module>
+        <module>educate-spring-boot-starter-file</module>
     </modules>
 
     <description>
