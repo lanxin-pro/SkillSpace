@@ -1,11 +1,15 @@
 package cn.iocoder.educate.module.system.service.user;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.dal.mysql.user.AdminUserMapper;
+import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.service.dept.DeptService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +40,9 @@ public class AdminUserServiceImpl implements AdminUserService{
 
     @Resource
     private DeptService deptService;
+
+    @Resource
+    private FileApi fileApi;
 
     @Override
     public void updateUserLogin(Long userId, String clientIP) {
@@ -87,6 +95,27 @@ public class AdminUserServiceImpl implements AdminUserService{
             return Collections.emptyList();
         }
         return adminUserMapper.selectBatchIds(ids);
+    }
+
+    @Override
+    public String updateUserAvatar(Long loginUserId, InputStream avatarFile) {
+        // 校验用户id是否存在
+        validateUserExists(loginUserId);
+        // 存储文件
+        fileApi.createFile(IoUtil.readBytes(avatarFile));
+        // 更新用户图像的路径
+
+        return null;
+    }
+
+    private void validateUserExists(Long loginUserId) {
+        if(loginUserId == null){
+            return;
+        }
+        AdminUserDO user = adminUserMapper.selectById(loginUserId);
+        if(user == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+        }
     }
 
     /**

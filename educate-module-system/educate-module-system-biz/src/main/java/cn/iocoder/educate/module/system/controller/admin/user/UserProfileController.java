@@ -2,9 +2,11 @@ package cn.iocoder.educate.module.system.controller.admin.user;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
+import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserProfileRespVO;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
@@ -25,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -87,7 +90,11 @@ public class UserProfileController {
 
     @RequestMapping(value = "/update-avatar", method = {RequestMethod.POST, RequestMethod.PUT}) // 解决 uni-app 不支持 Put 上传文件的问题
     @Operation(summary = "上传用户个人头像")
-    public CommonResult<String> updateUserAvatar(@RequestParam("avatarFile") MultipartFile file) {
-        return CommonResult.success("success");
+    public CommonResult<String> updateUserAvatar(@RequestParam("avatarFile") MultipartFile file) throws IOException {
+        if(file.isEmpty()){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_IS_EMPTY);
+        }
+        String avatar = adminUserService.updateUserAvatar(SecurityFrameworkUtils.getLoginUserId(),file.getInputStream());
+        return CommonResult.success(avatar);
     }
 }

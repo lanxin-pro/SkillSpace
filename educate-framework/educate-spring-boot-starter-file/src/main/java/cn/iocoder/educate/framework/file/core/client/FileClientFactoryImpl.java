@@ -47,7 +47,7 @@ public class FileClientFactoryImpl implements FileClientFactory {
             Long configId, Integer storage, Config config) {
         FileStorageEnum storageEnum = FileStorageEnum.getByStorage(storage);
         Assert.notNull(storageEnum, String.format("文件配置(%s) 为空", storageEnum));
-        // 创建客户端
+        // 创建客户端 方法接受一个类对象作为参数，并使用该类的默认构造函数创建一个新的实例
         return (AbstractFileClient<Config>) ReflectUtil.newInstance(storageEnum.getClientClass(), configId, config);
     }
 }

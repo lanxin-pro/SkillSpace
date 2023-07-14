@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
+import java.io.InputStream;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -95,4 +96,13 @@ public interface AdminUserService {
                 .stream()
                 .collect(Collectors.toMap(AdminUserDO::getId, Function.identity(), (v1,v2) -> v1));
     }
+
+    /**
+     * 更新用户头像
+     *
+     * @param loginUserId 用户 id
+     * @param inputStream 头像文件
+     * @return
+     */
+    String updateUserAvatar(Long loginUserId, InputStream inputStream);
 }

@@ -1,6 +1,8 @@
 package cn.iocoder.educate.framework.file.core.client;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 文件客户端的抽象类，提供模板方法，减少子类的冗余代码
@@ -46,6 +48,10 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
     @Override
     public Long getId() {
         return id;
+    }
+
+    protected String formatFileUrl(String domain, String path) {
+        return StrUtil.format("{}/admin-api/infra/file/{}/get/{}", domain, getId(), path);
     }
 
 }
