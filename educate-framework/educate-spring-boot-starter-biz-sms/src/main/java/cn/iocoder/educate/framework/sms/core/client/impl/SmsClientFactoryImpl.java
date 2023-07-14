@@ -89,7 +89,7 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
     private AbstractSmsClient createSmsClient(SmsChannelProperties properties) {
         SmsChannelEnum smsChannelEnum = SmsChannelEnum.getByCode(properties.getCode());
         Assert.notNull(smsChannelEnum,String.format("渠道类型(%s) 为空",smsChannelEnum));
-        // 创建客户端
+        // 创建客户端 TODO j-sentinel 我觉得无聊的时候这里的代码可以优化成工厂（待完成）+策略（完成）+init()方法可以作为模板方法来写 init()的在模板中添加throw 就行，其他类只要重写就行
         switch (smsChannelEnum) {
             case ALIYUN: return new AliyunSmsClient(properties);
             case DEBUG_DING_TALK: return new DebugDingTalkSmsClient(properties);

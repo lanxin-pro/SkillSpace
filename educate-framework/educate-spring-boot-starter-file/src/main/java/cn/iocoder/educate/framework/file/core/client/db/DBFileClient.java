@@ -24,8 +24,4 @@ public class DBFileClient extends AbstractFileClient<DBFileClientConfig> {
         return null;
     }
 
-    @Override
-    public Long getId() {
-        return null;
-    }
 }

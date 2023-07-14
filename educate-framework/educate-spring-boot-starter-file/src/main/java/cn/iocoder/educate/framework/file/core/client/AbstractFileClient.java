@@ -27,14 +27,7 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
     }
 
     public final void refresh(Config config) {
-        // 判断是否更新
-        if (config.equals(this.config)) {
-            return;
-        }
-        log.info("[refresh][配置({})发生变化，重新初始化]", config);
-        this.config = config;
-        // 初始化
-        this.init();
+
     }
 
     /**
@@ -49,5 +42,10 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
      * 自定义初始化
      */
     protected abstract void doInit();
+
+    @Override
+    public Long getId() {
+        return id;
+    }
 
 }

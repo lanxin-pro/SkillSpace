@@ -22,8 +22,4 @@ public class S3FileClient extends AbstractFileClient<S3FileClientConfig> {
         return null;
     }
 
-    @Override
-    public Long getId() {
-        return null;
-    }
 }

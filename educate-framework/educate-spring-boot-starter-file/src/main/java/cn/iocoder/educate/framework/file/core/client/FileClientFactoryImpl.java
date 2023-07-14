@@ -4,7 +4,6 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ReflectUtil;
 import cn.iocoder.educate.framework.file.core.enums.FileStorageEnum;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,6 +30,7 @@ public class FileClientFactoryImpl implements FileClientFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <Config extends FileClientConfig> void createOrUpdateFileClient(Long configId, Integer storage, Config config) {
         AbstractFileClient<Config> client = (AbstractFileClient<Config>) clients.get(configId);
         if(client == null){
@@ -38,11 +38,13 @@ public class FileClientFactoryImpl implements FileClientFactory {
             client.init();
             clients.put(client.getId(), client);
         } else {
-            client.refresh(config);
+            // client.refresh(config);
         }
     }
 
-    private <Config extends FileClientConfig> AbstractFileClient<Config> createFileClient(Long configId, Integer storage, Config config) {
+    @SuppressWarnings("unchecked")
+    private <Config extends FileClientConfig> AbstractFileClient<Config> createFileClient(
+            Long configId, Integer storage, Config config) {
         FileStorageEnum storageEnum = FileStorageEnum.getByStorage(storage);
         Assert.notNull(storageEnum, String.format("文件配置(%s) 为空", storageEnum));
         // 创建客户端
