@@ -88,7 +88,14 @@ public class UserProfileController {
         return CommonResult.success(userProfileRespVO);
     }
 
-    @RequestMapping(value = "/update-avatar", method = {RequestMethod.POST, RequestMethod.PUT}) // 解决 uni-app 不支持 Put 上传文件的问题
+    /**
+     * 解决 uni-app 不支持 Put 上传文件的问题
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/update-avatar", method = {RequestMethod.POST, RequestMethod.PUT})
     @Operation(summary = "上传用户个人头像")
     public CommonResult<String> updateUserAvatar(@RequestParam("avatarFile") MultipartFile file) throws IOException {
         if(file.isEmpty()){

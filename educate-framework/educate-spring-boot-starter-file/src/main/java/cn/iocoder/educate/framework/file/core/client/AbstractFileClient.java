@@ -51,7 +51,7 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
     }
 
     protected String formatFileUrl(String domain, String path) {
-        return StrUtil.format("{}/admin-api/infra/file/{}/get/{}", domain, getId(), path);
+        return StrUtil.format("{}/server/admin-api/infra/file/{}/get/{}", domain, getId(), path);
     }
 
 }

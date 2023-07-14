@@ -24,6 +24,7 @@
 import { ref,watchEffect,watch } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import CopperModal from './CopperModal.vue'
+
 const props = defineProps({
   width: propTypes.string.def('200px'),
   // 图片的img
@@ -53,7 +54,6 @@ watch(
 const handleUploadSuccess = ({source, data, filename})=>{
   sourceValue.value = source
   emit('change', { source, data, filename })
-  console.log("上传成功handleUploadSuccess（）")
 }
 
 const open = () => {
@@ -62,7 +62,6 @@ const open = () => {
 
 const close = () => {
   cropperModelRef.value.closeModal()
-  console.log("cropperModelRef.value.closeModal()",cropperModelRef.value)
 }
 // 导出方法
 defineExpose({

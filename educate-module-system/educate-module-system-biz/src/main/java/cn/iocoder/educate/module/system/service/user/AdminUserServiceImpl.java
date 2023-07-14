@@ -102,10 +102,13 @@ public class AdminUserServiceImpl implements AdminUserService{
         // 校验用户id是否存在
         validateUserExists(loginUserId);
         // 存储文件
-        fileApi.createFile(IoUtil.readBytes(avatarFile));
+        String avatar = fileApi.createFile(IoUtil.readBytes(avatarFile));
         // 更新用户图像的路径
-
-        return null;
+        AdminUserDO adminUserDO = new AdminUserDO();
+        adminUserDO.setId(loginUserId);
+        adminUserDO.setAvatar(avatar);
+        adminUserMapper.updateById(adminUserDO);
+        return avatar;
     }
 
     private void validateUserExists(Long loginUserId) {

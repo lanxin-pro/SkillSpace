@@ -114,6 +114,7 @@ const device = computed(()=>{
   return store.getters['app/getDevice']
 })
 const avatar = computed(()=>{
+  console.log('执行',wsCacheUser)
   // 这个执行时机有点快
   // return wsCacheUser.user.avatar
   return wsCacheUser.data.user.avatar
