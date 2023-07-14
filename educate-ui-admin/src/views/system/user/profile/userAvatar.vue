@@ -34,7 +34,8 @@ const handelUpload = async ({ data })=>{
   let formData = new FormData()
   formData.append("avatarFile", data)
   const response = await uploadAvatar(formData)
-  ELComponent.msgSuccess("上传成功")
+
+  ELComponent.msgSuccess("上传成功，为您自动更新ing")
 
   // 替换缓存中的值
   const user = wsCache.get(CACHE_KEY.USER)
@@ -42,8 +43,12 @@ const handelUpload = async ({ data })=>{
   wsCache.set(CACHE_KEY.USER,user)
   // 关闭弹窗
   cropperRef.value.close()
+  setTimeout(()=>{
+    location.reload()
+  },4000)
+
 }
-console.log()
+
 
 </script>
 
