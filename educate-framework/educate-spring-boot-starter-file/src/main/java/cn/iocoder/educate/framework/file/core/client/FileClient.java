@@ -22,4 +22,11 @@ public interface FileClient {
      * @return 客户端编号
      */
     Long getId();
+
+    /**
+     * 获得文件的内容
+     * @param path 相对路径
+     * @return 文件的内容
+     */
+    byte[] getContent(String path);
 }

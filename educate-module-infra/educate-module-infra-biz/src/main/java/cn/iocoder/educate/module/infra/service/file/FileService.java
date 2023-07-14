@@ -17,4 +17,13 @@ public interface FileService {
      * @return 文件路径
      */
     String createFile(String name, String path, byte[] content);
+
+    /**
+     * 获得文件内容
+     *
+     * @param configId 配置编号
+     * @param path 文件路径
+     * @return 文件内容
+     */
+    byte[] getFileContent(Long configId, String path);
 }

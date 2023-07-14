@@ -21,4 +21,12 @@ public interface FileConfigService {
      * @return 文件客户端
      */
     FileClient getMasterFileClient();
+
+    /**
+     * 获得指定编号的文件客户端
+     *
+     * @param configId 配置编号
+     * @return 文件客户端
+     */
+    FileClient getFileClient(Long configId);
 }

@@ -54,4 +54,10 @@ public class FileConfigServiceImpl implements FileConfigService {
         });
     }
 
+    @Override
+    public FileClient getFileClient(Long configId) {
+        // 必然是查询的master
+        return fileClientFactory.getFileClient(configId);
+    }
+
 }

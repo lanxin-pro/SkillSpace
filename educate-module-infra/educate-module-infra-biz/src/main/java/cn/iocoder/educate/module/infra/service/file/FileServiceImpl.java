@@ -53,4 +53,14 @@ public class FileServiceImpl implements FileService {
         return url;
     }
 
+    @Override
+    public byte[] getFileContent(Long configId, String path) {
+        // 获取主客户端
+        FileClient client = fileConfigService.getFileClient(configId);
+        Assert.notNull(client, "客户端({}) 不能为空", configId);
+        // 获取文件内容
+        byte[] content = client.getContent(path);
+        return content;
+    }
+
 }

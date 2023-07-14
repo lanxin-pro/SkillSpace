@@ -22,4 +22,9 @@ public class S3FileClient extends AbstractFileClient<S3FileClientConfig> {
         return null;
     }
 
+    @Override
+    public byte[] getContent(String path) {
+        return new byte[0];
+    }
+
 }

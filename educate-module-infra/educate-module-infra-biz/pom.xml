@@ -31,6 +31,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-biz-operatelog</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>

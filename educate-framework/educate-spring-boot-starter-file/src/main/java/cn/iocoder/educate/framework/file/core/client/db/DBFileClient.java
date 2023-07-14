@@ -13,6 +13,11 @@ public class DBFileClient extends AbstractFileClient<DBFileClientConfig> {
 
     private DBFileContentFrameworkDAO dbFileContentFrameworkDAO;
 
+    /**
+     * super就会给我的父Id赋值
+     * @param id
+     * @param config
+     */
     public DBFileClient(Long id, DBFileClientConfig config) {
         super(id, config);
     }
@@ -27,6 +32,12 @@ public class DBFileClient extends AbstractFileClient<DBFileClientConfig> {
         getDbFileContentFrameworkDAO().insert(getId(),path,content);
         // 拼接返回路径
         return super.formatFileUrl(config.getDomain(), path);
+    }
+
+    @Override
+    public byte[] getContent(String path) {
+        return getDbFileContentFrameworkDAO()
+                .selectContent(getId(), path);
     }
 
     private DBFileContentFrameworkDAO getDbFileContentFrameworkDAO() {
