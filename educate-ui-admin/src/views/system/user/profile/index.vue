@@ -53,7 +53,7 @@
               <UserInfo :user="user" />
             </el-tab-pane>
             <el-tab-pane label="修改密码" name="resetPwd">
-              <ResetPwd :user="user" />
+              <ResetPwd />
             </el-tab-pane>
             <el-tab-pane label="社交信息" name="userSocial">
               <UserSocial :user="user" :getUser="getUser" :setActiveTab="setActiveTab" />

@@ -11,6 +11,8 @@
         <TagsView  v-if="needTagsView"/>
       </div>
       <AppMain/>
+
+
       <RightPanel>
         <Settings/>
       </RightPanel>

@@ -1,5 +1,7 @@
 <template>
-<div>RightPanel</div>
+<div>
+
+</div>
 </template>
 
 <script setup>
