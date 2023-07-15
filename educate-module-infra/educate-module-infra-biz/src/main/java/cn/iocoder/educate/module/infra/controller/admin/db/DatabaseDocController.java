@@ -55,6 +55,22 @@ public class DatabaseDocController {
         doExportFile(EngineFileType.HTML, deleteFile, response);
     }
 
+    @GetMapping("/export-word")
+    @Operation(summary = "导出 word 格式的数据文档")
+    @Parameter(name = "deleteFile", description = "是否删除在服务器本地生成的数据库文档", example = "true")
+    public void exportWord(@RequestParam(defaultValue = "true") Boolean deleteFile,
+                           HttpServletResponse response) throws IOException {
+        doExportFile(EngineFileType.WORD, deleteFile, response);
+    }
+
+    @GetMapping("/export-markdown")
+    @Operation(summary = "导出 markdown 格式的数据文档")
+    @Parameter(name = "deleteFile", description = "是否删除在服务器本地生成的数据库文档", example = "true")
+    public void exportMarkdown(@RequestParam(defaultValue = "true") Boolean deleteFile,
+                               HttpServletResponse response) throws IOException {
+        doExportFile(EngineFileType.MD, deleteFile, response);
+    }
+
     private void doExportFile(EngineFileType fileOutputType, Boolean deleteFile,
                               HttpServletResponse response) throws IOException {
         // 随机的文件名

@@ -28,6 +28,7 @@ import { ref,onMounted } from 'vue'
 import IFrame from '@/components/IFrame/index.vue'
 import * as DbDocApi from '@/api/infra/dbDoc'
 import ElComponent from '@/plugins/modal.js'
+import download from '@/utils/download.js'
 
 // 是否加载中
 const loading = ref(true)
@@ -39,13 +40,12 @@ const src = ref('')
  */
 onMounted(async () => {
   await init()
-  ElComponent.msgSuccess("温馨提示：由于页面数据过长，在使用该页面的时候有可能会发生卡顿")
+  ElComponent.msgSuccess("温馨提示：由于页面数据过长，在使用该页面的时候有可能会发生卡顿，强烈建议您导出HTML结构查看")
 })
 
 const init = async ()=>{
   try {
     const response = await DbDocApi.exportHtml()
-    console.log("文档结果",response)
     const blob = new Blob([response], { type: 'text/html' })
     src.value = window.URL.createObjectURL(blob)
   } finally {
@@ -53,6 +53,24 @@ const init = async ()=>{
   }
 }
 
+// 导出 html
+const handleExportHtml = async () => {
+  const res = await DbDocApi.exportHtml()
+  download.html(res, '数据库文档.html')
+  ElComponent.msgSuccess("成功导出")
+}
+// 导出 word
+const handleExportWord = async () => {
+  const res = await DbDocApi.exportWord()
+  download.word(res, '数据库文档.doc')
+  ElComponent.msgSuccess("成功导出")
+}
+// 导出 markdown
+const handleExportMarkdown = async () => {
+  const res = await DbDocApi.exportMarkdown()
+  download.markdown(res, '数据库文档.md')
+  ElComponent.msgSuccess("成功导出")
+}
 </script>
 
 <style scoped>
