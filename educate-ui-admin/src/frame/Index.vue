@@ -25,6 +25,19 @@ import RightPanel from '@/components/RightPanel/index.vue'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import store from '@/store'
 import { computed } from 'vue'
+import { ElNotification } from "element-plus"
+import { formatAxis } from "@/utils/formatTime.js"
+
+import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
+const { wsCache } = useCache()
+
+if(!wsCache.get(CACHE_KEY.IS_LOGIN)){
+  wsCache.set(CACHE_KEY.IS_LOGIN,true)
+  ElNotification.success({
+    title: formatAxis(new Date()),
+    message: '欢迎您回来'
+  })
+}
 
 
 

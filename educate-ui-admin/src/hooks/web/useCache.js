@@ -11,6 +11,8 @@ export const CACHE_KEY = {
     SOCIAL_LOGIN_TYPE: '',
     USER: 'user',
     ROLE_ROUTERS: 'roleRouters',
+    IS_LOGIN: false,
+    DICT_CACHE: 'dictCache'
 }
 
 export const useCache = (type = 'localStorage') => {

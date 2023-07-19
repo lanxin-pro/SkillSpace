@@ -48,6 +48,8 @@ meta: {
 */
 import router from './router'
 import { useUserStore } from '@/piniastore/modules/user.js'
+// 另外的一种导入方式
+import { useDictStoreWithOut } from '@/piniastore/modules/dict.js'
 import { usePermissionStore } from '@/piniastore/modules/permission.js'
 import { ElMessage } from 'element-plus'
 import { showFullLoading,hideFullLoading } from '@/utils/index.js'
@@ -72,6 +74,12 @@ router.beforeEach(async (to,from,next)=>{
             next('/')
             hideFullLoading()
         }else {
+            // 获取所有字典
+            const dictStore = useDictStoreWithOut()
+            if (!dictStore.getIsSetDict) {
+                await dictStore.setDictMap()
+            }
+
             // TODO j-sentinel： 修复的严重错误可以查看这个版本 76行 101行
             // https://github.com/lanxin-pro/SkillSpace/blob/3614d00e61ee713810e0397f8d866298934481a2/educate-ui-admin/src/permission.js
             // TODO j-sentinel： 可以参考ISSUES
