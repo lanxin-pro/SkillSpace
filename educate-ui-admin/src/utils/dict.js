@@ -10,10 +10,14 @@ export const getDictOptions = (dictType) => {
 
 export const getIntDictOptions = (dictType) => {
     const dictOption = []
+    // 拿到store中的值
     const dictOptions = getDictOptions(dictType)
     dictOptions.forEach((dict) => {
         dictOption.push({
+            // { ...dict, value: parseInt(dict.value + '') }：在回调函数中，
+            // 使用扩展运算符 ({ ...dict }) 复制原始对象 dict 的所有属性，并创建一个新的对象。
             ...dict,
+            // 然后，通过 parseInt 函数将原始对象的 value 属性转换为整数类型，并将转换后的值赋给新对象的 value 属性。
             value: parseInt(dict.value + '')
         })
     })

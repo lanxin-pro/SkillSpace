@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.service.permission;
 
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 
 import java.util.List;
@@ -40,4 +41,13 @@ public interface MenuService {
      * @return 菜单数组
      */
     List<MenuDO> getMenuListFromCache(List<Long> menuIds, Set<Integer> menusType, Integer status);
+
+    /**
+     * 筛选菜单列表
+     *
+     * @param reqVO 筛选条件请求 VO
+     * @return 菜单列表
+     */
+    List<MenuDO> getMenuList(MenuListReqVO reqVO);
+
 }

@@ -34,13 +34,12 @@ export const useDictStore = defineStore('admin-dict', {
     actions: { // 可以通过actions 方法，改变 state 里面的值。
         getDictByType(type){
             if (!this.isSetDict) {
-                // this.setDictMap()
+                this.setDictMap()
             }
             return this.dictMap[type]
         },
         async setDictMap() {
             const dictMap = wsCache.get(CACHE_KEY.DICT_CACHE)
-            console.log('dictMap',dictMap)
             if (dictMap) {
                 this.dictMap = dictMap
                 this.isSetDict = true

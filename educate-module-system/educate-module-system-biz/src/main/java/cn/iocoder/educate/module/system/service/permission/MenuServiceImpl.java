@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.service.permission;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.educate.module.system.dal.mysql.permission.MenuMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -95,6 +96,11 @@ public class MenuServiceImpl implements MenuService{
                     && menusType.contains(menu.getType())
                     && Collections.singleton(status).contains(menu.getStatus());
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MenuDO> getMenuList(MenuListReqVO reqVO) {
+        return menuMapper.selectList(reqVO);
     }
 
     public static boolean isAnyEmpty(Collection<?>... collections) {
