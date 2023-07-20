@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import cn.iocoder.educate.framework.common.enums.DocumentEnum;
 import cn.iocoder.educate.framework.mq.core.RedisMQTemplate;
+import cn.iocoder.educate.framework.mq.core.pugsub.AbstractChannelMessageListener;
 import cn.iocoder.educate.framework.mq.core.stream.AbstractStreamMessage;
 import cn.iocoder.educate.framework.mq.core.stream.AbstractStreamMessageListener;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.stream.DefaultStreamMessageListenerContainerX;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
@@ -49,11 +51,19 @@ public class EducateRabbitMQAutoConfiguration {
      * @return 返回一个 ${@link RedisMessageListenerContainer} 对象
      */
     @Bean(initMethod = "start",destroyMethod = "stop")
-    public RedisMessageListenerContainer redisMessageListenerContainer(RedisMQTemplate redisMQTemplate){
+    public RedisMessageListenerContainer redisMessageListenerContainer(
+            RedisMQTemplate redisMQTemplate,List<AbstractChannelMessageListener<?>> abstractChannelMessageListeners){
         // 创建 RedisMessageListenerContainer 对象
         RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
+        // 设置 RedisConnection 工厂。
         redisMessageListenerContainer.setConnectionFactory(redisMQTemplate.getRedisTemplate().getRequiredConnectionFactory());
-
+        // 添加监听器
+        abstractChannelMessageListeners.forEach(listener -> {
+            listener.setRedisMQTemplate(redisMQTemplate);
+            redisMessageListenerContainer.addMessageListener(listener, new ChannelTopic(listener.getChannel()));
+            log.info("[redisMessageListenerContainer][注册 Channel({}) 对应的监听器({})]",
+                    listener.getChannel(), listener.getClass().getName());
+        });
         return redisMessageListenerContainer;
     }
 
