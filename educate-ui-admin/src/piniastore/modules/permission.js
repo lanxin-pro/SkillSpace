@@ -104,7 +104,8 @@ export const usePermissionStore = defineStore('admin-permission', {
     }
 })
 
-const modules = import.meta.glob('@/views/**/*.{vue,tsx}')
+// 查找文件
+const modules = import.meta.glob('@/views/**/index.{vue,tsx}')
 
 // 后端控制路由生成
 function generateRoute(routes){
