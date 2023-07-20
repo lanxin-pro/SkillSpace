@@ -2,6 +2,7 @@ package cn.iocoder.educate.framework.operatelog.core.aop;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -42,6 +44,7 @@ import java.util.stream.IntStream;
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/7 10:56
+ *
  * 拦截使用 @OperateLog 注解，如果满足条件，则生成操作日志。
  * 满足如下任一条件，则会进行记录：
  * 1. 使用 @ApiOperation + 非 @GetMapping
@@ -58,7 +61,8 @@ public class OperateLogAspect {
 
     @Around("@annotation(operation)")
     public Object around(ProceedingJoinPoint proceedingJoinPoint, Operation operation) throws Throwable {
-        OperateLog operateLog = extracted(proceedingJoinPoint);
+        // 获取OperateLog
+        OperateLog operateLog = getMethodAnnotation(proceedingJoinPoint,OperateLog.class);
         return around0(proceedingJoinPoint,operation,operateLog);
     }
 
@@ -72,7 +76,9 @@ public class OperateLogAspect {
         // 记录开始时间
         LocalDateTime startTime = LocalDateTime.now();
         try {
+            // 执行原有方法
             Object result = proceedingJoinPoint.proceed();
+            // 记录正常执行时的操作日志
             this.log(proceedingJoinPoint,operateLog,operation,startTime,result,null);
             return result;
         }catch (Exception exception){
@@ -279,7 +285,8 @@ public class OperateLogAspect {
     }
 
     /**
-     * 使用 findFirst 方法，找到符合特定条件的第一个请求方法，如果不存在，则返回 null
+     * 使用 findFirst 方法，找到符合特定条件的第一个请求方法，如果不存在，则返回 null，主要是排除GET请求
+     *
      * @param requestMethods
      * @return
      */
@@ -304,12 +311,13 @@ public class OperateLogAspect {
 
     /**
      * 获取@OperateLog注解，前提就是我得有@Operation
+     *
      * @param proceedingJoinPoint
      * @return
      */
-    private OperateLog extracted(ProceedingJoinPoint proceedingJoinPoint) {
+    private <T extends Annotation> T getMethodAnnotation(ProceedingJoinPoint proceedingJoinPoint, Class<T> annotationClass) {
         return ((MethodSignature) proceedingJoinPoint.getSignature())
-                .getMethod().getAnnotation(OperateLog.class);
+                .getMethod().getAnnotation(annotationClass);
     }
 
     /**
@@ -331,13 +339,26 @@ public class OperateLogAspect {
      * @param operateLog
      * @return
      */
-    private boolean isLogEnable(ProceedingJoinPoint joinPoint, OperateLog operateLog) {
+    private static boolean isLogEnable(ProceedingJoinPoint joinPoint, OperateLog operateLog) {
         // 有 @OperateLog 注解的情况
         if(operateLog != null){
             return operateLog.enable();
         }
-        // 默认事记录的
-        return true;
+        // 没有 @ApiOperation 注解的情况下，只记录 POST、PUT、DELETE 的情况
+        return obtainFirstLogRequestMethod(obtainRequestMethod(joinPoint)) != null;
+    }
+
+    /**
+     * 获取请求类型集合
+     *
+     * @param joinPoint
+     * @return
+     */
+    private static RequestMethod[] obtainRequestMethod(ProceedingJoinPoint joinPoint) {
+            // 使用 Spring 的工具类，可以处理 @RequestMapping 别名注解
+        RequestMapping requestMapping = AnnotationUtils.getAnnotation(
+                ((MethodSignature) joinPoint.getSignature()).getMethod(), RequestMapping.class);
+        return requestMapping != null ? requestMapping.method() : new RequestMethod[]{};
     }
 
     private static boolean isIgnoreArgs(Object object) {
