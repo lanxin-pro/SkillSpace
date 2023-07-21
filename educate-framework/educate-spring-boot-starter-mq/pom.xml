@@ -19,8 +19,26 @@
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>educate-spring-boot-starter-redis</artifactId>
+            <artifactId>educate-common</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.18.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.redisson</groupId>
+                    <artifactId>redisson-spring-data-27</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-data-24</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+       
     </dependencies>
+
 </project>
