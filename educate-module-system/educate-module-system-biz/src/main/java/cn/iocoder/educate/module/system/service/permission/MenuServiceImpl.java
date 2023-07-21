@@ -1,15 +1,24 @@
 package cn.iocoder.educate.module.system.service.permission;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
+import cn.iocoder.educate.module.system.convert.permission.MenuConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.educate.module.system.dal.mysql.permission.MenuMapper;
+import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.system.enums.permission.MenuTypeEnum;
+import cn.iocoder.educate.module.system.mq.producer.permission.MenuProducer;
+import cn.iocoder.educate.module.system.service.tenant.TenantService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -49,6 +58,12 @@ public class MenuServiceImpl implements MenuService{
 
     @Resource
     private MenuMapper menuMapper;
+
+    @Resource
+    private MenuProducer menuProducer;
+
+    @Resource
+    private TenantService tenantService;
 
     @Override
     @PostConstruct
@@ -101,6 +116,101 @@ public class MenuServiceImpl implements MenuService{
     @Override
     public List<MenuDO> getMenuList(MenuListReqVO reqVO) {
         return menuMapper.selectList(reqVO);
+    }
+
+    @Override
+    public Long createMenu(MenuCreateReqVO reqVO) {
+        // 校验父菜单是否存在
+        validateParentMenu(reqVO.getParentId(), null);
+        // 校验菜单（自己）
+        validateMenu(reqVO.getParentId(),reqVO.getName(),null);
+        // 插入数据库
+        MenuDO menuDO = MenuConvert.INSTANCE.convert(reqVO);
+        initMenuProperty(menuDO);
+        menuMapper.insert(menuDO);
+        menuProducer.sendMenuRefreshMessage();
+        // 发送刷新消息
+        return menuDO.getId();
+    }
+
+    @Override
+    public List<MenuDO> getMenuListByTenant(MenuListReqVO menuListReqVO) {
+        List<MenuDO> menus = getMenuList(menuListReqVO);
+        // TODO j-sentinel 以后的多租户设置
+
+        return menus;
+    }
+
+    /**
+     * 初始化菜单的通用属性
+     *
+     * 例如说，只有目录或者菜单类型的菜单，才设置 icon
+     *
+     * @param menu 菜单
+     */
+    private void initMenuProperty(MenuDO menu) {
+        // 菜单为按钮类型时，无需 component、icon、path 属性，进行置空
+        if(MenuTypeEnum.BUTTON.getType().equals(menu.getType())) {
+            menu.setComponent("");
+            menu.setComponentName("");
+            menu.setIcon("");
+            menu.setPath("");
+        }
+    }
+
+    /**
+     * 校验菜单是否合法
+     *
+     * 1. 校验相同父菜单编号下，是否存在相同的菜单名
+     *
+     * @param parentId 菜单名字
+     * @param name 父菜单编号
+     * @param id 菜单编号
+     */
+    void validateMenu(Long parentId, String name, Long id) {
+        // 相同父类下面是否有相同的名称
+        MenuDO menu = menuMapper.selectByParentIdAndName(parentId,name);
+        // menu如果等于null就表明库里面没有该相同的名称
+        if(menu == null){
+            return;
+        }
+        // 如果 id 为空，说明不用比较是否为相同 id 的菜单
+        if(id == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_NAME_DUPLICATE);
+        }
+        if(!menu.getId().equals(id)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_NAME_DUPLICATE);
+        }
+    }
+
+    /**
+     * 校验父菜单是否合法
+     *
+     * 1. 不能设置自己为父菜单
+     * 2. 父菜单不存在
+     * 3. 父菜单必须是 {@link MenuTypeEnum#MENU} 菜单类型
+     *
+     * @param parentId 父菜单编号
+     * @param childId 当前菜单编号
+     */
+    private void validateParentMenu(Long parentId, Long childId) {
+        if(parentId == null || MenuDO.ID_ROOT.equals(parentId)){
+            return;
+        }
+        // 不能设置自己为父菜单
+        if(parentId.equals(childId)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_ERROR);
+        }
+        MenuDO menu = menuMapper.selectById(parentId);
+        // 父菜单不存在
+        if(menu == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_NOT_EXISTS);
+        }
+        // 父菜单必须是目录或者菜单类型
+        if(!MenuTypeEnum.DIR.getType().equals(menu.getType())
+            && !MenuTypeEnum.MENU.getType().equals(menu.getType())) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_NOT_DIR_OR_MENU);
+        }
     }
 
     public static boolean isAnyEmpty(Collection<?>... collections) {

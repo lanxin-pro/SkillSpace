@@ -23,6 +23,9 @@ dependencies:
   '@fortawesome/vue-fontawesome':
     specifier: ^3.0.3
     version: 3.0.3(@fortawesome/fontawesome-svg-core@6.4.0)(vue@3.2.47)
+  '@riophae/vue-treeselect':
+    specifier: 0.4.0
+    version: 0.4.0(vue@3.2.47)
   '@vueuse/core':
     specifier: ^10.1.2
     version: 10.1.2(vue@3.2.47)
@@ -121,6 +124,13 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.21.5
+
+  /@babel/runtime@7.22.6:
+    resolution: {integrity: sha512-wDb5pWm4WDdF6LFUde3Jl8WzPA+3ZbxYqkC6xAXuD3irdEHN1k0NfTRrJD8ZD378SJ61miMLCqIOXYhd8x+AJQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: false
 
   /@babel/types@7.21.5:
     resolution: {integrity: sha512-m4AfNvVF2mVC/F7fDEdH2El3HzUg9It/XsCxZiOTTA3m3qYfcSVSbTfM6Q9xG+hYDniZssYhlXKKUMD5m8tF4Q==}
@@ -435,6 +445,22 @@ packages:
     dependencies:
       '@iconify/iconify': 3.1.0
     dev: true
+
+  /@riophae/vue-treeselect@0.4.0(vue@3.2.47):
+    resolution: {integrity: sha512-J4atYmBqXQmiPFK/0B5sXKjtnGc21mBJEiyKIDZwk0Q9XuynVFX6IJ4EpaLmUgL5Tve7HAS7wkiGGSti6Uaxcg==}
+    peerDependencies:
+      vue: ^2.2.0
+    dependencies:
+      '@babel/runtime': 7.22.6
+      babel-helper-vue-jsx-merge-props: 2.0.3
+      easings-css: 1.0.0
+      fuzzysearch: 1.0.3
+      is-promise: 2.2.2
+      lodash: 4.17.21
+      material-colors: 1.2.6
+      vue: 3.2.47
+      watch-size: 2.0.0
+    dev: false
 
   /@sxzz/popperjs-es@2.11.7:
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
@@ -890,6 +916,10 @@ packages:
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
+    dev: false
+
+  /babel-helper-vue-jsx-merge-props@2.0.3:
+    resolution: {integrity: sha512-gsLiKK7Qrb7zYJNgiXKpXblxbV5ffSwR0f5whkPAaBAR4fhi6bwRZxX9wBlIc5M/v8CCkXUbXZL4N/nSE97cqg==}
     dev: false
 
   /balanced-match@1.0.2:
@@ -1386,6 +1416,10 @@ packages:
       stream-shift: 1.0.1
     dev: true
 
+  /easings-css@1.0.0:
+    resolution: {integrity: sha512-7Uq7NdazNfVtr0RNmPAys8it0zKCuaqxJStYKEl72D3j4gbvXhhaM7iWNbqhA4C94ygCye6VuyhzBRQC4szeBg==}
+    dev: false
+
   /element-plus@2.3.3(vue@3.2.47):
     resolution: {integrity: sha512-Zy61OXrG6b4FF3h29A9ZOUkaEQXjCuFwNa7DlpB3Vo+42Tw5zBbHe5a4BY7i56TVJG5xTbS9UQyA726J91pDqg==}
     peerDependencies:
@@ -1721,6 +1755,10 @@ packages:
     requiresBuild: true
     optional: true
 
+  /fuzzysearch@1.0.3:
+    resolution: {integrity: sha512-s+kNWQuI3mo9OALw0HJ6YGmMbLqEufCh2nX/zzV5CrICQ/y4AwPxM+6TIiF9ItFCHXFCyM/BfCCmN57NTIJuPg==}
+    dev: false
+
   /get-value@2.0.6:
     resolution: {integrity: sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==}
     engines: {node: '>=0.10.0'}
@@ -1970,6 +2008,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /is-promise@2.2.2:
+    resolution: {integrity: sha512-+lP4/6lKUBfQjZ2pdxThZvLUAafmZb8OAxFb8XXtiQmS35INgr85hdOGoEs124ez1FCnZJt6jau/T+alh58QFQ==}
+    dev: false
+
   /is-windows@1.0.2:
     resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
     engines: {node: '>=0.10.0'}
@@ -2135,6 +2177,10 @@ packages:
     dependencies:
       object-visit: 1.0.1
     dev: true
+
+  /material-colors@1.2.6:
+    resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
+    dev: false
 
   /md5.js@1.3.5:
     resolution: {integrity: sha512-xitP+WxNPcTTOgnTJcrhM0xvdPepipPSf3I8EIpGKeFLjt3PlJLIDG3u8EX53ZIubkb+5U2+3rELYpEhHhzdkg==}
@@ -2682,6 +2728,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+
+  /regenerator-runtime@0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+    dev: false
 
   /regex-not@1.0.2:
     resolution: {integrity: sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==}
@@ -3297,6 +3347,10 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.0
       vue: 3.2.47
+    dev: false
+
+  /watch-size@2.0.0:
+    resolution: {integrity: sha512-M92R89dNoTPWyCD+HuUEDdhaDnh9jxPGOwlDc0u51jAgmjUvzqaEMynXSr3BaWs+QdHYk4KzibPy1TFtjLmOZQ==}
     dev: false
 
   /watchpack-chokidar2@2.0.1:

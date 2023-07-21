@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.service.permission;
 
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 
@@ -50,4 +51,20 @@ public interface MenuService {
      */
     List<MenuDO> getMenuList(MenuListReqVO reqVO);
 
+    /**
+     * 创建菜单
+     *
+     * @param reqVO 菜单信息
+     * @return 创建出来的菜单编号
+     */
+    Long createMenu(MenuCreateReqVO reqVO);
+
+    /**
+     * 基于租户，筛选菜单列表
+     * 注意，如果是系统租户，返回的还是全菜单
+     *
+     * @param menuListReqVO 筛选条件请求 VO
+     * @return 菜单列表
+     */
+    List<MenuDO> getMenuListByTenant(MenuListReqVO menuListReqVO);
 }

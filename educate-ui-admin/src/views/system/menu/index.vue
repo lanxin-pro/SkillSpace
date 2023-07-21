@@ -29,7 +29,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="plus" size="small" @click="handleAdd"
+        <el-button type="primary" plain icon="plus" size="small" @click="openForm('create')"
                    v-hasPermi="['system:menu:create']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -64,9 +64,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template v-slot="scope">
-          <el-button size="small" type="text" icon="edit" @click="handleUpdate(scope.row)"
+          <el-button size="small" type="text" icon="edit" @click="openForm('update', scope.row.id)"
                      v-hasPermi="['system:menu:update']">修改</el-button>
-          <el-button size="small" type="text" icon="plus" @click="handleAdd(scope.row)"
+          <el-button size="small" type="text" icon="plus" @click="openForm('create', undefined, scope.row.id)"
                      v-hasPermi="['system:menu:create']">新增</el-button>
           <el-button size="small" type="text" icon="delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:menu:delete']">删除</el-button>
@@ -76,17 +76,24 @@
 
 
 
-
+    <!-- 添加或修改菜单对话框 -->
+    <MenuForm ref="formRef" @success="getList" />
   </div>
 </template>
 
 <script setup>
 import { ref,reactive,onMounted } from 'vue'
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
-import { listMenu } from '@/api/system/menu'
+import { listMenu,getMenu } from '@/api/system/menu'
 import { handleTree } from '@/utils/ruoyi.js'
 import SvgIcon from '@/components/SvgIcon/index.vue'
+import { SystemMenuTypeEnum, CommonStatusEnum } from '@/utils/constants'
+import MenuForm from './MenuForm.vue'
 
+// 添加/修改操作
+const formRef = ref()
+// ref
+const queryForm = ref()
 // 遮罩层
 const loading = ref(true)
 // 显示搜索条件
@@ -127,6 +134,7 @@ const rules = reactive({
 
 
 onMounted(()=>{
+  console.log('菜单')
   getList()
 })
 
@@ -137,11 +145,61 @@ onMounted(()=>{
  */
 const getList = async ()=>{
   loading.value = true
-  const response = await listMenu(queryParams.value)
-  menuList.value = handleTree(response.data,'id')
-  loading.value = false
+  try{
+    const response = await listMenu(queryParams.value)
+    menuList.value = handleTree(response.data)
+  }finally {
+    loading.value = false
+  }
 }
 
+/**
+ * 搜索按钮操作
+ */
+const handleQuery = ()=>{
+  getList()
+}
+const resetQuery = ()=>{
+  queryForm.value.resetFields()
+  handleQuery()
+}
+
+/**
+ * 新增按钮操作
+ * @returns {Promise<void>}
+ */
+const openForm = async (type, id, parentId) => {
+  formRef.value.open(type,id,parentId)
+}
+/**
+ * 删除按钮操作
+ * @returns {Promise<void>}
+ */
+const handleDelete = async ()=>{
+
+}
+const getTreeSelect = async ()=>{
+  const response = await listMenu()
+  menuOptions.value = []
+  const menu = { id: 0, name: '主类目', children: [] }
+  menu.children = this.handleTree(response.data,"id")
+  menuOptions.value.push(menu)
+}
+const reset = ()=>{
+  form.value = {
+    id: undefined,
+    parentId: 0,
+    name: undefined,
+    icon: undefined,
+    type: SystemMenuTypeEnum.DIR,
+    sort: undefined,
+    status: CommonStatusEnum.ENABLE,
+    visible: true,
+    keepAlive: true,
+    alwaysShow: true,
+  }
+  queryForm.value.resetFields()
+}
 </script>
 
 <style scoped>
