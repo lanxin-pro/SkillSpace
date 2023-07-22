@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.system.convert.permission;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuRespVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuSimpleRespVO;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -21,6 +22,10 @@ public interface MenuConvert {
     List<MenuRespVO> convertList(List<MenuDO> list);
 
     MenuDO convert(MenuCreateReqVO bean);
+
+    MenuRespVO convert(MenuDO bean);
+
+    MenuDO convert(MenuUpdateReqVO bean);
 
     List<MenuSimpleRespVO> convertList02(List<MenuDO> list);
 

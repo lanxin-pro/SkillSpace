@@ -28,4 +28,11 @@ public interface MenuMapper extends BaseMapper<MenuDO> {
         menuDOLambdaQueryWrapper.eq(MenuDO::getParentId,parentId).eq(MenuDO::getName,name);
         return selectOne(menuDOLambdaQueryWrapper);
     }
+
+    default Long selectCountByParentId(Long id){
+        LambdaQueryWrapper<MenuDO> menuDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        menuDOLambdaQueryWrapper.eq(MenuDO::getParentId,id);
+        return selectCount(menuDOLambdaQueryWrapper);
+    }
+
 }

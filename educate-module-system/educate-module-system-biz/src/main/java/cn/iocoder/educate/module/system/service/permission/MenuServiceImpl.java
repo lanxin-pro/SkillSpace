@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuUpdateReqVO;
 import cn.iocoder.educate.module.system.convert.permission.MenuConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.educate.module.system.dal.mysql.permission.MenuMapper;
@@ -20,6 +21,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
@@ -64,6 +69,9 @@ public class MenuServiceImpl implements MenuService{
 
     @Resource
     private TenantService tenantService;
+
+    @Resource
+    private PermissionService permissionService;
 
     @Override
     @PostConstruct
@@ -141,6 +149,56 @@ public class MenuServiceImpl implements MenuService{
         return menus;
     }
 
+    @Override
+    public MenuDO getMenu(Long id) {
+        return menuMapper.selectById(id);
+    }
+
+    @Override
+    public void updateMenu(MenuUpdateReqVO reqVO) {
+        // 校验更新的菜单是否存在
+        if(menuMapper.selectById(reqVO.getId()) == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_NOT_EXISTS);
+        }
+        // 校验父菜单存在
+        validateParentMenu(reqVO.getParentId(),reqVO.getId());
+        // 校验菜单（自己）
+        validateMenu(reqVO.getParentId(),reqVO.getName(),reqVO.getId());
+        // 更新到数据库
+        MenuDO updateObject = MenuConvert.INSTANCE.convert(reqVO);
+        // 初始化属性（去除多余的记录）
+        initMenuProperty(updateObject);
+        menuMapper.updateById(updateObject);
+        // 发送刷新消息
+        menuProducer.sendMenuRefreshMessage();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteMenu(Long menuId) {
+        // 校验是否还有子菜单
+        if (menuMapper.selectCountByParentId(menuId) > 0) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_EXISTS_CHILDREN);
+        }
+        // 校验删除的菜单是否存在
+        if(menuMapper.selectById(menuId) == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_NOT_EXISTS);
+        }
+        // 标记删除
+        menuMapper.deleteById(menuId);
+        // 删除授予给角色的权限
+        permissionService.processMenuDeleted(menuId);
+        // 发送刷新消息. 注意，需要事务提交后，在进行发送刷新消息。不然 db 还未提交，结果缓存先刷新了
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+            @Override
+            public void afterCommit() {
+                menuProducer.sendMenuRefreshMessage();
+            }
+
+        });
+    }
+
     /**
      * 初始化菜单的通用属性
      *
@@ -197,16 +255,16 @@ public class MenuServiceImpl implements MenuService{
         if(parentId == null || MenuDO.ID_ROOT.equals(parentId)){
             return;
         }
-        // 不能设置自己为父菜单
+        // 1.不能设置自己为父菜单
         if(parentId.equals(childId)){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_ERROR);
         }
         MenuDO menu = menuMapper.selectById(parentId);
-        // 父菜单不存在
+        // 2.父菜单不存在
         if(menu == null){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_NOT_EXISTS);
         }
-        // 父菜单必须是目录或者菜单类型
+        // 3.父菜单必须是目录或者菜单类型
         if(!MenuTypeEnum.DIR.getType().equals(menu.getType())
             && !MenuTypeEnum.MENU.getType().equals(menu.getType())) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_PARENT_NOT_DIR_OR_MENU);

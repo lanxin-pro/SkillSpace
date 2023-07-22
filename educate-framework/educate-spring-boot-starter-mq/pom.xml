@@ -38,7 +38,6 @@
             <artifactId>redisson-spring-data-24</artifactId>
             <version>3.18.0</version>
         </dependency>
-       
     </dependencies>
 
 </project>

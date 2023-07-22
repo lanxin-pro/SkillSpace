@@ -47,6 +47,7 @@ public abstract class BaseDO implements Serializable {
     private String updater;
 
     /**
+     * 逻辑删除字段
      * 是否删除
      */
     @TableLogic

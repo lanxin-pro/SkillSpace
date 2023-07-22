@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.permission;
 
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 
 import java.util.List;
@@ -67,4 +68,26 @@ public interface MenuService {
      * @return 菜单列表
      */
     List<MenuDO> getMenuListByTenant(MenuListReqVO menuListReqVO);
+
+    /**
+     * 获得菜单
+     *
+     * @param id 菜单编号
+     * @return 菜单
+     */
+    MenuDO getMenu(Long id);
+
+    /**
+     * 更新菜单
+     *
+     * @param reqVO 菜单信息
+     */
+    void updateMenu(MenuUpdateReqVO reqVO);
+
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单编号
+     */
+    void deleteMenu(Long id);
 }

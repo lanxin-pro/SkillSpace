@@ -48,4 +48,12 @@ public interface PermissionService {
      * @return 菜单列表
      */
     List<MenuDO> getRoleMenuListFromCache(Set<Long> roleIds, Set<Integer> asSet, Integer status);
+
+    /**
+     * 处理菜单删除时，删除关联授权数据
+     *
+     * @param menuId 菜单编号
+     */
+    void processMenuDeleted(Long menuId);
+
 }

@@ -59,16 +59,16 @@
       <el-table-column prop="componentName" label="组件名称" :show-overflow-tooltip="true" />
       <el-table-column prop="status" label="状态" width="80">
         <template v-slot="scope">
-          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status"/>
+          <DictTag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template v-slot="scope">
-          <el-button size="small" type="text" icon="edit" @click="openForm('update', scope.row.id)"
+          <el-button size="small" style="padding: 0" type="text" icon="edit" @click="openForm('update', scope.row.id)"
                      v-hasPermi="['system:menu:update']">修改</el-button>
-          <el-button size="small" type="text" icon="plus" @click="openForm('create', undefined, scope.row.id)"
+          <el-button size="small" style="padding: 0" type="text" icon="plus" @click="openForm('create', undefined, scope.row.id)"
                      v-hasPermi="['system:menu:create']">新增</el-button>
-          <el-button size="small" type="text" icon="delete" @click="handleDelete(scope.row)"
+          <el-button size="small" style="padding: 0" type="text" icon="delete" @click="handleDelete(scope.row.id)"
                      v-hasPermi="['system:menu:delete']">删除</el-button>
         </template>
       </el-table-column>
@@ -82,13 +82,15 @@
 </template>
 
 <script setup>
-import { ref,reactive,onMounted } from 'vue'
+import { ref,reactive,onMounted,nextTick } from 'vue'
 import { getIntDictOptions, DICT_TYPE } from '@/utils/dict'
-import { listMenu,getMenu } from '@/api/system/menu'
+import { listMenu,getMenu,deleteMenu } from '@/api/system/menu'
 import { handleTree } from '@/utils/ruoyi.js'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import { SystemMenuTypeEnum, CommonStatusEnum } from '@/utils/constants'
 import MenuForm from './MenuForm.vue'
+import DictTag from '@/components/DictTag/index.vue'
+import ELComponent from '@/plugins/modal.js'
 
 // 添加/修改操作
 const formRef = ref()
@@ -175,8 +177,14 @@ const openForm = async (type, id, parentId) => {
  * 删除按钮操作
  * @returns {Promise<void>}
  */
-const handleDelete = async ()=>{
-
+const handleDelete = async (id)=>{
+  // 删除的二次确认
+  await ELComponent.confirm('您确定要删除吗？')
+  // 发起删除
+  await deleteMenu(id)
+  ELComponent.msgSuccess('删除成功')
+  // 刷新列表
+  await getList()
 }
 const getTreeSelect = async ()=>{
   const response = await listMenu()
@@ -199,6 +207,16 @@ const reset = ()=>{
     alwaysShow: true,
   }
   queryForm.value.resetFields()
+}
+/**
+ * 展开/折叠操作
+ */
+const toggleExpandAll = ()=>{
+  refreshTable.value = false
+  isExpandAll.value = !isExpandAll.value
+  nextTick(()=>{
+    refreshTable.value = true
+  })
 }
 </script>
 

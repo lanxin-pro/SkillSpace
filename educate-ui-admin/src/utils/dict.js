@@ -1,5 +1,5 @@
 import { useDictStoreWithOut } from '@/piniastore/modules/dict'
-
+import { ref } from 'vue'
 
 const dictStore = useDictStoreWithOut()
 
@@ -23,6 +23,68 @@ export const getIntDictOptions = (dictType) => {
     })
 
     return dictOption
+}
+
+/**
+ * 获取 dictType 对应的数据字典数组
+ *
+ * @param dictType 数据类型
+ * @param values 数组、单个元素
+ * @returns {*|Array} 数据字典数组
+ */
+export function getDictDatas2(dictType, values) {
+    if (values === undefined) {
+        return [];
+    }
+
+    // 如果是单个元素，则转换成数组
+    if (!Array.isArray(values)) {
+        values = [values];
+    }
+
+    // 获得字典数据
+    const results = [];
+    for (const value of values) {
+        const dict = getDictData(dictType, value);
+        if (dict) {
+            results.push(dict);
+        }
+    }
+    return results;
+}
+
+export function getDictData(dictType, value) {
+    // 获取 dictType 对应的数据字典数组
+    const dictDatas = getDictOptions(dictType)
+    if (!dictDatas || dictDatas.length === 0) {
+        return ''
+    }
+    // 获取 value 对应的展示名
+    value = value + '' // 强制转换成字符串，因为 DictData 小类数值，是字符串
+    for (const dictData of dictDatas) {
+        if (dictData.value === value) {
+            return dictData;
+        }
+    }
+    return undefined
+}
+
+
+/**
+ * 获得字典数据的文本展示
+ *
+ * @param dictType 字典类型
+ * @param value 字典数据的值
+ */
+export const getDictLabel = (dictType, value) => {
+    const dictOptions = getDictOptions(dictType)
+    const dictLabel = ref('')
+    dictOptions.forEach((dict) => {
+        if (dict.value === value) {
+            dictLabel.value = dict.label
+        }
+    })
+    return dictLabel.value
 }
 
 export const DICT_TYPE = {

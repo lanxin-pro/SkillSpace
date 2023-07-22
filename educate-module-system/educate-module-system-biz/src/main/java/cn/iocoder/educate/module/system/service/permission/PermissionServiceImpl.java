@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -186,6 +187,12 @@ public class PermissionServiceImpl implements PermissionService{
             menuIds.addAll(values);
         });
         return menuService.getMenuListFromCache(menuIds, menusType, status);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void processMenuDeleted(Long menuId) {
+        roleMenuMapper.deleteListByMenuId(menuId);
     }
 
     public static boolean isAnyEmpty(Collection<?>... collections) {

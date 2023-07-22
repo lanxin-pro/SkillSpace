@@ -28,6 +28,34 @@ export function getMenu(id) {
 }
 
 /**
+ * 修改菜单
+ *
+ * @param data
+ * @returns {*}
+ */
+export function updateMenu(data) {
+    return request({
+        url: '/system/menu/update',
+        method: 'put',
+        data: data
+    })
+}
+
+/**
+ * 删除菜单
+ *
+ * @param id
+ * @returns {*}
+ */
+export function deleteMenu(id) {
+    return request({
+        url: '/system/menu/delete?id=' + id,
+        method: 'delete'
+    })
+}
+
+
+/**
  * 查询菜单（精简)列表
  *
  * @returns {*}

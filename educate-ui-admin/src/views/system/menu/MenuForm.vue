@@ -123,7 +123,7 @@
 import { ref,reactive } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict.js'
-import { getSimpleMenusList,getMenu,createMenu } from '@/api/system/menu/index.js'
+import { getSimpleMenusList,getMenu,createMenu,updateMenu } from '@/api/system/menu/index.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache.js'
 import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import { defaultProps, handleTree } from '@/utils/tree.js'
@@ -180,6 +180,7 @@ const open = async (type, id, parentId) => {
   dialogTitle.value = type
   formType.value = type
   resetForm()
+  // 子菜单新增时
   if (parentId) {
     formData.value.parentId = parentId
   }
@@ -187,7 +188,9 @@ const open = async (type, id, parentId) => {
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await getMenu(id)
+      const response = await getMenu(id)
+      response.data.icon = convertBackToString(response.data.icon)
+      formData.value = response.data
     } finally {
       formLoading.value = false
     }
@@ -228,8 +231,11 @@ const submitForm = async () => {
     formData.value.icon = convertStringFormat(formData.value.icon)
     const data = formData.value
     if(formType.value === 'create'){
-      ElComponent.msgSuccess("新增成功")
-      createMenu(data)
+      ElComponent.msgSuccess("新增成功，建议您刷新页面奥！")
+      await createMenu(data)
+    } else {
+      ElComponent.msgSuccess("修改成功，建议您刷新页面奥！")
+      await updateMenu(data)
     }
 
     dialogVisible.value = false
@@ -246,7 +252,11 @@ const convertStringFormat = (str)=> {
   const partsJ = parts.join(' ')
   return partsJ.replace(/\s/g, ' fa-')
 }
-
+const convertBackToString = (convertedStr) => {
+  const replacedStr = convertedStr.replace(/fa-/g, '')
+  const parts = replacedStr.split(' ')
+  return parts.join(':')
+}
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {
