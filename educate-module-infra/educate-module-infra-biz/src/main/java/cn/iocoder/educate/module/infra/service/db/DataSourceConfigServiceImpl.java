@@ -4,10 +4,12 @@ import cn.iocoder.educate.module.infra.dal.dataobject.db.DataSourceConfigDO;
 import cn.iocoder.educate.module.infra.dal.mysql.db.DataSourceConfigMapper;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -32,6 +34,14 @@ public class DataSourceConfigServiceImpl implements DataSourceConfigService {
         }
         // 从 DB 中读取
         return dataSourceConfigMapper.selectById(dataSourceConfigId);
+    }
+
+    @Override
+    public List<DataSourceConfigDO> getDataSourceConfigList() {
+        List<DataSourceConfigDO> result = dataSourceConfigMapper.selectList(new LambdaQueryWrapper<>());
+        // 补充 master 数据源
+        result.add(0, buildMasterDataSourceConfig());
+        return result;
     }
 
     private DataSourceConfigDO buildMasterDataSourceConfig() {

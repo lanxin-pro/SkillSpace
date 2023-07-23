@@ -2,6 +2,8 @@ package cn.iocoder.educate.module.infra.service.db;
 
 import cn.iocoder.educate.module.infra.dal.dataobject.db.DataSourceConfigDO;
 
+import java.util.List;
+
 /**
  * 数据源配置 Service 接口
  *
@@ -17,5 +19,12 @@ public interface DataSourceConfigService {
      * @return 数据源配置
      */
     DataSourceConfigDO getDataSourceConfig(Long dataSourceConfigId);
+
+    /**
+     * 获得数据源配置列表
+     *
+     * @return 数据源配置列表
+     */
+    List<DataSourceConfigDO> getDataSourceConfigList();
 
 }

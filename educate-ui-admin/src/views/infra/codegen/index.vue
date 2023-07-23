@@ -49,7 +49,9 @@
       <el-table-column label="数据源" align="center" >
         <template #default="scope">
           {{
-            dataSourceConfigList.find((config) => config.id === scope.row.dataSourceConfigId)?.name
+            dataSourceConfigList.find((config) => {
+              return config.id === scope.row.dataSourceConfigId
+            })?.name
           }}
         </template>
       </el-table-column>
@@ -173,7 +175,8 @@ const dataSourceConfigs = ref([])
 onMounted(async ()=>{
   getList()
   // 加载数据源列表
-  dataSourceConfigList.value = await getDataSourceConfigList()
+  const response = await getDataSourceConfigList()
+  dataSourceConfigList.value = response.data
 })
 
 const getList = async ()=>{
