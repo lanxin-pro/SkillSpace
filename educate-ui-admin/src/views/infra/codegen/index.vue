@@ -46,7 +46,13 @@
 
     <!-- 列表 -->
     <el-table v-loading="loading" :data="tableList">
-      <el-table-column label="数据源" align="center" :formatter="dataSourceConfigNameFormat"/>
+      <el-table-column label="数据源" align="center" >
+        <template #default="scope">
+          {{
+            dataSourceConfigList.find((config) => config.id === scope.row.dataSourceConfigId)?.name
+          }}
+        </template>
+      </el-table-column>
       <el-table-column label="表名称" align="center" prop="tableName" width="200"/>
       <el-table-column label="表描述" align="center" prop="tableComment" :show-overflow-tooltip="true" width="120"/>
       <el-table-column label="实体" align="center" prop="className" width="200"/>
@@ -126,8 +132,10 @@ import { ref,reactive,computed,onMounted } from 'vue'
 import { parseTime } from '@/utils/ruoyi.js'
 import Pagination from '@/components/Pagination/index.vue'
 import { getCodegenTablePage } from '@/api/infra/codegen.js'
+import { getDataSourceConfigList } from '@/api/infra/dataSourceConfig.js'
 import ImportTable from './ImportTable.vue'
 
+const dataSourceConfigList = ref([]) // 数据源列表
 const queryFormRef = ref()
 // 遮罩层
 const loading = ref(true)
@@ -162,8 +170,10 @@ const preview = reactive({
 // 数据源列表
 const dataSourceConfigs = ref([])
 
-onMounted(()=>{
+onMounted(async ()=>{
   getList()
+  // 加载数据源列表
+  dataSourceConfigList.value = await getDataSourceConfigList()
 })
 
 const getList = async ()=>{

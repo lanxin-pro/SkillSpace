@@ -13,3 +13,18 @@ export function getCodegenTablePage(query) {
         params: query
     })
 }
+
+
+/**
+ * 获得表定义分页
+ *
+ * @param query
+ * @returns {*}
+ */
+export function getSchemaTableList(query) {
+    return request({
+        url: '/infra/codegen/db/table/list',
+        method: 'get',
+        params: query
+    })
+}
