@@ -150,7 +150,6 @@ onMounted(()=>{
 const getList = async ()=>{
   loading.value = true
   const response = await listOperateLog(queryParams)
-  console.log(response)
   list.value = response.data.list
   total.value = response.data.total
   loading.value = false
