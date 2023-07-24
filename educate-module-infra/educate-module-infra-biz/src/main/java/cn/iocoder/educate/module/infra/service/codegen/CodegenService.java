@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.service.codegen;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.DatabaseTableRespVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
@@ -32,4 +33,14 @@ public interface CodegenService {
      * @return 表定义列表
      */
     List<DatabaseTableRespVO> getDatabaseTableList(Long dataSourceConfigId, String name, String comment);
+
+    /**
+     * 基于数据库的表结构，创建代码生成器的表定义
+     *
+     * @param loginUserId 用户编号
+     * @param reqVO 表信息
+     * @return 创建的表定义的编号数组
+     */
+    List<Long> createCodegenList(Long loginUserId, CodegenCreateListReqVO reqVO);
+
 }

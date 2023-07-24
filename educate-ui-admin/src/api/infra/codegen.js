@@ -28,3 +28,17 @@ export function getSchemaTableList(query) {
         params: query
     })
 }
+
+/**
+ * 基于数据库的表结构，创建代码生成器的表定义
+ *
+ * @param data
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const createCodegenList = (data) => {
+    return request({
+        url: '/infra/codegen/create-list',
+        method: 'post',
+        params: data
+    })
+}

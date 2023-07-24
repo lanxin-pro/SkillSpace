@@ -2,6 +2,8 @@ package cn.iocoder.educate.module.infra.controller.admin.codegen;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTableRespVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.DatabaseTableRespVO;
@@ -13,13 +15,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
-
 import java.util.List;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
@@ -51,6 +49,12 @@ public class CodegenController {
         List<DatabaseTableRespVO> databaseTableRespVOS = codegenService
                 .getDatabaseTableList(dataSourceConfigId, name, comment);
         return success(databaseTableRespVOS);
+    }
+
+    @Operation(summary = "基于数据库的表结构，创建代码生成器的表和字段定义")
+    @PostMapping("/create-list")
+    public CommonResult<List<Long>> createCodegenList(@Valid @RequestBody CodegenCreateListReqVO reqVO) {
+        return success(codegenService.createCodegenList(WebFrameworkUtils.getLoginUserId(), reqVO));
     }
 
     @GetMapping("/table/page")

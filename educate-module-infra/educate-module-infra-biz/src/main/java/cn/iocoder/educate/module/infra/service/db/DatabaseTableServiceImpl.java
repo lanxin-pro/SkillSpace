@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.infra.service.db;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.module.infra.dal.dataobject.db.DataSourceConfigDO;
@@ -36,6 +37,13 @@ public class DatabaseTableServiceImpl implements DatabaseTableService {
             return StrUtil.isEmpty(nameLike) || tableInfo.getName().contains(nameLike)
                     && StrUtil.isEmpty(commentLike) || tableInfo.getComment().contains(commentLike);
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public TableInfo getTable(Long dataSourceConfigId, String tableName) {
+        List<TableInfo> tableList0 = getTableList0(dataSourceConfigId, tableName);
+        // 只返回一个
+        return CollUtil.getFirst(tableList0);
     }
 
     private List<TableInfo> getTableList0(Long dataSourceConfigId, String name) {

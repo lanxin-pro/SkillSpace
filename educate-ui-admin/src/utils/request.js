@@ -5,7 +5,7 @@ import { getAccessToken, getRefreshToken,setToken } from "@/utils/auth.js"
 import { getPath } from "@/utils/ruoyi.js"
 import { useUserStore } from '@/piniastore/modules/user.js'
 import { refreshToken } from '@/api/login/index.js'
-
+import qs from 'qs'
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')
 const ignoreMsgs = [
@@ -40,6 +40,15 @@ request.interceptors.request.use(config => {
     if(getAccessToken() && !isToken){
         config.headers['Authorization'] = 'Bearer ' + getAccessToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
+
+    if (
+        config.method?.toUpperCase() === 'POST' &&
+        (config.headers)['Content-Type'] === 'application/x-www-form-urlencoded'
+    ){
+        alert("开始执行qs.stringify(data)")
+        config.data = qs.stringify(data)
+    }
+
     // get请求映射params参数
     if (config.method === 'get' && config.params) {
         let url = config.url + '?'

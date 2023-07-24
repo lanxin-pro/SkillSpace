@@ -32,7 +32,7 @@ public class DataSourceConfigServiceImpl implements DataSourceConfigService {
         if (Objects.equals(dataSourceConfigId, DataSourceConfigDO.ID_MASTER)) {
             return buildMasterDataSourceConfig();
         }
-        // 从 DB 中读取
+        // 从 DB 中读取（但是我现在没有完善这个表的添加结构）
         return dataSourceConfigMapper.selectById(dataSourceConfigId);
     }
 

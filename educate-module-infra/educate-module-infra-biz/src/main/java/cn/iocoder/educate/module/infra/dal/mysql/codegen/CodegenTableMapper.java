@@ -40,4 +40,11 @@ public interface CodegenTableMapper extends BaseMapper<CodegenTableDO> {
         return new PageResult<>(codegenTableDOPageDo.getRecords(),codegenTableDOPageDo.getTotal());
     }
 
+    default CodegenTableDO selectByTableNameAndDataSourceConfigId(String name, Long dataSourceConfigId){
+        LambdaQueryWrapper<CodegenTableDO> codegenTableDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        codegenTableDOLambdaQueryWrapper.eq(CodegenTableDO::getTableName,name)
+                .eq(CodegenTableDO::getDataSourceConfigId,dataSourceConfigId);
+        return selectOne(codegenTableDOLambdaQueryWrapper);
+    }
+
 }

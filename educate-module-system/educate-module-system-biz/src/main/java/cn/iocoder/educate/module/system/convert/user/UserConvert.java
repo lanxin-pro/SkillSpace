@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.convert.user;
 
+import cn.iocoder.educate.module.system.api.user.dto.AdminUserRespDTO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageItemRespVO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.UserProfileRespVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
@@ -34,4 +35,7 @@ public interface UserConvert {
     List<UserProfileRespVO.Post> convertList02(List<PostDO> list);
 
     List<UserProfileRespVO.SocialUser> convertList03(List<SocialUserDO> list);
+
+    AdminUserRespDTO convert4(AdminUserDO bean);
+
 }
