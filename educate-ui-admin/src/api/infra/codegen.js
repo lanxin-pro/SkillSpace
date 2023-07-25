@@ -39,6 +39,6 @@ export const createCodegenList = (data) => {
     return request({
         url: '/infra/codegen/create-list',
         method: 'post',
-        params: data
+        data: data
     })
 }

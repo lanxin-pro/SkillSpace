@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.codegen;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,8 +23,9 @@ public class CodegenTableDO extends BaseDO {
 
     /**
      * ID 编号
+     * TODO j-sentinel 为什么这里要显示的定义出type，我的@{link IdTypeEnvironmentPostProcessor}没有生效
      */
-    @TableId
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**

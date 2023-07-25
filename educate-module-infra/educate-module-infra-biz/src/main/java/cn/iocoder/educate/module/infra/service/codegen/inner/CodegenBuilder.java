@@ -14,7 +14,6 @@ import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 import static cn.hutool.core.text.CharSequenceUtil.*;
@@ -66,22 +65,27 @@ public class CodegenBuilder {
      * 多租户编号的字段名
      */
     public static final String TENANT_ID_FIELD = "tenantId";
+
     /**
      * {@link BaseDO} 的字段
      */
     public static final Set<String> BASE_DO_FIELDS = new HashSet<>();
+
     /**
      * 新增操作，不需要传递的字段
      */
     private static final Set<String> CREATE_OPERATION_EXCLUDE_COLUMN = Sets.newHashSet("id");
+
     /**
      * 修改操作，不需要传递的字段
      */
     private static final Set<String> UPDATE_OPERATION_EXCLUDE_COLUMN = Sets.newHashSet();
+
     /**
      * 列表操作的条件，不需要传递的字段
      */
     private static final Set<String> LIST_OPERATION_EXCLUDE_COLUMN = Sets.newHashSet("id");
+
     /**
      * 列表操作的结果，不需要返回的字段
      */

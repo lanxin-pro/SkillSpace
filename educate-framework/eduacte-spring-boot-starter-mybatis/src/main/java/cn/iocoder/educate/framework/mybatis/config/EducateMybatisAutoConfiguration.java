@@ -22,6 +22,7 @@ public class EducateMybatisAutoConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        // 分页插件
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return mybatisPlusInterceptor;
     }
@@ -32,6 +33,7 @@ public class EducateMybatisAutoConfiguration {
      */
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler(){
+        // 自动填充参数类
         return new DefaultDBFieldHandler();
     }
 }

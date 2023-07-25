@@ -6,13 +6,10 @@ import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTableP
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 
 /**
  * @Author: j-sentinel

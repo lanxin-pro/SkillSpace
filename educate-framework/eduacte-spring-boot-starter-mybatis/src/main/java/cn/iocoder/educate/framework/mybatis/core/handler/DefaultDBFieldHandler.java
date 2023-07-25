@@ -19,6 +19,7 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         if(ObjectUtil.isNotNull(metaObject) && metaObject.getOriginalObject() instanceof BaseDO){
             BaseDO baseDO = (BaseDO) metaObject.getOriginalObject();
+
             LocalDateTime current = LocalDateTime.now();
             // 创建时间为空，则以当前时间为插入时间
             if(ObjectUtil.isNull(baseDO.getCreateTime())){
@@ -28,6 +29,7 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
             if(ObjectUtil.isNull(baseDO.getUpdateTime())){
                 baseDO.setUpdateTime(current);
             }
+
             Long loginUserId = WebFrameworkUtils.getLoginUserId();
             // 当前登录用户不为空，创建人为空，则当前登录用户为创建人
             if(ObjectUtil.isNotNull(loginUserId) && ObjectUtil.isNull(baseDO.getCreator())){

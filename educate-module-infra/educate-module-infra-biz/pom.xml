@@ -38,6 +38,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
