@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.service.codegen;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
@@ -18,14 +19,13 @@ import cn.iocoder.educate.module.infra.enums.codegen.CodegenSceneEnum;
 import cn.iocoder.educate.module.infra.framwork.codegen.config.CodegenProperties;
 import cn.iocoder.educate.module.infra.service.codegen.inner.CodegenBuilder;
 import cn.iocoder.educate.module.infra.service.db.DatabaseTableService;
-import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: j-sentinel
@@ -63,7 +63,20 @@ public class CodegenServiceImpl implements CodegenService {
         List<TableInfo> tables = databaseTableService.getTableList(dataSourceConfigId,name,comment);
         // 移除已经生成的表
         // 移除在 Codegen 中，已经存在的
-        return  CodegenConvert.INSTANCE.convertList04(tables);
+        List<CodegenTableDO> codegenTableDOS = codegenTableMapper.selectListByDataSourceConfigId(dataSourceConfigId);
+        if(CollUtil.isEmpty(codegenTableDOS)){
+            return new ArrayList<>();
+        }
+        Set<String> existsTables = codegenTableDOS
+                .stream()
+                .map(CodegenTableDO::getTableName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        tables.removeIf(tableInfo -> {
+            // CodegenTableDO表中全部能够匹配的数据库表的name
+            return existsTables.contains(tableInfo.getName());
+        });
+        return CodegenConvert.INSTANCE.convertList04(tables);
     }
 
     @Override

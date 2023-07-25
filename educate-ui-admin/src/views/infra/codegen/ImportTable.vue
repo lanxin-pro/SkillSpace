@@ -63,7 +63,7 @@
       <el-button :disabled="tableList.length === 0" type="primary" @click="handleImportTable">
         导入
       </el-button>
-      <el-button @click="close">关闭</el-button>
+      <el-button @click="close()">关闭</el-button>
     </template>
   </Dialog>
 </template>
@@ -126,8 +126,17 @@ const handleImportTable = async ()=>{
     dataSourceConfigId: queryParams.dataSourceConfigId,
     tableNames: tableList.value
   })
-  console.log(response.data)
+  ElComponent.msgSuccess("导出成功")
+  emit('success')
+  close()
 }
+/** 关闭弹窗 */
+const close = ()=>{
+  dialogVisible.value = false
+  tableList.value = []
+}
+
+const emit = defineEmits(['success'])
 </script>
 
 <style scoped>

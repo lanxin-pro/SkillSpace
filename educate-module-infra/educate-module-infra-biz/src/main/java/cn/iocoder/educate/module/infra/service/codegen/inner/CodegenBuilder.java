@@ -92,6 +92,7 @@ public class CodegenBuilder {
     private static final Set<String> LIST_OPERATION_RESULT_EXCLUDE_COLUMN = Sets.newHashSet();
 
     static {
+        // 获得一个类中所有字段列表
         Arrays.stream(ReflectUtil.getFields(BaseDO.class)).forEach(field -> {
             BASE_DO_FIELDS.add(field.getName());
         });
@@ -201,7 +202,7 @@ public class CodegenBuilder {
         }
         // name
         if (StrUtil.endWithIgnoreCase(column.getJavaField(), "name")) {
-            column.setExample(randomEle(new String[]{"张三", "李四", "王五", "赵六", "芋艿"}));
+            column.setExample(randomEle(new String[]{"张三", "李四", "王五", "赵六", "蓝欣"}));
             return;
         }
         // status
@@ -211,7 +212,7 @@ public class CodegenBuilder {
         }
         // url
         if (StrUtil.endWithIgnoreCase(column.getColumnName(), "url")) {
-            column.setExample("https://www.iocoder.cn");
+            column.setExample("https://www.baidu.com");
             return;
         }
         // reason
@@ -221,7 +222,7 @@ public class CodegenBuilder {
         }
         // description、memo、remark
         if (StrUtil.endWithAnyIgnoreCase(column.getColumnName(), "description", "memo", "remark")) {
-            column.setExample(randomEle(new String[]{"你猜", "随便", "你说的对"}));
+            column.setExample(randomEle(new String[]{"你猜", "随便", "啊对对对，你说的对"}));
             return;
         }
     }

@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 
 /**
  * @Author: j-sentinel
@@ -44,4 +46,9 @@ public interface CodegenTableMapper extends BaseMapper<CodegenTableDO> {
         return selectOne(codegenTableDOLambdaQueryWrapper);
     }
 
+    default List<CodegenTableDO> selectListByDataSourceConfigId(Long dataSourceConfigId){
+        LambdaQueryWrapper<CodegenTableDO> codegenTableDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        codegenTableDOLambdaQueryWrapper.eq(CodegenTableDO::getDataSourceConfigId,dataSourceConfigId);
+        return selectList(codegenTableDOLambdaQueryWrapper);
+    }
 }
