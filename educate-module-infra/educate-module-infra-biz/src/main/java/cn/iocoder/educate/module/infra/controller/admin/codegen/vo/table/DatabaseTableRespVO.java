@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.infra.controller.admin.codegen.vo;
+package cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

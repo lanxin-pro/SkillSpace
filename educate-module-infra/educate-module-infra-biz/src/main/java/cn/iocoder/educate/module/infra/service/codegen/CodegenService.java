@@ -2,8 +2,8 @@ package cn.iocoder.educate.module.infra.service.codegen;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.DatabaseTableRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.DatabaseTableRespVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 
 import java.util.List;
@@ -43,4 +43,10 @@ public interface CodegenService {
      */
     List<Long> createCodegenList(Long loginUserId, CodegenCreateListReqVO reqVO);
 
+    /**
+     * 删除数据库的表和字段定义
+     *
+     * @param tableId 数据编号
+     */
+    void deleteCodegen(Long tableId);
 }

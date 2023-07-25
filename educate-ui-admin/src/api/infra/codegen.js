@@ -42,3 +42,29 @@ export const createCodegenList = (data) => {
         data: data
     })
 }
+
+/**
+ * 删除代码生成表定义
+ *
+ * @param data
+ * @returns {*}
+ */
+export function deleteCodegenTable(tableId) {
+    return request({
+        url: '/infra/codegen/delete?tableId=' + tableId,
+        method: 'delete'
+    })
+}
+
+/**
+ * 查询详情代码生成表定义
+ *
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getCodegenTable = (id) => {
+    return request({
+        url: '/infra/codegen/detail?tableId=' + id,
+        method: 'get',
+    })
+}

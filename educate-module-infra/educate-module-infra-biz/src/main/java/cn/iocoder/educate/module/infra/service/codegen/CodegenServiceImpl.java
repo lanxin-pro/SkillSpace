@@ -1,7 +1,6 @@
 package cn.iocoder.educate.module.infra.service.codegen;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
@@ -9,8 +8,8 @@ import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenColumnDO;
 import cn.iocoder.educate.module.infra.dal.mysql.codegen.CodegenColumnMapper;
 import cn.iocoder.educate.module.system.api.user.AdminUserApi;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.DatabaseTableRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.DatabaseTableRespVO;
 import cn.iocoder.educate.module.infra.covert.codegen.CodegenConvert;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 import cn.iocoder.educate.module.infra.dal.mysql.codegen.CodegenTableMapper;
@@ -92,6 +91,19 @@ public class CodegenServiceImpl implements CodegenService {
             ids.add(codegen);
         });
         return ids;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCodegen(Long tableId) {
+        // 校验是否已经存在
+        if(codegenTableMapper.selectById(tableId) == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_TABLE_NOT_EXISTS);
+        }
+        // 删除 table 表定义
+        codegenTableMapper.deleteById(tableId);
+        // 删除 column 字段定义
+        codegenColumnMapper.deleteListByTableId(tableId);
     }
 
     public Long createCodegen(Long userId, Long dataSourceConfigId, String tableName) {

@@ -124,7 +124,8 @@
 
     <!-- 弹窗：导入表 -->
     <ImportTable ref="importRef" @success="getList" />
-
+    <!-- 弹窗：预览代码 -->
+    <PreviewCode ref="previewRef" />
   </div>
 </template>
 
@@ -133,11 +134,17 @@ import RightToolbar from "@/components/RightToolbar/index.vue"
 import { ref,reactive,computed,onMounted } from 'vue'
 import { parseTime } from '@/utils/ruoyi.js'
 import Pagination from '@/components/Pagination/index.vue'
-import { getCodegenTablePage } from '@/api/infra/codegen.js'
+import { getCodegenTablePage,deleteCodegenTable } from '@/api/infra/codegen.js'
 import { getDataSourceConfigList } from '@/api/infra/dataSourceConfig.js'
 import ImportTable from './ImportTable.vue'
+import PreviewCode from './PreviewCode.vue'
+import ELComponent from '@/plugins/modal.js'
+import { useRouter } from 'vue-router'
 
-const dataSourceConfigList = ref([]) // 数据源列表
+// 路由跳转
+const { push } = useRouter()
+// 数据源列表
+const dataSourceConfigList = ref([])
 const queryFormRef = ref()
 // 遮罩层
 const loading = ref(true)
@@ -208,7 +215,27 @@ const resetQuery = () => {
   queryFormRef.value.resetFields()
   handleQuery()
 }
-
+/** 预览操作 */
+const previewRef = ref()
+const handlePreview = (row) => {
+  previewRef.value.open(row.id)
+}
+/** 编辑操作 */
+const handleUpdate = (id) => {
+  push('/codegen/edit?id=' + id)
+}
+/** 删除按钮操作 */
+const handleDelete = async (id)=>{
+  try {
+    // 删除的二次确认
+    await ELComponent.confirm("您确定要删除吗？")
+    // 发起删除
+    await deleteCodegenTable(id)
+    ELComponent.msgSuccess("删除成功")
+    // 刷新列表
+    await getList()
+  } catch {}
+}
 </script>
 
 <style>

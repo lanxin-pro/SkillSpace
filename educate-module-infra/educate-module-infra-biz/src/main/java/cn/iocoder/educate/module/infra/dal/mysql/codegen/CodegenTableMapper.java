@@ -2,7 +2,7 @@ package cn.iocoder.educate.module.infra.dal.mysql.codegen;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -4,9 +4,9 @@ import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTablePageReqVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenTableRespVO;
-import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.DatabaseTableRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTableRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.DatabaseTableRespVO;
 import cn.iocoder.educate.module.infra.covert.codegen.CodegenConvert;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 import cn.iocoder.educate.module.infra.service.codegen.CodegenService;
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -62,6 +63,14 @@ public class CodegenController {
     public CommonResult<PageResult<CodegenTableRespVO>> getCodeGenTablePage(@Valid CodegenTablePageReqVO pageReqVO) {
         PageResult<CodegenTableDO> pageResult = codegenService.getCodegenTablePage(pageReqVO);
         return success(CodegenConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @Operation(summary = "删除数据库的表和字段定义")
+    @DeleteMapping("/delete")
+    @Parameter(name = "tableId", description = "表编号", required = true, example = "1024")
+    public CommonResult<Boolean> deleteCodegen(@RequestParam("tableId") Long tableId) {
+        codegenService.deleteCodegen(tableId);
+        return success(true);
     }
 
 }

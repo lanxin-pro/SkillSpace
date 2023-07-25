@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.infra.controller.admin.codegen.vo;
+package cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table;
 
 import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.util.date.DateUtils;
