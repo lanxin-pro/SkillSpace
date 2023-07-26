@@ -1,33 +1,36 @@
 <template>
   <div class="navbar">
+    <el-row style="height: 100%">
 
-    <div style="display: flex;justify-content: center;position: relative;">
-      <div style="position: absolute;">
-        <el-dropdown>
-          <el-tag
-              class="time-tag"
-              type="info">
-            当前服务器时间为：<span v-show="formatTime"> {{ gmt }} {{ formatterTime(formatTime) }}</span>
-          </el-tag>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :disabled="true" v-for="(it, i) in timeList" :key="i">
-              {{ lang === 'zh' ? it.country + '时间：' : it.countryEn + ' time ' }}<span>{{ it.gmt }}</span>
-              <span style="margin-left: 5px"> {{ formatterTime(it.time) }}</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </div>
-    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-               @toggleClick="toggleSideBar" />
+      <el-col :span="9">
+        <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+                 @toggleClick="toggleSideBar" />
+        <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
+        <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
+      </el-col>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
+      <el-col :span="4">
+        <div style="display: flex;justify-content: center;position: relative;">
+          <div style="position: absolute;">
+            <el-dropdown>
+              <el-tag
+                  class="time-tag"
+                  type="info">
+                当前服务器时间为：<span v-show="formatTime"> {{ gmt }} {{ formatterTime(formatTime) }}</span>
+              </el-tag>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :disabled="true" v-for="(it, i) in timeList" :key="i">
+                  {{ lang === 'zh' ? it.country + '时间：' : it.countryEn + ' time ' }}<span>{{ it.gmt }}</span>
+                  <span style="margin-left: 5px"> {{ formatterTime(it.time) }}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+      </el-col>
 
-
-
-
-    <div class="right-menu">
+      <el-col :span="11">
+        <div class="right-menu">
 
       <template v-if="device!=='mobile'">
         <el-tooltip content="快速搜索" effect="dark" placement="bottom">
@@ -96,6 +99,9 @@
       </el-tooltip>
 
 </div>
+      </el-col>
+
+    </el-row>
   </div>
 </template>
 
