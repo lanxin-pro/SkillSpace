@@ -1,7 +1,23 @@
 <template>
   <div class="navbar">
 
-
+    <div style="display: flex;justify-content: center;position: relative;">
+      <div style="position: absolute;">
+        <el-dropdown>
+          <el-tag
+              class="time-tag"
+              type="info">
+            当前服务器时间为：<span v-show="formatTime"> {{ gmt }} {{ formatterTime(formatTime) }}</span>
+          </el-tag>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item :disabled="true" v-for="(it, i) in timeList" :key="i">
+              {{ lang === 'zh' ? it.country + '时间：' : it.countryEn + ' time ' }}<span>{{ it.gmt }}</span>
+              <span style="margin-left: 5px"> {{ formatterTime(it.time) }}</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </div>
     <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
                @toggleClick="toggleSideBar" />
 
@@ -12,6 +28,7 @@
 
 
     <div class="right-menu">
+
       <template v-if="device!=='mobile'">
         <el-tooltip content="快速搜索" effect="dark" placement="bottom">
           <Search id="header-search" class="right-menu-item" />
@@ -83,6 +100,7 @@
 </template>
 
 <script setup>
+import { ref,onMounted } from 'vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TopNav from '@/components/TopNav/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
@@ -99,14 +117,78 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/piniastore/modules/user.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import ElComponent from '@/plugins/modal.js'
+import Dayjs from 'dayjs'
+import { getCountryWithTimeZoneList } from '@/api/system/region.js'
+import { useTimeStore } from '@/piniastore/modules/timeZone.js'
+import { getServerTime } from '@/api/public.js'
+import { handleZoneToTimeUtils } from '@/utils/formatTime.js'
+
 
 const { wsCache } = useCache()
 const { push, replace } = useRouter()
 const userStore = useUserStore()
 const wsCacheUser = wsCache.get(CACHE_KEY.USER)
+// 时间
+const timeList = ref([])
+const formatTime = ref()
+const gmt = ref()
+const lang = ref('zh')
+const serverTime = ref(null)
+const timer = ref(null)
+const delay = ref(1000)
 
 const { appContext } = getCurrentInstance()
 
+const timeStore = useTimeStore()
+
+onMounted(()=>{
+  getTime()
+  getServerTimeFn()
+})
+const getTime = async () => {
+  const response = await getCountryWithTimeZoneList()
+  timeStore.addZoneList(response.data)
+  handleZoneToTime()
+}
+const getServerTimeFn = async ()=>{
+  const response = await getServerTime()
+  serverTime.value = response.data.time
+  gmt.value = getUTC(new Date(serverTime.value))
+}
+const getUTC = (time) => {
+  return `UTC +${0 - time.getTimezoneOffset() / 60}`
+}
+const handleZoneToTime = (cnTime)=>{
+  timeList.value = timeStore.getZoneList.map((it) => {
+    return {
+      time: new Date(handleZoneToTimeUtils(it.timeZone, cnTime, null)).getTime(),
+      gmt: 'UTC ' + it.timeZone.slice(it.timeZone.indexOf('+')),
+      country: it.country,
+      countryEn: it.id === 1 ? 'China'
+          : it.id === 2 ? 'India'
+              : it.id === 3 ? 'Taiwan'
+                  : it.id === 4 ? 'Thailand'
+                      : it.id === 5 ? 'Vietnam'
+                          : it.id === 6 ? 'Korea'
+                              : it.id === 8 ? 'Malaysia' : 'UK'
+    }
+  })
+
+  timer.value = setInterval(() => {
+    if (timer.value === null){
+      clearInterval(timer.value)
+    }
+
+    serverTime.value += delay.value
+    formatTime.value = Dayjs(serverTime.value).format('YYYY-MM-DD HH:mm:ss')
+    timeList.value.map((it) => {
+      it.time += delay.value
+      return {
+        ...it
+      }
+    })
+  }, delay.value)
+}
 const sidebar = computed(()=>{
   return store.getters['app/getSidebar']
 })
@@ -123,7 +205,9 @@ const nickname = computed(()=>{
   // return wsCacheUser.user.nickname
   return wsCacheUser.data.user.nickname
 })
-
+const formatterTime = (time)=> {
+  return Dayjs(time).format('YYYY-MM-DD HH:mm:ss').replace(/\-/g, '.')
+}
 
 
 const logout = ()=>{

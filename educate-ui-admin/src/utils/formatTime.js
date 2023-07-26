@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import Dayjs from 'dayjs'
 
 /**
  * 时间日期转换
@@ -20,7 +20,7 @@ export function formatDate(date, format) {
   if (format === undefined) {
     format = 'YYYY-MM-DD HH:mm:ss'
   }
-  return dayjs(date).format(format)
+  return Dayjs(date).format(format)
 }
 
 /**
@@ -198,4 +198,55 @@ export function convertDate(param) {
     return new Date(param)
   }
   return param
+}
+
+
+// 时差转换
+export const handleZoneTime = (time, val) => {
+  return val < 0
+      ? Dayjs(time)
+          .subtract(Math.abs(val), 'hour')
+          .format('YYYY-MM-DD HH:mm:ss')
+      : Dayjs(time)
+          .add(val, 'hour')
+          .format('YYYY-MM-DD HH:mm:ss')
+}
+
+
+/**
+ * 时区时差转换
+ *
+ * @param timeZone
+ * @param startTime
+ * @param endTime
+ * @returns {string|string}
+ */
+export const handleZoneToTimeUtils = (timeZone, startTime, endTime) => {
+  let startDate = ''
+  let endDate = ''
+  switch (timeZone) {
+    case 'GMT+8':
+      startDate = handleZoneTime(startTime, 0)
+      endDate = handleZoneTime(endTime, 0)
+      break
+    case 'GMT+5.5':
+      startDate = handleZoneTime(startTime, -2.5)
+      endDate = handleZoneTime(endTime, -2.5)
+      break
+    case 'GMT+7':
+      startDate = handleZoneTime(startTime, -1)
+      endDate = handleZoneTime(endTime, -1)
+      break
+    case 'GMT+9':
+      startDate = handleZoneTime(startTime, 1)
+      endDate = handleZoneTime(endTime, 1)
+      break
+    case 'GMT+0':
+      startDate = handleZoneTime(startTime, -8)
+      endDate = handleZoneTime(endTime, -8)
+      break
+    default:
+      break
+  }
+  return endTime ? `${startDate} ~ ${endDate}` : startDate
 }
