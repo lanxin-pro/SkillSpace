@@ -6,6 +6,7 @@ import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenColumnDO;
 import cn.iocoder.educate.module.infra.dal.mysql.codegen.CodegenColumnMapper;
+import cn.iocoder.educate.module.infra.service.codegen.inner.CodegenEngine;
 import cn.iocoder.educate.module.system.api.user.AdminUserApi;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
@@ -51,6 +52,9 @@ public class CodegenServiceImpl implements CodegenService {
 
     @Resource
     private CodegenProperties codegenProperties;
+
+    @Resource
+    private CodegenEngine codegenEngine;
 
     @Override
     public PageResult<CodegenTableDO> getCodegenTablePage(CodegenTablePageReqVO pageReqVO) {
@@ -104,6 +108,23 @@ public class CodegenServiceImpl implements CodegenService {
         codegenTableMapper.deleteById(tableId);
         // 删除 column 字段定义
         codegenColumnMapper.deleteListByTableId(tableId);
+    }
+
+    @Override
+    public Map<String, String> generationCodes(Long tableId) {
+        // 校验表是否已经存在
+        CodegenTableDO codegenTableDO = codegenTableMapper.selectById(tableId);
+        if(codegenTableDO == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_TABLE_NOT_EXISTS);
+        }
+        // 字段定义，这里已经在导入表的时候添加过了
+        List<CodegenColumnDO> codegenColumnDO = codegenColumnMapper.selectListByTableId(tableId);
+        if(CollUtil.isEmpty(codegenColumnDO)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_COLUMN_NOT_EXISTS);
+        }
+
+        // 执行生成
+        return codegenEngine.execute(codegenTableDO, codegenColumnDO);
     }
 
     public Long createCodegen(Long userId, Long dataSourceConfigId, String tableName) {

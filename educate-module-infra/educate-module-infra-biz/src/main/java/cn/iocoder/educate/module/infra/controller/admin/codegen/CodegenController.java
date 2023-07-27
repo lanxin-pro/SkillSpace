@@ -4,6 +4,7 @@ import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenCreateListReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenPreviewRespVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTablePageReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTableRespVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.DatabaseTableRespVO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -71,6 +73,14 @@ public class CodegenController {
     public CommonResult<Boolean> deleteCodegen(@RequestParam("tableId") Long tableId) {
         codegenService.deleteCodegen(tableId);
         return success(true);
+    }
+
+    @Operation(summary = "预览生成代码")
+    @GetMapping("/preview")
+    @Parameter(name = "tableId", description = "表编号", required = true, example = "1024")
+    public CommonResult<List<CodegenPreviewRespVO>> previewCodegen(@RequestParam("tableId") Long tableId) {
+        Map<String, String> codes = codegenService.generationCodes(tableId);
+        return success(CodegenConvert.INSTANCE.convert(codes));
     }
 
 }

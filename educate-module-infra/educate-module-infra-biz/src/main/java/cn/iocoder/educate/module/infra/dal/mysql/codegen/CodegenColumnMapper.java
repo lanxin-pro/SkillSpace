@@ -24,4 +24,12 @@ public interface CodegenColumnMapper extends BaseMapper<CodegenColumnDO> {
         codegenColumnDOLambdaQueryWrapper.eq(CodegenColumnDO::getTableId,tableId);
         this.delete(codegenColumnDOLambdaQueryWrapper);
     }
+
+    default List<CodegenColumnDO> selectListByTableId(Long tableId){
+        LambdaQueryWrapper<CodegenColumnDO> codegenColumnDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        codegenColumnDOLambdaQueryWrapper.eq(CodegenColumnDO::getTableId,tableId)
+                .orderByDesc(CodegenColumnDO::getId);
+        return selectList(codegenColumnDOLambdaQueryWrapper);
+    }
+
 }

@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.covert.codegen;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.CodegenPreviewRespVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.CodegenTableRespVO;
 import cn.iocoder.educate.module.infra.controller.admin.codegen.vo.table.DatabaseTableRespVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenColumnDO;
@@ -15,6 +16,8 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: j-sentinel
@@ -64,4 +67,15 @@ public interface CodegenConvert {
 
     List<DatabaseTableRespVO> convertList04(List<TableInfo> list);
 
+    default List<CodegenPreviewRespVO> convert(Map<String, String> codes) {
+        return codes
+                .entrySet()
+                .stream()
+                .map(entry -> {
+            CodegenPreviewRespVO codegenPreviewRespVO = new CodegenPreviewRespVO();
+                    codegenPreviewRespVO.setFilePath(entry.getKey());
+                    codegenPreviewRespVO.setCode(entry.getValue());
+            return codegenPreviewRespVO;
+        }).collect(Collectors.toList());
+    }
 }
