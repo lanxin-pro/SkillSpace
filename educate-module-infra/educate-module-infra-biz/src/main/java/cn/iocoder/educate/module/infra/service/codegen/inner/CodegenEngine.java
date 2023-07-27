@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -48,6 +49,7 @@ import static cn.hutool.core.map.MapUtil.getStr;
  * @Author: j-sentinel
  * @Date: 2023/7/27 13:20
  */
+@Slf4j
 @Component
 public class CodegenEngine {
 
@@ -66,6 +68,7 @@ public class CodegenEngine {
 
     /**
      * 后端的配置模版
+     * 后续也会直接拿 globalBindingMap 里面的值来替换
      *
      * key1：UI 模版的类型 {@link CodegenFrontTypeEnum#getType()}
      * key2：模板在 resources 的地址
@@ -96,13 +99,16 @@ public class CodegenEngine {
      */
     private final TemplateEngine templateEngine;
 
+    /**
+     * 更改模板
+     */
     public CodegenEngine() {
         // 初始化 TemplateEngine 属性
         // TemplateConfig为模板引擎的选项，可选内容有字符编码、模板路径、模板加载方式等，默认通过模板字符串渲染
         TemplateConfig config = new TemplateConfig();
         // 类路径加载
         config.setResourceMode(TemplateConfig.ResourceMode.CLASSPATH);
-        // Velocity Thymeleaf FreeMarker Rythm Enjoy Beetl ... 等等有很多模板语言
+        // Velocity Thymeleaf FreeMarker Rythm Enjoy Beetl... 等等有很多模板语言
         this.templateEngine = new VelocityEngine(config);
     }
 
@@ -130,6 +136,7 @@ public class CodegenEngine {
         globalBindingMap.put("ObjectUtilsClassName", ObjectUtils.class.getName());
         globalBindingMap.put("OperateLogClassName", OperateLog.class.getName());
         globalBindingMap.put("OperateTypeEnumClassName", OperateTypeEnum.class.getName());
+        log.info("[initLocalCache][缓存代码生成器Velocity模版，数量为:{}]", globalBindingMap.size());
     }
 
     public Map<String, String> execute(CodegenTableDO tableDO, List<CodegenColumnDO> columnsDO) {
@@ -143,15 +150,18 @@ public class CodegenEngine {
         bindingMap.put("primaryColumn", CollUtil.findOne(columnsDO, CodegenColumnDO::getPrimaryKey));
         bindingMap.put("sceneEnum", CodegenSceneEnum.valueOf(tableDO.getScene()));
 
-        // 执行生成
+        // 执行生成（前端和后端模板）
         Map<String, String> templates = getTemplates(tableDO.getFrontType());
         // 有序
         Map<String, String> result = Maps.newLinkedHashMapWithExpectedSize(templates.size());
+        // vmPath就是模板文件路径参数，生成项目文件路径filePath
         templates.forEach((vmPath, filePath) -> {
+            // 使用bindingMap来替换filePath中的${}
             filePath = formatFilePath(filePath, bindingMap);
+            // 将模板与绑定参数融合后返回为字符串
             String content = templateEngine.getTemplate(vmPath).render(bindingMap);
             // 去除字段后面多余的 , 逗号
-            content = content.replaceAll(",\n}", "\n}").replaceAll(",\n  }", "\n  }");
+            // content = content.replaceAll(",\n}", "\n}").replaceAll(",\n  }", "\n  }");
             result.put(filePath, content);
         });
         return result;
@@ -159,7 +169,9 @@ public class CodegenEngine {
 
     private Map<String, String> getTemplates(Integer frontType) {
         Map<String, String> templates = new LinkedHashMap<>();
+        // 后端参数
         templates.putAll(SERVER_TEMPLATES);
+        // 前端参数
         // 在put的时候有三个参数，第一个参数是row的匹配项
         templates.putAll(FRONT_TEMPLATES.row(frontType));
         return templates;
@@ -186,15 +198,31 @@ public class CodegenEngine {
         return filePath;
     }
 
+    /**
+     * 后端模板路径生成
+     * @param path
+     * @return
+     */
     private static String javaTemplatePath(String path) {
         return "codegen/java/" + path + ".vm";
     }
 
+    /**
+     * 后端真实项目路径生成
+     * @param path 名称
+     * @return
+     */
     private static String javaModuleImplVOFilePath(String path) {
         return javaModuleFilePath("controller/${sceneEnum.basePackage}/${table.businessName}/" +
                 "vo/${sceneEnum.prefixClass}${table.className}" + path, "biz", "main");
     }
 
+    /**
+     * @param path
+     * @param module 模块的实现类还是接口类的名称
+     * @param src 分支
+     * @return
+     */
     private static String javaModuleFilePath(String path, String module, String src) {
         // 顶级模块
         return "educate-module-${table.moduleName}/" +
@@ -203,10 +231,20 @@ public class CodegenEngine {
                 "src/" + src + "/java/${basePackage}/module/${table.moduleName}/" + path + ".java";
     }
 
+    /**
+     * 前端模板路径生成
+     * @param path
+     * @return
+     */
     private static String vue3TemplatePath(String path) {
         return "codegen/vue3/" + path + ".vm";
     }
 
+    /**
+     * 前端真实项目路径生成
+     * @param path
+     * @return
+     */
     private static String vue3FilePath(String path) {
         // 顶级目录
         return "educate-ui-${sceneEnum.basePackage}-vue3/" +
