@@ -68,3 +68,16 @@ export const getCodegenTable = (id) => {
         method: 'get',
     })
 }
+
+/**
+ * 预览生成代码
+ *
+ * @param id
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const previewCodegen = (id) => {
+    return request({
+        url: '/infra/codegen/preview?tableId=' + id,
+        method: 'get',
+    })
+}
