@@ -11,9 +11,10 @@
 
       <el-col :span="4">
         <div style="display: flex;justify-content: center;position: relative;">
-          <div style="position: absolute;">
-            <el-dropdown>
+          <div style="position: absolute;top: 10px;">
+            <el-dropdown v-loading="timeLoading" >
               <el-tag
+                  size="large"
                   class="time-tag"
                   type="info">
                 当前服务器时间为：<span v-show="formatTime"> {{ gmt }} {{ formatterTime(formatTime) }}</span>
@@ -31,74 +32,72 @@
 
       <el-col :span="11">
         <div class="right-menu">
+          <template v-if="device!=='mobile'">
+            <el-tooltip content="快速搜索" effect="dark" placement="bottom">
+              <Search id="header-search" class="right-menu-item" />
+            </el-tooltip>
+            <!-- 站内信 -->
+            <el-tooltip content="站内信" effect="dark" placement="bottom">
+              <NotifyMessage class="right-menu-item hover-effect" />
+            </el-tooltip>
 
-      <template v-if="device!=='mobile'">
-        <el-tooltip content="快速搜索" effect="dark" placement="bottom">
-          <Search id="header-search" class="right-menu-item" />
-        </el-tooltip>
-        <!-- 站内信 -->
-        <el-tooltip content="站内信" effect="dark" placement="bottom">
-          <NotifyMessage class="right-menu-item hover-effect" />
-        </el-tooltip>
+            <el-tooltip content="源码地址" effect="dark" placement="bottom">
+              <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+            </el-tooltip>
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
+            <el-tooltip content="文档地址" effect="dark" placement="bottom">
+              <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
+            </el-tooltip>
 
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
+            <el-tooltip content="屏幕缩放" effect="dark" placement="bottom">
+              <Screenfull id="screenfull" class="right-menu-item hover-effect" />
+            </el-tooltip>
 
-        <el-tooltip content="屏幕缩放" effect="dark" placement="bottom">
-          <Screenfull id="screenfull" class="right-menu-item hover-effect" />
-        </el-tooltip>
+            <el-tooltip content="布局大小" effect="dark" placement="bottom">
+              <SizeSelect id="size-select" class="right-menu-item hover-effect" />
+            </el-tooltip>
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <SizeSelect id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-      </template>
-
-      <el-tooltip content="用户信息" effect="dark" placement="bottom">
-        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-          <div class="avatar-wrapper">
-            <img :src="avatar" class="user-avatar">
-            <span v-if="nickname" class="user-nickname">{{ nickname }}</span>
-            <font-awesome-icon class="el-icon-caret-bottom"  icon="fa-solid fa-caret-down" />
-          </div>
-          <template #dropdown>
-
-            <el-dropdown-menu slot="dropdown">
-              <router-link to="/user/profile">
-                <el-dropdown-item>
-                  <div>
-                    <font-awesome-icon icon="fa-solid fa-gear" style="color: #3772DA;" />
-                    个人中心
-                  </div>
-                </el-dropdown-item>
-              </router-link>
-              <el-dropdown-item @click.native="setting = true">
-                <span>
-                  <div>
-                    <font-awesome-icon icon="fa-brands fa-canadian-maple-leaf" style="color: #fab1ce" />
-                    布局设置
-                  </div>
-                </span>
-              </el-dropdown-item>
-              <el-dropdown-item divided @click.native="logout">
-                <span>
-                  <div>
-                    <font-awesome-icon icon="fa-regular fa-circle-xmark" style="color: #F64C2F" />
-                    退出登录
-                  </div>
-                </span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
           </template>
-        </el-dropdown>
-      </el-tooltip>
 
-</div>
+          <el-tooltip content="用户信息" effect="dark" placement="bottom">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+              <div class="avatar-wrapper">
+                <img :src="avatar" class="user-avatar">
+                <span v-if="nickname" class="user-nickname">{{ nickname }}</span>
+                <font-awesome-icon class="el-icon-caret-bottom"  icon="fa-solid fa-caret-down" />
+              </div>
+              <template #dropdown>
+
+                <el-dropdown-menu slot="dropdown">
+                  <router-link to="/user/profile">
+                    <el-dropdown-item>
+                      <div>
+                        <font-awesome-icon icon="fa-solid fa-gear" style="color: #3772DA;" />
+                        个人中心
+                      </div>
+                    </el-dropdown-item>
+                  </router-link>
+                  <el-dropdown-item @click.native="setting = true">
+                    <span>
+                      <div>
+                        <font-awesome-icon icon="fa-brands fa-canadian-maple-leaf" style="color: #fab1ce" />
+                        布局设置
+                      </div>
+                    </span>
+                  </el-dropdown-item>
+                  <el-dropdown-item divided @click.native="logout">
+                    <span>
+                      <div>
+                        <font-awesome-icon icon="fa-regular fa-circle-xmark" style="color: #F64C2F" />
+                        退出登录
+                      </div>
+                    </span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-tooltip>
+        </div>
       </el-col>
 
     </el-row>
@@ -142,6 +141,7 @@ const lang = ref('zh')
 const serverTime = ref(null)
 const timer = ref(null)
 const delay = ref(1000)
+const timeLoading = ref(true)
 
 const { appContext } = getCurrentInstance()
 
@@ -157,6 +157,7 @@ const getTime = async () => {
   handleZoneToTime()
 }
 const getServerTimeFn = async ()=>{
+  timeLoading.value = true
   const response = await getServerTime()
   serverTime.value = response.data.time
   gmt.value = getUTC(new Date(serverTime.value))
@@ -193,6 +194,7 @@ const handleZoneToTime = (cnTime)=>{
         ...it
       }
     })
+    timeLoading.value = false
   }, delay.value)
 }
 const sidebar = computed(()=>{
@@ -234,6 +236,14 @@ const toggleSideBar = ()=>{
 }
 </style>
 <style lang="scss" scoped>
+
+.time-tag {
+  background-color: #f4f4f5;
+  border-color: #e9e9eb;
+  color: #909399;
+}
+
+
 .navbar {
   height: 50px;
   overflow: hidden;
