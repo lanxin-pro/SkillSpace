@@ -104,6 +104,11 @@ import { ref,reactive } from 'vue'
 import { CommonStatusEnum } from '@/utils/constants'
 import Dialog from '@/components/Dialog/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
+import { getUser,createUser,updateUser } from '@/api/system/user.js'
+import { listSimplePosts } from '@/api/system/post.js'
+import { listSimpleDepts } from '@/api/system/dept.js'
+import { handleTree,defaultProps } from '@/utils/tree.js'
+import ELComponent from '@/plugins/modal.js'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -113,7 +118,7 @@ const dialogTitle = ref('')
 const formLoading = ref(false)
 // 表单的类型：create - 新增；update - 修改
 const formType = ref('')
-const formData = reactive({
+const formData = ref({
   nickname: '',
   deptId: '',
   mobile: '',
@@ -157,13 +162,77 @@ const postList = ref([])
 const open = async (type, id) => {
   dialogVisible.value = true
   dialogTitle.value = type
-
+  formType.value = type
+  resetForm()
+  // 修改时，设置数据
+  if (id) {
+    formLoading.value = true
+    try {
+      const response = await getUser(id)
+      formData.value = response.data
+    } finally {
+      formLoading.value = false
+    }
+  }
+  // 加载部门树
+  const responseDepts = await listSimpleDepts()
+  deptList.value = handleTree(responseDepts.data)
+  // 加载岗位列表
+  const responsePosts = await listSimplePosts()
+  postList.value = responsePosts.data
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
 
+/** 提交表单 */
+const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
+const submitForm = async () => {
+  console.log(formData.value)
 
-
+  // 校验表单
+  if (!formRef){
+    return
+  }
+  const valid = await formRef.value.validate()
+  if (!valid){
+    return
+  }
+  // 提交请求
+  formLoading.value = true
+  try {
+    const data = formData.value
+    if (formType.value === 'create') {
+      await createUser(data)
+      ELComponent.msgSuccess("创建成功")
+    } else {
+      await updateUser(data)
+      ELComponent.msgSuccess("更新成功")
+    }
+    dialogVisible.value = false
+    // 发送操作成功的事件
+    emit('success')
+  } finally {
+    formLoading.value = false
+  }
+}
+/** 重置表单 */
+const resetForm = () => {
+  formData.value = {
+    nickname: '',
+    deptId: '',
+    mobile: '',
+    email: '',
+    id: undefined,
+    username: '',
+    password: '',
+    sex: undefined,
+    postIds: [],
+    remark: '',
+    status: CommonStatusEnum.ENABLE,
+    roleIds: []
+  }
+  formRef.value?.resetFields()
+}
 </script>
 
 <style scoped>

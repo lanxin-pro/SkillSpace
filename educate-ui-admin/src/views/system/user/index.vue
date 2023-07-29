@@ -196,7 +196,7 @@
 
 <script setup>
 import {
-  listUser
+  listUser,resetUserPwd,updateUserStatus,deleteUser
 } from "@/api/system/user"
 import { listSimpleDepts } from "@/api/system/dept"
 import { listSimplePosts } from "@/api/system/post"
@@ -361,7 +361,7 @@ const handleStatusChange = async (row) => {
     const text = row.status === CommonStatusEnum.ENABLE ? '启用' : '停用'
     await ELComponent.confirm('确认要"' + text + '""' + row.username + '"用户吗?')
     // 发起修改状态
-    alert("修改")
+    await updateUserStatus(row.id, row.status)
     // 刷新列表
     await getList()
   } catch {
@@ -446,7 +446,7 @@ const handleDelete = async (id) => {
     // 删除的二次确认
     await ELComponent.confirm(`是否确认删除用户编号${id}为的数据项?`)
     // 发起删除
-    alert("删除")
+    await deleteUser(id)
     ELComponent.msgSuccess('删除成功')
     // 刷新列表
     await getList()
@@ -463,7 +463,7 @@ const handleResetPwd = async (row) => {
     )
     const password = result.value
     // 发起重置
-    alert("重置密码")
+    await resetUserPwd(row.id, password)
     ELComponent.msgSuccess('修改成功，新密码是：' + password)
   } catch {}
 }
