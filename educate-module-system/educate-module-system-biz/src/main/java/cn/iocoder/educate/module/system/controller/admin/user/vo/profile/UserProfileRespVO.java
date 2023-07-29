@@ -1,5 +1,6 @@
-package cn.iocoder.educate.module.system.controller.admin.user.vo;
+package cn.iocoder.educate.module.system.controller.admin.user.vo.profile;
 
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserBaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

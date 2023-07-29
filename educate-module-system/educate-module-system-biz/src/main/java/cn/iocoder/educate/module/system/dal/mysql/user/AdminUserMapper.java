@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -51,5 +51,23 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
         LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         adminUserDOLambdaQueryWrapper.like(AdminUserDO::getNickname,userNickname);
         return selectList(adminUserDOLambdaQueryWrapper);
+    }
+
+    default AdminUserDO selectByUsername(String username){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getUsername,username);
+        return selectOne(adminUserDOLambdaQueryWrapper);
+    }
+
+    default AdminUserDO selectByMobile(String mobile){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getMobile,mobile);
+        return selectOne(adminUserDOLambdaQueryWrapper);
+    }
+
+    default AdminUserDO selectByEmail(String email){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getEmail,email);
+        return selectOne(adminUserDOLambdaQueryWrapper);
     }
 }

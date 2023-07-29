@@ -2,11 +2,10 @@ package cn.iocoder.educate.module.system.dal.dataobject.user;
 
 import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import cn.iocoder.educate.framework.tenant.core.db.TenantBaseDO;
-import com.baomidou.mybatisplus.annotation.KeySequence;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -25,9 +24,9 @@ import java.util.Set;
 public class AdminUserDO extends TenantBaseDO {
 
     /**
-     * 用户ID
+     * 用户ID 不添加 @TableId(value = "id",type = IdType.AUTO) 后续代码获取id的时候无法获取到
      */
-    @TableId
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**

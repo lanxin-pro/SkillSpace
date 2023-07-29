@@ -2,7 +2,9 @@ package cn.iocoder.educate.module.system.service.user;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
 import java.io.InputStream;
@@ -105,4 +107,43 @@ public interface AdminUserService {
      * @return
      */
     String updateUserAvatar(Long loginUserId, InputStream inputStream);
+
+    /**
+     * 修改密码
+     *
+     * @param id 用户编号
+     * @param password 密码
+     */
+    void updateUserPassword(Long id, String password);
+
+    /**
+     * 创建用户
+     *
+     * @param reqVO 用户信息
+     * @return 用户编号
+     */
+    Long createUser(UserCreateReqVO reqVO);
+
+    /**
+     * 修改用户
+     *
+     * @param reqVO 用户信息
+     */
+    void updateUser(UserUpdateReqVO reqVO);
+
+    /**
+     * 删除用户
+     *
+     * @param id 用户编号
+     */
+    void deleteUser(Long id);
+
+    /**
+     * 修改状态
+     *
+     * @param id     用户编号
+     * @param status 状态
+     */
+    void updateUserStatus(Long id, Integer status);
+
 }

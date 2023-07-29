@@ -1,8 +1,10 @@
 package cn.iocoder.educate.module.system.convert.user;
 
 import cn.iocoder.educate.module.system.api.user.dto.AdminUserRespDTO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.UserPageItemRespVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.UserProfileRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageItemRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.profile.UserProfileRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserDO;
@@ -24,7 +26,11 @@ public interface UserConvert {
 
     UserPageItemRespVO convert(AdminUserDO bean);
 
+    AdminUserDO convert(UserCreateReqVO bean);
+
     UserPageItemRespVO.Dept convert(DeptDO bean);
+
+    AdminUserDO convert(UserUpdateReqVO bean);
 
     UserProfileRespVO convert03(AdminUserDO bean);
 

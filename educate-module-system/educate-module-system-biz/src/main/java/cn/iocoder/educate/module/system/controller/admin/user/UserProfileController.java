@@ -7,7 +7,7 @@ import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.UserProfileRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.profile.UserProfileRespVO;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;

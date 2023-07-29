@@ -1,9 +1,12 @@
 package cn.iocoder.educate.module.system.service.dept;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptListReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.mysql.dept.DeptMapper;
+import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -95,6 +98,22 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public DeptDO getDept(Long deptId) {
         return deptMapper.selectById(deptId);
+    }
+
+    @Override
+    public void validateDeptList(Set<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return;
+        }
+        ids.forEach(id -> {
+            DeptDO deptDO = deptCache.get(id);
+            if (deptDO == null) {
+                throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NOT_FOUND);
+            }
+            if (!CommonStatusEnum.ENABLE.getStatus().equals(deptDO.getStatus())) {
+                throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NOT_ENABLE, deptDO.getName());
+            }
+        });
     }
 
     /**

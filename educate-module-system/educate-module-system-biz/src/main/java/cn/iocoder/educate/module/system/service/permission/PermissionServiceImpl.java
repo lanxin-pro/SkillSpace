@@ -9,6 +9,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleMenuDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.UserRoleDO;
 import cn.iocoder.educate.module.system.dal.mysql.permission.RoleMenuMapper;
 import cn.iocoder.educate.module.system.dal.mysql.permission.UserRoleMapper;
+import cn.iocoder.educate.module.system.mq.producer.permission.PermissionProducer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.common.collect.ArrayListMultimap;
@@ -20,6 +21,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -80,6 +83,9 @@ public class PermissionServiceImpl implements PermissionService{
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private PermissionProducer permissionProducer;
 
     @Override
     @PostConstruct
@@ -193,6 +199,21 @@ public class PermissionServiceImpl implements PermissionService{
     @Transactional(rollbackFor = Exception.class)
     public void processMenuDeleted(Long menuId) {
         roleMenuMapper.deleteListByMenuId(menuId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void processUserDeleted(Long userId) {
+        userRoleMapper.deleteListByUserId(userId);
+        // 事务执行成功以后
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+            @Override
+            public void afterCommit() {
+                permissionProducer.sendUserRoleRefreshMessage();
+            }
+
+        });
     }
 
     public static boolean isAnyEmpty(Collection<?>... collections) {

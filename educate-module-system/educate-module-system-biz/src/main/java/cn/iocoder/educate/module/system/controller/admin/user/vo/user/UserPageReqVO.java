@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.system.controller.admin.user.vo;
+package cn.iocoder.educate.module.system.controller.admin.user.vo.user;
 
 import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.util.date.DateUtils;

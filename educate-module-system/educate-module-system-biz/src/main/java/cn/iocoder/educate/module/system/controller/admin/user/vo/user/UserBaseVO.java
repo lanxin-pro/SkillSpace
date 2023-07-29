@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.system.controller.admin.user.vo;
+package cn.iocoder.educate.module.system.controller.admin.user.vo.user;
 
 import cn.iocoder.educate.framework.common.validation.Mobile;
 import io.swagger.v3.oas.annotations.media.Schema;
