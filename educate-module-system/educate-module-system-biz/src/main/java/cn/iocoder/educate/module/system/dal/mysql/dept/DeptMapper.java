@@ -22,4 +22,18 @@ public interface DeptMapper extends BaseMapper<DeptDO> {
         deptDOLambdaQueryWrapper.eq(ObjectUtil.isNotEmpty(reqVO.getStatus()),DeptDO::getStatus,reqVO.getStatus());
         return this.selectList(deptDOLambdaQueryWrapper);
     }
+
+    default DeptDO selectByParentIdAndName(Long parentId, String name){
+        LambdaQueryWrapper<DeptDO> deptDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deptDOLambdaQueryWrapper.eq(DeptDO::getParentId,parentId)
+                .eq(DeptDO::getName,name);
+        return this.selectOne(deptDOLambdaQueryWrapper);
+    }
+
+    default Long selectCountByParentId(Long parentId){
+        LambdaQueryWrapper<DeptDO> deptDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        deptDOLambdaQueryWrapper.eq(DeptDO::getParentId,parentId);
+        return this.selectCount(deptDOLambdaQueryWrapper);
+    }
+
 }

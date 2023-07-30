@@ -70,4 +70,11 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
         adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getEmail,email);
         return selectOne(adminUserDOLambdaQueryWrapper);
     }
+
+    default List<AdminUserDO> selectListByStatus(Integer status){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.eq(AdminUserDO::getStatus,status);
+        return selectList(adminUserDOLambdaQueryWrapper);
+    }
+
 }

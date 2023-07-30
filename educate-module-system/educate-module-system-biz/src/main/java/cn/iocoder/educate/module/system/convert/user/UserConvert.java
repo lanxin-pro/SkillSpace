@@ -4,6 +4,7 @@ import cn.iocoder.educate.module.system.api.user.dto.AdminUserRespDTO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageItemRespVO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.profile.UserProfileRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserSimpleRespVO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
@@ -41,6 +42,8 @@ public interface UserConvert {
     List<UserProfileRespVO.Post> convertList02(List<PostDO> list);
 
     List<UserProfileRespVO.SocialUser> convertList03(List<SocialUserDO> list);
+
+    List<UserSimpleRespVO> convertList04(List<AdminUserDO> list);
 
     AdminUserRespDTO convert4(AdminUserDO bean);
 

@@ -1,12 +1,19 @@
 package cn.iocoder.educate.module.system.service.dept;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptListReqVO;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptUpdateReqVO;
+import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.mysql.dept.DeptMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.system.enums.dept.DeptIdEnum;
+import cn.iocoder.educate.module.system.mq.producer.dept.DeptProducer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -52,6 +59,9 @@ public class DeptServiceImpl implements DeptService {
 
     @Resource
     private DeptMapper deptMapper;
+
+    @Resource
+    private DeptProducer deptProducer;
 
     @Override
     @PostConstruct
@@ -116,6 +126,108 @@ public class DeptServiceImpl implements DeptService {
         });
     }
 
+    @Override
+    public Long createDept(DeptCreateReqVO reqVO) {
+        // 校验正确性
+        validateForCreateOrUpdate(null, reqVO.getParentId(), reqVO.getName());
+        // 设置为根节点
+        if (reqVO.getParentId() == null) {
+            reqVO.setParentId(DeptIdEnum.ROOT.getId());
+        }
+        // 插入部门
+        DeptDO dept = DeptConvert.INSTANCE.convert(reqVO);
+        deptMapper.insert(dept);
+        // 发送刷新消息
+        deptProducer.sendDeptRefreshMessage();
+        return dept.getId();
+    }
+
+    @Override
+    public void updateDept(DeptUpdateReqVO reqVO) {
+        // 校验正确性
+        if (reqVO.getParentId() == null) {
+            reqVO.setParentId(DeptIdEnum.ROOT.getId());
+        }
+        validateForCreateOrUpdate(reqVO.getId(), reqVO.getParentId(), reqVO.getName());
+        // 更新部门
+        DeptDO deptDO = DeptConvert.INSTANCE.convert(reqVO);
+        deptMapper.updateById(deptDO);
+        // 发送刷新消息
+        deptProducer.sendDeptRefreshMessage();
+    }
+
+    @Override
+    public void deleteDept(Long id) {
+        // 校验是否存在
+        validateDeptExists(id);
+        // 校验是否有子部门
+        if (deptMapper.selectCountByParentId(id) > 0) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_EXITS_CHILDREN);
+        }
+        // 删除部门
+        deptMapper.deleteById(id);
+        // 发送刷新消息
+        deptProducer.sendDeptRefreshMessage();
+    }
+
+    private void validateForCreateOrUpdate(Long id, Long parentId, String name) {
+        // 校验自己存在
+        validateDeptExists(id);
+        // 校验父部门的有效性
+        validateParentDeptEnable(id, parentId);
+        // 校验部门名的唯一性
+        validateDeptNameUnique(id, parentId, name);
+    }
+
+    private void validateDeptNameUnique(Long id, Long parentId, String name) {
+        DeptDO menu = deptMapper.selectByParentIdAndName(parentId, name);
+        // 数据库中没有重复的dept
+        if (menu == null) {
+            return;
+        }
+        // 如果 id 为空，说明不用比较是否为相同 id 的岗位
+        if (id == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NAME_DUPLICATE);
+        }
+        if (!menu.getId().equals(id)) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NAME_DUPLICATE);
+        }
+    }
+
+    private void validateParentDeptEnable(Long id, Long parentId) {
+        if (parentId == null || DeptIdEnum.ROOT.getId().equals(parentId)) {
+            return;
+        }
+        // 不能设置自己为父部门
+        if (parentId.equals(id)) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_PARENT_ERROR);
+        }
+        // 父岗位不存在
+        DeptDO dept = deptMapper.selectById(parentId);
+        if (dept == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_PARENT_NOT_EXITS);
+        }
+        // 父部门被禁用
+        if (!CommonStatusEnum.ENABLE.getStatus().equals(dept.getStatus())) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NOT_ENABLE);
+        }
+        // 父部门不能是原来的子部门
+        List<DeptDO> children = getDeptListByParentIdFromCache(id, true);
+        if (children.stream().anyMatch(dept1 -> dept1.getId().equals(parentId))) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_PARENT_IS_CHILD);
+        }
+    }
+
+    private void validateDeptExists(Long id) {
+        if (id == null) {
+            return;
+        }
+        DeptDO dept = deptMapper.selectById(id);
+        if (dept == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DEPT_NOT_FOUND);
+        }
+    }
+
     /**
      * 递归获取所有的子部门，添加到 result 结果
      *
@@ -140,4 +252,5 @@ public class DeptServiceImpl implements DeptService {
         depts.forEach(dept -> getDeptsByParentIdFromCache(result, dept.getId(),
                 recursiveCount - 1, parentDeptMap));
     }
+
 }

@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.controller.admin.user;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
@@ -111,6 +112,15 @@ public class UserController {
     public CommonResult<Boolean> updateUserStatus(@Valid @RequestBody UserUpdateStatusReqVO reqVO) {
         adminUserService.updateUserStatus(reqVO.getId(), reqVO.getStatus());
         return success(true);
+    }
+
+    @GetMapping("/list-all-simple")
+    @Operation(summary = "获取用户精简信息列表", description = "只包含被开启的用户，主要用于前端的下拉选项")
+    public CommonResult<List<UserSimpleRespVO>> getSimpleUserList() {
+        // 获用户列表，只要开启状态的
+        List<AdminUserDO> list = adminUserService.getUserListByStatus(CommonStatusEnum.ENABLE.getStatus());
+        // 排序后，返回给前端
+        return success(UserConvert.INSTANCE.convertList04(list));
     }
 
 }

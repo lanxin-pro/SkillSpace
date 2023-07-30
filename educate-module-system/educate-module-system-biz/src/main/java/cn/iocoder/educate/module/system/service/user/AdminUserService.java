@@ -146,4 +146,12 @@ public interface AdminUserService {
      */
     void updateUserStatus(Long id, Integer status);
 
+    /**
+     * 获得指定状态的用户们
+     *
+     * @param status 状态
+     * @return 用户们
+     */
+    List<AdminUserDO> getUserListByStatus(Integer status);
+
 }

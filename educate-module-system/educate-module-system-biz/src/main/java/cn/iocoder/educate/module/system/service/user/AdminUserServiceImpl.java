@@ -207,6 +207,11 @@ public class AdminUserServiceImpl implements AdminUserService{
         adminUserMapper.updateById(adminUserDO);
     }
 
+    @Override
+    public List<AdminUserDO> getUserListByStatus(Integer status) {
+        return adminUserMapper.selectListByStatus(status);
+    }
+
     /**
      * 相对于数据库如果我多了一个岗位的话，我就应该添加，相对的如果我少了一个的话。就需要删除
      *

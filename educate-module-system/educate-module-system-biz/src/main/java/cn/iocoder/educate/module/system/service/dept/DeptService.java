@@ -1,10 +1,10 @@
 package cn.iocoder.educate.module.system.service.dept;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptListReqVO;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
-
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -76,5 +76,27 @@ public interface DeptService {
      * @param singleton 角色编号数组
      */
     void validateDeptList(Set<Long> singleton);
+
+    /**
+     * 创建部门
+     *
+     * @param reqVO 部门信息
+     * @return 部门编号
+     */
+    Long createDept(DeptCreateReqVO reqVO);
+
+    /**
+     * 更新部门
+     *
+     * @param reqVO 部门信息
+     */
+    void updateDept(DeptUpdateReqVO reqVO);
+
+    /**
+     * 删除部门
+     *
+     * @param id 部门编号
+     */
+    void deleteDept(Long id);
 
 }
