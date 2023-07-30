@@ -5,6 +5,7 @@
         :model="queryParams"
         ref="queryForm"
         size="small"
+        label-width="68px"
         :inline="true"
         v-show="showSearch"
     >

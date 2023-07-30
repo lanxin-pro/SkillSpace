@@ -115,3 +115,17 @@ export function resetUserPwd(id,password) {
         data: data
     })
 }
+
+/**
+ * 获取用户精简信息列表
+ *
+ * @param id
+ * @param password
+ * @returns {*}
+ */
+export function getSimpleUserList() {
+    return request({
+        url: '/system/user/list-all-simple',
+        method: 'get'
+    })
+}
