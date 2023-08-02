@@ -104,9 +104,11 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
+
+    <!-- 表单弹窗：添加/修改 -->
+    <PostForm ref="formRef" @success="getList" />
   </div>
-  <!-- 表单弹窗：添加/修改 -->
-  <PostForm ref="formRef" @success="getList" />
+
 </template>
 <script setup>
 import { ref,reactive,onMounted,nextTick } from 'vue'

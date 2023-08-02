@@ -2,7 +2,6 @@
   <div class="user-info-head" @click="open()">
     <!--  外部的图片的显示缩略图  -->
     <img
-        v-if="sourceValue"
         :src="sourceValue"
         alt="avatar"
         class="img-circle img-lg"

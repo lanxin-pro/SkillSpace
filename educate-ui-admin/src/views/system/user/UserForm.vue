@@ -71,6 +71,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="岗位">
+<!--     我传递postIds就可以获取item.name       -->
             <el-select v-model="formData.postIds" multiple placeholder="请选择">
               <el-option
                   v-for="item in postList"
@@ -179,6 +180,7 @@ const open = async (type, id) => {
   deptList.value = handleTree(responseDepts.data)
   // 加载岗位列表
   const responsePosts = await listSimplePosts()
+
   postList.value = responsePosts.data
 }
 // 提供 open 方法，用于打开弹窗
@@ -187,7 +189,6 @@ defineExpose({ open })
 /** 提交表单 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
 const submitForm = async () => {
-  console.log(formData.value)
 
   // 校验表单
   if (!formRef){
