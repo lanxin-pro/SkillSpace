@@ -1,10 +1,11 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+<!--  动画样式  -->
+    <Transition appear enter-active-class="animate__animated animate__fadeInLeft">
       <keep-alive>
         <router-view />
       </keep-alive>
-    </transition>
+    </Transition>
 
     <iframe-toggle />
   </section>
@@ -12,11 +13,13 @@
 
 <script setup>
 import IframeToggle from "./IframeToggle/index.vue"
-
+document.documentElement.style.setProperty('--animate-duration', '.5s');
 
 </script>
 
 <style lang="scss" scoped>
+
+
 .app-main {
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
