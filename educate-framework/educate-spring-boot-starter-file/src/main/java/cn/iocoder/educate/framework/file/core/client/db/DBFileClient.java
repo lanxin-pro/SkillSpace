@@ -40,6 +40,11 @@ public class DBFileClient extends AbstractFileClient<DBFileClientConfig> {
                 .selectContent(getId(), path);
     }
 
+    @Override
+    public void delete(String path) {
+        getDbFileContentFrameworkDAO().delete(getId(), path);
+    }
+
     private DBFileContentFrameworkDAO getDbFileContentFrameworkDAO() {
         // 延迟获取，因为 SpringUtil 初始化太慢
         if(dbFileContentFrameworkDAO == null){

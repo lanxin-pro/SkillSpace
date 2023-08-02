@@ -29,4 +29,13 @@ public interface FileClient {
      * @return 文件的内容
      */
     byte[] getContent(String path);
+
+    /**
+     * 删除文件
+     *
+     * @param path 相对路径
+     * @throws Exception 删除文件时，抛出 Exception 异常
+     */
+    void delete(String path);
+
 }

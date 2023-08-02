@@ -1,23 +1,34 @@
 package cn.iocoder.educate.module.infra.controller.admin.file;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.file.FilePageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.file.FileRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.file.FileUploadReqVO;
+import cn.iocoder.educate.module.infra.covert.file.FileConvert;
+import cn.iocoder.educate.module.infra.dal.dataobject.file.FileDO;
 import cn.iocoder.educate.module.infra.service.file.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
 /**
  * @Author: j-sentinel
@@ -55,4 +66,30 @@ public class FileController {
         }
         ServletUtils.writeAttachment(response, path, content);
     }
+
+    @GetMapping("/page")
+    @Operation(summary = "获得文件分页")
+    public CommonResult<PageResult<FileRespVO>> getFilePage(@Valid FilePageReqVO pageVO) {
+        PageResult<FileDO> pageResult = fileService.getFilePage(pageVO);
+        return success(FileConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @PostMapping("/upload")
+    @Operation(summary = "上传文件")
+    public CommonResult<String> uploadFile(FileUploadReqVO uploadReqVO) throws Exception {
+        MultipartFile file = uploadReqVO.getFile();
+        String path = uploadReqVO.getPath();
+        String filePath = fileService.createFile(file.getOriginalFilename(), path, IoUtil.readBytes(file.getInputStream()));
+        return success(filePath);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除文件")
+    @Parameter(name = "id", description = "编号", required = true)
+    public CommonResult<Boolean> deleteFile(@RequestParam("id") Long id) throws Exception {
+        fileService.deleteFile(id);
+        return success(true);
+    }
+
+
 }

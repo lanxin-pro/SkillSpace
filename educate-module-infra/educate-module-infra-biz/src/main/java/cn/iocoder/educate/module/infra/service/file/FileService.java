@@ -1,5 +1,9 @@
 package cn.iocoder.educate.module.infra.service.file;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.file.FilePageReqVO;
+import cn.iocoder.educate.module.infra.dal.dataobject.file.FileDO;
+
 /**
  * 文件 Service 接口
  *
@@ -26,4 +30,19 @@ public interface FileService {
      * @return 文件内容
      */
     byte[] getFileContent(Long configId, String path);
+
+    /**
+     * 获得文件分页
+     *
+     * @param filePageReqVO 分页查询
+     * @return 文件分页
+     */
+    PageResult<FileDO> getFilePage(FilePageReqVO filePageReqVO);
+
+    /**
+     * 删除文件
+     *
+     * @param id 编号
+     */
+    void deleteFile(Long id);
 }

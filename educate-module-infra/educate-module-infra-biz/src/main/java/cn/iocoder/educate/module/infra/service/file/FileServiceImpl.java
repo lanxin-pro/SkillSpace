@@ -2,11 +2,15 @@ package cn.iocoder.educate.module.infra.service.file;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.io.FileUtils;
 import cn.iocoder.educate.framework.file.core.client.FileClient;
 import cn.iocoder.educate.framework.file.core.utils.FileTypeUtils;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.file.FilePageReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.file.FileDO;
 import cn.iocoder.educate.module.infra.dal.mysql.file.FileMapper;
+import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -61,6 +65,33 @@ public class FileServiceImpl implements FileService {
         // 获取文件内容
         byte[] content = client.getContent(path);
         return content;
+    }
+
+    @Override
+    public PageResult<FileDO> getFilePage(FilePageReqVO filePageReqVO) {
+        return fileMapper.selectPage(filePageReqVO);
+    }
+
+    @Override
+    public void deleteFile(Long id) {
+        // 校验存在
+        FileDO file = validateFileExists(id);
+
+        // 从文件存储器中删除
+        FileClient client = fileConfigService.getFileClient(file.getConfigId());
+        Assert.notNull(client, "客户端({}) 不能为空", file.getConfigId());
+        client.delete(file.getPath());
+
+        // 删除记录
+        fileMapper.deleteById(id);
+    }
+
+    private FileDO validateFileExists(Long id) {
+        FileDO fileDO = fileMapper.selectById(id);
+        if (fileDO == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_NOT_EXISTS);
+        }
+        return fileDO;
     }
 
 }

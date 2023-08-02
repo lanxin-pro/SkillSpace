@@ -44,4 +44,13 @@ public class FileContentDAOImpl implements DBFileContentFrameworkDAO {
                 // ofNullable如果为null，就返回orElse的值
                 .orElse(null);
     }
+
+    @Override
+    public void delete(Long configId, String path) {
+        LambdaQueryWrapper<FileContentDO> lambdaQueryWrapper = new LambdaQueryWrapper<FileContentDO>()
+                .eq(FileContentDO::getConfigId, configId)
+                .eq(FileContentDO::getPath, path);
+        fileContentMapper.delete(lambdaQueryWrapper);
+    }
+
 }

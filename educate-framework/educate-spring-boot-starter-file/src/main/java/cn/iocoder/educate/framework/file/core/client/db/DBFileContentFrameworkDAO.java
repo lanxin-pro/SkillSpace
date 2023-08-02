@@ -25,4 +25,12 @@ public interface DBFileContentFrameworkDAO {
      * @return 内容
      */
     byte[] selectContent(Long configId, String path);
+
+    /**
+     * 删除文件内容
+     *
+     * @param configId 配置编号
+     * @param path 路径
+     */
+    void delete(Long configId, String path);
 }

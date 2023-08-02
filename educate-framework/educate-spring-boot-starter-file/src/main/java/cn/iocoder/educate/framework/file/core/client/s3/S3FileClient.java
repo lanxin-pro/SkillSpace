@@ -27,4 +27,9 @@ public class S3FileClient extends AbstractFileClient<S3FileClientConfig> {
         return new byte[0];
     }
 
+    @Override
+    public void delete(String path) {
+
+    }
+
 }
