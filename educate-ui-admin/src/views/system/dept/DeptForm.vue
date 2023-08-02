@@ -107,7 +107,7 @@ const deptTree = ref()
 const userList = ref([])
 
 /** 打开弹窗 */
-const open = async (type, id) => {
+const open = async (type, id ,parentId) => {
   dialogVisible.value = true
   dialogTitle.value = type
   formType.value = type
@@ -121,6 +121,10 @@ const open = async (type, id) => {
     } finally {
       formLoading.value = false
     }
+  }
+  // 在右侧的新增按钮
+  if(parentId){
+    formData.value.parentId = parentId
   }
   // 新增时候的设置数据
   const response = await getSimpleUserSimpleDeptList()

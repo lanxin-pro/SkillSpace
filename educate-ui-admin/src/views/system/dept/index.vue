@@ -90,7 +90,7 @@
         <template v-slot="scope">
           <el-button size="small" type="text" icon="Edit" @click="openForm('update',scope.row.id)"
                      v-hasPermi="['system:dept:update']">修改</el-button>
-          <el-button size="small" type="text" icon="Plus" @click="openForm('create',scope.row)"
+          <el-button size="small" type="text" icon="Plus" @click="openForm('create',null,scope.row.id)"
                      v-hasPermi="['system:dept:create']">新增</el-button>
           <el-button v-if="scope.row.parentId !== 0" size="small" type="text" icon="Delete"
                      @click="handleDelete(scope.row)" v-hasPermi="['system:dept:delete']">删除</el-button>
@@ -162,8 +162,8 @@ const toggleExpandAll = ()=>{
 }
 /** 添加/修改操作 */
 const formRef = ref()
-const openForm = (type,id)=>{
-  formRef.value.open(type, id)
+const openForm = (type,id, parentId)=>{
+  formRef.value.open(type, id, parentId)
 }
 /** 搜索按钮操作 */
 const handleQuery = ()=>{
