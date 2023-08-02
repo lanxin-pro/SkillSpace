@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
+import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
@@ -121,6 +122,27 @@ public class UserController {
         List<AdminUserDO> list = adminUserService.getUserListByStatus(CommonStatusEnum.ENABLE.getStatus());
         // 排序后，返回给前端
         return success(UserConvert.INSTANCE.convertList04(list));
+    }
+
+    @GetMapping("/list-all-simple-dept")
+    @Operation(summary = "获取用户精简信息列表+部门名称", description = "只包含被开启的用户，主要用于前端的下拉选项")
+    public CommonResult<List<UserSimpleRespVO>> getSimpleUserSimpleDeptList() {
+        // 获用户列表，只要开启状态的
+        List<AdminUserDO> list = adminUserService.getUserListByStatus(CommonStatusEnum.ENABLE.getStatus());
+        // 拼接结果返回
+        List<UserSimpleRespVO> userList = new ArrayList<>(list.size());
+        list.stream()
+                .peek(user -> {
+                    UserSimpleRespVO userSimpleRespVO = DeptConvert.INSTANCE.convert(user);
+                    DeptDO dept = deptService.getDept(user.getDeptId());
+                    userSimpleRespVO.setDeptName(dept.getName());
+                    userList.add(userSimpleRespVO);
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        userList.sort(Comparator.comparing(UserSimpleRespVO::getDeptName));
+        // 排序后，返回给前端
+        return success(UserConvert.INSTANCE.convertList05(userList));
     }
 
 }

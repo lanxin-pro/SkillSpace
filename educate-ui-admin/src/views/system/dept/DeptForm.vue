@@ -29,7 +29,7 @@
           <el-option
               v-for="item in userList"
               :key="item.id"
-              :label="item.nickname"
+              :label="item.nickname+'('+ item.deptName +')'"
               :value="item.id"
           />
         </el-select>
@@ -65,7 +65,7 @@ import { ref,reactive } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import ELComponent from '@/plugins/modal.js'
 import { CommonStatusEnum } from '@/utils/constants.js'
-import { getSimpleUserList } from '@/api/system/user.js'
+import { getSimpleUserList, getSimpleUserSimpleDeptList } from '@/api/system/user.js'
 import { getDept } from '@/api/system/dept.js'
 import { listSimpleDepts,createDept,updateDept } from '@/api/system/dept.js'
 import { handleTree,defaultProps } from '@/utils/tree.js'
@@ -123,7 +123,7 @@ const open = async (type, id) => {
     }
   }
   // 新增时候的设置数据
-  const response = await getSimpleUserList()
+  const response = await getSimpleUserSimpleDeptList()
   // 获得用户列表
   userList.value = response.data
   // 获得部门树

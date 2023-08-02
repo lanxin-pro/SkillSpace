@@ -45,6 +45,8 @@ public interface UserConvert {
 
     List<UserSimpleRespVO> convertList04(List<AdminUserDO> list);
 
+    List<UserSimpleRespVO> convertList05(List<UserSimpleRespVO> list);
+
     AdminUserRespDTO convert4(AdminUserDO bean);
 
 }

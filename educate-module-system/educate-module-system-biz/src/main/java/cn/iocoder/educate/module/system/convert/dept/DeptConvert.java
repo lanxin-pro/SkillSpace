@@ -4,7 +4,9 @@ import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptCreate
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptRespVO;
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptSimpleRespVO;
 import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserSimpleRespVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -28,5 +30,8 @@ public interface DeptConvert {
     DeptDO convert(DeptCreateReqVO bean);
 
     DeptDO convert(DeptUpdateReqVO bean);
+
+    UserSimpleRespVO convert(AdminUserDO bean);
+
 
 }

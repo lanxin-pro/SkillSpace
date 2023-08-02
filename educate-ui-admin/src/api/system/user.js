@@ -129,3 +129,17 @@ export function getSimpleUserList() {
         method: 'get'
     })
 }
+
+/**
+ * 获取用户精简信息列表+部门名称
+ *
+ * @param id
+ * @param password
+ * @returns {*}
+ */
+export function getSimpleUserSimpleDeptList() {
+    return request({
+        url: '/system/user/list-all-simple-dept',
+        method: 'get'
+    })
+}

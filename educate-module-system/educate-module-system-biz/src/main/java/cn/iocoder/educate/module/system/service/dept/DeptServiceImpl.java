@@ -11,6 +11,7 @@ import cn.iocoder.educate.module.system.controller.admin.dept.vo.dept.DeptUpdate
 import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.mysql.dept.DeptMapper;
+import cn.iocoder.educate.module.system.dal.mysql.user.AdminUserMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.dept.DeptIdEnum;
 import cn.iocoder.educate.module.system.mq.producer.dept.DeptProducer;
@@ -107,7 +108,7 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public DeptDO getDept(Long deptId) {
-        return deptMapper.selectById(deptId);
+        return deptCache.get(deptId);
     }
 
     @Override
@@ -148,6 +149,7 @@ public class DeptServiceImpl implements DeptService {
         if (reqVO.getParentId() == null) {
             reqVO.setParentId(DeptIdEnum.ROOT.getId());
         }
+        // 校验正确性
         validateForCreateOrUpdate(reqVO.getId(), reqVO.getParentId(), reqVO.getName());
         // 更新部门
         DeptDO deptDO = DeptConvert.INSTANCE.convert(reqVO);
