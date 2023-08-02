@@ -1,7 +1,11 @@
 package cn.iocoder.educate.module.system.service.post;
 
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.SetUtils;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.post.PostCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.post.PostPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.dept.vo.post.PostUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.post.PostDO;
 import org.springframework.lang.Nullable;
 import java.util.Collection;
@@ -40,5 +44,43 @@ public interface PostService {
      * @param postIds 岗位编号数组
      */
     void validatePostList(Set<Long> postIds);
+
+    /**
+     * 获得岗位分页列表
+     *
+     * @param reqVO 分页条件
+     * @return 部门分页列表
+     */
+    PageResult<PostDO> getPostPage(PostPageReqVO reqVO);
+
+    /**
+     * 创建岗位
+     *
+     * @param reqVO 岗位信息
+     * @return 岗位编号
+     */
+    Long createPost(PostCreateReqVO reqVO);
+
+    /**
+     * 更新岗位
+     *
+     * @param reqVO 岗位信息
+     */
+    void updatePost(PostUpdateReqVO reqVO);
+
+    /**
+     * 删除岗位信息
+     *
+     * @param id 岗位编号
+     */
+    void deletePost(Long id);
+
+    /**
+     * 获得岗位信息
+     *
+     * @param id 岗位编号
+     * @return 岗位信息
+     */
+    PostDO getPost(Long id);
 
 }
