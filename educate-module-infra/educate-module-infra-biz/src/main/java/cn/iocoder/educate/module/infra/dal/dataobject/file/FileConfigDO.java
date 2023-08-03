@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.file;
 
 import cn.iocoder.educate.framework.file.core.client.FileClientConfig;
+import cn.iocoder.educate.framework.file.core.enums.FileStorageEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;

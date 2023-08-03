@@ -1,6 +1,9 @@
 package cn.iocoder.educate.module.infra.service.file;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.file.core.client.FileClient;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfigPageReqVO;
+import cn.iocoder.educate.module.infra.dal.dataobject.file.FileConfigDO;
 
 /**
  * 文件配置 Service 接口
@@ -29,4 +32,13 @@ public interface FileConfigService {
      * @return 文件客户端
      */
     FileClient getFileClient(Long configId);
+
+    /**
+     * 获得文件配置分页
+     *
+     * @param fileConfigPageReqVO 分页查询
+     * @return 文件配置分页
+     */
+    PageResult<FileConfigDO> getFileConfigPage(FileConfigPageReqVO fileConfigPageReqVO);
+
 }

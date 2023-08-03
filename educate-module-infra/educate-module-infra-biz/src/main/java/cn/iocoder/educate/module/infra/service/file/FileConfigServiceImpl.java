@@ -1,7 +1,9 @@
 package cn.iocoder.educate.module.infra.service.file;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.file.core.client.FileClient;
 import cn.iocoder.educate.framework.file.core.client.FileClientFactory;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfigPageReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.file.FileConfigDO;
 import cn.iocoder.educate.module.infra.dal.mysql.file.FileConfigMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -58,6 +60,11 @@ public class FileConfigServiceImpl implements FileConfigService {
     public FileClient getFileClient(Long configId) {
         // 必然是查询的master
         return fileClientFactory.getFileClient(configId);
+    }
+
+    @Override
+    public PageResult<FileConfigDO> getFileConfigPage(FileConfigPageReqVO fileConfigPageReqVO) {
+        return fileConfigMapper.selectPage(fileConfigPageReqVO);
     }
 
 }
