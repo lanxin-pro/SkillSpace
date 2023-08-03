@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.net.URLDecoder;
+
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
 /**
@@ -54,6 +56,8 @@ public class FileController {
                                @PathVariable("configId") Long configId) throws Exception {
         // 获取请求的路径
         String path = StrUtil.subAfter(request.getRequestURI(), "/get/", false);
+        // 解决中文乱码问题
+        path = URLDecoder.decode(path, "UTF-8");
         if (StrUtil.isEmpty(path)) {
             throw new IllegalArgumentException("结尾的 path 路径必须传递");
         }

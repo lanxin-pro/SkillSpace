@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" title="上传文件">
+  <Dialog v-model="dialogVisible" title="上传文件" width="700">
     <el-upload
         ref="uploadRef"
         v-model:file-list="fileList"
