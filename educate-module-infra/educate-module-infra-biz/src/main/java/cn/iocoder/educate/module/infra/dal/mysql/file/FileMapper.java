@@ -34,4 +34,9 @@ public interface FileMapper extends BaseMapper<FileDO> {
         return new PageResult<>(fileDOPage.getRecords(),fileDOPage.getTotal());
     }
 
+    default Long selectPathNameCount(String path){
+        LambdaQueryWrapper<FileDO> fileDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        fileDOLambdaQueryWrapper.eq(FileDO::getPath,path);
+        return this.selectCount(fileDOLambdaQueryWrapper);
+    }
 }

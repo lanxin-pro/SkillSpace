@@ -13,6 +13,7 @@ import cn.iocoder.educate.module.infra.dal.mysql.file.FileMapper;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.io.File;
 
 /**
  * 文件 Service 实现类
@@ -23,6 +24,8 @@ import javax.annotation.Resource;
 @Service
 public class FileServiceImpl implements FileService {
 
+    private static final int INT_CHECK_NAME_EXISTS = 1;
+
     @Resource
     private FileMapper fileMapper;
 
@@ -31,6 +34,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String createFile(String name, String path, byte[] content) {
+        // 如果有重复的文件名就给后面加 (1)
+        path = validateFileRepetitionExists(path);
         // 计算默认的 path 名
         String mineType = FileTypeUtils.getMineType(content, name);
         if(StrUtil.isEmpty(path)){
@@ -55,6 +60,19 @@ public class FileServiceImpl implements FileService {
         file.setSize(content.length);
         fileMapper.insert(file);
         return url;
+    }
+
+    private String validateFileRepetitionExists(String path) {
+        int count = INT_CHECK_NAME_EXISTS;
+        // 校验是否有重复的path名
+        while (fileMapper.selectPathNameCount(path) > 0){
+            int dotIndex = path.lastIndexOf(".");
+            String nameWithoutExtension = path.substring(0, dotIndex);
+            String extension = path.substring(dotIndex);
+            path = nameWithoutExtension + "(" + count + ")" + extension;
+            count++;
+        }
+        return path;
     }
 
     @Override

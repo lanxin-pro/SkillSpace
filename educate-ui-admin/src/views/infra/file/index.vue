@@ -53,9 +53,11 @@
       <el-table-column label="文件名" align="center" prop="name">
         <template #default="scope">
           <el-image
+              class="image__lazy"
               style="width: 100px; height: 100px"
               :src="scope.row.url"
               fit="contain"
+              lazy
           >
             <template #error>
               <div class="image-slot">
@@ -232,5 +234,19 @@ const resetQuery = () => {
 }
 .el-table .cell {
   padding: 0;
+}
+
+/* 懒加载 */
+.image__lazy {
+  height: 400px;
+  overflow-y: auto;
+}
+.image__lazy .el-image {
+  display: block;
+  min-height: 200px;
+  margin-bottom: 10px;
+}
+.image__lazy .el-image:last-child {
+  margin-bottom: 0;
 }
 </style>
