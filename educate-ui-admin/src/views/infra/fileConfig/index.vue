@@ -54,7 +54,7 @@
     <!-- 操作工具栏 -->
     <el-row :gutter="10" class="mb8 mt10">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" size="small" @click="handleAdd"
+        <el-button type="primary" plain icon="Plus" size="small" @click="openForm('create')"
                    v-hasPermi="['infra:file-config:create']">新增</el-button>
       </el-col>
     </el-row>
@@ -137,6 +137,7 @@
 
     <!-- 表单弹窗：添加/修改 -->
     <FileConfigForm ref="formRef" @success="getList" />
+
   </div>
 </template>
 
@@ -176,6 +177,13 @@ const getList = async ()=>{
     loading.value = false
   }
 }
+
+/** 添加/修改操作 */
+const formRef = ref()
+const openForm = async (type,id)=>{
+  formRef.value.open(type, id)
+}
+
 /** 初始化 */
 onMounted(()=>{
   getList()
