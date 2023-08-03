@@ -1,12 +1,33 @@
 <template>
-  <Dialog v-model="dialogVisible" title="文件预览" width="600">
+  <Dialog v-model="dialogVisible" title="文件预览" width="800">
+    <div style="margin-top: -20px;margin-bottom: 10px">
+      <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse-item title="图片详细参数" name="1">
+          <div>
+           {{file}}
+          </div>
+          <div>
+            Consistent within interface: all elements should be consistent, such
+            as: design style, icons and texts, position of elements, etc.
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+    </div>
+
     <el-card
         v-loading="loading"
         :gutter="24"
         element-loading-text="生成文件中..."
         shadow="hover"
+        style="display: flex"
     >
-      <img v-if="fileType==='image/png' " :src="fileImg" class="user-avatar">
+      <el-image
+          class="user-avatar"
+          :src="fileImg"
+      />
+      <div style="display: flex;justify-content: flex-end">
+        <el-button type="success" round @click="handleDownload">下载原图</el-button>
+      </div>
     </el-card>
   </Dialog>
 </template>
@@ -24,19 +45,31 @@ const fileImg = ref()
 const loading = ref(true)
 // 文件类型
 const fileType = ref()
+const filePath = ref()
+const file = ref()
 /** 打开弹窗 */
-const open = async (type,url) => {
+const open = async (row) => {
   loading.value = true
   dialogVisible.value = true
-  fileType.value = type
-  if(type === 'image/png'){
-    fileImg.value = url
-  }
+  file.value = row
+  filePath.value = row.path
+  fileType.value = row.type
+  fileImg.value = row.url
   loading.value = false
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
-
+/** 下载原图 */
+const handleDownload = ()=>{
+  fetch(fileImg.value)
+      .then(response => response.blob())
+      .then(blob => {
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = filePath.value
+        link.click()
+      })
+}
 </script>
 
 <style scoped>

@@ -50,7 +50,21 @@
 
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="文件名" align="center" prop="name" :show-overflow-tooltip="true" />
+      <el-table-column label="文件名" align="center" prop="name">
+        <template #default="scope">
+          <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.url"
+              fit="contain"
+          >
+            <template #error>
+              <div class="image-slot">
+                <el-icon><Picture /></el-icon>
+              </div>
+            </template>
+          </el-image>
+        </template>
+      </el-table-column>
       <el-table-column label="文件路径" align="center" prop="path" :show-overflow-tooltip="true" />
       <el-table-column label="URL" align="center" prop="url" :show-overflow-tooltip="true" />
       <el-table-column
@@ -79,6 +93,16 @@
               v-hasPermi="['infra:config:delete']"
           >
             预览
+          </el-button>
+          <el-button
+              link
+              type="success"
+              size="small"
+              icon="Download"
+              @click="handleDownload(scope.row)"
+              v-hasPermi="['infra:config:delete']"
+          >
+            下载
           </el-button>
           <el-button
               link
@@ -140,7 +164,7 @@ onMounted(() => {
 /** 预览 **/
 const previewRef = ref()
 const handlePreview = (row)=>{
-  previewRef.value.open(row.type,row.url)
+  previewRef.value.open(row)
 }
 /** 查询列表 */
 const getList = async ()=>{
@@ -158,7 +182,17 @@ const formRef = ref()
 const openForm = () => {
   formRef.value.open()
 }
-
+/** 下载 */
+const handleDownload = (row)=>{
+  fetch(row.url)
+      .then(response => response.blob())
+      .then(blob => {
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = row.path
+        link.click()
+      })
+}
 /** 删除按钮操作 */
 const handleDelete = async (id) => {
   try {
@@ -186,5 +220,17 @@ const resetQuery = () => {
 </script>
 
 <style scoped>
-
+.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--el-fill-color-light);
+  color: var(--el-text-color-secondary);
+  font-size: 30px;
+}
+.el-table .cell {
+  padding: 0;
+}
 </style>
