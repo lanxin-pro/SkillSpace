@@ -99,7 +99,7 @@
               icon="Key"
               type="primary"
               :disabled="scope.row.master"
-              @click="handleMaster(scope.row.id)"
+              @click="handleMaster(scope.row)"
               v-hasPermi="['infra:file-config:update']"
           >
             主配置
@@ -207,10 +207,10 @@ const resetQuery = () => {
   handleQuery()
 }
 /** 主配置按钮操作 */
-const handleMaster = async (id) => {
+const handleMaster = async (row) => {
   try {
-    await ELComponent.confirm('是否确认修改配置编号为"' + id + '"的数据项为主配置?')
-    await updateFileConfigMaster(id)
+    await ELComponent.confirm('是否确认修改配置编号为"' + row.name + '"的数据项为主配置?')
+    await updateFileConfigMaster(row.id)
     ELComponent.msgSuccess('更新成功')
     await getList()
   } catch {}

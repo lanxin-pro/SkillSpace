@@ -25,6 +25,8 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
     /**
      * 在return (AbstractFileClient<Config>) ReflectUtil.newInstance(storageEnum.getClientClass(), configId, config);的时候
      * 就已经赋值了
+     *
+     * 所有子类都会super到这里来
      * @param id file_config的id
      * @param config file的配置类
      */
@@ -55,6 +57,12 @@ public abstract class AbstractFileClient <Config extends FileClientConfig> imple
         return id;
     }
 
+    /**
+     * TODO j-sentinel 警告如果配置文件中server.servlet的配置发生更改这里的文件就会无法访问！！！
+     * @param domain
+     * @param path
+     * @return
+     */
     protected String formatFileUrl(String domain, String path) {
         return StrUtil.format("{}/server/admin-api/infra/file/{}/get/{}", domain, getId(), path);
     }

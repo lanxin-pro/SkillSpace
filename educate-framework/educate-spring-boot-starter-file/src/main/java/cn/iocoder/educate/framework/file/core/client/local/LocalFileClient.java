@@ -1,5 +1,6 @@
 package cn.iocoder.educate.framework.file.core.client.local;
 
+import cn.hutool.core.io.FileUtil;
 import cn.iocoder.educate.framework.file.core.client.AbstractFileClient;
 
 /**
@@ -25,17 +26,28 @@ public class LocalFileClient extends AbstractFileClient<LocalFileClientConfig> {
 
     @Override
     public String upload(byte[] content, String path, String mineType) {
-        System.out.println("本地文件上传");
-        return null;
+        // 执行写入
+        String filePath = getFilePath(path);
+        FileUtil.writeBytes(content, filePath);
+        // 拼接返回路径
+        return super.formatFileUrl(config.getDomain(), path);
     }
 
     @Override
     public byte[] getContent(String path) {
-        return new byte[0];
+        String filePath = getFilePath(path);
+        return FileUtil.readBytes(filePath);
     }
 
     @Override
     public void delete(String path) {
-
+        String filePath = getFilePath(path);
+        FileUtil.del(filePath);
     }
+
+    private String getFilePath(String path) {
+        return config.getBasePath() + path;
+    }
+
+
 }
