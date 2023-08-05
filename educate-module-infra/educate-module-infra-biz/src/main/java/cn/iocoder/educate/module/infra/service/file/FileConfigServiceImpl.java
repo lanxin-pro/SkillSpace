@@ -66,7 +66,7 @@ public class FileConfigServiceImpl implements FileConfigService {
     @Override
     @PostConstruct
     public void initLocalCache() {
-        // 第一步：查询数据
+        // 第一步：查询数据LocalFileClientConfig
         List<FileConfigDO> fileConfigDOS = fileConfigMapper.selectList(new LambdaQueryWrapper<>());
         log.info("[initLocalCache][缓存文件配置，数量为:{}]", fileConfigDOS.size());
 

@@ -55,13 +55,14 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId> <!-- 代码生成器，使用它解析表结构 -->
         </dependency>
+        <!-- TODO 非常严重的警告 j-sentinel 绝对不能将mq的框架和redis的框架写在同一个子项目当中 -->
+<!--
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-redis</artifactId>
             <version>${revision}</version>
         </dependency>
-
-
+-->
         <!-- 消息队列相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
