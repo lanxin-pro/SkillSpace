@@ -5,6 +5,8 @@ import cn.iocoder.educate.framework.file.core.client.FileClient;
 import cn.iocoder.educate.framework.file.core.client.FileClientConfig;
 import cn.iocoder.educate.framework.file.core.client.db.DBFileClient;
 import cn.iocoder.educate.framework.file.core.client.db.DBFileClientConfig;
+import cn.iocoder.educate.framework.file.core.client.local.LocalFileClient;
+import cn.iocoder.educate.framework.file.core.client.local.LocalFileClientConfig;
 import cn.iocoder.educate.framework.file.core.client.s3.S3FileClient;
 import cn.iocoder.educate.framework.file.core.client.s3.S3FileClientConfig;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,8 @@ import lombok.Getter;
 @Getter
 public enum FileStorageEnum {
     DB(1, DBFileClientConfig.class, DBFileClient.class),
+
+    LOCAL(10, LocalFileClientConfig.class, LocalFileClient.class),
 
     S3(20, S3FileClientConfig.class, S3FileClient.class),
     ;

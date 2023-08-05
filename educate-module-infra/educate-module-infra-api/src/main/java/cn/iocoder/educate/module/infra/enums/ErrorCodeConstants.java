@@ -52,6 +52,7 @@ public interface ErrorCodeConstants {
     // ========== 文件配置 1001006000 ==========
     ErrorCode FILE_CONFIG_NOT_EXISTS = new ErrorCode(1001006000, "文件配置不存在");
     ErrorCode FILE_CONFIG_DELETE_FAIL_MASTER = new ErrorCode(1001006001, "该文件配置不允许删除，原因：它是主配置，删除会导致无法上传文件");
+    ErrorCode FILE_CONFIG_STORAGE_NOT_EXISTS = new ErrorCode(1001006002, "该文件存储器不存在，原因：无法在后端接口中查询到该存储器");
 
     // ========== 数据源配置 1001007000 ==========
     ErrorCode DATA_SOURCE_CONFIG_NOT_EXISTS = new ErrorCode(1001007000, "数据源配置不存在");

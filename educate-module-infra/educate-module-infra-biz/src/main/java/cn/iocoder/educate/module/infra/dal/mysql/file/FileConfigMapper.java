@@ -7,6 +7,7 @@ import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfi
 import cn.iocoder.educate.module.infra.dal.dataobject.file.FileConfigDO;
 import cn.iocoder.educate.module.infra.dal.dataobject.file.FileDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,10 @@ import org.springframework.util.StringUtils;
  */
 @Mapper
 public interface FileConfigMapper extends BaseMapper<FileConfigDO> {
+
+    default void updateBatch(FileConfigDO fileConfigDO) {
+        update(fileConfigDO, new LambdaQueryWrapper<>());
+    }
 
     default PageResult<FileConfigDO> selectPage(FileConfigPageReqVO fileConfigPageReqVO) {
         LambdaQueryWrapper<FileConfigDO> fileConfigDOLambdaQueryWrapper = new LambdaQueryWrapper<>();

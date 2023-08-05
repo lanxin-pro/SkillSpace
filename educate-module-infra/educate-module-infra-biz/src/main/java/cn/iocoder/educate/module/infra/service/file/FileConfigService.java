@@ -2,8 +2,12 @@ package cn.iocoder.educate.module.infra.service.file;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.file.core.client.FileClient;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfigCreateReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfigPageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.file.vo.config.FileConfigUpdateReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.file.FileConfigDO;
+
+import javax.validation.Valid;
 
 /**
  * 文件配置 Service 接口
@@ -40,5 +44,50 @@ public interface FileConfigService {
      * @return 文件配置分页
      */
     PageResult<FileConfigDO> getFileConfigPage(FileConfigPageReqVO fileConfigPageReqVO);
+
+    /**
+     * 创建文件配置
+     *
+     * @param createReqVO 创建信息
+     * @return 编号
+     */
+    Long createFileConfig(FileConfigCreateReqVO createReqVO);
+
+    /**
+     * 更新文件配置
+     *
+     * @param updateReqVO 更新信息
+     */
+    void updateFileConfig(@Valid FileConfigUpdateReqVO updateReqVO);
+
+    /**
+     * 更新文件配置为 Master
+     *
+     * @param id 编号
+     */
+    void updateFileConfigMaster(Long id);
+
+    /**
+     * 删除文件配置
+     *
+     * @param id 编号
+     */
+    void deleteFileConfig(Long id);
+
+    /**
+     * 获得文件配置
+     *
+     * @param id 编号
+     * @return 文件配置
+     */
+    FileConfigDO getFileConfig(Long id);
+
+    /**
+     * 测试文件配置是否正确，通过上传文件
+     *
+     * @param id 编号
+     * @return 文件 URL
+     */
+    String testFileConfig(Long id);
 
 }
