@@ -146,9 +146,15 @@ import FileConfigForm from './FileConfigForm.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import { ref,reactive,onMounted } from 'vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { getFileConfigPage } from '@/api/infra/fileConfig/index.js'
+import {
+  getFileConfigPage,
+  testFileConfig,
+  deleteFileConfig,
+  updateFileConfigMaster
+} from '@/api/infra/fileConfig/index.js'
 import DictTag from '@/components/DictTag/index.vue'
 import { dateFormatter } from '@/utils/formatTime.js'
+import ELComponent from '@/plugins/modal.js'
 
 // 列表的加载中
 const loading = ref(true)
@@ -199,6 +205,35 @@ const handleQuery = () => {
 const resetQuery = () => {
   queryFormRef.value.resetFields()
   handleQuery()
+}
+/** 主配置按钮操作 */
+const handleMaster = async (id) => {
+  try {
+    await ELComponent.confirm('是否确认修改配置编号为"' + id + '"的数据项为主配置?')
+    await updateFileConfigMaster(id)
+    ELComponent.msgSuccess('更新成功')
+    await getList()
+  } catch {}
+}
+/** 删除按钮操作 */
+const handleDelete = async (id) => {
+  try {
+    // 删除的二次确认
+    await ELComponent.confirm('您确定要删除吗？')
+    // 发起删除
+    await deleteFileConfig(id)
+    ELComponent.msgSuccess('删除成功！')
+    // 刷新列表
+    await getList()
+  } catch {}
+}
+
+/** 测试按钮操作 */
+const handleTest = async (id) => {
+  try {
+    const response = await testFileConfig(id)
+    ELComponent.alertSuccess('测试通过，上传文件成功！访问地址：' + response.data)
+  } catch {}
 }
 
 </script>

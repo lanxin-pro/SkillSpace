@@ -14,6 +14,7 @@
         <el-input v-model="formData.remark" placeholder="请输入备注" />
       </el-form-item>
       <el-form-item label="存储器" prop="storage">
+<!--    存储器在修改的时候不允许修改    -->
         <el-select
             v-model="formData.storage"
             :disabled="formData.id !== undefined"
@@ -93,7 +94,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm()">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
@@ -103,7 +104,7 @@
 import { ref,reactive,unref } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import ELComponent from '@/plugins/modal.js'
-import { getFilePage } from "@/api/infra/file/index.js"
+import { getFileConfig,updateFileConfig,createFileConfig } from "@/api/infra/fileConfig/index.js"
 import { getAccessToken } from '@/utils/auth'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 
@@ -152,7 +153,9 @@ const open = async (type, id) => {
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await getFileConfig(id)
+      const response = await getFileConfig(id)
+      console.log(response.data)
+      formData.value = response.data
     } finally {
       formLoading.value = false
     }
@@ -160,6 +163,37 @@ const open = async (type, id) => {
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
+
+
+/** 提交表单 */
+const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
+const submitForm = async () => {
+  // 校验表单
+  if (!formRef){
+    return
+  }
+  const valid = await formRef.value.validate()
+  if (!valid){
+    return
+  }
+  // 提交请求
+  formLoading.value = true
+  try {
+    const data = formData.value
+    if (formType.value === 'create') {
+      await createFileConfig(data)
+      ELComponent.msgSuccess('创建成功')
+    } else {
+      await updateFileConfig(data)
+      ELComponent.msgSuccess('更新成功')
+    }
+    dialogVisible.value = false
+    // 发送操作成功的事件
+    emit('success')
+  } finally {
+    formLoading.value = false
+  }
+}
 
 /** 重置表单 */
 const resetForm = () => {
