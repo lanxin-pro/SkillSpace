@@ -9,3 +9,7 @@ export const is = (val, type) => {
 export const isNumber = (val) => {
   return is(val, 'Number')
 }
+
+export const isString = (val) => {
+  return is(val, 'String')
+}

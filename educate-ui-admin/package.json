@@ -22,6 +22,8 @@
     "cropperjs": "^1.5.13",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
+    "echarts": "^5.4.2",
+    "echarts-wordcloud": "^2.1.0",
     "highlight.js": "^11.8.0",
     "element-plus": "2.3.3",
     "jsencrypt": "3.3.1",
