@@ -89,9 +89,10 @@ const sidebarRouters = computed(()=>{
   return permissionStore.getSidebarRouters
 })
 
-const activeMenu = (()=>{
+const activeMenu = computed(()=>{
   const { meta, path } = appContext.config.globalProperties.$route
   // if set path, the sidebar will highlight the path you set
+  // 如果设置了路径，侧边栏将突出显示您设置的路径
   if (meta.activeMenu) {
     return meta.activeMenu
   }
