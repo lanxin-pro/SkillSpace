@@ -19,4 +19,12 @@ public interface DictDataService {
      */
     List<DictDataDO> getDictDataList();
 
+    /**
+     * 获得指定字典类型的数据数量
+     *
+     * @param dictType 字典类型
+     * @return 数据数量
+     */
+    long countByDictType(String dictType);
+
 }

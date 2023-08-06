@@ -41,4 +41,9 @@ public class DictDataServiceImpl implements DictDataService {
         return list;
     }
 
+    @Override
+    public long countByDictType(String dictType) {
+        return dictDataMapper.selectCountByDictType(dictType);
+    }
+
 }

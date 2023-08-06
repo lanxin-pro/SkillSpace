@@ -16,4 +16,10 @@ public interface DictDataMapper extends BaseMapper<DictDataDO> {
     default List<DictDataDO> selectList(){
         return this.selectList(new LambdaQueryWrapper<>());
     }
+
+    default long selectCountByDictType(String dictType){
+        LambdaQueryWrapper<DictDataDO> dictDataDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dictDataDOLambdaQueryWrapper.eq(DictDataDO::getDictType,dictType);
+        return selectCount(dictDataDOLambdaQueryWrapper);
+    }
 }
