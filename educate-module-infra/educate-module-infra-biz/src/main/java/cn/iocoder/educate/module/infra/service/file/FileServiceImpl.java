@@ -34,13 +34,13 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String createFile(String name, String path, byte[] content) {
+        if(StrUtil.isEmpty(path)){
+            path = FileUtils.generatePath(content, name);
+        }
         // 如果有重复的文件名就给后面加 (1)
         path = validateFileRepetitionExists(path);
         // 计算默认的 path 名
         String mineType = FileTypeUtils.getMineType(content, name);
-        if(StrUtil.isEmpty(path)){
-            path = FileUtils.generatePath(content, name);
-        }
         // 如果 name 为空，则使用 path 填充
         if(StrUtil.isEmpty(name)){
             name = path;
