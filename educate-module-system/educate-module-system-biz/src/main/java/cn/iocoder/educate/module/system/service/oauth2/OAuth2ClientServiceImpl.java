@@ -4,8 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientUpdateReqVO;
+import cn.iocoder.educate.module.system.convert.oauth2.OAuth2ClientConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import cn.iocoder.educate.module.system.dal.mysql.oauth2.OAuth2ClientMapper;
+import cn.iocoder.educate.module.system.mq.producer.OAuth2ClientProducer;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +35,9 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
 
     @Resource
     private OAuth2ClientMapper oAuth2ClientMapper;
+
+    @Resource
+    private OAuth2ClientProducer oAuth2ClientProducer;
 
     /**
      * 客户端缓存
@@ -82,4 +91,72 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
 
         return oAuth2ClientDO;
     }
+
+    @Override
+    public Long createOAuth2Client(OAuth2ClientCreateReqVO createReqVO) {
+        // 校验client是否重复
+        validateClientIdExists(null, createReqVO.getClientId());
+
+        // 插入
+        OAuth2ClientDO oauth2Client = OAuth2ClientConvert.INSTANCE.convert(createReqVO);
+        oAuth2ClientMapper.insert(oauth2Client);
+        // 发送刷新消息
+        oAuth2ClientProducer.sendOAuth2ClientRefreshMessage();
+        return oauth2Client.getId();
+    }
+
+    @Override
+    public void updateOAuth2Client(OAuth2ClientUpdateReqVO oAuth2ClientUpdateReqVO) {
+        // 校验存在
+        validateOAuth2ClientExists(oAuth2ClientUpdateReqVO.getId());
+        // 校验 Client 未被占用
+        validateClientIdExists(oAuth2ClientUpdateReqVO.getId(), oAuth2ClientUpdateReqVO.getClientId());
+
+        // 更新
+        OAuth2ClientDO oAuth2ClientDO = OAuth2ClientConvert.INSTANCE.convert(oAuth2ClientUpdateReqVO);
+        oAuth2ClientMapper.updateById(oAuth2ClientDO);
+        // 发送刷新消息
+        oAuth2ClientProducer.sendOAuth2ClientRefreshMessage();
+    }
+
+    @Override
+    public void deleteOAuth2Client(Long id) {
+        // 校验存在
+        validateOAuth2ClientExists(id);
+        // 删除
+        oAuth2ClientMapper.deleteById(id);
+        // 发送刷新消息
+        oAuth2ClientProducer.sendOAuth2ClientRefreshMessage();
+    }
+
+    @Override
+    public OAuth2ClientDO getOAuth2Client(Long id) {
+        return oAuth2ClientMapper.selectById(id);
+    }
+
+    @Override
+    public PageResult<OAuth2ClientDO> getOAuth2ClientPage(OAuth2ClientPageReqVO oAuth2ClientPageReqVO) {
+        return oAuth2ClientMapper.selectPage(oAuth2ClientPageReqVO);
+    }
+
+    private void validateOAuth2ClientExists(Long id) {
+        if (oAuth2ClientMapper.selectById(id) == null) {
+            throw exception(OAUTH2_CLIENT_NOT_EXISTS);
+        }
+    }
+
+    void validateClientIdExists(Long id, String clientId) {
+        OAuth2ClientDO client = clientCache.get(clientId);
+        if (client == null) {
+            return;
+        }
+        // 如果 id 为空，说明不用比较是否为相同 id 的客户端
+        if (id == null) {
+            throw exception(OAUTH2_CLIENT_EXISTS);
+        }
+        if (!client.getId().equals(id)) {
+            throw exception(OAUTH2_CLIENT_EXISTS);
+        }
+    }
+
 }
