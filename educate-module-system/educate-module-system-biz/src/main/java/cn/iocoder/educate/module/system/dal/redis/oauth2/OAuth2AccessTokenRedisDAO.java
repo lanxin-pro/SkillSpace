@@ -29,7 +29,7 @@ public class OAuth2AccessTokenRedisDAO {
     private StringRedisTemplate stringRedisTemplate;
 
     public void set(OAuth2AccessTokenDO accessTokenDO) {
-        String redisKey = accessTokenDO.getAccessToken();
+        String redisKey = formatKey(accessTokenDO.getAccessToken());
         // 清理多余字段，避免缓存
         accessTokenDO.setUpdater(null).setUpdateTime(null).setCreateTime(null).setCreator(null).setDeleted(null);
         long time = LocalDateTimeUtil.between(LocalDateTime.now(), accessTokenDO.getExpiresTime(), ChronoUnit.SECONDS);
