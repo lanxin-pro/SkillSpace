@@ -4,8 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCodeConstants;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.date.DateUtils;
 import cn.iocoder.educate.framework.tenant.core.context.TenantContextHolder;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.token.OAuth2AccessTokenPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2RefreshTokenDO;
@@ -112,6 +114,11 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService{
         OAuth2ClientDO clientDO = oauth2ClientService.validOAuthClientFromCache(clientIdDefault);
 
         return createOAuth2AccessToken(refreshTokenDO,clientDO);
+    }
+
+    @Override
+    public PageResult<OAuth2AccessTokenDO> getAccessTokenPage(OAuth2AccessTokenPageReqVO oAuth2AccessTokenPageReqVO) {
+        return oauth2AccessTokenMapper.selectPage(oAuth2AccessTokenPageReqVO);
     }
 
     public OAuth2AccessTokenDO getAccessToken(String accessToken) {

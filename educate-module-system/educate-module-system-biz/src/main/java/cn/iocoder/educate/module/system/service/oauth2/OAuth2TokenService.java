@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.oauth2;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.token.OAuth2AccessTokenPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import java.util.List;
 
@@ -55,4 +57,13 @@ public interface OAuth2TokenService {
      * @return 访问令牌的信息
      */
     OAuth2AccessTokenDO refreshAccessToken(String refreshToken, String clientIdDefault);
+
+    /**
+     * 获得访问令牌分页
+     *
+     * @param reqVO 请求
+     * @return 访问令牌分页
+     */
+    PageResult<OAuth2AccessTokenDO> getAccessTokenPage(OAuth2AccessTokenPageReqVO reqVO);
+
 }
