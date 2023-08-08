@@ -56,7 +56,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" size="small" @click="handleAdd"
+        <el-button type="primary" plain icon="Plus" size="small" @click="openForm('create')"
                    v-hasPermi="['system:role:create']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -91,13 +91,13 @@
       />
       <el-table-column :width="300" align="center" label="操作">
         <template #default="scope">
-          <el-button size="small" type="text" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button size="small" type="text" icon="Edit" @click="openForm('update', scope.row.id)"
                      v-hasPermi="['system:role:update']">修改</el-button>
-          <el-button size="small" type="text" icon="Check" @click="handleMenu(scope.row)"
+          <el-button size="small" type="text" icon="Check" @click="openAssignMenuForm(scope.row)"
                      v-hasPermi="['system:permission:assign-role-menu']">菜单权限</el-button>
-          <el-button size="small" type="text" icon="Check" @click="handleDataScope(scope.row)"
+          <el-button size="small" type="text" icon="Check" @click="openDataPermissionForm(scope.row)"
                      v-hasPermi="['system:permission:assign-role-data-scope']">数据权限</el-button>
-          <el-button size="small" type="text" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button size="small" type="text" icon="Delete" @click="handleDelete(scope.row.id)"
                      v-hasPermi="['system:role:delete']">删除</el-button>
         </template>
       </el-table-column>
@@ -126,9 +126,7 @@ import ELComponent from '@/plugins/modal.js'
 import RoleForm from './RoleForm.vue'
 import RoleAssignMenuForm from './RoleAssignMenuForm.vue'
 import RoleDataPermissionForm from './RoleDataPermissionForm.vue'
-import { parseTime } from '@/utils/ruoyi.js'
-import { getRolePage } from '@/api/system/role/index.js'
-import { handleTree } from '@/utils/tree.js'
+import { getRolePage,deleteRole } from '@/api/system/role/index.js'
 import DictTag from '@/components/DictTag/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import { dateFormatter } from '@/utils/formatTime.js'
@@ -167,6 +165,26 @@ const getList = async () => {
     loading.value = false
   }
 }
+
+/** 添加/修改操作 */
+const formRef = ref()
+const openForm = (type, id) => {
+  formRef.value.open(type, id)
+}
+
+/** 数据权限操作 */
+const dataPermissionFormRef = ref()
+const openDataPermissionForm = async (row) => {
+  dataPermissionFormRef.value.open(row)
+}
+
+/** 菜单权限操作 */
+const assignMenuFormRef = ref()
+const openAssignMenuForm = async (row) => {
+  assignMenuFormRef.value.open(row)
+}
+
+
 /** 搜索按钮操作 */
 const handleQuery = () => {
   queryParams.pageNo = 1
@@ -178,7 +196,18 @@ const resetQuery = () => {
   queryFormRef.value.resetFields()
   handleQuery()
 }
-
+/** 删除按钮操作 */
+const handleDelete = async (id) => {
+  try {
+    // 删除的二次确认
+    await ELComponent.confirm('您确定要删除吗？')
+    // 发起删除
+    await deleteRole(id)
+    ELComponent.msgSuccess('删除成功！')
+    // 刷新列表
+    await getList()
+  } catch {}
+}
 </script>
 
 <style scoped>

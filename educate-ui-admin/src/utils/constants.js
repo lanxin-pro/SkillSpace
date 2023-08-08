@@ -26,15 +26,36 @@ export const SystemUserSocialTypeEnum = {
  * 菜单的类型枚举
  */
 export const SystemMenuTypeEnum = {
-    DIR: 1, // 目录
-    MENU: 2, // 菜单
-    BUTTON: 3 // 按钮
+    // 目录
+    DIR: 1,
+    // 菜单
+    MENU: 2,
+    // 按钮
+    BUTTON: 3
 }
 
 /**
  * 全局通用状态枚举
  */
 export const CommonStatusEnum = {
-    ENABLE: 0, // 开启
-    DISABLE: 1 // 禁用
+    // 开启
+    ENABLE: 0,
+    // 禁用
+    DISABLE: 1
+}
+
+/**
+ * 数据权限的范围枚举
+ */
+export const SystemDataScopeEnum = {
+    // 全部数据权限
+    ALL: 1,
+    // 指定部门数据权限
+    DEPT_CUSTOM: 2,
+    // 部门数据权限
+    DEPT_ONLY: 3,
+    // 部门及以下数据权限
+    DEPT_AND_CHILD: 4,
+    // 仅本人数据权限
+    DEPT_SELF: 5
 }
