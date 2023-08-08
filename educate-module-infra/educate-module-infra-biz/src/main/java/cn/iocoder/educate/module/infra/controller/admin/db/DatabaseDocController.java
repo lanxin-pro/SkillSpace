@@ -42,9 +42,11 @@ public class DatabaseDocController {
     private static final String FILE_OUTPUT_DIR = System.getProperty("java.io.tmpdir") + File.separator
             + "db-doc";
 
-    private static final String DOC_FILE_NAME = "数据库文档";
-    private static final String DOC_VERSION = "1.0.0";
-    private static final String DOC_DESCRIPTION = "文档描述";
+    private static final String DOC_FILE_NAME = "MYSQL数据库文档";
+
+    private static final String DOC_VERSION = "1.0.1";
+
+    private static final String DOC_DESCRIPTION = "文档描述，唔 实在想不出来写什么了";
 
 
     @GetMapping("/export-html")

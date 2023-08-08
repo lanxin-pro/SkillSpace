@@ -22,8 +22,8 @@ public interface RoleMapper extends BaseMapper<RoleDO> {
     default PageResult<RoleDO> selectPage(RolePageReqVO rolePageReqVO) {
         LambdaQueryWrapper<RoleDO> roleDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         roleDOLambdaQueryWrapper
-                .eq(StringUtils.hasText(rolePageReqVO.getName()),RoleDO::getName,rolePageReqVO.getName())
-                .eq(StringUtils.hasText(rolePageReqVO.getCode()),RoleDO::getCode,rolePageReqVO.getCode())
+                .like(StringUtils.hasText(rolePageReqVO.getName()),RoleDO::getName,rolePageReqVO.getName())
+                .like(StringUtils.hasText(rolePageReqVO.getCode()),RoleDO::getCode,rolePageReqVO.getCode())
                 .eq(ObjectUtil.isNotEmpty(rolePageReqVO.getStatus()),RoleDO::getStatus,rolePageReqVO.getStatus())
                 .between(ArrayUtils.get(rolePageReqVO.getCreateTime(),0) != null
                                 && ArrayUtils.get(rolePageReqVO.getCreateTime(),1) != null,
