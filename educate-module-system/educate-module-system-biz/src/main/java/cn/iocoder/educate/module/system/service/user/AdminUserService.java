@@ -154,4 +154,11 @@ public interface AdminUserService {
      */
     List<AdminUserDO> getUserListByStatus(Integer status);
 
+    /**
+     * 获得用户的nickname
+     *
+     * @param id 用户id
+     * @return 用户的nickname
+     */
+    String getUserNickname(Long id);
 }

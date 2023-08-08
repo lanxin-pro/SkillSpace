@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -137,6 +138,19 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
     @Override
     public PageResult<OAuth2ClientDO> getOAuth2ClientPage(OAuth2ClientPageReqVO oAuth2ClientPageReqVO) {
         return oAuth2ClientMapper.selectPage(oAuth2ClientPageReqVO);
+    }
+
+    @Override
+    public List<Map<String, String>> getClientIds() {
+         return clientCache.entrySet().stream()
+                .map(entry -> {
+                    Long id = entry.getValue().getId();
+                    String clientId = entry.getValue().getClientId();
+                    Map<String, String> clientData = new HashMap<>();
+                    clientData.put("id", id.toString());
+                    clientData.put("clientId", clientId);
+                    return clientData;
+                }).collect(Collectors.toList());
     }
 
     private void validateOAuth2ClientExists(Long id) {

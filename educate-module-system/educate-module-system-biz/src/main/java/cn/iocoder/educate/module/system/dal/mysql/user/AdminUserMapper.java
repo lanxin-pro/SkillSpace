@@ -77,4 +77,11 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
         return selectList(adminUserDOLambdaQueryWrapper);
     }
 
+    default String selectByNickname(Long id){
+        LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        adminUserDOLambdaQueryWrapper.select(AdminUserDO::getNickname)
+                .eq(AdminUserDO::getId,id);
+        AdminUserDO adminUserDO = this.selectOne(adminUserDOLambdaQueryWrapper);
+        return adminUserDO.getNickname();
+    }
 }

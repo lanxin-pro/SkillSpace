@@ -8,6 +8,21 @@
         label-width="90px"
         size="small"
     >
+      <el-form-item label="客户端编号" prop="clientId">
+        <el-select
+            v-model="queryParams.clientId"
+            placeholder="请选择客户端编号"
+            clearable
+            class="!w-240px"
+        >
+          <el-option
+              v-for="dict in clientList"
+              :value="dict.clientId"
+              :key="dict.value"
+              :label="dict.clientId"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="用户编号" prop="userId">
         <el-input
             v-model="queryParams.userId"
@@ -32,15 +47,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="客户端编号" prop="clientId">
-        <el-input
-            v-model="queryParams.clientId"
-            placeholder="请输入客户端编号"
-            clearable
-            @keyup.enter="handleQuery"
-            class="!w-240px"
-        />
-      </el-form-item>
+
       <el-form-item>
         <el-button size="small" type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button size="small" icon="Refresh" @click="resetQuery">重置</el-button>
@@ -50,23 +57,27 @@
     <el-table v-loading="loading" :data="list">
       <el-table-column label="访问令牌" align="center" prop="accessToken" width="300" />
       <el-table-column label="刷新令牌" align="center" prop="refreshToken" width="300" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
-      <el-table-column label="用户类型" align="center" prop="userType">
+      <el-table-column label="用户编号" align="center" prop="userId">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
+          <div>{{scope.row.userId}} ({{scope.row.nickname}})</div>
         </template>
       </el-table-column>
-      <el-table-column
-          label="过期时间"
-          align="center"
-          prop="expiresTime"
-          :formatter="dateFormatter"
-          width="180"
-      />
+      <el-table-column label="用户类型" align="center" prop="userType">
+        <template #default="scope">
+          <DictTag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
+        </template>
+      </el-table-column>
       <el-table-column
           label="创建时间"
           align="center"
           prop="createTime"
+          :formatter="dateFormatter"
+          width="180"
+      />
+      <el-table-column
+          label="过期时间"
+          align="center"
+          prop="expiresTime"
           :formatter="dateFormatter"
           width="180"
       />
@@ -97,6 +108,7 @@
 import Pagination from '@/components/Pagination/index.vue'
 import { ref,reactive,onMounted } from 'vue'
 import { getAccessTokenPage,deleteAccessToken } from '@/api/system/oauth2/token/index.js'
+import { getClientIdsInterface } from '@/api/system/oauth2/client/index.js'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { dateFormatter } from '@/utils/formatTime.js'
 import ELComponent from '@/plugins/modal.js'
@@ -117,11 +129,19 @@ const queryParams = reactive({
 })
 // 搜索的表单
 const queryFormRef = ref()
+const clientList = ref([])
 
 /** 初始化 **/
 onMounted(() => {
   getList()
+  getClientIds()
 })
+
+/** 获取客户端的ids */
+const getClientIds = async ()=>{
+  const response = await getClientIdsInterface()
+  clientList.value = response.data
+}
 
 /** 查询列表 */
 const getList = async () => {

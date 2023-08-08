@@ -8,6 +8,8 @@ import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: 董伟豪
@@ -82,4 +84,10 @@ public interface OAuth2ClientService {
      */
     PageResult<OAuth2ClientDO> getOAuth2ClientPage(OAuth2ClientPageReqVO pageReqVO);
 
+    /**
+     * 获取 OAuth2 客户端的ids
+     *
+     * @return
+     */
+    List<Map<String, String>> getClientIds();
 }

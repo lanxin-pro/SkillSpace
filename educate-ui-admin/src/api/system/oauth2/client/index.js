@@ -67,3 +67,16 @@ export const getOAuth2Client = (id) => {
         method: 'get'
     })
 }
+
+
+/**
+ * 获得客户端的全部ids
+ *
+ * @returns {*}
+ */
+export const getClientIdsInterface = () => {
+    return request({
+        url: '/system/oauth2-client/clientIds',
+        method: 'get'
+    })
+}

@@ -29,6 +29,9 @@ public class OAuth2AccessTokenRespVO {
     @Schema(description = "用户编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "666")
     private Long userId;
 
+    @Schema(description = "用户昵称", requiredMode = Schema.RequiredMode.NOT_REQUIRED,example = "蓝")
+    private String nickname;
+
     @Schema(description = "用户类型,参见 UserTypeEnum 枚举", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     private Integer userType;
 

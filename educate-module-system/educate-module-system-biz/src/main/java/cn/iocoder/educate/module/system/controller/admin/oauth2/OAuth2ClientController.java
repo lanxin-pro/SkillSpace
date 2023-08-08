@@ -6,6 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2
 import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientPageReqVO;
 import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientRespVO;
 import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.token.OAuth2AccessTokenRespVO;
 import cn.iocoder.educate.module.system.convert.oauth2.OAuth2ClientConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import cn.iocoder.educate.module.system.service.oauth2.OAuth2ClientService;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import java.util.List;
+import java.util.Map;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -69,6 +73,13 @@ public class OAuth2ClientController {
     public CommonResult<PageResult<OAuth2ClientRespVO>> getOAuth2ClientPage(@Valid OAuth2ClientPageReqVO pageVO) {
         PageResult<OAuth2ClientDO> pageResult = oAuth2ClientService.getOAuth2ClientPage(pageVO);
         return success(OAuth2ClientConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @GetMapping("/clientIds")
+    @Operation(summary = "获取全部客户端的ids")
+    public CommonResult<List<Map<String, String>>> getClientIdsInterface() {
+        List<Map<String, String>> clientIds = oAuth2ClientService.getClientIds();
+        return success(clientIds);
     }
 
 

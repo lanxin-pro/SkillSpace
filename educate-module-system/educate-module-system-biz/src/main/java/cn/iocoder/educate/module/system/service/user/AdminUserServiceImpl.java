@@ -212,6 +212,11 @@ public class AdminUserServiceImpl implements AdminUserService{
         return adminUserMapper.selectListByStatus(status);
     }
 
+    @Override
+    public String getUserNickname(Long id) {
+        return adminUserMapper.selectByNickname(id);
+    }
+
     /**
      * 相对于数据库如果我多了一个岗位的话，我就应该添加，相对的如果我少了一个的话。就需要删除
      *
