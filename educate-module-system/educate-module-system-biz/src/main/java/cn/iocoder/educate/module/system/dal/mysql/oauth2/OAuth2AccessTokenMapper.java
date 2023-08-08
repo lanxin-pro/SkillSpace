@@ -42,6 +42,7 @@ public interface OAuth2AccessTokenMapper extends BaseMapper<OAuth2AccessTokenDO>
                         OAuth2AccessTokenDO::getUserId,oAuth2AccessTokenPageReqVO.getUserId())
                 .eq(ObjectUtil.isNotEmpty(oAuth2AccessTokenPageReqVO.getUserType()),
                         OAuth2AccessTokenDO::getUserType,oAuth2AccessTokenPageReqVO.getUserType())
+                // and 过期时间大于当前时间
                 .gt(OAuth2AccessTokenDO::getExpiresTime, LocalDateTime.now())
                 .orderByDesc(OAuth2AccessTokenDO::getId);
         Page<OAuth2AccessTokenDO> page = new Page<>(oAuth2AccessTokenPageReqVO.getPageNo(), oAuth2AccessTokenPageReqVO.getPageSize());

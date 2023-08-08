@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.permission;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RolePageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 
 import java.util.List;
@@ -41,4 +43,13 @@ public interface RoleService {
      * @return 是否有超级管理员
      */
     boolean hasAnySuperAdmin(List<RoleDO> roleListFromCache);
+
+    /**
+     * 获得角色分页
+     *
+     * @param rolePageReqVO 角色分页查询
+     * @return 角色分页结果
+     */
+    PageResult<RoleDO> getRolePage(RolePageReqVO rolePageReqVO);
+
 }

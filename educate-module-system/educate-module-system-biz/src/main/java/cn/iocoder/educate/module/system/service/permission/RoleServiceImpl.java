@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.system.service.permission;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RolePageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 import cn.iocoder.educate.module.system.dal.mysql.permission.RoleMapper;
 import cn.iocoder.educate.module.system.enums.permission.RoleCodeEnum;
@@ -79,5 +81,10 @@ public class RoleServiceImpl implements RoleService{
         return roleListFromCache.stream().anyMatch(role -> {
             return RoleCodeEnum.isSuperAdmin(role.getCode());
         });
+    }
+
+    @Override
+    public PageResult<RoleDO> getRolePage(RolePageReqVO rolePageReqVO) {
+        return roleMapper.selectPage(rolePageReqVO);
     }
 }
