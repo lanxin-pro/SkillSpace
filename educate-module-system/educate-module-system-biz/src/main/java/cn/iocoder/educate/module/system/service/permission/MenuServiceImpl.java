@@ -130,6 +130,11 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
+    public List<MenuDO> getMenuList() {
+        return menuMapper.selectList(new LambdaQueryWrapper<>());
+    }
+
+    @Override
     public List<MenuDO> getMenuList(MenuListReqVO reqVO) {
         return menuMapper.selectList(reqVO);
     }

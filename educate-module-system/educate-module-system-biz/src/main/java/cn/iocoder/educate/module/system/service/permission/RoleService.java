@@ -52,4 +52,12 @@ public interface RoleService {
      */
     PageResult<RoleDO> getRolePage(RolePageReqVO rolePageReqVO);
 
+    /**
+     * 获得角色
+     *
+     * @param id 角色编号
+     * @return 角色
+     */
+    RoleDO getRole(Long id);
+
 }

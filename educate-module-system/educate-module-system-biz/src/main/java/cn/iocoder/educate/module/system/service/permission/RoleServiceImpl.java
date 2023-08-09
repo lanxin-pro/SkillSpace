@@ -87,4 +87,10 @@ public class RoleServiceImpl implements RoleService{
     public PageResult<RoleDO> getRolePage(RolePageReqVO rolePageReqVO) {
         return roleMapper.selectPage(rolePageReqVO);
     }
+
+    @Override
+    public RoleDO getRole(Long id) {
+        return roleCache.get(id);
+    }
+
 }

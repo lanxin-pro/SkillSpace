@@ -34,6 +34,7 @@
               empty-text="加载中，请稍候"
               node-key="id"
               show-checkbox
+              :default-expand-all="true"
           />
         </el-card>
       </el-form-item>
@@ -102,6 +103,23 @@ const open = async (row) => {
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
 
+/** 全选/全不选 */
+const handleCheckedTreeNodeAll = () => {
+  // true 全选
+  // false 全不选
+  treeRef.value.setCheckedNodes(treeNodeAll.value ? menuOptions.value : [])
+}
+
+/** 展开/折叠全部 */
+const handleCheckedTreeExpand = () => {
+  const nodes = treeRef.value?.store.nodesMap
+  for (let node in nodes) {
+    if (nodes[node].expanded === menuExpand.value) {
+      continue
+    }
+    nodes[node].expanded = menuExpand.value
+  }
+}
 
 /** 重置表单 */
 const resetForm = () => {

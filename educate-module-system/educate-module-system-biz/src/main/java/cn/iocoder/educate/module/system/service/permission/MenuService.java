@@ -45,6 +45,13 @@ public interface MenuService {
     List<MenuDO> getMenuListFromCache(List<Long> menuIds, Set<Integer> menusType, Integer status);
 
     /**
+     * 获得所有菜单列表
+     *
+     * @return 菜单列表
+     */
+    List<MenuDO> getMenuList();
+
+    /**
      * 筛选菜单列表
      *
      * @param reqVO 筛选条件请求 VO

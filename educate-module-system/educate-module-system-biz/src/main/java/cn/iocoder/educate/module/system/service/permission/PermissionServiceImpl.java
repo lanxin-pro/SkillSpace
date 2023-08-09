@@ -217,6 +217,13 @@ public class PermissionServiceImpl implements PermissionService{
         });
     }
 
+    /**
+     * 传递进来的Permissions为请求
+     *
+     * @param userId 用户编号
+     * @param permissions 权限
+     * @return
+     */
     @Override
     public boolean hasAnyPermissions(Long userId, String... permissions) {
         // 如果为空，说明已经有权限
@@ -273,14 +280,28 @@ public class PermissionServiceImpl implements PermissionService{
         return CollUtil.containsAny(userRoles, Sets.newHashSet(roles));
     }
 
+    @Override
+    public Set<Long> getRoleMenuIds(Long roleId) {
+        // 根据roleId获取RoleDO我主要是想要角色类型的字段
+        List<RoleDO> roleListFromCache = roleService.getRoleListFromCache(singleton(roleId));
+        // 如果是管理员的情况下，获取全部菜单编号
+        if (roleService.hasAnySuperAdmin(roleListFromCache)) {
+            return menuService.getMenuList()
+                    .stream()
+                    .map(MenuDO::getId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+        }
+        // 如果是非管理员的情况下，获得拥有的菜单编号
+        return roleMenuMapper.selectListByRoleId(roleId)
+                .stream()
+                .map(RoleMenuDO::getMenuId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
     public static boolean isAnyEmpty(Collection<?>... collections) {
         return Arrays.stream(collections).anyMatch(CollectionUtil::isEmpty);
     }
-    /**
-     * 传递进来的Permissions为请求
-     *
-     * @param userId 用户编号
-     * @param permissions 权限
-     * @return
-     */
+
 }

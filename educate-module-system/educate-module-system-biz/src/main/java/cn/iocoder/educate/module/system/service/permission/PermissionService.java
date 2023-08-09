@@ -80,5 +80,12 @@ public interface PermissionService {
      */
     boolean hasAnyRoles(Long userId, String... roles);
 
+    /**
+     * 获得角色拥有的菜单编号集合
+     *
+     * @param roleId 角色编号
+     * @return 菜单编号集合
+     */
+    Set<Long> getRoleMenuIds(Long roleId);
 
 }
