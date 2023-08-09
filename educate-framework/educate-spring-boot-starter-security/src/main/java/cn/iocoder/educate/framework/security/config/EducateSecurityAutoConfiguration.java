@@ -4,6 +4,9 @@ import cn.iocoder.educate.framework.security.core.aop.PreAuthenticatedAspect;
 import cn.iocoder.educate.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.iocoder.educate.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.iocoder.educate.framework.security.core.handler.AuthenticationEntryPointImpl;
+import cn.iocoder.educate.framework.security.core.service.SecurityFrameworkService;
+import cn.iocoder.educate.framework.security.core.service.SecurityFrameworkServiceImpl;
+import cn.iocoder.educate.module.system.api.permission.PermissionApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -66,4 +69,17 @@ public class EducateSecurityAutoConfiguration {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+    /**
+     * 使用 Spring Security 的缩写，方便使用
+     *
+     * @param permissionApi
+     * @return
+     */
+    @Bean("lanxin")
+    public SecurityFrameworkService securityFrameworkService(PermissionApi permissionApi) {
+        return new SecurityFrameworkServiceImpl(permissionApi);
+    }
+
+
 }

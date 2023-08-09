@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.permission;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.menu.MenuListReqVO;
@@ -15,6 +16,7 @@ import cn.iocoder.educate.module.system.mq.producer.permission.MenuProducer;
 import cn.iocoder.educate.module.system.service.tenant.TenantService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,11 +84,17 @@ public class MenuServiceImpl implements MenuService{
 
         // 第二步：构建缓存
         ImmutableMap.Builder<Long, MenuDO> menuCacheBuilder = ImmutableMap.builder();
+        ImmutableMultimap.Builder<String, MenuDO> permMenuCacheBuilder = ImmutableMultimap.builder();
 
         menuList.forEach(menuDO -> {
             menuCacheBuilder.put(menuDO.getId(),menuDO);
+            // 会存在 permission 为 null 的情况，导致 put 报 NPE 异常
+            if (StrUtil.isNotEmpty(menuDO.getPermission())) {
+                permMenuCacheBuilder.put(menuDO.getPermission(), menuDO);
+            }
         });
         menuCache = menuCacheBuilder.build();
+        permissionMenuCache = permMenuCacheBuilder.build();
     }
 
     @Override
@@ -197,6 +205,11 @@ public class MenuServiceImpl implements MenuService{
             }
 
         });
+    }
+
+    @Override
+    public List<MenuDO> getMenuListByPermissionFromCache(String permission) {
+        return new ArrayList<>(permissionMenuCache.get(permission));
     }
 
     /**

@@ -90,4 +90,13 @@ public interface MenuService {
      * @param id 菜单编号
      */
     void deleteMenu(Long id);
+
+    /**
+     * 获得权限对应的菜单数组
+     *
+     * @param permission 权限标识
+     * @return 数组
+     */
+    List<MenuDO> getMenuListByPermissionFromCache(String permission);
+
 }

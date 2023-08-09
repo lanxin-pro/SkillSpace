@@ -46,6 +46,9 @@ public class SecurityFrameworkUtils {
      * @return 认证信息
      */
     public static Authentication getAuthentication() {
+        // SecurityContextHolder上下文作用域。
+        // 之前我就在改作用域中SecurityContextHolder.getContext()
+        // .setAuthentication(Authentication authentication = buildAuthentication())
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
             return null;
@@ -97,6 +100,7 @@ public class SecurityFrameworkUtils {
 
     private static Authentication buildAuthentication(LoginUser loginUser, HttpServletRequest request) {
         // 创建 UsernamePasswordAuthenticationToken 对象
+        // 注 第一个对象叫做 principal
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginUser, null, Collections.emptyList());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

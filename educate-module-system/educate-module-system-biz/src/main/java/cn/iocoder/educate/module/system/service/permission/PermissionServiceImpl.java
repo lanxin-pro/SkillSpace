@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.system.service.permission;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.intern.InternUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleMenuDO;
@@ -12,10 +14,7 @@ import cn.iocoder.educate.module.system.dal.mysql.permission.UserRoleMapper;
 import cn.iocoder.educate.module.system.mq.producer.permission.PermissionProducer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.singleton;
 
 /**
  * 权限 Service 实现类
@@ -214,6 +215,62 @@ public class PermissionServiceImpl implements PermissionService{
             }
 
         });
+    }
+
+    @Override
+    public boolean hasAnyPermissions(Long userId, String... permissions) {
+        // 如果为空，说明已经有权限
+        if (ArrayUtil.isEmpty(permissions)) {
+            return true;
+        }
+        // 获得当前登录的角色。如果为空，说明没有权限
+        Set<Long> roleIds = getUserRoleIdsFromCache(userId, CommonStatusEnum.ENABLE.getStatus());
+        if(CollUtil.isEmpty(roleIds)){
+            return false;
+        }
+        // 判断是否是超管。如果是，当然符合条件
+        List<RoleDO> roleListFromCache = roleService.getRoleListFromCache(roleIds);
+        if (roleService.hasAnySuperAdmin(roleListFromCache)) {
+            return true;
+        }
+        // 遍历权限，判断是否有一个满足
+        return Arrays.stream(permissions).anyMatch(permission -> {
+            // 权限menu列表
+            List<MenuDO> menuList = menuService.getMenuListByPermissionFromCache(permission);
+            // 找不到menu菜单就是没有权限
+            if (CollUtil.isEmpty(menuList)) {
+                return false;
+            }
+            // 获得是否拥有该权限，任一一个
+            return menuList.stream().anyMatch(menu -> {
+                // 其中一个集合在另一个集合中是否至少包含一个元素
+                return CollUtil.containsAny(roleIds, menuRoleCache.get(menu.getId()));
+            });
+        });
+    }
+
+    @Override
+    public boolean hasAnyRoles(Long userId, String... roles) {
+        // 如果为空，说明已经有权限
+        if(ArrayUtil.isEmpty(roles)){
+            return true;
+        }
+        // 获得当前登录的角色。如果为空，说明没有权限
+        Set<Long> roleIds = getUserRoleIdsFromCache(userId, CommonStatusEnum.ENABLE.getStatus());
+        if (CollUtil.isEmpty(roleIds)) {
+            return false;
+        }
+        // 判断是否是超管。如果是，当然符合条件
+        List<RoleDO> roleListFromCache = roleService.getRoleListFromCache(roleIds);
+        if (roleService.hasAnySuperAdmin(roleListFromCache)) {
+            return true;
+        }
+        Set<String> userRoles = roleListFromCache
+                .stream()
+                .map(RoleDO::getCode)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        return CollUtil.containsAny(userRoles, Sets.newHashSet(roles));
     }
 
     public static boolean isAnyEmpty(Collection<?>... collections) {
