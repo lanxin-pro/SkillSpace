@@ -35,6 +35,7 @@ public class DeptController {
 
     @PostMapping("create")
     @Operation(summary = "创建部门")
+    @PreAuthorize("@lanxin.hasPermission('system:dept:create')")
     public CommonResult<Long> createDept(@Valid @RequestBody DeptCreateReqVO reqVO) {
         Long deptId = deptService.createDept(reqVO);
         return success(deptId);
@@ -42,6 +43,7 @@ public class DeptController {
 
     @PutMapping("update")
     @Operation(summary = "更新部门")
+    @PreAuthorize("@lanxin.hasPermission('system:dept:update')")
     public CommonResult<Boolean> updateDept(@Valid @RequestBody DeptUpdateReqVO reqVO) {
         deptService.updateDept(reqVO);
         return success(true);
@@ -49,6 +51,7 @@ public class DeptController {
 
     @DeleteMapping("delete")
     @Operation(summary = "删除部门")
+    @PreAuthorize("@lanxin.hasPermission('system:dept:delete')")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     public CommonResult<Boolean> deleteDept(@RequestParam("id") Long id) {
         deptService.deleteDept(id);
@@ -57,6 +60,7 @@ public class DeptController {
 
     @GetMapping("/list")
     @Operation(summary = "获取部门列表")
+    @PreAuthorize("@lanxin.hasPermission('system:dept:query')")
     public CommonResult<List<DeptRespVO>> getDeptList(DeptListReqVO reqVO) {
         List<DeptDO> list = deptService.getDeptList(reqVO);
         list.sort(Comparator.comparing(DeptDO::getSort));
@@ -66,6 +70,7 @@ public class DeptController {
     @GetMapping("/get")
     @Operation(summary = "获得部门信息")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
+    @PreAuthorize("@lanxin.hasPermission('system:dept:query')")
     public CommonResult<DeptRespVO> getDept(@RequestParam("id") Long id) {
         DeptDO dept = deptService.getDept(id);
         return success(DeptConvert.INSTANCE.convert(dept));

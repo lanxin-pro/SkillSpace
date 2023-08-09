@@ -228,16 +228,16 @@ public class PermissionServiceImpl implements PermissionService{
         if(CollUtil.isEmpty(roleIds)){
             return false;
         }
-        // 判断是否是超管。如果是，当然符合条件
         List<RoleDO> roleListFromCache = roleService.getRoleListFromCache(roleIds);
+        // 判断是否是超管。如果是，当然符合条件
         if (roleService.hasAnySuperAdmin(roleListFromCache)) {
             return true;
         }
         // 遍历权限，判断是否有一个满足
         return Arrays.stream(permissions).anyMatch(permission -> {
-            // 权限menu列表
+            // 查询 权限menu列表
             List<MenuDO> menuList = menuService.getMenuListByPermissionFromCache(permission);
-            // 找不到menu菜单就是没有权限
+            // 从数据库中 找不到menu菜单就是没有权限
             if (CollUtil.isEmpty(menuList)) {
                 return false;
             }
@@ -276,4 +276,11 @@ public class PermissionServiceImpl implements PermissionService{
     public static boolean isAnyEmpty(Collection<?>... collections) {
         return Arrays.stream(collections).anyMatch(CollectionUtil::isEmpty);
     }
+    /**
+     * 传递进来的Permissions为请求
+     *
+     * @param userId 用户编号
+     * @param permissions 权限
+     * @return
+     */
 }
