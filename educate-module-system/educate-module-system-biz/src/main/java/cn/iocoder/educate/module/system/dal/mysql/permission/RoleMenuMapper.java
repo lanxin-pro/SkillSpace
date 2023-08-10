@@ -4,6 +4,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleMenuDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.UserRoleDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collection;
@@ -33,4 +34,17 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenuDO> {
         roleMenuDOLambdaQueryWrapper.eq(RoleMenuDO::getRoleId,roleId);
         this.delete(roleMenuDOLambdaQueryWrapper);
     }
+
+    default void insertBatch(Collection<RoleMenuDO> entities){
+        Db.saveBatch(entities);
+    }
+
+    default void deleteListByRoleIdAndMenuIds(Long roleId, Collection<Long> deleteMenuIds){
+        LambdaQueryWrapper<RoleMenuDO> roleMenuDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        roleMenuDOLambdaQueryWrapper.eq(RoleMenuDO::getRoleId,roleId)
+        // 等价，数组的一个相等元素
+                        .in(RoleMenuDO::getMenuId,deleteMenuIds);
+        this.delete(roleMenuDOLambdaQueryWrapper);
+    }
+
 }

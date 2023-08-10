@@ -95,4 +95,12 @@ public interface PermissionService {
      */
     void processRoleDeleted(Long roleId);
 
+    /**
+     * 设置角色菜单
+     *
+     * @param roleId 角色编号
+     * @param menuIds 菜单编号集合
+     */
+    void assignRoleMenu(Long roleId, Set<Long> menuIds);
+
 }

@@ -319,6 +319,53 @@ public class PermissionServiceImpl implements PermissionService{
         });
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void assignRoleMenu(Long roleId, Set<Long> menuIds) {
+/*
+        // TODO j-sentinel 这里考虑优化，实际上不差这点查询
+        Collection<Long> longs = roleMenuCache.get(roleId);
+        Set<Long> dbMenuIds = new HashSet<>(longs);
+*/
+
+        // 获得角色拥有菜单编号
+        Set<Long> dbMenuIds = roleMenuMapper.selectListByRoleId(roleId)
+                .stream()
+                .map(RoleMenuDO::getMenuId)
+                .collect(Collectors.toSet());
+        // 计算新增和删除的菜单编号
+        // 计算集合的单差集，即只返回【集合1】中有，但是【集合2】中没有的元素
+        Collection<Long> createMenuIds = CollUtil.subtract(menuIds, dbMenuIds);
+        Collection<Long> deleteMenuIds = CollUtil.subtract(dbMenuIds, menuIds);
+        // 执行新增和删除。对于已经授权的菜单，不用做任何处理
+        if (!CollectionUtil.isEmpty(createMenuIds)) {
+            List<RoleMenuDO> roleMenuDOList = createMenuIds
+                    .stream()
+                    .map(menuId -> {
+                        RoleMenuDO entity = new RoleMenuDO();
+                        entity.setRoleId(roleId);
+                        entity.setMenuId(menuId);
+                        return entity;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            roleMenuMapper.insertBatch(roleMenuDOList);
+        }
+        if (!CollectionUtil.isEmpty(deleteMenuIds)) {
+            roleMenuMapper.deleteListByRoleIdAndMenuIds(roleId, deleteMenuIds);
+        }
+
+        // 发送刷新消息. 注意，需要事务提交后，在进行发送刷新消息。不然 db 还未提交，结果缓存先刷新了
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+            @Override
+            public void afterCommit() {
+                permissionProducer.sendRoleMenuRefreshMessage();
+            }
+
+        });
+    }
+
     public static boolean isAnyEmpty(Collection<?>... collections) {
         return Arrays.stream(collections).anyMatch(CollectionUtil::isEmpty);
     }

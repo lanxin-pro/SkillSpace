@@ -40,7 +40,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm()">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
@@ -53,7 +53,7 @@ import Dialog from '@/components/Dialog/index.vue'
 import ELComponent from '@/plugins/modal.js'
 import { CommonStatusEnum,SystemDataScopeEnum } from '@/utils/constants.js'
 import { getSimpleMenusList } from '@/api/system/menu/index.js'
-import { getRoleMenuList } from '@/api/system/permission/index.js'
+import { getRoleMenuList,assignRoleMenu } from '@/api/system/permission/index.js'
 import { handleTree,defaultProps } from '@/utils/tree.js'
 
 // 弹窗的是否展示
@@ -102,6 +102,42 @@ const open = async (row) => {
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
+
+
+/** 提交表单 */
+const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
+const submitForm = async () => {
+  // 校验表单
+  if (!formRef){
+    return
+  }
+  const valid = await formRef.value.validate()
+  if (!valid){
+    return
+  }
+  // 提交请求
+  formLoading.value = true
+  try {
+    const data = {
+      roleId: formData.id,
+      menuIds: [
+        // 获得当前选中节点
+        ...(treeRef.value.getCheckedKeys(false)),
+        // 获得半选中的父节点
+        ...(treeRef.value.getHalfCheckedKeys())
+      ]
+    }
+    await assignRoleMenu(data)
+    ELComponent.msgSuccess("更新成功！")
+    dialogVisible.value = false
+    // 发送操作成功的事件
+    emit('success')
+  } finally {
+    formLoading.value = false
+  }
+}
+
+
 
 /** 全选/全不选 */
 const handleCheckedTreeNodeAll = () => {

@@ -11,3 +11,17 @@ export const getRoleMenuList = (roleId) => {
         method: 'get'
     })
 }
+
+/**
+ * 赋予角色菜单权限
+ *
+ * @param roleId
+ * @returns {*}
+ */
+export const assignRoleMenu = (data) => {
+    return request({
+        url: '/system/permission/assign-role-menu',
+        method: 'post',
+        data: data
+    })
+}

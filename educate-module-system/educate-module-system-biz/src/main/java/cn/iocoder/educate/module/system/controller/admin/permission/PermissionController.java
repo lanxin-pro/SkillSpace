@@ -1,14 +1,15 @@
 package cn.iocoder.educate.module.system.controller.admin.permission;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.permission.PermissionAssignRoleMenuReqVO;
 import cn.iocoder.educate.module.system.service.permission.PermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Set;
@@ -43,5 +44,17 @@ public class PermissionController {
         Set<Long> permissionServiceRoleMenuIds = permissionService.getRoleMenuIds(roleId);
         return success(permissionServiceRoleMenuIds);
     }
+
+    @PostMapping("/assign-role-menu")
+    @Operation(summary = "赋予角色菜单")
+    @PreAuthorize("@lanxin.hasPermission('system:permission:assign-role-menu')")
+    public CommonResult<Boolean> assignRoleMenu(
+            @Validated @RequestBody PermissionAssignRoleMenuReqVO permissionAssignRoleMenuReqVO) {
+        // 执行菜单的分配
+        permissionService.assignRoleMenu(permissionAssignRoleMenuReqVO.getRoleId(),
+                permissionAssignRoleMenuReqVO.getMenuIds());
+        return success(true);
+    }
+
 
 }
