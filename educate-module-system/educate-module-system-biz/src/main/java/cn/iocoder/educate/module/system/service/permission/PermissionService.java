@@ -103,4 +103,12 @@ public interface PermissionService {
      */
     void assignRoleMenu(Long roleId, Set<Long> menuIds);
 
+    /**
+     * 设置用户角色
+     *
+     * @param userId 角色编号
+     * @param roleIds 角色编号集合
+     */
+    void assignUserRole(Long userId, Set<Long> roleIds);
+
 }

@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.controller.admin.permission;
 
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.*;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import java.util.Comparator;
+import java.util.List;
+
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
+import static java.util.Collections.singleton;
 
 /**
  * @Author: j-sentinel
@@ -77,6 +82,16 @@ public class RoleController {
         RoleDO role = roleService.getRole(id);
         RoleRespVO roleRespVO = RoleConvert.INSTANCE.convert(role);
         return success(roleRespVO);
+    }
+
+    @GetMapping("/list-all-simple")
+    @Operation(summary = "获取角色精简信息列表", description = "只包含被开启的角色，主要用于前端的下拉选项")
+    public CommonResult<List<RoleSimpleRespVO>> getSimpleRoleList() {
+        // 获得角色列表，只要开启状态的
+        List<RoleDO> list = roleService.getRoleListByStatus(CommonStatusEnum.ENABLE.getStatus());
+        // 排序后，返回给前端
+        list.sort(Comparator.comparing(RoleDO::getSort));
+        return success(RoleConvert.INSTANCE.convertList02(list));
     }
 
 }

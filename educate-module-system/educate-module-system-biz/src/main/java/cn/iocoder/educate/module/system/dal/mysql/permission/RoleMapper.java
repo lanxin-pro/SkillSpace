@@ -10,7 +10,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author: j-sentinel
@@ -47,4 +51,11 @@ public interface RoleMapper extends BaseMapper<RoleDO> {
         roleDOLambdaQueryWrapper.eq(RoleDO::getCode,code);
         return selectOne(roleDOLambdaQueryWrapper);
     }
+
+    default List<RoleDO> selectListByStatus(Integer statuses){
+        LambdaQueryWrapper<RoleDO> roleDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        roleDOLambdaQueryWrapper.eq(RoleDO::getStatus,statuses);
+        return selectList(roleDOLambdaQueryWrapper);
+    }
+
 }

@@ -366,6 +366,41 @@ public class PermissionServiceImpl implements PermissionService{
         });
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void assignUserRole(Long userId, Set<Long> roleIds) {
+        // 获得角色拥有角色编号
+        Set<Long> dbRoleIds = userRoleCache.get(userId);
+        // 计算新增和删除的角色编号
+        Collection<Long> createRoleIds = CollUtil.subtract(roleIds, dbRoleIds);
+        Collection<Long> deleteMenuIds = CollUtil.subtract(dbRoleIds, roleIds);
+        // 执行新增和删除。对于已经授权的角色，不用做任何处理
+        if (!CollectionUtil.isEmpty(createRoleIds)) {
+            List<UserRoleDO> userRoleDOSList = createRoleIds.stream()
+                    .map(roleId -> {
+                        UserRoleDO entity = new UserRoleDO();
+                        entity.setUserId(userId);
+                        entity.setRoleId(roleId);
+                        return entity;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            userRoleMapper.insertBatch(userRoleDOSList);
+        }
+        if (!CollectionUtil.isEmpty(deleteMenuIds)) {
+            userRoleMapper.deleteListByUserIdAndRoleIdIds(userId, deleteMenuIds);
+        }
+        // 发送刷新消息. 注意，需要事务提交后，在进行发送刷新消息。不然 db 还未提交，结果缓存先刷新了
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+            @Override
+            public void afterCommit() {
+                permissionProducer.sendUserRoleRefreshMessage();
+            }
+
+        });
+    }
+
     public static boolean isAnyEmpty(Collection<?>... collections) {
         return Arrays.stream(collections).anyMatch(CollectionUtil::isEmpty);
     }

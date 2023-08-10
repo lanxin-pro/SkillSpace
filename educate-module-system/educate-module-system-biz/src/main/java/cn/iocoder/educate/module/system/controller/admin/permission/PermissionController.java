@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.system.controller.admin.permission;
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.permission.PermissionAssignRoleMenuReqVO;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.permission.PermissionAssignUserRoleReqVO;
 import cn.iocoder.educate.module.system.service.permission.PermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,5 +57,21 @@ public class PermissionController {
         return success(true);
     }
 
+    @Operation(summary = "获得管理员拥有的角色编号列表")
+    @Parameter(name = "userId", description = "用户编号", required = true)
+    @GetMapping("/list-user-roles")
+    @PreAuthorize("@lanxin.hasPermission('system:permission:assign-user-role')")
+    public CommonResult<Set<Long>> listAdminRoles(@RequestParam("userId") Long userId) {
+        Set<Long> userRoleIdListByUserId = permissionService.getUserRoleIdListByUserId(userId);
+        return success(userRoleIdListByUserId);
+    }
+
+    @Operation(summary = "赋予用户角色")
+    @PostMapping("/assign-user-role")
+    @PreAuthorize("@lanxin.hasPermission('system:permission:assign-user-role')")
+    public CommonResult<Boolean> assignUserRole(@Validated @RequestBody PermissionAssignUserRoleReqVO reqVO) {
+        permissionService.assignUserRole(reqVO.getUserId(), reqVO.getRoleIds());
+        return success(true);
+    }
 
 }

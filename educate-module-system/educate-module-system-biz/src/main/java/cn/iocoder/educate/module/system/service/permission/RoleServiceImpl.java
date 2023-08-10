@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -185,6 +186,14 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.updateById(roleDO);
         // 发送刷新消息
         roleProducer.sendRoleRefreshMessage();
+    }
+
+    @Override
+    public List<RoleDO> getRoleListByStatus(Integer statuses) {
+        if (ObjectUtil.isEmpty(statuses)) {
+            return roleMapper.selectList(new LambdaQueryWrapper<>());
+        }
+        return roleMapper.selectListByStatus(statuses);
     }
 
     /**

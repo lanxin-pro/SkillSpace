@@ -5,6 +5,7 @@ import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.Role
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RolePageReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RoleUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
+import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -93,5 +94,13 @@ public interface RoleService {
      * @param status 状态
      */
     void updateRoleStatus(Long id, Integer status);
+
+    /**
+     * 获得角色列表
+     *
+     * @param statuses 筛选的状态。允许空，空时不筛选
+     * @return 角色列表
+     */
+    List<RoleDO> getRoleListByStatus(@Nullable Integer statuses);
 
 }
