@@ -69,8 +69,10 @@ public class PermissionController {
     @Operation(summary = "赋予用户角色")
     @PostMapping("/assign-user-role")
     @PreAuthorize("@lanxin.hasPermission('system:permission:assign-user-role')")
-    public CommonResult<Boolean> assignUserRole(@Validated @RequestBody PermissionAssignUserRoleReqVO reqVO) {
-        permissionService.assignUserRole(reqVO.getUserId(), reqVO.getRoleIds());
+    public CommonResult<Boolean> assignUserRole
+            (@Validated @RequestBody PermissionAssignUserRoleReqVO permissionAssignUserRoleReqVO) {
+        permissionService.assignUserRole(permissionAssignUserRoleReqVO.getUserId(),
+                permissionAssignUserRoleReqVO.getRoleIds());
         return success(true);
     }
 

@@ -371,6 +371,10 @@ public class PermissionServiceImpl implements PermissionService{
     public void assignUserRole(Long userId, Set<Long> roleIds) {
         // 获得角色拥有角色编号
         Set<Long> dbRoleIds = userRoleCache.get(userId);
+        // 如果数据库中没有查询出来，在执行subtract的时候就会报错
+        if(dbRoleIds == null){
+            dbRoleIds = Collections.emptySet();
+        }
         // 计算新增和删除的角色编号
         Collection<Long> createRoleIds = CollUtil.subtract(roleIds, dbRoleIds);
         Collection<Long> deleteMenuIds = CollUtil.subtract(dbRoleIds, roleIds);
