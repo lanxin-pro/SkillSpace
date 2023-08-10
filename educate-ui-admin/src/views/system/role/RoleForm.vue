@@ -31,7 +31,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
+      <el-button :disabled="formLoading" type="primary" @click="submitForm()">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
   </Dialog>
@@ -43,7 +43,7 @@ import { ref,reactive } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import ELComponent from '@/plugins/modal.js'
 import { CommonStatusEnum } from '@/utils/constants.js'
-import { getRole } from '@/api/system/role/index.js'
+import { getRole,createRole,updateRole } from '@/api/system/role/index.js'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -89,8 +89,38 @@ const open = async (type, id) => {
   }
 }
 // 提供 open 方法，用于打开弹窗
-
 defineExpose({ open })
+
+/** 提交表单 */
+// 定义 success 事件，用于操作成功后的回调
+const emit = defineEmits(['success'])
+const submitForm = async ()=>{
+  // 校验表单
+  if (!formRef){
+    return
+  }
+  const valid = await formRef.value.validate()
+  if (!valid){
+    return
+  }
+  // 提交请求
+  formLoading.value = true
+  try {
+    const data = formData.value
+    if (formType.value === 'create') {
+      await createRole(data)
+      ELComponent.msgSuccess("创建成功")
+    } else {
+      await updateRole(data)
+      ELComponent.msgSuccess("修改成功")
+    }
+  } finally {
+    // 发送操作成功的事件
+    emit('success')
+    dialogVisible.value = false
+    formLoading.value = false
+  }
+}
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {

@@ -88,4 +88,11 @@ public interface PermissionService {
      */
     Set<Long> getRoleMenuIds(Long roleId);
 
+    /**
+     * 处理角色删除时，删除关联授权数据
+     *
+     * @param roleId 角色编号
+     */
+    void processRoleDeleted(Long roleId);
+
 }

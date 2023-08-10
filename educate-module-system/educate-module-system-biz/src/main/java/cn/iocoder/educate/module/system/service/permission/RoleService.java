@@ -1,9 +1,12 @@
 package cn.iocoder.educate.module.system.service.permission;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RoleCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RolePageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.RoleUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -59,5 +62,36 @@ public interface RoleService {
      * @return 角色
      */
     RoleDO getRole(Long id);
+
+    /**
+     * 创建角色
+     *
+     * @param roleCreateReqVO 创建角色信息
+     * @param type 角色类型
+     * @return 角色编号
+     */
+    Long createRole(RoleCreateReqVO roleCreateReqVO, Integer type);
+
+    /**
+     * 更新角色
+     *
+     * @param reqVO 更新角色信息
+     */
+    void updateRole(@Valid RoleUpdateReqVO reqVO);
+
+    /**
+     * 删除角色
+     *
+     * @param id 角色编号
+     */
+    void deleteRole(Long id);
+
+    /**
+     * 更新角色状态
+     *
+     * @param id 角色编号
+     * @param status 状态
+     */
+    void updateRoleStatus(Long id, Integer status);
 
 }

@@ -74,12 +74,12 @@
           <DictTag :type="DICT_TYPE.SYSTEM_ROLE_TYPE" :value="scope.row.type"/>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色标识" prop="code" />
+      <el-table-column align="center" label="角色标识" prop="code" :show-overflow-tooltip="true" />
       <el-table-column align="center" label="显示顺序" prop="sort" />
-      <el-table-column align="center" label="备注" prop="remark" />
+      <el-table-column align="center" label="备注" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column align="center" label="状态" prop="status">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
+          <DictTag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
@@ -93,7 +93,9 @@
         <template #default="scope">
           <el-button size="small" type="text" icon="Edit" @click="openForm('update', scope.row.id)"
                      v-hasPermi="['system:role:update']">修改</el-button>
+<!--    TODO j-sentinel 我后端写的是如果是超级管理员的身份，就会获取全部权限，前端如果能修改超级管理员权限就不合理      -->
           <el-button size="small" type="text" icon="Check" @click="openAssignMenuForm(scope.row)"
+                     :disabled="scope.row.id === 1"
                      v-hasPermi="['system:permission:assign-role-menu']">菜单权限</el-button>
           <el-button size="small" type="text" icon="Check" @click="openDataPermissionForm(scope.row)"
                      v-hasPermi="['system:permission:assign-role-data-scope']">数据权限</el-button>

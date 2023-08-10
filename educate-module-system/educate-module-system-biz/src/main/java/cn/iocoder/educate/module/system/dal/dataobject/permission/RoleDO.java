@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.system.dal.dataobject.permission;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import cn.iocoder.educate.framework.tenant.core.db.TenantBaseDO;
+import cn.iocoder.educate.module.system.enums.permission.DataScopeEnum;
+import cn.iocoder.educate.module.system.enums.permission.RoleTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

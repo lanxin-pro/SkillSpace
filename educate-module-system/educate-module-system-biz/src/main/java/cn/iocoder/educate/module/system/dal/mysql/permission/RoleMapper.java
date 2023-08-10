@@ -36,4 +36,15 @@ public interface RoleMapper extends BaseMapper<RoleDO> {
         return new PageResult<>(roleDOPage.getRecords(),roleDOPage.getTotal());
     }
 
+    default RoleDO selectByName(String name){
+        LambdaQueryWrapper<RoleDO> roleDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        roleDOLambdaQueryWrapper.eq(RoleDO::getName,name);
+        return selectOne(roleDOLambdaQueryWrapper);
+    }
+
+    default RoleDO selectByCode(String code){
+        LambdaQueryWrapper<RoleDO> roleDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        roleDOLambdaQueryWrapper.eq(RoleDO::getCode,code);
+        return selectOne(roleDOLambdaQueryWrapper);
+    }
 }

@@ -300,6 +300,24 @@ public class PermissionServiceImpl implements PermissionService{
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public void processRoleDeleted(Long roleId) {
+        // 标记删除 UserRole
+        userRoleMapper.deleteListByRoleId(roleId);
+        // 标记删除 RoleMenu
+        roleMenuMapper.deleteListByRoleId(roleId);
+        // 发送刷新消息. 注意，需要事务提交后，在进行发送刷新消息。不然 db 还未提交，结果缓存先刷新了
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+            @Override
+            public void afterCommit() {
+                permissionProducer.sendUserRoleRefreshMessage();
+                permissionProducer.sendRoleMenuRefreshMessage();
+            }
+
+        });
+    }
+
     public static boolean isAnyEmpty(Collection<?>... collections) {
         return Arrays.stream(collections).anyMatch(CollectionUtil::isEmpty);
     }
