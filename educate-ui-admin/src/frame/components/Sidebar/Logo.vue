@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import logoImg from '@/assets/logo/logo.png'
+import logoImg from '@/assets/logo/logo3.png'
 import { computed,ref } from 'vue'
 import store from '@/store'
 

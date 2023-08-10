@@ -301,6 +301,7 @@ public class PermissionServiceImpl implements PermissionService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void processRoleDeleted(Long roleId) {
         // 标记删除 UserRole
         userRoleMapper.deleteListByRoleId(roleId);

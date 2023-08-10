@@ -156,6 +156,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteRole(Long id) {
         // 校验是否可以删除
         validateRoleForUpdate(id);
