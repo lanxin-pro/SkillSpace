@@ -56,4 +56,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService{
         return StrUtil.format(content, templateParams);
     }
 
+    @Override
+    public Long countByChannelId(Long channelId) {
+        return smsTemplateMapper.selectCountByChannelId(channelId);
+    }
+
 }

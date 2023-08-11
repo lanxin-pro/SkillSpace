@@ -32,4 +32,13 @@ public interface SmsTemplateService {
      * @return 格式化后的内容
      */
     String formatSmsTemplateContent(String content, Map<String, Object> templateParams);
+
+    /**
+     * 获得指定短信渠道下的短信模板数量
+     *
+     * @param channelId 短信渠道编号
+     * @return 数量
+     */
+    Long countByChannelId(Long channelId);
+
 }
