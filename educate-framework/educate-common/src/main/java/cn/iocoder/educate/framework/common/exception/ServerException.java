@@ -1,24 +1,24 @@
 package cn.iocoder.educate.framework.common.exception;
 
+import cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCodeConstants;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * @Author: j-sentinel
- * @Date: 2023/5/7 17:33
- * 业务逻辑异常 Exception
+ * @Date: 2023/8/11 16:43
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ServiceException extends RuntimeException {
-
+public class ServerException extends RuntimeException {
 
     /**
-     * 业务错误码
+     * 全局错误码
      *
-     * @see ServiceErrorCodeRange
+     * @see GlobalErrorCodeConstants
      */
     private Integer code;
+
     /**
      * 错误提示
      */
@@ -27,15 +27,15 @@ public class ServiceException extends RuntimeException {
     /**
      * 空构造方法，避免反序列化问题
      */
-    public ServiceException() {
+    public ServerException() {
     }
 
-    public ServiceException(ErrorCode errorCode) {
+    public ServerException(ErrorCode errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getMsg();
     }
 
-    public ServiceException(Integer code, String message) {
+    public ServerException(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -44,7 +44,7 @@ public class ServiceException extends RuntimeException {
         return code;
     }
 
-    public ServiceException setCode(Integer code) {
+    public ServerException setCode(Integer code) {
         this.code = code;
         return this;
     }
@@ -54,8 +54,9 @@ public class ServiceException extends RuntimeException {
         return message;
     }
 
-    public ServiceException setMessage(String message) {
+    public ServerException setMessage(String message) {
         this.message = message;
         return this;
     }
+
 }
