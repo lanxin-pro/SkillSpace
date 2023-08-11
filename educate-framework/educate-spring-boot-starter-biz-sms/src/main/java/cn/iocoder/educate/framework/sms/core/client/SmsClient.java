@@ -2,6 +2,7 @@ package cn.iocoder.educate.framework.sms.core.client;
 
 import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsTemplateRespDTO;
 
 import java.util.List;
 
@@ -24,4 +25,13 @@ public interface SmsClient {
      */
     SmsCommonResult<SmsSendRespDTO> sendSms(Long logId, String mobile, String apiTemplateId,
                                             List<KeyValue<String, Object>> templateParams);
+
+    /**
+     * 查询指定的短信模板
+     *
+     * @param apiTemplateId 短信 API 的模板编号
+     * @return 短信模板
+     */
+    SmsCommonResult<SmsTemplateRespDTO> getSmsTemplate(String apiTemplateId);
+
 }

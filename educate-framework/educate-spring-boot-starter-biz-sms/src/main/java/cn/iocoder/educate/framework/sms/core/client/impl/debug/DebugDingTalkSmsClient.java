@@ -12,8 +12,11 @@ import cn.iocoder.educate.framework.common.util.collection.MapUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
 import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsTemplateRespDTO;
 import cn.iocoder.educate.framework.sms.core.client.impl.AbstractSmsClient;
+import cn.iocoder.educate.framework.sms.core.enums.SmsTemplateAuditStatusEnum;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,7 @@ import java.util.Map;
  * @Author: j-sentinel
  * @Date: 2023/5/29 20:05
  */
+@Slf4j
 public class DebugDingTalkSmsClient extends AbstractSmsClient {
 
     public DebugDingTalkSmsClient(SmsChannelProperties properties) {
@@ -78,4 +82,12 @@ public class DebugDingTalkSmsClient extends AbstractSmsClient {
     protected void doInit() {
 
     }
+
+    @Override
+    protected SmsCommonResult<SmsTemplateRespDTO> doGetSmsTemplate(String apiTemplateId) throws Throwable {
+        SmsTemplateRespDTO data = new SmsTemplateRespDTO().setId(apiTemplateId).setContent("")
+                .setAuditStatus(SmsTemplateAuditStatusEnum.SUCCESS.getStatus()).setAuditReason("");
+        return SmsCommonResult.build("0", "success", null, data, codeMapping);
+    }
+
 }

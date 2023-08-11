@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsTemplateRespDTO;
 import cn.iocoder.educate.framework.sms.core.client.impl.AbstractSmsClient;
 import cn.iocoder.educate.framework.sms.core.client.impl.debug.DebugDingTalkCodeMapping;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
@@ -30,5 +31,10 @@ public class HuaweiSmsClient extends AbstractSmsClient {
     @Override
     protected void doInit() {
 
+    }
+
+    @Override
+    protected SmsCommonResult<SmsTemplateRespDTO> doGetSmsTemplate(String apiTemplateId) throws Throwable {
+        return null;
     }
 }

@@ -3,13 +3,12 @@ package cn.iocoder.educate.module.system.dal.mysql.sms;
 import cn.hutool.core.util.ObjUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**

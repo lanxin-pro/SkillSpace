@@ -4,9 +4,9 @@ import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.sms.core.client.SmsClientFactory;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelCreateReqVO;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelPageReqVO;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelUpdateReqVO;
 import cn.iocoder.educate.module.system.convert.sms.SmsChannelConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import cn.iocoder.educate.module.system.dal.mysql.sms.SmsChannelMapper;
@@ -50,7 +50,7 @@ public class SmsChannelServiceImpl implements SmsChannelService{
     public void initLocalCache() {
         List<SmsChannelDO> channelDOS = smsChannelMapper.selectList(new QueryWrapper<>());
         log.info("[initLocalCache][缓存短信渠道，数量为:{}]", channelDOS.size());
-
+        // TODO j-sentinel 短信模板这里需要代码优化
         List<SmsChannelProperties> smsChannelProperties = SmsChannelConvert.INSTANCE.convertListToProperties(channelDOS);
         smsChannelProperties.forEach(smsChannelProperties1 -> {
             smsClientFactory.createOrUpdateSmsClient(smsChannelProperties1);

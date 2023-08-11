@@ -4,6 +4,7 @@ import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.mq.core.RedisMQTemplate;
 import cn.iocoder.educate.module.system.mq.message.sms.SmsChannelRefreshMessage;
 import cn.iocoder.educate.module.system.mq.message.sms.SmsSendMessage;
+import cn.iocoder.educate.module.system.mq.message.sms.SmsTemplateRefreshMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -40,6 +41,14 @@ public class SmsProducer {
      */
     public void sendSmsChannelRefreshMessage() {
         SmsChannelRefreshMessage message = new SmsChannelRefreshMessage();
+        redisMQTemplate.send(message);
+    }
+
+    /**
+     * 发送 {@link SmsTemplateRefreshMessage} 消息
+     */
+    public void sendSmsTemplateRefreshMessage() {
+        SmsTemplateRefreshMessage message = new SmsTemplateRefreshMessage();
         redisMQTemplate.send(message);
     }
 

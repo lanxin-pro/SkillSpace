@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.system.controller.admin.sms.vo;
+package cn.iocoder.educate.module.system.controller.admin.sms.vo.channel;
 
 import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.util.date.DateUtils;

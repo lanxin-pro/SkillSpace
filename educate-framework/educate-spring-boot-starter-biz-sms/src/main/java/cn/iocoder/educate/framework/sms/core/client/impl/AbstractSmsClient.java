@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.sms.core.client.SmsClient;
 import cn.iocoder.educate.framework.sms.core.client.SmsCodeMapping;
 import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsTemplateRespDTO;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,4 +82,22 @@ public abstract class AbstractSmsClient implements SmsClient {
     public Long getId() {
         return properties.getId();
     }
+
+    @Override
+    public SmsCommonResult<SmsTemplateRespDTO> getSmsTemplate(String apiTemplateId) {
+        SmsCommonResult<SmsTemplateRespDTO> result;
+        try {
+            // 获取模板
+            result = doGetSmsTemplate(apiTemplateId);
+        } catch (Throwable ex) {
+            // 打印异常日志
+            log.error("[getSmsTemplate][获得短信模板({}) 发生异常]", apiTemplateId, ex);
+            // 封装返回
+            return SmsCommonResult.error(ex);
+        }
+        return result;
+    }
+
+    protected abstract SmsCommonResult<SmsTemplateRespDTO> doGetSmsTemplate(String apiTemplateId) throws Throwable;
+
 }

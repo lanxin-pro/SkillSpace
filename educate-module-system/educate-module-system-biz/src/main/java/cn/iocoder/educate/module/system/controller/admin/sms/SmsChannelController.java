@@ -2,7 +2,7 @@ package cn.iocoder.educate.module.system.controller.admin.sms;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.*;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.*;
 import cn.iocoder.educate.module.system.convert.sms.SmsChannelConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import cn.iocoder.educate.module.system.service.sms.SmsChannelService;

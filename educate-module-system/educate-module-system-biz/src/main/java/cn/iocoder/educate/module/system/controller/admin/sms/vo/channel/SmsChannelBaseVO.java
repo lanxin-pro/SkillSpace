@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.system.controller.admin.sms.vo;
+package cn.iocoder.educate.module.system.controller.admin.sms.vo.channel;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -1,9 +1,9 @@
 package cn.iocoder.educate.module.system.service.sms;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelCreateReqVO;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelPageReqVO;
-import cn.iocoder.educate.module.system.controller.admin.sms.vo.SmsChannelUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelCreateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelPageReqVO;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 
 import javax.validation.Valid;

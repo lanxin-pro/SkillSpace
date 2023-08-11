@@ -84,6 +84,11 @@ public class SmsSendServiceImpl implements SmsSendService {
                 message.getMobile(), message.getApiTemplateId(), message.getTemplateParams());
     }
 
+    @Override
+    public Long sendSingleSmsToAdmin(String mobile, Long userId, String templateCode, Map<String, Object> templateParams) {
+        return null;
+    }
+
     /**
      * 校验短信模板是否合法
      * @param templateCode
@@ -144,4 +149,5 @@ public class SmsSendServiceImpl implements SmsSendService {
             return new KeyValue<>(key, value);
         }).collect(Collectors.toList());
     }
+
 }

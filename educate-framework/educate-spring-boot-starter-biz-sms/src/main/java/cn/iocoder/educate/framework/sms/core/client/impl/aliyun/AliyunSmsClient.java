@@ -9,6 +9,7 @@ import cn.iocoder.educate.framework.common.util.json.JsonUtils;
 import cn.iocoder.educate.framework.sms.core.client.SmsCodeMapping;
 import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
+import cn.iocoder.educate.framework.sms.core.client.dto.SmsTemplateRespDTO;
 import cn.iocoder.educate.framework.sms.core.client.impl.AbstractSmsClient;
 import cn.iocoder.educate.framework.sms.core.properties.SmsChannelProperties;
 import com.aliyuncs.AcsRequest;
@@ -103,6 +104,11 @@ public class AliyunSmsClient extends AbstractSmsClient {
     protected void doInit() {
         IClientProfile profile = DefaultProfile.getProfile(ENDPOINT, properties.getApiKey(), properties.getApiSecret());
         client = new DefaultAcsClient(profile);
+    }
+
+    @Override
+    protected SmsCommonResult<SmsTemplateRespDTO> doGetSmsTemplate(String apiTemplateId) throws Throwable {
+        return null;
     }
 
     private static String formatResultMsg(ClientException ex) {
