@@ -1,42 +1,49 @@
 <template>
-  <Dialog v-model="dialogVisible" :title="dialogTitle" width="800">
+  <Dialog v-model="dialogVisible" :title="dialogTitle">
     <el-form
         ref="formRef"
         v-loading="formLoading"
         :model="formData"
         :rules="formRules"
-        label-width="80px"
+        label-width="130px"
     >
-      <el-form-item label="公告标题" prop="title">
-        <el-input v-model="formData.title" placeholder="请输入公告标题" />
+      <el-form-item label="短信签名" prop="signature">
+        <el-input v-model="formData.signature" placeholder="请输入短信签名" />
       </el-form-item>
-      <el-form-item label="公告类型" prop="type">
-        <el-select v-model="formData.type" clearable placeholder="请选择公告类型">
+      <el-form-item label="渠道编码" prop="code">
+        <el-select v-model="formData.code" clearable placeholder="请选择渠道编码">
           <el-option
-              v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_NOTICE_TYPE)"
-              :key="parseInt(dict.value)"
+              v-for="dict in getStrDictOptions(DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE)"
+              :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="formData.status" clearable placeholder="请选择状态">
-          <el-option
+      <el-form-item label="启用状态">
+        <el-radio-group v-model="formData.status">
+          <el-radio
               v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
-              :key="parseInt(dict.value)"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-          />
-        </el-select>
+              :key="dict.value"
+              :label="dict.value"
+          >
+            {{ dict.label }}
+          </el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输备注" type="textarea" />
+        <el-input v-model="formData.remark" placeholder="请输入备注" />
+      </el-form-item>
+      <el-form-item label="短信 API 的账号" prop="apiKey">
+        <el-input v-model="formData.apiKey" placeholder="请输入短信 API 的账号" />
+      </el-form-item>
+      <el-form-item label="短信 API 的密钥" prop="apiSecret">
+        <el-input v-model="formData.apiSecret" placeholder="请输入短信 API 的密钥" />
+      </el-form-item>
+      <el-form-item label="短信发送回调 URL" prop="callbackUrl">
+        <el-input v-model="formData.callbackUrl" placeholder="请输入短信发送回调 URL" />
       </el-form-item>
     </el-form>
-    <el-form-item label="公告内容" prop="content">
-      <Editor v-model="formData.content" height="800px" />
-    </el-form-item>
     <template #footer>
       <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -47,8 +54,8 @@
 <script setup>
 import { ref,reactive } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
-import { DICT_TYPE, getIntDictOptions } from '@/utils/dict.js'
-import { getSimpleMenusList,getMenu,createMenu,updateMenu } from '@/api/system/menu/index.js'
+import { DICT_TYPE, getIntDictOptions,getStrDictOptions } from '@/utils/dict.js'
+import { getSmsChannel,createSmsChannel,updateSmsChannel } from '@/api/system/sms/channel/index.js'
 import { getNotice,createNotice,updateNotice } from '@/api/system/notice/index.js'
 import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
@@ -64,17 +71,19 @@ const formLoading = ref(false)
 const formType = ref('')
 const formData = ref({
   id: undefined,
-  title: '',
-  type: undefined,
-  content: '',
+  signature: '',
+  code: '',
   status: CommonStatusEnum.ENABLE,
-  remark: ''
+  remark: '',
+  apiKey: '',
+  apiSecret: '',
+  callbackUrl: ''
 })
 const formRules = reactive({
-  title: [{ required: true, message: '公告标题不能为空', trigger: 'blur' }],
-  type: [{ required: true, message: '公告类型不能为空', trigger: 'change' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'change' }],
-  content: [{ required: true, message: '公告内容不能为空', trigger: 'blur' }]
+  signature: [{ required: true, message: '短信签名不能为空', trigger: 'blur' }],
+  code: [{ required: true, message: '渠道编码不能为空', trigger: 'blur' }],
+  status: [{ required: true, message: '启用状态不能为空', trigger: 'blur' }],
+  apiKey: [{ required: true, message: '短信 API 的账号不能为空', trigger: 'blur' }]
 })
 // 表单 Ref
 const formRef = ref()
@@ -89,7 +98,7 @@ const open = async (type, id) => {
   if (id) {
     formLoading.value = true
     try {
-      const response = await getNotice(id)
+      const response = await getSmsChannel(id)
       formData.value = response.data
     } finally {
       formLoading.value = false
@@ -100,7 +109,7 @@ const open = async (type, id) => {
 defineExpose({ open })
 
 /** 提交表单 */
-// 定义 success 事件，用于操作成功后的回调
+    // 定义 success 事件，用于操作成功后的回调
 const emit = defineEmits(['success'])
 const submitForm = async () => {
   // 校验表单
@@ -116,11 +125,11 @@ const submitForm = async () => {
   try {
     const data = formData.value
     if (formType.value === 'create') {
-      await createNotice(data)
-      ElComponent.msgSuccess("创建成功")
+      await createSmsChannel(data)
+      ElComponent.msgSuccess('创建成功！')
     } else {
-      await updateNotice(data)
-      ElComponent.msgSuccess("更新成功")
+      await updateSmsChannel(data)
+      ElComponent.msgSuccess('修改成功！')
     }
     dialogVisible.value = false
     // 发送操作成功的事件
@@ -134,11 +143,13 @@ const submitForm = async () => {
 const resetForm = () => {
   formData.value = {
     id: undefined,
-    title: '',
-    type: undefined,
-    content: '',
+    signature: '',
+    code: '',
     status: CommonStatusEnum.ENABLE,
-    remark: ''
+    remark: '',
+    apiKey: '',
+    apiSecret: '',
+    callbackUrl: ''
   }
   formRef.value?.resetFields()
 }

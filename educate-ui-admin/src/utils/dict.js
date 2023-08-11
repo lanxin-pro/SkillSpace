@@ -25,6 +25,18 @@ export const getIntDictOptions = (dictType) => {
     return dictOption
 }
 
+export const getStrDictOptions = (dictType) => {
+    const dictOption = []
+    const dictOptions = getDictOptions(dictType)
+    dictOptions.forEach((dict) => {
+        dictOption.push({
+            ...dict,
+            value: dict.value + ''
+        })
+    })
+    return dictOption
+}
+
 /**
  * 获取 dictType 对应的数据字典数组
  *
