@@ -73,7 +73,7 @@ export function getSmsChannelPage(query) {
  *
  * @returns {*}
  */
-export function getSimpleSmsChannels() {
+export function getSimpleSmsChannelList() {
     return request({
         url: '/system/sms-channel/list-all-simple',
         method: 'get',
