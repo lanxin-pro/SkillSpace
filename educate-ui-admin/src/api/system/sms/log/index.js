@@ -8,13 +8,3 @@ export function getSmsLogPage(query) {
         params: query
     })
 }
-
-// 导出短信日志 Excel
-export function exportSmsLogExcel(query) {
-    return request({
-        url: '/system/sms-log/export-excel',
-        method: 'get',
-        params: query,
-        responseType: 'blob'
-    })
-}

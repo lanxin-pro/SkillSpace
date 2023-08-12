@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 import cn.iocoder.educate.module.system.dal.mysql.sms.SmsLogMapper;
@@ -44,4 +46,10 @@ public class SmsLogServiceImpl implements SmsLogService{
         smsLogMapper.insert(logDO);
         return logDO.getId();
     }
+
+    @Override
+    public PageResult<SmsLogDO> getSmsLogPage(SmsLogPageReqVO smsLogPageReqVO) {
+        return smsLogMapper.selectPage(smsLogPageReqVO);
+    }
+
 }

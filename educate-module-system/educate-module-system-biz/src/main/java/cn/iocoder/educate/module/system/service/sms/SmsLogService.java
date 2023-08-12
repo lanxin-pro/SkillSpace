@@ -1,5 +1,8 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
+import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 
 import java.util.Map;
@@ -25,4 +28,13 @@ public interface SmsLogService {
      */
     Long createSmsLog(String mobile, Long userId, Integer userType, Boolean isSend,
                       SmsTemplateDO template, String templateContent, Map<String, Object> templateParams);
+
+    /**
+     * 获得短信日志分页
+     *
+     * @param smsLogPageReqVO 分页查询
+     * @return 短信日志分页
+     */
+    PageResult<SmsLogDO> getSmsLogPage(SmsLogPageReqVO smsLogPageReqVO);
+
 }
