@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.core.KeyValue;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.sms.core.client.SmsClient;
 import cn.iocoder.educate.framework.sms.core.client.SmsClientFactory;
@@ -11,9 +12,11 @@ import cn.iocoder.educate.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.educate.framework.sms.core.client.dto.SmsSendRespDTO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.mq.message.sms.SmsSendMessage;
 import cn.iocoder.educate.module.system.mq.producer.sms.SmsProducer;
+import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
@@ -43,6 +46,9 @@ public class SmsSendServiceImpl implements SmsSendService {
 
     @Resource
     private SmsClientFactory smsClientFactory;
+
+    @Resource
+    private AdminUserService adminUserService;
 
     @Override
     public Long sendSingleSms(String mobile, Long userId, Integer userType, String templateCode, Map<String, Object> templateParams) {
@@ -86,7 +92,15 @@ public class SmsSendServiceImpl implements SmsSendService {
 
     @Override
     public Long sendSingleSmsToAdmin(String mobile, Long userId, String templateCode, Map<String, Object> templateParams) {
-        return null;
+        // 如果 mobile 为空，则加载用户编号对应的手机号
+        if (StrUtil.isEmpty(mobile)) {
+            AdminUserDO user = adminUserService.getUser(userId);
+            if (user != null) {
+                mobile = user.getMobile();
+            }
+        }
+        // 执行发送
+        return sendSingleSms(mobile, userId, UserTypeEnum.ADMIN.getValue(), templateCode, templateParams);
     }
 
     /**

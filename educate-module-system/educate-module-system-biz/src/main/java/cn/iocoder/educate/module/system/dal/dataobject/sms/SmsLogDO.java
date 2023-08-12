@@ -2,9 +2,7 @@ package cn.iocoder.educate.module.system.dal.dataobject.sms;
 
 import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
-import com.baomidou.mybatisplus.annotation.KeySequence;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -28,7 +26,10 @@ public class SmsLogDO extends BaseDO {
 
     /**
      * 自增编号
+     *
+     * TODO j-sentinel 虽然插入的时候确实可以监测到我的mybatis框架中设置的值，但是在逻辑返回的时候却没有返回自增id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     // ========= 渠道相关字段 =========
