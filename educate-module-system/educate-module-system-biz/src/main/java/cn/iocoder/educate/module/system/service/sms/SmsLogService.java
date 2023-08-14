@@ -51,4 +51,12 @@ public interface SmsLogService {
     void updateSmsSendResult(Long id, Integer sendCode, String sendMsg, String apiSendCode,
                              String apiSendMsg, String apiRequestId, String apiSerialNo);
 
+    /**
+     * 更新日志的接收结果
+     * @param userId 用户id
+     * @param mobile 手机号
+     * @param code 验证码
+     */
+    void updateSmsReceiveResult(Long userId,String mobile,String code);
+
 }

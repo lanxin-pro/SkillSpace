@@ -61,6 +61,9 @@ public class SmsCodeServiceImpl implements SmsCodeService{
         // 检测验证码是否有效
         SmsCodeDo lastSmsCodeDo = validateSmsCode0(smsCodeUseReqDTO.getMobile(),
                 smsCodeUseReqDTO.getCode(), smsCodeUseReqDTO.getScene());
+        if(lastSmsCodeDo == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_NOT_CORRECT);
+        }
         smsCodeMapper.updateById(SmsCodeDo.builder()
                 .id(lastSmsCodeDo.getId())
                 .used(true)

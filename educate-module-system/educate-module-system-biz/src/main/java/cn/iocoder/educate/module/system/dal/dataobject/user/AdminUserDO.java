@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.dal.dataobject.user;
 
+import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import cn.iocoder.educate.framework.tenant.core.db.TenantBaseDO;
 import com.baomidou.mybatisplus.annotation.*;

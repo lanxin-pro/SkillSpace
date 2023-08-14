@@ -1,12 +1,15 @@
 package cn.iocoder.educate.module.system.dal.mysql.sms;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.educate.module.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
+import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsCodeDo;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
@@ -48,4 +51,11 @@ public interface SmsLogMapper extends BaseMapper<SmsLogDO> {
         return new PageResult<>(smsLogDOPage.getRecords(),smsLogDOPage.getTotal());
     }
 
+    default SmsLogDO selectLastCode(String mobile, String code){
+        LambdaQueryWrapper<SmsLogDO> smsCodeDoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        smsCodeDoLambdaQueryWrapper.eq(SmsLogDO::getMobile,mobile)
+                .orderByDesc(SmsLogDO::getCreateTime)
+                .last("LIMIT " + 1);
+        return selectOne(smsCodeDoLambdaQueryWrapper);
+    }
 }

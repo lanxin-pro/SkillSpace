@@ -26,6 +26,7 @@ import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import cn.iocoder.educate.module.system.service.logger.LoginLogService;
 import cn.iocoder.educate.module.system.service.member.MemberService;
 import cn.iocoder.educate.module.system.service.oauth2.OAuth2TokenService;
+import cn.iocoder.educate.module.system.service.sms.SmsLogService;
 import cn.iocoder.educate.module.system.service.social.SocialUserService;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import com.google.common.annotations.VisibleForTesting;
@@ -73,6 +74,9 @@ public class AdminAuthServiceImpl implements AdminAuthService{
 
     @Resource
     private MemberService memberService;
+
+    @Resource
+    private SmsLogService smsLogService;
 
     /**
      * 验证码的开关，默认为 true
@@ -157,7 +161,8 @@ public class AdminAuthServiceImpl implements AdminAuthService{
         if(userByMobile == null){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
         }
-
+        // TODO j-sentinel 这里应该更新日志的状态
+        smsLogService.updateSmsReceiveResult(userByMobile.getId(),reqVO.getMobile(),reqVO.getCode());
         // 创建 Token 令牌，记录登录日志
         return createTokenAfterLoginSuccess(userByMobile.getId(),userByMobile.getUsername(),LoginLogTypeEnum.LOGIN_MOBILE);
     }

@@ -1,11 +1,16 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
+import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsCodeDo;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
+import cn.iocoder.educate.module.system.dal.mysql.sms.SmsCodeMapper;
 import cn.iocoder.educate.module.system.dal.mysql.sms.SmsLogMapper;
+import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.sms.SmsReceiveStatusEnum;
 import cn.iocoder.educate.module.system.enums.sms.SmsSendStatusEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +68,21 @@ public class SmsLogServiceImpl implements SmsLogService{
                 .sendTime(LocalDateTime.now()).sendCode(sendCode).sendMsg(sendMsg)
                 .apiSendCode(apiSendCode).apiSendMsg(apiSendMsg)
                 .apiRequestId(apiRequestId).apiSerialNo(apiSerialNo).build());
+    }
+
+    @Override
+    public void updateSmsReceiveResult(Long userId,String mobile,String code) {
+        SmsLogDO smsLogDO = smsLogMapper.selectLastCode(mobile, code);
+        if(smsLogDO == null){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.SMS_CODE_NOT_CORRECT);
+        }
+        smsLogMapper.updateById(SmsLogDO.builder()
+                .id(smsLogDO.getId())
+                        .receiveTime(LocalDateTime.now())
+                        .receiveStatus(SmsSendStatusEnum.SUCCESS.getStatus())
+                        .apiReceiveMsg("成功")
+                        .userId(userId)
+                .build());
     }
 
 }
