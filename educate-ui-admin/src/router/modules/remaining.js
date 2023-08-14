@@ -108,6 +108,27 @@ const constantRoutes = [
         ]
     },
     {
+        path: '/dict',
+        component: Frame,
+        name: 'dict',
+        hidden: true,
+        children: [
+            {
+                path: 'type/data/:dictType',
+                component: () => import('@/views/system/dict/data/index.vue'),
+                name: 'SystemDictData',
+                meta: {
+                    noCache: true,
+                    hidden: true,
+                    canTo: true,
+                    icon: 'fa-solid fa-edit',
+                    title: '字典数据',
+                    activeMenu: '/system/dict'
+                }
+            }
+        ]
+    },
+    {
         path: '/Login',
         hidden: true,
         name: 'Login',

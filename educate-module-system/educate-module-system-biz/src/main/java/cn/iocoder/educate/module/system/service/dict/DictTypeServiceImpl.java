@@ -81,6 +81,11 @@ public class DictTypeServiceImpl implements DictTypeService {
     }
 
     @Override
+    public DictTypeDO getDictType(String type) {
+        return dictTypeMapper.selectByType(type);
+    }
+
+    @Override
     public List<DictTypeDO> getDictTypeList() {
         return dictTypeMapper.selectList(new LambdaQueryWrapper<>());
     }

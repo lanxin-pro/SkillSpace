@@ -66,3 +66,16 @@ export function updateDictType(data) {
         data: data
     })
 }
+
+/**
+ * 查询字典（精简)列表
+ *
+ * @returns {*}
+ */
+export function getSimpleDictTypeList() {
+    return request({
+        url: '/system/dict-type/list-all-simple',
+        method: 'get'
+    })
+}
+

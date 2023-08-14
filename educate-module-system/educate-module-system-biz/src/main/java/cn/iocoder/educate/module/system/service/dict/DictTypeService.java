@@ -55,6 +55,14 @@ public interface DictTypeService {
     DictTypeDO getDictType(Long id);
 
     /**
+     * 获得字典类型详情
+     *
+     * @param type 字典类型
+     * @return 字典类型详情
+     */
+    DictTypeDO getDictType(String type);
+
+    /**
      * 获得全部字典类型列表
      *
      * @return 字典类型列表
