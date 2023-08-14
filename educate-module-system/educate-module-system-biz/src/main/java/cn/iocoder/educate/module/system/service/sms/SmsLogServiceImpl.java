@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.system.service.sms;
 
+import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsLogDO;
@@ -10,6 +11,7 @@ import cn.iocoder.educate.module.system.enums.sms.SmsSendStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,6 +52,17 @@ public class SmsLogServiceImpl implements SmsLogService{
     @Override
     public PageResult<SmsLogDO> getSmsLogPage(SmsLogPageReqVO smsLogPageReqVO) {
         return smsLogMapper.selectPage(smsLogPageReqVO);
+    }
+
+    @Override
+    public void updateSmsSendResult(Long id, Integer sendCode, String sendMsg, String apiSendCode,
+                                    String apiSendMsg, String apiRequestId, String apiSerialNo) {
+        SmsSendStatusEnum sendStatus = CommonResult.isSuccess(sendCode) ?
+                SmsSendStatusEnum.SUCCESS : SmsSendStatusEnum.FAILURE;
+        smsLogMapper.updateById(SmsLogDO.builder().id(id).sendStatus(sendStatus.getStatus())
+                .sendTime(LocalDateTime.now()).sendCode(sendCode).sendMsg(sendMsg)
+                .apiSendCode(apiSendCode).apiSendMsg(apiSendMsg)
+                .apiRequestId(apiRequestId).apiSerialNo(apiSerialNo).build());
     }
 
 }

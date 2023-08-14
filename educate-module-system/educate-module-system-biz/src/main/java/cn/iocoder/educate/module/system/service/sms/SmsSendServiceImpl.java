@@ -86,8 +86,11 @@ public class SmsSendServiceImpl implements SmsSendService {
         // 获得渠道对应的 SmsClient 客户端
         Assert.notNull(smsClient, "短信客户端({}) 不存在", message.getChannelId());
         // 发送短信
-        SmsCommonResult<SmsSendRespDTO> smsSendRespDTOSmsCommonResult = smsClient.sendSms(message.getLogId(),
+        SmsCommonResult<SmsSendRespDTO> sendResult = smsClient.sendSms(message.getLogId(),
                 message.getMobile(), message.getApiTemplateId(), message.getTemplateParams());
+        smsLogService.updateSmsSendResult(message.getLogId(), sendResult.getCode(), sendResult.getMsg(),
+                sendResult.getApiCode(), sendResult.getApiMsg(), sendResult.getApiRequestId(),
+                sendResult.getData() != null ? sendResult.getData().getSerialNo() : null);
     }
 
     @Override
