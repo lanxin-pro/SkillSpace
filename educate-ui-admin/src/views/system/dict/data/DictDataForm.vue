@@ -135,7 +135,8 @@ const open = async (type, id, dictType) => {
   if (id) {
     formLoading.value = true
     try {
-      formData.value = await getDictData(id)
+      const response = await getDictData(id)
+      formData.value = response.data
     } finally {
       formLoading.value = false
     }

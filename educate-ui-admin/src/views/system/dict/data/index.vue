@@ -150,7 +150,6 @@ onMounted(async () => {
 const getList = async () => {
   loading.value = true
   try {
-    console.log('查询数据',queryParams)
     const response = await getDictDataPage(queryParams)
     list.value = response.data.list
     total.value = response.data.total
