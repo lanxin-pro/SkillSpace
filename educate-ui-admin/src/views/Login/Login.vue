@@ -18,7 +18,7 @@
       <div :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px <xl:hidden`">
         <!-- 左上角的 logo + 系统标题 -->
         <div class="flex items-center relative text-white">
-          <img alt="" class="w-48px h-48px mr-10px" src="@/assets/imgs/logo.png" />
+          <img alt="" class="w-48px h-48px mr-10px" src="@/assets/logo/logo3.png" />
           <span class="text-20px font-bold">{{ vue_title }}</span>
         </div>
         <!-- 左边的背景图 + 欢迎语 -->

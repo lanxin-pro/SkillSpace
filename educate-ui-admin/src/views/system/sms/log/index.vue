@@ -124,7 +124,7 @@
         <template #default="scope">
           <div>{{ scope.row.mobile }}</div>
           <div v-if="scope.row.userType && scope.row.userId">
-            <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
+            <DictTag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
             {{ '(' + scope.row.userId + ')' }}
           </div>
         </template>

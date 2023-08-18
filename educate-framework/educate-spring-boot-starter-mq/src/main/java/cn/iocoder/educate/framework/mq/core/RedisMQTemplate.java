@@ -48,6 +48,7 @@ public class RedisMQTemplate {
     public <T extends AbstractStreamMessage> RecordId send(T message){
         try{
             sendMessageBefore(message);
+            // TODO j-sentinel 这个代码有可能无法发送消息
             // 发送消息
             return redisTemplate.opsForStream() // 获取到 StreamOperations 对象
                     .add(
