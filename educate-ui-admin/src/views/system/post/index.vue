@@ -120,6 +120,7 @@ import { getPostPage,deletePost } from '@/api/system/post.js'
 import { handleTree } from '@/utils/tree.js'
 import DictTag from '@/components/DictTag/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
+import { dateFormatter } from '@/utils/formatTime.js'
 
 // 列表的加载中
 const loading = ref(true)
