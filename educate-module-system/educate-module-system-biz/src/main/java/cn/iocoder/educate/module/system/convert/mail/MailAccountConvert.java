@@ -34,7 +34,7 @@ public interface MailAccountConvert {
         return new MailAccount()
                 .setFrom(from)
                 .setAuth(true)
-                .setUser(account.getUsername())
+                .setUser(account.getMail())
                 .setPass(account.getPassword())
                 .setHost(account.getHost())
                 .setPort(account.getPort())
