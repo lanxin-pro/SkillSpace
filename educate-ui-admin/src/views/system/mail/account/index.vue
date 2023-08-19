@@ -89,7 +89,7 @@ import ELComponent from '@/plugins/modal.js'
 import { parseTime } from '@/utils/ruoyi.js'
 import { getMailAccountPage,deleteMailAccount } from '@/api/system/mail/account/index.js'
 import DictTag from '@/components/DictTag/index.vue'
-import AccountForm from './AccountForm.vue'
+import AccountForm from './MailAccountForm.vue'
 import { dateFormatter } from '@/utils/formatTime.js'
 import Pagination from '@/components/Pagination/index.vue'
 
