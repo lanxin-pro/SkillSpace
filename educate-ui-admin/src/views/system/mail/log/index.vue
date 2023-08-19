@@ -133,7 +133,7 @@
                 :type="DICT_TYPE.USER_TYPE"
                 :value="scope.row.userType"
             />
-            {{ '(' + scope.row.userId + ')' }}
+            {{ '(' + scope.row.nickname + ')' }}
           </div>
         </template>
       </el-table-column>

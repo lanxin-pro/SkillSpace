@@ -7,7 +7,9 @@ import cn.iocoder.educate.module.system.controller.admin.mail.vo.log.MailLogPage
 import cn.iocoder.educate.module.system.controller.admin.mail.vo.log.MailLogRespVO;
 import cn.iocoder.educate.module.system.convert.mail.MailLogConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailLogDO;
+import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.service.mail.MailLogService;
+import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,12 +42,23 @@ public class MailLogController {
     @Resource
     private MailLogService mailLogService;
 
+    @Resource
+    private AdminUserService adminUserService;
+
     @GetMapping("/page")
     @Operation(summary = "获得邮箱日志分页")
     @PreAuthorize("@lanxin.hasPermission('system:mail-log:query')")
     public CommonResult<PageResult<MailLogRespVO>> getMailLogPage(@Valid MailLogPageReqVO mailLogPageReqVO) {
         PageResult<MailLogDO> pageResult = mailLogService.getMailLogPage(mailLogPageReqVO);
-        return success(MailLogConvert.INSTANCE.convertPage(pageResult));
+        // 拼接结果返回
+        List<MailLogRespVO> userList = new ArrayList<>(pageResult.getList().size());
+        pageResult.getList().forEach(log -> {
+            MailLogRespVO convertVo = MailLogConvert.INSTANCE.convert(log);
+            String userNickname = adminUserService.getUserNickname(log.getUserId());
+            convertVo.setNickname(userNickname);
+            userList.add(convertVo);
+        });
+        return success(new PageResult<>(userList,pageResult.getTotal()));
     }
 
     @GetMapping("/get")

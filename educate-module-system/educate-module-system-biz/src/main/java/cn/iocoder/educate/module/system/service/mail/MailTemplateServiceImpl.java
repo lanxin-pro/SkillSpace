@@ -71,13 +71,13 @@ public class MailTemplateServiceImpl implements MailTemplateService {
     }
 
     @Override
-    public Long createMailTemplate(MailTemplateCreateReqVO createReqVO) {
+    public Long createMailTemplate(MailTemplateCreateReqVO mailTemplateCreateReqVO) {
         // 校验 code 是否唯一
-        validateCodeUnique(null, createReqVO.getCode());
+        validateCodeUnique(null, mailTemplateCreateReqVO.getCode());
 
         // 插入
-        MailTemplateDO mailTemplateDO = MailTemplateConvert.INSTANCE.convert(createReqVO);
-        List<String> parseTemplateContentParams = parseTemplateContentParams(createReqVO.getContent());
+        MailTemplateDO mailTemplateDO = MailTemplateConvert.INSTANCE.convert(mailTemplateCreateReqVO);
+        List<String> parseTemplateContentParams = parseTemplateContentParams(mailTemplateCreateReqVO.getContent());
         mailTemplateDO.setParams(parseTemplateContentParams);
         mailTemplateMapper.insert(mailTemplateDO);
         // 发送刷新消息

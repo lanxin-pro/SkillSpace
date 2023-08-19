@@ -6,11 +6,11 @@
       </el-descriptions-item>
       <el-descriptions-item label="短信渠道">
         {{ channelList.find((channel) => channel.id === detailData.channelId)?.signature }}
-        <dict-tag :type="DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE" :value="detailData.channelCode" />
+        <DictTag :type="DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE" :value="detailData.channelCode" />
       </el-descriptions-item>
       <el-descriptions-item label="短信模板">
         {{ detailData.templateId }} | {{ detailData.templateCode }}
-        <dict-tag :type="DICT_TYPE.SYSTEM_SMS_TEMPLATE_TYPE" :value="detailData.templateType" />
+        <DictTag :type="DICT_TYPE.SYSTEM_SMS_TEMPLATE_TYPE" :value="detailData.templateType" />
       </el-descriptions-item>
       <el-descriptions-item label="API 的模板编号">
         {{ detailData.apiTemplateId }}
@@ -70,6 +70,7 @@ import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
 import { formatDate } from '@/utils/formatTime.js'
+import DictTag from '@/components/DictTag/index.vue'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
