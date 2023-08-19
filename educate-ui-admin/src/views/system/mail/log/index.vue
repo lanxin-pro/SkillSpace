@@ -129,7 +129,11 @@
         <template v-slot="scope">
           <div>{{ scope.row.toMail }}</div>
           <div v-if="scope.row.userType && scope.row.userId">
-            <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType"/>{{ '(' + scope.row.userId + ')' }}
+            <DictTag
+                :type="DICT_TYPE.USER_TYPE"
+                :value="scope.row.userType"
+            />
+            {{ '(' + scope.row.userId + ')' }}
           </div>
         </template>
       </el-table-column>
@@ -139,11 +143,11 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_MAIL_SEND_STATUS" :value="scope.row.sendStatus" />
         </template>
       </el-table-column>
-      <el-table-column label="邮箱账号" align="center" prop="fromMail" />
+      <el-table-column label="邮箱账号" align="center" prop="fromMail" width="180" />
       <el-table-column label="模板编号" align="center" prop="templateId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button size="small" type="text" icon="el-icon-view" @click="openDetail(scope.row)"
+          <el-button size="small" type="text" icon="View" @click="openDetail(scope.row)"
                      v-hasPermi="['system:mail-log:query']">详细</el-button>
         </template>
       </el-table-column>

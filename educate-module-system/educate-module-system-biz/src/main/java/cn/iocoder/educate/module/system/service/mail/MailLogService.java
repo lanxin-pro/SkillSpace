@@ -1,6 +1,9 @@
 package cn.iocoder.educate.module.system.service.mail;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.mail.vo.log.MailLogPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailAccountDO;
+import cn.iocoder.educate.module.system.dal.dataobject.mail.MailLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailTemplateDO;
 
 import java.util.Map;
@@ -39,5 +42,20 @@ public interface MailLogService {
      */
     void updateMailSendResult(Long logId, String messageId, Exception exception);
 
+    /**
+     * 邮件日志分页
+     *
+     * @param pageVO 分页参数
+     * @return 分页结果
+     */
+    PageResult<MailLogDO> getMailLogPage(MailLogPageReqVO pageVO);
+
+    /**
+     * 获得指定编号的邮件日志
+     *
+     * @param id 日志编号
+     * @return 邮件日志
+     */
+    MailLogDO getMailLog(Long id);
 
 }

@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.mail;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.mail.vo.log.MailLogPageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailAccountDO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailLogDO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailTemplateDO;
@@ -74,6 +76,16 @@ public class MailLogServiceImpl implements MailLogService {
                     .setSendTime(LocalDateTime.now())
                     .setSendStatus(MailSendStatusEnum.FAILURE.getStatus())
                     .setSendException(getRootCauseMessage(exception)));
+    }
+
+    @Override
+    public PageResult<MailLogDO> getMailLogPage(MailLogPageReqVO mailLogPageReqVO) {
+        return mailLogMapper.selectPage(mailLogPageReqVO);
+    }
+
+    @Override
+    public MailLogDO getMailLog(Long id) {
+        return mailLogMapper.selectById(id);
     }
 
 }
