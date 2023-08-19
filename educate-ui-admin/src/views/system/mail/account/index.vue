@@ -3,7 +3,7 @@
     <!-- 搜索工作栏 -->
     <el-form
         :model="queryParams"
-        ref="queryForm"
+        ref="queryFormRef"
         size="small"
         :inline="true"
         v-show="showSearch"
@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button size="small" type="text" icon="Edit" @click="openForm('update',scope.row)"
+          <el-button size="small" type="text" icon="Edit" @click="openForm('update',scope.row.id)"
                      v-hasPermi="['system:mail-account:update']">修改</el-button>
           <el-button size="small" type="text" icon="Delete" @click="handleDelete(scope.row.id)"
                      v-hasPermi="['system:mail-account:delete']">删除</el-button>
@@ -105,6 +105,8 @@ const list = ref([])
 const title = ref("")
 // 是否显示弹出层
 const open = ref(false)
+// 搜索的表单
+const queryFormRef = ref()
 // 查询参数
 const queryParams = reactive({
   pageNo: 1,
@@ -167,5 +169,10 @@ const handleDelete = async (id) => {
 </script>
 
 <style scoped>
-
+.el-table .cell {
+  padding: 0;
+}
+.el-table .cell .el-button--small {
+  padding: 2px;
+}
 </style>

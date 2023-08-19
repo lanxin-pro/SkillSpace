@@ -30,9 +30,9 @@
       <el-form-item label="是否开启 SSL" prop="sslEnable">
         <el-radio-group v-model="formData.sslEnable">
           <el-radio
-              v-for="dict in getIntDictOptions(DICT_TYPE.INFRA_BOOLEAN_STRING)"
-              :key="dict.label"
-              :label="dict.label"
+              v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
+              :key="dict.value"
+              :label="dict.value === 0"
           >
             {{ dict.label }}
           </el-radio>
@@ -66,7 +66,7 @@ const formData = ref({
   mail: undefined,
   username: '',
   password: '',
-  sslEnable: CommonStatusEnum.ENABLE,
+  sslEnable: true,
   host: '',
   port: ''
 })
@@ -92,6 +92,7 @@ const open = async (type, id) => {
     formLoading.value = true
     try {
       const response = await getMailAccount(id)
+      console.log(response.data)
       formData.value = response.data
     } finally {
       formLoading.value = false
@@ -116,6 +117,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value
+    console.log("data->",data)
     if (formType.value === 'create') {
       await createMailAccount(data)
       ELComponent.msgSuccess("创建成功！")
