@@ -69,7 +69,6 @@
         <el-button type="warning" icon="Download" size="small" @click="handleExport" :loading="exportLoading"
                    v-hasPermi="['system:dict:export']">导出</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <!-- 列表 -->

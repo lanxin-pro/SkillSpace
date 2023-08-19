@@ -105,7 +105,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
         <template v-slot="scope">
           <el-button size="small" type="text" icon="Share" @click="openSendForm(scope.row.id)"
-                     v-hasPermi="['system:mail-template:send-mail']">测试</el-button>
+                     v-hasPermi="['system:mail-template:log-mail']">测试</el-button>
           <el-button size="small" type="text" icon="Edit" @click="openForm('update',scope.row.id)"
                      v-hasPermi="['system:mail-template:update']">修改</el-button>
           <el-button size="small" type="text" icon="Delete" @click="handleDelete(scope.row.id)"

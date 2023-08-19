@@ -1,0 +1,28 @@
+import request from '@/utils/request'
+
+/**
+ * 获得邮件日志
+ *
+ * @param id
+ * @returns {*}
+ */
+export function getMailLog(id) {
+    return request({
+        url: '/system/mail-log/get?id=' + id,
+        method: 'get'
+    })
+}
+
+/**
+ * 获得邮件日志分页
+ *
+ * @param query
+ * @returns {*}
+ */
+export function getMailLogPage(query) {
+    return request({
+        url: '/system/mail-log/page',
+        method: 'get',
+        params: query
+    })
+}
