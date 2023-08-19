@@ -36,7 +36,7 @@ public interface PostMapper extends BaseMapper<PostDO> {
                 .like(StringUtils.hasText(postPageReqVO.getCode()),PostDO::getCode,postPageReqVO.getCode())
                 .like(StringUtils.hasText(postPageReqVO.getName()),PostDO::getName,postPageReqVO.getName())
                 .eq(ObjectUtil.isNotEmpty(postPageReqVO.getStatus()),PostDO::getStatus,postPageReqVO.getStatus())
-                .orderByDesc(PostDO::getId);
+                .orderByAsc(PostDO::getSort);
         Page<PostDO> mpPage = new Page<>(postPageReqVO.getPageNo(), postPageReqVO.getPageSize());
         Page<PostDO> adminUserDOPage = this.selectPage(mpPage, postDOLambdaQueryWrapper);
         return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
