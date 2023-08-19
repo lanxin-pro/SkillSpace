@@ -8,6 +8,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.mail.MailTemplateDO;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 邮件模版 Service 接口
@@ -82,5 +83,14 @@ public interface MailTemplateService {
      * @return 数量
      */
     Long countByAccountId(Long id);
+
+    /**
+     * 邮件模版内容合成
+     *
+     * @param content 邮件模版
+     * @param params 合成参数
+     * @return 格式化后的内容
+     */
+    String formatMailTemplateContent(String content, Map<String, Object> params);
 
 }

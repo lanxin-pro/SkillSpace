@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.mail;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.mail.vo.template.MailTemplateCreateReqVO;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +59,7 @@ public class MailTemplateServiceImpl implements MailTemplateService {
     private static final Pattern PATTERN_PARAMS = Pattern.compile("\\{(.*?)}");
 
     @Override
+    @PostConstruct
     public void initLocalCache() {
         // 第一步：查询数据
         List<MailTemplateDO> templates = mailTemplateMapper.selectList(new LambdaQueryWrapper<>());
@@ -132,6 +135,11 @@ public class MailTemplateServiceImpl implements MailTemplateService {
     @Override
     public Long countByAccountId(Long accountId) {
         return mailTemplateMapper.selectCountByAccountId(accountId);
+    }
+
+    @Override
+    public String formatMailTemplateContent(String content, Map<String, Object> params) {
+        return StrUtil.format(content, params);
     }
 
     public void validateCodeUnique(Long id, String code) {

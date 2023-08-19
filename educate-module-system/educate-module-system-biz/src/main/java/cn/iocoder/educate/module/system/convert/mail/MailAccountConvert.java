@@ -29,5 +29,16 @@ public interface MailAccountConvert {
 
     List<MailAccountSimpleRespVO> convertList02(List<MailAccountDO> list);
 
+    default MailAccount convert(MailAccountDO account, String nickname) {
+        String from = StrUtil.isNotEmpty(nickname) ? nickname + " <" + account.getMail() + ">" : account.getMail();
+        return new MailAccount()
+                .setFrom(from)
+                .setAuth(true)
+                .setUser(account.getUsername())
+                .setPass(account.getPassword())
+                .setHost(account.getHost())
+                .setPort(account.getPort())
+                .setSslEnable(account.getSslEnable());
+    }
 
 }

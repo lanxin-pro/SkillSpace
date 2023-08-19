@@ -87,5 +87,12 @@
             <artifactId>educate-spring-boot-starter-captcha</artifactId>
             <version>${revision}</version>
         </dependency>
+
+<!--  防止 hutool.extra.mail.MailUtil 邮箱工具类报错     -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
 </project>

@@ -121,7 +121,6 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value
-    console.log("发哦是那个数据",data)
     const response = await sendMail(data)
     const logId = response.data
     if (logId) {

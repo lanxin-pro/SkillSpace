@@ -2,7 +2,9 @@ package cn.iocoder.educate.module.system.dal.dataobject.mail;
 
 import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
@@ -26,7 +28,10 @@ public class MailLogDO extends BaseDO implements Serializable {
 
     /**
      * 日志编号，自增
+     *
+     * TODO j-sentinel 虽然插入的时候确实可以监测到我的mybatis框架中设置的值，但是在逻辑返回的时候却没有返回自增id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

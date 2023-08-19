@@ -2,9 +2,11 @@ package cn.iocoder.educate.module.system.controller.admin.mail;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.system.controller.admin.mail.vo.template.*;
 import cn.iocoder.educate.module.system.convert.mail.MailTemplateConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailTemplateDO;
+import cn.iocoder.educate.module.system.service.mail.MailSendService;
 import cn.iocoder.educate.module.system.service.mail.MailTemplateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +31,9 @@ public class MailTemplateController {
 
     @Resource
     private MailTemplateService mailTempleService;
+
+    @Resource
+    private MailSendService mailSendService;
 
     @PostMapping("/create")
     @Operation(summary = "创建邮件模版")
@@ -77,6 +82,18 @@ public class MailTemplateController {
     public CommonResult<List<MailTemplateSimpleRespVO>> getSimpleTemplateList() {
         List<MailTemplateDO> mailTemplateList = mailTempleService.getMailTemplateList();
         return success(MailTemplateConvert.INSTANCE.convertList02(mailTemplateList));
+    }
+
+    @PostMapping("/send-mail")
+    @Operation(summary = "发送短信")
+    @PreAuthorize("@lanxin.hasPermission('system:mail-template:send-mail')")
+    public CommonResult<Long> sendMail(@Valid @RequestBody MailTemplateSendReqVO mailTemplateSendReqVO) {
+        Long id = mailSendService.sendSingleMailToAdmin(
+                mailTemplateSendReqVO.getMail(),
+                SecurityFrameworkUtils.getLoginUserId(),
+                mailTemplateSendReqVO.getTemplateCode(),
+                mailTemplateSendReqVO.getTemplateParams());
+        return success(id);
     }
 
 }
