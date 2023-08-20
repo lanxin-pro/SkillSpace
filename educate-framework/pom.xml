@@ -27,6 +27,7 @@
         <module>educate-spring-boot-starter-biz-social</module>
         <module>educate-spring-boot-starter-file</module>
         <module>educate-spring-boot-starter-biz-data-permission</module>
+        <module>educate-spring-boot-starter-biz-error-code</module>
     </modules>
 
     <description>
