@@ -120,31 +120,37 @@
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
       <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
+      <el-table-column label="发送时间" align="center" prop="sendTime" width="160">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.sendTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="接收邮箱" align="center" prop="toMail" width="200">
+      <el-table-column label="接收邮箱" align="center" prop="toMail" width="190">
         <template v-slot="scope">
           <div>{{ scope.row.toMail }}</div>
-          <div v-if="scope.row.userType && scope.row.userId">
-            <DictTag
-                :type="DICT_TYPE.USER_TYPE"
-                :value="scope.row.userType"
-            />
-            {{ '(' + scope.row.nickname + ')' }}
-          </div>
+
         </template>
       </el-table-column>
       <el-table-column label="邮件标题" align="center" prop="templateTitle" />
       <el-table-column label="发送状态" align="center" prop="sendStatus">
         <template v-slot="scope">
-          <dict-tag :type="DICT_TYPE.SYSTEM_MAIL_SEND_STATUS" :value="scope.row.sendStatus" />
+          <DictTag :type="DICT_TYPE.SYSTEM_MAIL_SEND_STATUS" :value="scope.row.sendStatus" />
         </template>
       </el-table-column>
       <el-table-column label="邮箱账号" align="center" prop="fromMail" width="180" />
       <el-table-column label="模板编号" align="center" prop="templateId" />
+      <el-table-column label="操作人" align="center" prop="templateId">
+        <template v-slot="scope">
+        <div v-if="scope.row.userType && scope.row.userId">
+            <DictTag
+                :type="DICT_TYPE.USER_TYPE"
+                :value="scope.row.userType"
+            />
+            {{ '(' + scope.row.nickname + ')' }}
+        </div>
+        </template>
+
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button size="small" type="text" icon="View" @click="openDetail(scope.row)"

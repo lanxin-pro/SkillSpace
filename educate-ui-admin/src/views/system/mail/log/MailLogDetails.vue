@@ -8,6 +8,9 @@
       <el-descriptions-item label="用户编号" min-width="120">
         {{ detailData.userId }}
       </el-descriptions-item>
+      <el-descriptions-item label="用户昵称" min-width="120">
+        {{ detailData.nickname }}
+      </el-descriptions-item>
       <el-descriptions-item label="用户类型" min-width="120">
         <DictTag :type="DICT_TYPE.USER_TYPE" :value="detailData.userType"/>
       </el-descriptions-item>

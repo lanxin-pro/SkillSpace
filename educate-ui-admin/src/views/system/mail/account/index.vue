@@ -45,8 +45,8 @@
     <!-- 列表 -->
     <el-table v-loading="loading" :data="list">
       <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="邮箱" align="center" prop="mail" />
-      <el-table-column label="用户名" align="center" prop="username" />
+      <el-table-column label="邮箱" align="center" prop="mail" width="180" />
+      <el-table-column label="用户名" align="center" prop="username" width="180" />
       <el-table-column label="SMTP 服务器域名" align="center" prop="host" />
       <el-table-column label="SMTP 服务器端口" align="center" prop="port" />
       <el-table-column label="是否开启 SSL" align="center" prop="sslEnable">

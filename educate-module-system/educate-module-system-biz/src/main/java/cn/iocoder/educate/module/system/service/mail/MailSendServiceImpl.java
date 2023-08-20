@@ -99,6 +99,7 @@ public class MailSendServiceImpl implements MailSendService {
         Boolean isSend = CommonStatusEnum.ENABLE.getStatus().equals(template.getStatus());
         String title = mailTemplateService.formatMailTemplateContent(template.getTitle(), templateParams);
         String content = mailTemplateService.formatMailTemplateContent(template.getContent(), templateParams);
+        // 操作人员
         Long sendLogId = mailLogService.createMailLog(userId, userType, mail,
                 account, template, content, templateParams, isSend);
         // 发送 MQ 消息，异步执行发送短信
