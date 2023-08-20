@@ -12,6 +12,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/8/20 10:37
@@ -47,5 +50,10 @@ public interface ErrorCodeMapper extends BaseMapper<ErrorCodeDO> {
         return new PageResult<>(errorCodeDOPage.getRecords(),errorCodeDOPage.getTotal());
     }
 
+    default List<ErrorCodeDO> selectListByCodes(Set<Integer> codes){
+        LambdaQueryWrapper<ErrorCodeDO> errorCodeDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        errorCodeDOLambdaQueryWrapper.in(ErrorCodeDO::getCode,codes);
+        return this.selectList(errorCodeDOLambdaQueryWrapper);
+    }
 
 }

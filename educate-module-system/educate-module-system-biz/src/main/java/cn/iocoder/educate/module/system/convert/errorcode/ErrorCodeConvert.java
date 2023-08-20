@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.convert.errorcode;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.api.errorcode.dto.ErrorCodeAutoGenerateReqDTO;
 import cn.iocoder.educate.module.system.controller.admin.errorcode.vo.ErrorCodeCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.errorcode.vo.ErrorCodeRespVO;
 import cn.iocoder.educate.module.system.controller.admin.errorcode.vo.ErrorCodeUpdateReqVO;
@@ -30,5 +31,7 @@ public interface ErrorCodeConvert {
     List<ErrorCodeRespVO> convertList(List<ErrorCodeDO> list);
 
     PageResult<ErrorCodeRespVO> convertPage(PageResult<ErrorCodeDO> page);
+
+    ErrorCodeDO convert(ErrorCodeAutoGenerateReqDTO bean);
 
 }
