@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.service.sensitiveword;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.hash.Hash;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.system.controller.admin.sensitiveword.vo.SensitiveWordCreateReqVO;
@@ -16,6 +17,7 @@ import cn.iocoder.educate.module.system.mq.producer.sensitiveword.SensitiveWordP
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -148,8 +150,10 @@ public class SensitiveWordServiceImpl implements SensitiveWordService {
 
     @Override
     public Long createBatchSensitiveWord(SensitiveWordCreateReqVO sensitiveWordCreateReqVO) {
-        String[] split = sensitiveWordCreateReqVO.getName().split(",");
-
+        // 去除全部的空白字符
+        String deleteWhitespace = StringUtils.deleteWhitespace(sensitiveWordCreateReqVO.getName());
+        String[] split = deleteWhitespace.split(",");
+        // TODO 项目经理-蓝欣 uat发现这里存在性能隐患
         HashSet<String> repeatName = new HashSet<>();
         List<SensitiveWordDO> sensitiveWordDOS = Arrays.stream(split).map(name -> {
             // 校验存在
@@ -171,10 +175,11 @@ public class SensitiveWordServiceImpl implements SensitiveWordService {
     }
 
     private HashSet<String> validateSensitiveBatchWordNameUnique(String name,HashSet<String> repeatName) {
-        List<SensitiveWordDO> sensitiveWordList = getSensitiveWordList();
-        Map<String, SensitiveWordDO> sensitiveWordDOMap = sensitiveWordList.stream()
-                .collect(Collectors.toMap(SensitiveWordDO::getName, Function.identity(), (v1, v2) -> v1));
-        SensitiveWordDO sensitiveWordDO = sensitiveWordDOMap.get(name);
+//        List<SensitiveWordDO> sensitiveWordList = getSensitiveWordList();
+//        Map<String, SensitiveWordDO> sensitiveWordDOMap = sensitiveWordList.stream()
+//                .collect(Collectors.toMap(SensitiveWordDO::getName, Function.identity(), (v1, v2) -> v1));
+//        SensitiveWordDO sensitiveWordDO = sensitiveWordDOMap.get(name);
+        SensitiveWordDO sensitiveWordDO = sensitiveWordMapper.selectByName(name);
         // 我不可能拿一个对象就去输出一下，不太现实
         if(sensitiveWordDO != null){
             repeatName.add(sensitiveWordDO.getName());
@@ -183,10 +188,11 @@ public class SensitiveWordServiceImpl implements SensitiveWordService {
     }
 
     private void validateSensitiveBatchWordExists(String id) {
-        List<SensitiveWordDO> sensitiveWordList = getSensitiveWordList();
-        Map<Long, SensitiveWordDO> sensitiveWordDOMap = sensitiveWordList.stream()
-                .collect(Collectors.toMap(SensitiveWordDO::getId, Function.identity(), (v1, v2) -> v1));
-        SensitiveWordDO sensitiveWordDO = sensitiveWordDOMap.get(Long.valueOf(id));
+//        List<SensitiveWordDO> sensitiveWordList = getSensitiveWordList();
+//        Map<Long, SensitiveWordDO> sensitiveWordDOMap = sensitiveWordList.stream()
+//                .collect(Collectors.toMap(SensitiveWordDO::getId, Function.identity(), (v1, v2) -> v1));
+//        SensitiveWordDO sensitiveWordDO = sensitiveWordDOMap.get(Long.valueOf(id));
+        SensitiveWordDO sensitiveWordDO = sensitiveWordMapper.selectById(id);
         if(sensitiveWordDO == null){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.SENSITIVE_WORD_EXISTS);
         }

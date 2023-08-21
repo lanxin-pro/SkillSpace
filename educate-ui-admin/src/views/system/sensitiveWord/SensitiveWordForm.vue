@@ -116,17 +116,25 @@ defineExpose({ open })
 // 定义 success 事件，用于操作成功后的回调
 const emit = defineEmits(['success'])
 const submitForm = async () => {
+  // 校验表单
+  if (!formRef){
+    return
+  }
+  const valid = await formRef.value.validate()
+  if (!valid){
+    return
+  }
   // 提交请求
   formLoading.value = true
   try {
     const data = formData.value
     if (formType.value === 'create') {
-      console.log(data.name.split(","))
       if(data.name.includes("，")){
         ELComponent.msgWarning("请注意敏感词的大小写！")
         return
       }
       if(data.name.split(",").length > 1){
+        data.name = data.name.trim()
         await createBatchSensitiveWord(data)
         return
       }
