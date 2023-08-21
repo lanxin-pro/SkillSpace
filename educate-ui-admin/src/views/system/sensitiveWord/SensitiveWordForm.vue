@@ -61,7 +61,7 @@ import {
   createSensitiveWord,
   updateSensitiveWord,
   getSensitiveWordTagList,
-  createBatchSensitiveWord
+  createBatchSensitiveWord,
 } from '@/api/system/sensitiveWord/index.js'
 import Tooltip from '@/components/Tooltip/index.vue'
 
@@ -136,6 +136,9 @@ const submitForm = async () => {
       if(data.name.split(",").length > 1){
         data.name = data.name.trim()
         await createBatchSensitiveWord(data)
+        ELComponent.msgSuccess('批量添加成功！')
+        dialogVisible.value = false
+        getSensitiveWordTagList()
         return
       }
       await createSensitiveWord(data)

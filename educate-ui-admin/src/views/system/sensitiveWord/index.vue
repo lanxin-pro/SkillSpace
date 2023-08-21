@@ -200,9 +200,12 @@ const batchIds = ref([])
 onMounted(async () => {
   await getList()
   // 获得 Tag 标签列表
+  await getSensitiveTagList()
+})
+const getSensitiveTagList = async ()=>{
   const response = await getSensitiveWordTagList()
   tagList.value = response.data
-})
+}
 
 /** 全选，反选，单选触发的方法 */
 const handleSelection = (selections)=>{
@@ -214,6 +217,8 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await getSensitiveWordPage(queryParams)
+    // 加载tag
+    await getSensitiveTagList()
     list.value = response.data.list
     total.value = response.data.total
   } finally {

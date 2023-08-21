@@ -86,7 +86,6 @@ const submitForm = async () => {
       return
     }
     ELComponent.msgWarning('包含敏感词：' + response.data.join(', '))
-    dialogVisible.value = false
   } finally {
     formLoading.value = false
   }
