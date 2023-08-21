@@ -71,6 +71,10 @@
                    v-hasPermi="['system:sensitive-word:create']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
+        <el-button type="primary" plain icon="Plus" size="small" @click="handleDeleteBatch"
+                   v-hasPermi="['system:sensitive-word:create']">批量删除</el-button>
+      </el-col>
+      <el-col :span="1.5">
         <el-button type="warning" plain icon="Download" size="small" @click="handleExport"
                    :loading="exportLoading" v-hasPermi="['system:sensitive-word:export']">导出</el-button>
       </el-col>
@@ -80,25 +84,31 @@
     </el-row>
 
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="list">
+    <el-table
+        v-loading="loading"
+        :data="list"
+        @selection-change="handleSelection"
+    >
+      <el-table-column type="selection" prop="id"  width="50" />
       <el-table-column align="center" label="编号" prop="id" />
       <el-table-column align="center" label="敏感词" prop="name" />
-      <el-table-column align="center" label="状态" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="描述" prop="description" />
       <el-table-column align="center" label="标签" prop="tags">
         <template #default="scope">
           <el-tag
               v-for="tag in scope.row.tags"
               :key="tag"
               :disable-transitions="true"
-              class="mr-5px"
+              style="margin-left: 10px"
           >
             {{ tag }}
           </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="描述" prop="description" :show-overflow-tooltip="true" />
+      <el-table-column align="center" label="状态" prop="status">
+        <template #default="scope">
+          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
@@ -150,7 +160,12 @@ import { ref,reactive,onMounted } from 'vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import ELComponent from '@/plugins/modal.js'
 import { parseTime } from '@/utils/ruoyi.js'
-import { getSensitiveWordPage,deleteSensitiveWord,getSensitiveWordTagList,exportSensitiveWordExcel } from '@/api/system/sensitiveWord/index.js'
+import { getSensitiveWordPage,
+  deleteSensitiveWord,
+  getSensitiveWordTagList,
+  exportSensitiveWordExcel,
+  deleteBatchIdsSensitiveWord
+} from '@/api/system/sensitiveWord/index.js'
 import DictTag from '@/components/DictTag/index.vue'
 import SensitiveWordForm from './SensitiveWordForm.vue'
 import SensitiveWordTestForm from './SensitiveWordTestForm.vue'
@@ -178,6 +193,21 @@ const queryFormRef = ref()
 const exportLoading = ref(false)
 // 标签数组
 const tagList = ref([])
+// 批量删除的ids
+const batchIds = ref([])
+
+/** 初始化 **/
+onMounted(async () => {
+  await getList()
+  // 获得 Tag 标签列表
+  const response = await getSensitiveWordTagList()
+  tagList.value = response.data
+})
+
+/** 全选，反选，单选触发的方法 */
+const handleSelection = (selections)=>{
+  batchIds.value = selections.map(res => res.id)
+}
 
 /** 查询列表 */
 const getList = async () => {
@@ -191,6 +221,20 @@ const getList = async () => {
   }
 }
 
+/** 批量删除 */
+const handleDeleteBatch = async ()=>{
+  if (batchIds.value.length == 0) {
+    ELComponent.msgError("请选择一项进行操作...");
+    return;
+  }
+  await ELComponent.confirm("您确定要批量删除吗？")
+  const response = await deleteBatchIdsSensitiveWord(batchIds.value.join(","))
+  if(response.data === true){
+    ELComponent.msgSuccess('批量删除成功！')
+  }
+  // 刷新列表
+  await getList()
+}
 /** 搜索按钮操作 */
 const handleQuery = () => {
   queryParams.pageNo = 1
@@ -243,13 +287,6 @@ const handleExport = async () => {
   }
 }
 
-/** 初始化 **/
-onMounted(async () => {
-  await getList()
-  // 获得 Tag 标签列表
-  const response = await getSensitiveWordTagList()
-  tagList.value = response.data
-})
 </script>
 
 <style scoped>

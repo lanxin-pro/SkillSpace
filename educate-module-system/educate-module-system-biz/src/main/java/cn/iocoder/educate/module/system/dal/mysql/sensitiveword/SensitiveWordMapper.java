@@ -9,8 +9,11 @@ import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @Author: j-sentinel
@@ -43,6 +46,10 @@ public interface SensitiveWordMapper extends BaseMapper<SensitiveWordDO> {
         Page<SensitiveWordDO> page = new Page<>(sensitiveWordPageReqVO.getPageNo(), sensitiveWordPageReqVO.getPageSize());
         Page<SensitiveWordDO> sensitiveWordDOPage = this.selectPage(page,sensitiveWordDOLambdaQueryWrapper);
         return new PageResult<>(sensitiveWordDOPage.getRecords(),sensitiveWordDOPage.getTotal());
+    }
+
+    default void insertBatch(List<SensitiveWordDO> sensitiveWordDOS){
+        Db.saveBatch(sensitiveWordDOS);
     }
 
 }

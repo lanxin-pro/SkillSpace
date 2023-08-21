@@ -46,6 +46,14 @@ public class SensitiveWordController {
         return success(sensitiveWord);
     }
 
+    @PostMapping("/createBatch")
+    @Operation(summary = "批量创建敏感词")
+    @PreAuthorize("@lanxin.hasPermission('system:sensitive-word:createBatch')")
+    public CommonResult<Long> createBatchSensitiveWord(@Valid @RequestBody SensitiveWordCreateReqVO createReqVO) {
+        Long sensitiveWord = sensitiveWordService.createBatchSensitiveWord(createReqVO);
+        return success(sensitiveWord);
+    }
+
     @PutMapping("/update")
     @Operation(summary = "更新敏感词")
     @PreAuthorize("@lanxin.hasPermission('system:sensitive-word:update')")
@@ -60,6 +68,15 @@ public class SensitiveWordController {
     @PreAuthorize("@lanxin.hasPermission('system:sensitive-word:delete')")
     public CommonResult<Boolean> deleteSensitiveWord(@RequestParam("id") Long id) {
         sensitiveWordService.deleteSensitiveWord(id);
+        return success(true);
+    }
+
+    @DeleteMapping("/deleteBatchIds")
+    @Operation(summary = "批量删除敏感词")
+    @Parameter(name = "ids", description = "编号", required = true)
+    @PreAuthorize("@lanxin.hasPermission('system:sensitive-word:deleteBatch')")
+    public CommonResult<Boolean> deleteBatchIdsSensitiveWord(@RequestBody String batchIds) {
+        sensitiveWordService.deleteBatchSensitiveWord(batchIds);
         return success(true);
     }
 

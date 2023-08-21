@@ -16,6 +16,20 @@ export function createSensitiveWord(data) {
 }
 
 /**
+ * 批量创建敏感词
+ *
+ * @param data
+ * @returns {*}
+ */
+export function createBatchSensitiveWord(data) {
+    return request({
+        url: '/system/sensitive-word/createBatch',
+        method: 'post',
+        data: data
+    })
+}
+
+/**
  * 更新敏感词
  *
  * @param data
@@ -39,6 +53,23 @@ export function deleteSensitiveWord(id) {
     return request({
         url: '/system/sensitive-word/delete?id=' + id,
         method: 'delete'
+    })
+}
+
+/**
+ * 批量删除敏感词
+ *
+ * @param id
+ * @returns {*}
+ */
+export function deleteBatchIdsSensitiveWord(batchIds) {
+    if(!batchIds){
+        return
+    }
+    return request({
+        url: '/system/sensitive-word/deleteBatchIds',
+        method: 'delete',
+        data: batchIds
     })
 }
 

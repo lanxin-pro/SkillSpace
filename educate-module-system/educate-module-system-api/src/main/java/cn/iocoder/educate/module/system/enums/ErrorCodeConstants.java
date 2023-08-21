@@ -123,6 +123,8 @@ public interface ErrorCodeConstants {
     // ========== 系统敏感词 1002019000 =========
     ErrorCode SENSITIVE_WORD_NOT_EXISTS = new ErrorCode(1002019000, "系统敏感词在所有标签中都不存在");
     ErrorCode SENSITIVE_WORD_EXISTS = new ErrorCode(1002019001, "系统敏感词已在标签中存在");
+    ErrorCode SENSITIVE_ID_WORD_EXISTS = new ErrorCode(1002019002, "该敏感词不存在");
+    ErrorCode SENSITIVE_WORD_REPEAT = new ErrorCode(1002019002, "该({})敏感词重复");
 
     // ========== OAuth2 客户端 1002020000 =========
     ErrorCode OAUTH2_CLIENT_NOT_EXISTS = new ErrorCode(1002020000, "OAuth2 客户端不存在");

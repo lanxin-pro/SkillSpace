@@ -102,4 +102,19 @@ public interface SensitiveWordService {
      */
     boolean isTextValid(String text, List<String> tags);
 
+    /**
+     * 批量删除敏感词
+     *
+     * @param batchIds ids
+     */
+    void deleteBatchSensitiveWord(String batchIds);
+
+    /**
+     * 批量添加敏感词
+     *
+     * @param createReqVO 敏感词创建信息
+     * @return
+     */
+    Long createBatchSensitiveWord(SensitiveWordCreateReqVO createReqVO);
+
 }
