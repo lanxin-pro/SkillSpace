@@ -44,6 +44,19 @@ export const CommonStatusEnum = {
     DISABLE: 1
 }
 
+
+/**
+ * API 异常数据的处理状态
+ */
+export const InfraApiErrorLogProcessStatusEnum = {
+    // 未处理
+    INIT: 0,
+    // 已处理
+    DONE: 1,
+    // 已忽略
+    IGNORE: 2
+}
+
 /**
  * 数据权限的范围枚举
  */
