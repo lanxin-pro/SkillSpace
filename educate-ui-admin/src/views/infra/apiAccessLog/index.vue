@@ -240,5 +240,10 @@ const handleExport = async () => {
 </script>
 
 <style scoped>
-
+.el-table .cell {
+  padding: 0;
+}
+.el-table .cell .el-button--small {
+  padding: 2px;
+}
 </style>

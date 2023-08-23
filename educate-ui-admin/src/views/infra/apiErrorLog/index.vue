@@ -97,9 +97,9 @@
           <dict-tag :type="DICT_TYPE.USER_TYPE" :value="scope.row.userType" />
         </template>
       </el-table-column>
-      <el-table-column label="应用名" align="center" prop="applicationName" width="200" />
-      <el-table-column label="请求方法" align="center" prop="requestMethod" width="80" />
-      <el-table-column label="请求地址" align="center" prop="requestUrl" width="180" />
+      <el-table-column label="应用名" align="center" prop="applicationName" width="140" />
+      <el-table-column label="请求方法" align="center" prop="requestMethod" width="65" />
+      <el-table-column label="请求地址" align="center" prop="requestUrl" width="175" />
       <el-table-column
           label="异常发生时间"
           align="center"
@@ -116,7 +116,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button
               link
@@ -129,21 +129,21 @@
             详细
           </el-button>
           <el-button
-              link
-              type="primary"
+              type="text"
+              size="small"
+              icon="Check"
               v-if="scope.row.processStatus === InfraApiErrorLogProcessStatusEnum.INIT"
-              @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.DONE)"
               v-hasPermi="['infra:api-error-log:update-status']"
-          >
+              @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.DONE)">
             已处理
           </el-button>
           <el-button
-              link
-              type="primary"
+              type="text"
+              size="small"
+              icon="Check"
               v-if="scope.row.processStatus === InfraApiErrorLogProcessStatusEnum.INIT"
-              @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.IGNORE)"
               v-hasPermi="['infra:api-error-log:update-status']"
-          >
+              @click="handleProcess(scope.row.id, InfraApiErrorLogProcessStatusEnum.IGNORE)">
             已忽略
           </el-button>
         </template>
@@ -175,6 +175,7 @@ import DictTag from '@/components/DictTag/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import download from '@/utils/download.js'
 import { InfraApiErrorLogProcessStatusEnum } from '@/utils/constants.js'
+import { dateFormatter } from '@/utils/formatTime.js'
 
 // 列表的加载中
 const loading = ref(true)
@@ -238,10 +239,10 @@ const handleProcess = async (id, processStatus) => {
   try {
     // 操作的二次确认
     const type = processStatus === InfraApiErrorLogProcessStatusEnum.DONE ? '已处理' : '已忽略'
-    await message.confirm('确认标记为' + type + '?')
+    await ELComponent.confirm('确认标记为' + type + '?')
     // 执行操作
     await updateApiErrorLogProcess(id, processStatus)
-    await message.success(type)
+    await ELComponent.msgSuccess(type)
     // 刷新列表
     await getList()
   } catch {}
@@ -265,5 +266,14 @@ const handleExport = async () => {
 </script>
 
 <style scoped>
+.el-table .cell {
+  padding: 0;
+}
+.el-table .cell .el-button--small {
+  padding: 2px;
+}
+.el-table .cell .el-button+.el-button{
+  margin-left: 4px;
+}
 
 </style>

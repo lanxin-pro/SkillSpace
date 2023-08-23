@@ -34,6 +34,7 @@
       </el-descriptions-item>
       <el-descriptions-item v-if="detailData.exceptionStackTrace" label="异常堆栈">
         <el-input
+            style="font-size: 10px"
             v-model="detailData.exceptionStackTrace"
             :autosize="{ maxRows: 20 }"
             :readonly="true"
