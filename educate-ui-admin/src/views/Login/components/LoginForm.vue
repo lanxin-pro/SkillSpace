@@ -201,7 +201,7 @@ const loginData = reactive({
   captchaEnable: import.meta.env.VITE_APP_CAPTCHA_ENABLE,
   tenantEnable: import.meta.env.VITE_APP_TENANT_ENABLE,
   loginForm: {
-    tenantName: '字节跳动',
+    tenantName: '沐智课堂',
     username: 'j-sentinel',
     password: '123456',
     captchaVerification: '',

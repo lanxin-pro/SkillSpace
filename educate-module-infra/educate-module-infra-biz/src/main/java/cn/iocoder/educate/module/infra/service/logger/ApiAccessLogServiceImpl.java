@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.infra.service.logger;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.api.logger.dto.ApiAccessLogCreateReqDTO;
+import cn.iocoder.educate.module.infra.controller.admin.logger.vo.apiaccesslog.ApiAccessLogPageReqVO;
 import cn.iocoder.educate.module.infra.covert.logger.ApiAccessLogConvert;
 import cn.iocoder.educate.module.infra.dal.dataobject.logger.ApiAccessLogDO;
 import cn.iocoder.educate.module.infra.dal.mysql.logger.ApiAccessLogMapper;
@@ -23,5 +25,10 @@ public class ApiAccessLogServiceImpl implements ApiAccessLogService{
     public void createApiAccessLog(ApiAccessLogCreateReqDTO createReqDTO) {
         ApiAccessLogDO apiAccessLogDO = ApiAccessLogConvert.INSTANCE.convert(createReqDTO);
         apiAccessLogMapper.insert(apiAccessLogDO);
+    }
+
+    @Override
+    public PageResult<ApiAccessLogDO> getApiAccessLogPage(ApiAccessLogPageReqVO pageReqVO) {
+        return apiAccessLogMapper.selectPage(pageReqVO);
     }
 }

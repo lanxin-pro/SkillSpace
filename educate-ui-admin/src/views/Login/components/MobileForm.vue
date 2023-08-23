@@ -133,7 +133,7 @@ const loginData = reactive({
   },
   loginForm: {
     uuid: '',
-    tenantName: '字节跳动',
+    tenantName: '沐智课堂',
     mobileNumber: '',
     code: '',
     // 21 阿里云

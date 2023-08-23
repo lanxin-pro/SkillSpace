@@ -34,7 +34,7 @@ public class SimpleTrie {
         children = new HashMap<>();
         // 构建树
         CollUtil.sort(strs, String::compareTo); // 排序，优先使用较短的前缀
-        for (String str : strs) {
+        strs.forEach(str -> {
             Map<Character, Object> child = children;
             // 遍历每个字符
             for (Character c : str.toCharArray()) {
@@ -50,7 +50,7 @@ public class SimpleTrie {
             }
             // 结束
             child.put(CHARACTER_END, null);
-        }
+        });
     }
 
     /**
