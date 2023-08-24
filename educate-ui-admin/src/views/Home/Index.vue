@@ -6,21 +6,25 @@
         <el-card class="box-card">
           <template #header>
             <div class="card-header">
-              <span class="fw fz18 orange">🎫 视频相关</span>
+              <span class="text-orange-500 text-lg font-bold">🎫 视频相关</span>
             </div>
           </template>
-          <div class="text item  f14" style="display:flex;justify-content:space-between">
+          <div class="text-item" style="display:flex;justify-content:space-between">
             <div>
               <span>视频未发布：</span>
+              <CountTo :startVal="1" :endVal="21" />
             </div>
             <div>
               <span>视频发布：</span>
+              <CountTo :startVal="1" :endVal="160" />
             </div>
             <div>
               <span>陌陌视频：</span>
+              <CountTo :startVal="1" :endVal="2" />
             </div>
             <div>
               <span>后台视频：</span>
+              <CountTo :startVal="1" :endVal="5" />
             </div>
           </div>
         </el-card>
@@ -29,21 +33,25 @@
         <el-card class="box-card">
           <template #header>
             <div class="card-header">
-              <span class="fw blue fz18">🙎 用户注册</span>
+              <span class="text-blue-500 text-lg font-bold">🙎 用户注册</span>
             </div>
           </template>
-          <div class="text item f14" style="display:flex;justify-content:space-between">
+          <div class="text-item" style="display:flex;justify-content:space-between">
             <div>
               <span>普通用户：</span>
+              <CountTo :startVal="1" :endVal="21" />
             </div>
             <div>
               <span>游客用户：</span>
+              <CountTo :startVal="1" :endVal="212123" />
             </div>
             <div>
               <span>主播：</span>
+              <CountTo :startVal="1" :endVal="121" />
             </div>
             <div>
               <span>家族长：</span>
+              <CountTo :startVal="1" :endVal="251" />
             </div>
           </div>
         </el-card>
@@ -52,15 +60,17 @@
         <el-card class="box-card">
           <template #header>
             <div class="card-header">
-              <span class="fw fz18 red">💰 收入统计</span>
+              <span class="text-red-500 text-lg font-bold">💰 收入统计</span>
             </div>
           </template>
-          <div class="text item f14" style="display:flex;justify-content:space-between">
+          <div class="text-item" style="display:flex;justify-content:space-between">
             <div>
               <span>充值总额：</span>
+              <CountTo :startVal="1" :endVal="6283151" />
             </div>
             <div>
               <span>充值人数：</span>
+              <CountTo :startVal="1" :endVal="9651" />
             </div>
           </div>
         </el-card>
@@ -180,6 +190,7 @@ import { parseTime } from '@/utils/ruoyi.js'
 import Pagination from '@/components/Pagination/index.vue'
 import DictTag from '@/components/DictTag/index.vue'
 import OperateLogDetail from '@/views/system/operatelog/OperateLogDetail.vue'
+import CountTo from '@/components/CountTo/index.vue'
 
 const detailRef = ref()
 const queryForm = ref()
@@ -235,5 +246,16 @@ const handleView = async (row)=>{
 </script>
 
 <style scoped>
-
+.text-item{
+  font: normal 14px/24px Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #0e0000;
+  overflow: hidden;
+  padding: 0 !important;
+}
+.card-header{
+  padding: 10px 4px
+}
 </style>

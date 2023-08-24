@@ -3091,6 +3091,13 @@
   dependencies:
     "kind-of" "^6.0.2"
 
+"shifty@^2.0.2":
+  "integrity" "sha512-4Y0qRkg8ME5XN8yGNAwmFOmsIURGFKT9UQfNL6DDJQErYtN5HsjyoBuJn41ZQfTkuu2rIbRMn9qazjKsDpO2TA=="
+  "resolved" "https://registry.npmjs.org/shifty/-/shifty-2.20.4.tgz"
+  "version" "2.20.4"
+  optionalDependencies:
+    "fsevents" "^2.3.2"
+
 "side-channel@^1.0.4":
   "integrity" "sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw=="
   "resolved" "https://registry.npmjs.org/side-channel/-/side-channel-1.0.4.tgz"
@@ -3514,6 +3521,13 @@
   "integrity" "sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ=="
   "resolved" "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
   "version" "1.1.2"
+
+"vue-animate-number@^0.4.2":
+  "integrity" "sha512-VqImyD8SRUfXCr42YCyuM/9tyQ8mUK7DTzVoZ0rP6Uqb5r+433UDJYPniexsIL0RxZF2ojGF+zqRhLB07H8c9Q=="
+  "resolved" "https://registry.npmjs.org/vue-animate-number/-/vue-animate-number-0.4.2.tgz"
+  "version" "0.4.2"
+  dependencies:
+    "shifty" "^2.0.2"
 
 "vue-demi@*":
   "integrity" "sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA=="
