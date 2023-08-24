@@ -123,6 +123,10 @@
               end-placeholder="结束日期"
               :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
           />
+          <el-button class="ml-5" type="success" size="small" @click="handleChangeDate(0)">今天</el-button>
+          <el-button type="success" size="small" @click="handleChangeDate(1)">昨日</el-button>
+          <el-button type="success" size="small" @click="handleChangeDate(7)">7天</el-button>
+          <el-button type="success" size="small" @click="handleChangeDate(30)">30天</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -191,6 +195,7 @@ import Pagination from '@/components/Pagination/index.vue'
 import DictTag from '@/components/DictTag/index.vue'
 import OperateLogDetail from '@/views/system/operatelog/OperateLogDetail.vue'
 import CountTo from '@/components/CountTo/index.vue'
+import { dayDateFormatter } from '@/utils/formatTime.js'
 
 const detailRef = ref()
 const queryForm = ref()
@@ -242,6 +247,14 @@ const resetQuery = async ()=>{
 }
 const handleView = async (row)=>{
   detailRef.value.open(row)
+}
+// 切换
+const handleChangeDate = (num)=>{
+  const value1 = dayDateFormatter(num, 'day')
+  if (value1.length > 0) {
+    queryParams.startTime = value1
+  }
+  getList()
 }
 </script>
 

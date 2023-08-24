@@ -250,3 +250,26 @@ export const handleZoneToTimeUtils = (timeZone, startTime, endTime) => {
   }
   return endTime ? `${startDate} ~ ${endDate}` : startDate
 }
+// 获取某一天的00:00:00 23:59:59
+export const setStartHours = time => {
+  return new Date(time).setHours(0, 0, 0)
+}
+export const setEndHours = time => {
+  return new Date(time).setHours(23, 59, 59)
+}
+// 今天 昨天 七天 30天 60天 90天
+export const dayDateFormatter = (num, type) => {
+  let tempDate = []
+  switch (type) {
+    case 'day':
+      if (num === 1) {
+        tempDate = [Dayjs(setStartHours(Dayjs().subtract(num, 'day'))).format('YYYY-MM-DD HH:mm:ss'), Dayjs(setEndHours(Dayjs().subtract(num, 'day'))).format('YYYY-MM-DD HH:mm:ss')]
+      } else {
+        tempDate = [Dayjs(setStartHours(Dayjs().subtract(num, 'day'))).format('YYYY-MM-DD HH:mm:ss'), Dayjs(setEndHours(Dayjs())).format('YYYY-MM-DD HH:mm:ss')]
+      }
+      break
+    default:
+      break
+  }
+  return tempDate
+}
