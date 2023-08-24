@@ -19,12 +19,14 @@
                   type="info">
                 当前服务器时间为：<span v-show="formatTime"> {{ gmt }} {{ formatterTime(formatTime) }}</span>
               </el-tag>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :disabled="true" v-for="(it, i) in timeList" :key="i">
-                  {{ lang === 'zh' ? it.country + '时间：' : it.countryEn + ' time ' }}<span>{{ it.gmt }}</span>
-                  <span style="margin-left: 5px"> {{ formatterTime(it.time) }}</span>
-                </el-dropdown-item>
-              </el-dropdown-menu>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item :disabled="true" v-for="(it, i) in timeList" :key="i">
+                    {{ lang === 'zh' ? it.country + '时间：' : it.countryEn + ' time ' }}<span>{{ it.gmt }}</span>
+                    <span style="margin-left: 5px"> {{ formatterTime(it.time) }}</span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
           </div>
         </div>
@@ -148,8 +150,8 @@ const { appContext } = getCurrentInstance()
 const timeStore = useTimeStore()
 
 onMounted(()=>{
-  getTime()
   getServerTimeFn()
+  getTime()
 })
 const getTime = async () => {
   const response = await getCountryWithTimeZoneList()
@@ -157,7 +159,6 @@ const getTime = async () => {
   handleZoneToTime()
 }
 const getServerTimeFn = async ()=>{
-  timeLoading.value = true
   const response = await getServerTime()
   serverTime.value = response.data.time
   gmt.value = getUTC(new Date(serverTime.value))
@@ -166,6 +167,7 @@ const getUTC = (time) => {
   return `UTC +${0 - time.getTimezoneOffset() / 60}`
 }
 const handleZoneToTime = (cnTime)=>{
+  timeLoading.value = true
   timeList.value = timeStore.getZoneList.map((it) => {
     return {
       time: new Date(handleZoneToTimeUtils(it.timeZone, cnTime, null)).getTime(),

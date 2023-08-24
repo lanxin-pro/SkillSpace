@@ -96,9 +96,8 @@ request.interceptors.response.use(async res => {
             }
             // 进行访问令牌的刷新
             try{
-                alert("刷新访问令牌")
-                const response = await refreshToken()
-                setToken(response.data)
+                const refreshTokenResponse = await refreshToken()
+                setToken(refreshTokenResponse.data)
                 return request(res.config)
             }catch (error){// 为什么需要 catch 异常呢？刷新失败时，请求因为 Promise.reject 触发异常。
                 // 提示是否要登出。即不回放当前请求！不然会形成递归
