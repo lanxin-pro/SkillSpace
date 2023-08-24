@@ -36,7 +36,7 @@
         <el-input
             style="font-size: 10px"
             v-model="detailData.exceptionStackTrace"
-            :autosize="{ maxRows: 20 }"
+            :autosize="{ maxRows: 25 }"
             :readonly="true"
             type="textarea"
         />

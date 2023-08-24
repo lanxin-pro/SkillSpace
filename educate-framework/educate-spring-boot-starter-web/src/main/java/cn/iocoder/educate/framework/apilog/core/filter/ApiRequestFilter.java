@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/9 19:59
+ *
  * 过滤 /admin-api、/app-api 等 API 请求的过滤器
  */
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public abstract class ApiRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        // 只过滤 API 请求的地址
+        // 只过滤 API 请求的地址，这个过滤的是前缀
         return !StrUtil.startWithAny(request.getRequestURI(), webProperties.getAdminApi().getPrefix(),
                 webProperties.getAppApi().getPrefix());
     }

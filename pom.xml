@@ -18,6 +18,8 @@
         <!-- 各种 module 拓展 -->
         <module>educate-module-system</module>
         <module>educate-module-infra</module>
+        <!-- 示例项目 -->
+        <module>educate-example</module>
     </modules>
 
     <name>${project.artifactId}</name>

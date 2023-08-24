@@ -1,6 +1,71 @@
 <template>
   <div class="app-container">
 
+    <el-row :gutter='20'>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <template #header>
+            <div class="card-header">
+              <span class="fw fz18 orange">🎫 视频相关</span>
+            </div>
+          </template>
+          <div class="text item  f14" style="display:flex;justify-content:space-between">
+            <div>
+              <span>视频未发布：</span>
+            </div>
+            <div>
+              <span>视频发布：</span>
+            </div>
+            <div>
+              <span>陌陌视频：</span>
+            </div>
+            <div>
+              <span>后台视频：</span>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <template #header>
+            <div class="card-header">
+              <span class="fw blue fz18">🙎 用户注册</span>
+            </div>
+          </template>
+          <div class="text item f14" style="display:flex;justify-content:space-between">
+            <div>
+              <span>普通用户：</span>
+            </div>
+            <div>
+              <span>游客用户：</span>
+            </div>
+            <div>
+              <span>主播：</span>
+            </div>
+            <div>
+              <span>家族长：</span>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <template #header>
+            <div class="card-header">
+              <span class="fw fz18 red">💰 收入统计</span>
+            </div>
+          </template>
+          <div class="text item f14" style="display:flex;justify-content:space-between">
+            <div>
+              <span>充值总额：</span>
+            </div>
+            <div>
+              <span>充值人数：</span>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <el-card class="box-card" style="margin:10px 0;">
       <template #header>
