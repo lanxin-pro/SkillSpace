@@ -1,23 +1,36 @@
 <template>
-<div class="app-container">
-  <VueVideo
-      ref="aplayVideo"
-      v-bind="options"
-      @play="onPlay"
-  />
+  <div class="app-container">
+    <VueVideo
+        ref="aplayVideo"
+        v-bind="options"
+        @play="onPlay"
+    >
+    </VueVideo>
 
-</div>
+    <VueDanmaku
+        :autoplay="false"
+        ref="danmakuRef"
+        v-model:danmus="danmus"
+        style="height:100px; width:300px;"
+    />
+
+  </div>
 </template>
 
 <script setup>
 import { ref,reactive } from 'vue'
 import VueVideo from "vue3-video-play"
 import 'vue3-video-play/dist/style.css'
+import VueDanmaku from "vue3-danmaku"
 
+
+const danmus = ref(['danmu1', 'danmu2', 'danmu3'])
+
+const danmakuRef = ref()
 //事件示例
 const onPlay = (ev) => {
-  console.log("播放");
-};
+  danmakuRef.value.play()
+}
 const options = reactive({
   // type: "auto", // 势必报错 视频类型
   width: '70%', // 播放器高度

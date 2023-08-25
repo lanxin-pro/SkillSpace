@@ -92,6 +92,9 @@ dependencies:
   vue-types:
     specifier: ^5.0.2
     version: 5.0.2(vue@3.2.47)
+  vue3-danmaku:
+    specifier: 1.4.0
+    version: 1.4.0(vue@3.2.47)
   vue3-video-play:
     specifier: 1.3.1-beta.6
     version: 1.3.1-beta.6
@@ -3806,6 +3809,14 @@ packages:
         optional: true
     dependencies:
       is-plain-object: 5.0.0
+      vue: 3.2.47
+    dev: false
+
+  /vue3-danmaku@1.4.0(vue@3.2.47):
+    resolution: {integrity: sha512-4kfMaOqllREaTxkjy81+nFk3xn90cTGpZryQUwyhX8COFfEQdjQOJsE3jlpIe+MO1ZcjvTeWBtoYyNq0abqALQ==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
       vue: 3.2.47
     dev: false
 
