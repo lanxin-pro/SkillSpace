@@ -87,13 +87,14 @@ public class CodegenServiceImpl implements CodegenService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Long> createCodegenList(Long loginUserId, CodegenCreateListReqVO reqVO) {
+    public List<Long> createCodegenList(Long loginUserId, CodegenCreateListReqVO codegenCreateListReqVO) {
         // 创建数组是为了能够返回添加的ids
-        ArrayList<Long> ids = new ArrayList<>(reqVO.getTableNames().size());
+        ArrayList<Long> ids = new ArrayList<>(codegenCreateListReqVO.getTableNames().size());
         // 遍历添加。虽然效率会低一点，但是没必要做成完全批量，因为不会这么大量
-        reqVO.getTableNames().forEach(tableName -> {
+        codegenCreateListReqVO.getTableNames().forEach(tableName -> {
+            // 真正添加数据的地方
             Long codegen = createCodegen(loginUserId,
-                    reqVO.getDataSourceConfigId(),
+                    codegenCreateListReqVO.getDataSourceConfigId(),
                     tableName);
             ids.add(codegen);
         });
@@ -176,13 +177,19 @@ public class CodegenServiceImpl implements CodegenService {
         if (CollUtil.isEmpty(tableInfo.getFields())) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_IMPORT_COLUMNS_NULL);
         }
+        HashSet<String> repeatComment = new HashSet<>();
         tableInfo.getFields().forEach(field -> {
+            // TODO j-sentinel 这里可以优化成全部返回，而不是逐一返回
             // 每一个字段都必须要有注释
             if (StrUtil.isEmpty(field.getComment())) {
-                throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_TABLE_INFO_COLUMN_COMMENT_IS_NULL,
-                        field.getName());
+                repeatComment.add(field.getName());
             }
         });
+        if(CollUtil.isNotEmpty(repeatComment)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.CODEGEN_TABLE_INFO_COLUMN_COMMENT_IS_NULL,
+                    repeatComment);
+        }
+
     }
 
 }

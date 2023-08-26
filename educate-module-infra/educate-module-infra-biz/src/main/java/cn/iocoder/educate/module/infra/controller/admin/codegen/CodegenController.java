@@ -56,8 +56,8 @@ public class CodegenController {
 
     @Operation(summary = "基于数据库的表结构，创建代码生成器的表和字段定义")
     @PostMapping("/create-list")
-    public CommonResult<List<Long>> createCodegenList(@Valid @RequestBody CodegenCreateListReqVO reqVO) {
-        return success(codegenService.createCodegenList(WebFrameworkUtils.getLoginUserId(), reqVO));
+    public CommonResult<List<Long>> createCodegenList(@Valid @RequestBody CodegenCreateListReqVO codegenCreateListReqVO) {
+        return success(codegenService.createCodegenList(WebFrameworkUtils.getLoginUserId(), codegenCreateListReqVO));
     }
 
     @GetMapping("/table/page")

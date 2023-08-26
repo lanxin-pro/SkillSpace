@@ -42,12 +42,12 @@ public class DatabaseTableServiceImpl implements DatabaseTableService {
     @Override
     public TableInfo getTable(Long dataSourceConfigId, String tableName) {
         List<TableInfo> tableList0 = getTableList0(dataSourceConfigId, tableName);
-        // 只返回一个
+        // 只返回一个，防止返回多个出现错误
         return CollUtil.getFirst(tableList0);
     }
 
     private List<TableInfo> getTableList0(Long dataSourceConfigId, String name) {
-        // 获得数据源配置
+        // 获得数据源配置tableList0 = {ArrayList@19558}  size = 1
         DataSourceConfigDO config = dataSourceConfigService.getDataSourceConfig(dataSourceConfigId);
         Assert.notNull(config, "数据源({}) 不存在！", dataSourceConfigId);
 
