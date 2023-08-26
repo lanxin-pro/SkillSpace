@@ -31,11 +31,11 @@ public class DatabaseTableServiceImpl implements DatabaseTableService {
     @Override
     public List<TableInfo> getTableList(Long dataSourceConfigId, String nameLike, String commentLike) {
         List<TableInfo> tables = getTableList0(dataSourceConfigId, null);
-        // 条件查询
+        // 条件查询         只有返回值为 true 的表格信息会被保留下来
         return tables.stream().filter(tableInfo -> {
             // 为true代表排除,为null为true,有值为false，需要执行后面的比较
-            return StrUtil.isEmpty(nameLike) || tableInfo.getName().contains(nameLike)
-                    && StrUtil.isEmpty(commentLike) || tableInfo.getComment().contains(commentLike);
+            return (StrUtil.isEmpty(nameLike) || tableInfo.getName().contains(nameLike))
+                    && (StrUtil.isEmpty(commentLike) || tableInfo.getComment().contains(commentLike));
         }).collect(Collectors.toList());
     }
 

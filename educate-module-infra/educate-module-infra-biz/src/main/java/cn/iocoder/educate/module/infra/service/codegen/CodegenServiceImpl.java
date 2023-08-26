@@ -63,18 +63,21 @@ public class CodegenServiceImpl implements CodegenService {
 
     @Override
     public List<DatabaseTableRespVO> getDatabaseTableList(Long dataSourceConfigId, String name, String comment) {
+        // 数据库全部表的信息，我查询全表的时候就应该筛选出来
         List<TableInfo> tables = databaseTableService.getTableList(dataSourceConfigId,name,comment);
         // 移除已经生成的表
-        // 移除在 Codegen 中，已经存在的
+        // 移除在 Codegen 中，这个是需要排除的，已经存在的
         List<CodegenTableDO> codegenTableDOS = codegenTableMapper.selectListByDataSourceConfigId(dataSourceConfigId);
         if(CollUtil.isEmpty(codegenTableDOS)){
             return new ArrayList<>();
         }
+        // 需要排除的表
         Set<String> existsTables = codegenTableDOS
                 .stream()
                 .map(CodegenTableDO::getTableName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+        // 移除
         tables.removeIf(tableInfo -> {
             // CodegenTableDO表中全部能够匹配的数据库表的name
             return existsTables.contains(tableInfo.getName());

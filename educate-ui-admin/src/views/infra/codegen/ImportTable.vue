@@ -40,7 +40,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="search" size="small" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="search" size="small" @click="getList()">搜索</el-button>
         <el-button icon="refresh" size="small" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -74,6 +74,7 @@ import { ElTable } from 'element-plus'
 import { ref,reactive } from 'vue'
 import ElComponent from '@/plugins/modal.js'
 import { getSchemaTableList,createCodegenList } from '@/api/infra/codegen.js'
+import { getDataSourceConfigList } from '@/api/infra/dataSourceConfig.js'
 
 // 表格的 Ref
 const tableRef = ref()
@@ -98,6 +99,10 @@ const dataSourceConfigList = ref([])
 
 /** 打开弹窗 */
 const open = async () => {
+  // 加载数据源的列表
+  const response = await getDataSourceConfigList()
+  dataSourceConfigList.value = response.data
+  queryParams.dataSourceConfigId = dataSourceConfigList.value[0]?.id
   dialogVisible.value = true
   await getList()
 }
@@ -120,6 +125,15 @@ const getList = async () => {
     dbTableLoading.value = false
   }
 }
+
+/** 重置操作 */
+const resetQuery = async () => {
+  queryParams.name = undefined
+  queryParams.comment = undefined
+  queryParams.dataSourceConfigId = dataSourceConfigList.value[0]?.id
+  await getList()
+}
+
 /** 导入按钮操作 */
 const handleImportTable = async ()=>{
   const response = await createCodegenList({
