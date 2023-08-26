@@ -53,10 +53,7 @@
       <el-table-column label="文件名" align="center" prop="name" width="260">
         <template #default="scope">
           <a href='javascript:void(0);' @click.prevent="handleOpenPreview(index)"  class='cover-wrp'>
-            <img  style="height: 100%;width: 100%;border-radius: 4px;"/>
-<!--            <el-icon style="font-size: 48px;color: #999">
-              <VideoPlay />
-            </el-icon>-->
+            <img :src="vover" style="height: 100%;width: 100%;border-radius: 4px;"/>
           </a>
         </template>
       </el-table-column>

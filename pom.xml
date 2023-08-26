@@ -20,6 +20,7 @@
         <module>educate-module-infra</module>
         <!-- 示例项目 -->
         <module>educate-example</module>
+        <module>educate-module-video</module>
     </modules>
 
     <name>${project.artifactId}</name>
