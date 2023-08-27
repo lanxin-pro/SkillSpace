@@ -4,8 +4,8 @@
       :fullscreen="isFullscreen"
       :width="width"
       destroy-on-close
-      draggable
-      :lock-scroll="false"
+      :draggable="draggable"
+      :lock-scroll="lockScroll"
       v-bind="getBindValue"
       :align-center="true"
   >
@@ -51,7 +51,9 @@ const props = defineProps({
   fullscreen: propTypes.bool.def(true),
   width: propTypes.oneOfType([String, Number]).def('40%'),
   scroll: propTypes.bool.def(false), // 是否开启滚动条。如果是的话，按照 maxHeight 设置最大高度
-  maxHeight: propTypes.oneOfType([String, Number]).def('300px')
+  maxHeight: propTypes.oneOfType([String, Number]).def('300px'),
+  draggable: propTypes.bool.def(true),
+  lockScroll: propTypes.bool.def(false)
 })
 
 const getBindValue = computed(() => {

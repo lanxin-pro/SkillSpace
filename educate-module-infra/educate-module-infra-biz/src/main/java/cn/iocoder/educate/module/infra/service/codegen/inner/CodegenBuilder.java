@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static cn.hutool.core.text.CharSequenceUtil.*;
 import static cn.hutool.core.text.CharSequenceUtil.subAfter;
@@ -116,10 +117,11 @@ public class CodegenBuilder {
 
     public List<CodegenColumnDO> buildColumns(Long tableId, List<TableField> tableFields) {
         List<CodegenColumnDO> columns = CodegenConvert.INSTANCE.convertList(tableFields);
-        int index = 1;
-        for (CodegenColumnDO column : columns) {
+        // 排序index++也行，但是forEach里面不允许使用index++
+        AtomicInteger index = new AtomicInteger(1);
+        columns.stream().forEach(column -> {
             column.setTableId(tableId);
-            column.setOrdinalPosition(index++);
+            column.setOrdinalPosition(index.getAndAdd(1));
             // 初始化 Column 列的默认字段
             // 处理 CRUD 相关的字段的默认值
             processColumnOperation(column);
@@ -127,7 +129,7 @@ public class CodegenBuilder {
             processColumnUI(column);
             // 处理字段的 swagger example 示例
             processColumnExample(column);
-        }
+        });
         return columns;
     }
 

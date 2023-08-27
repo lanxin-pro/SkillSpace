@@ -1,6 +1,10 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.codegen;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.module.infra.dal.dataobject.db.DataSourceConfigDO;
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenFrontTypeEnum;
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenSceneEnum;
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenTemplateTypeEnum;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -4,7 +4,8 @@
       align-center
       class="app-infra-codegen-preview-container"
       title="代码预览"
-      width="80%"
+      width="90%"
+      :lockScroll="true"
   >
     <div class="flex">
       <!-- 代码目录树 -->

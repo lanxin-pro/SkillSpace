@@ -22,14 +22,17 @@ public enum CodegenSceneEnum {
      * 场景
      */
     private final Integer scene;
+
     /**
      * 场景名
      */
     private final String name;
+
     /**
      * 基础包名
      */
     private final String basePackage;
+
     /**
      * Controller 和 VO 类的前缀
      */

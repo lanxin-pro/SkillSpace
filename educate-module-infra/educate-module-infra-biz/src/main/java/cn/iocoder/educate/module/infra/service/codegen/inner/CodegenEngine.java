@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import static cn.hutool.core.map.MapUtil.getStr;
+import static cn.hutool.core.text.CharSequenceUtil.*;
 
 /**
  * 代码生成的引擎，用于具体生成代码
@@ -45,6 +46,8 @@ import static cn.hutool.core.map.MapUtil.getStr;
  *
  * 考虑到 Java 模板引擎的框架非常多，Freemarker、Velocity、Thymeleaf 等等，
  * 所以我们采用 hutool 封装的 {@link cn.hutool.extra.template.Template} 抽象
+ *
+ * 参考文档：https://www.wenjiangs.com/doc/zsqqllfe
  *
  * @Author: j-sentinel
  * @Date: 2023/7/27 13:20
@@ -149,6 +152,12 @@ public class CodegenEngine {
         // 主键字段 filter
         bindingMap.put("primaryColumn", CollUtil.findOne(columnsDO, CodegenColumnDO::getPrimaryKey));
         bindingMap.put("sceneEnum", CodegenSceneEnum.valueOf(tableDO.getScene()));
+
+        // className 相关
+        // 去掉指定前缀，将 TestDictType 转换成 DictType. 因为在 create 等方法后，不需要带上 Test 前缀
+        String simpleClassName = removePrefix(tableDO.getClassName(), upperFirst(tableDO.getModuleName()));
+        // 将 DictType 转换成 dictType，用于变量 --- 用户前端package
+        bindingMap.put("classNameVar", lowerFirst(simpleClassName));
 
         // 执行生成（前端和后端模板）
         Map<String, String> templates = getTemplates(tableDO.getFrontType());

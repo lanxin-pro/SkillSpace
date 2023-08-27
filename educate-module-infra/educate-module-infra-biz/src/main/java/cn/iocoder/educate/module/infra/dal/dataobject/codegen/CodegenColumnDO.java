@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.codegen;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenColumnHtmlTypeEnum;
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenColumnListConditionEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
