@@ -20,7 +20,8 @@ import static ${DateUtilsClassName}.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
     private ${column.javaType}#if ("$!prefix" != "") ${prefix}${JavaField}#else ${column.javaField}#end;
 #end
 
-/**##j- 为岗位缩写
+##j- 为岗位缩写
+/**
  * @Author: j-${createCurrentDateUsername}
  * @Date: ${createLocalDateTime}
  */

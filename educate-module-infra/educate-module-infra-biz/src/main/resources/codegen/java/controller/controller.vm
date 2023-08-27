@@ -25,7 +25,8 @@ import ${basePackage}.module.${table.moduleName}.dal.dataobject.${table.business
 import ${basePackage}.module.${table.moduleName}.convert.${table.businessName}.${table.className}Convert;
 import ${basePackage}.module.${table.moduleName}.service.${table.businessName}.${table.className}Service;
 
-/**##j- 为岗位缩写
+##j- 为岗位缩写
+/**
  * @Author: j-${createCurrentDateUsername}
  * @Date: ${createLocalDateTime}
  */
@@ -41,7 +42,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
 
     @PostMapping("/create")
     @Operation(summary = "创建${table.classComment}")
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:create')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:create')")#end
 
     public CommonResult<${primaryColumn.javaType}> create${simpleClassName}(@Valid @RequestBody ${sceneEnum.prefixClass}${table.className}CreateReqVO createReqVO) {
         return success(${classNameVar}Service.create${simpleClassName}(createReqVO));
@@ -49,7 +50,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
 
     @PutMapping("/update")
     @Operation(summary = "更新${table.classComment}")
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:update')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:update')")#end
 
     public CommonResult<Boolean> update${simpleClassName}(@Valid @RequestBody ${sceneEnum.prefixClass}${table.className}UpdateReqVO updateReqVO) {
         ${classNameVar}Service.update${simpleClassName}(updateReqVO);
@@ -59,7 +60,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
     @DeleteMapping("/delete")
     @Operation(summary = "删除${table.classComment}")
     @Parameter(name = "id", description = "编号", required = true)
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:delete')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:delete')")#end
 
     public CommonResult<Boolean> delete${simpleClassName}(@RequestParam("id") ${primaryColumn.javaType} id) {
         ${classNameVar}Service.delete${simpleClassName}(id);
@@ -69,7 +70,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
     @GetMapping("/get")
     @Operation(summary = "获得${table.classComment}")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:query')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:query')")#end
 
     public CommonResult<${sceneEnum.prefixClass}${table.className}RespVO> get${simpleClassName}(@RequestParam("id") ${primaryColumn.javaType} id) {
         ${table.className}DO ${classNameVar} = ${classNameVar}Service.get${simpleClassName}(id);
@@ -79,7 +80,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
     @GetMapping("/list")
     @Operation(summary = "获得${table.classComment}列表")
     @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:query')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:query')")#end
 
     public CommonResult<List<${sceneEnum.prefixClass}${table.className}RespVO>> get${simpleClassName}List(@RequestParam("ids") Collection<${primaryColumn.javaType}> ids) {
         List<${table.className}DO> list = ${classNameVar}Service.get${simpleClassName}List(ids);
@@ -88,7 +89,7 @@ public class ${sceneEnum.prefixClass}${table.className}Controller {
 
     @GetMapping("/page")
     @Operation(summary = "获得${table.classComment}分页")
-#if ($sceneEnum.scene == 1)    @PreAuthorize("lanxin.hasPermission('${permissionPrefix}:query')")#end
+#if ($sceneEnum.scene == 1)    @PreAuthorize("@lanxin.hasPermission('${permissionPrefix}:query')")#end
 
     public CommonResult<PageResult<${sceneEnum.prefixClass}${table.className}RespVO>> get${simpleClassName}Page(@Valid ${sceneEnum.prefixClass}${table.className}PageReqVO pageVO) {
         PageResult<${table.className}DO> pageResult = ${classNameVar}Service.get${simpleClassName}Page(pageVO);

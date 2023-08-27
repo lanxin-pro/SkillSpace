@@ -52,4 +52,5 @@ public abstract class BaseDO implements Serializable {
      */
     @TableLogic
     private Boolean deleted;
+
 }

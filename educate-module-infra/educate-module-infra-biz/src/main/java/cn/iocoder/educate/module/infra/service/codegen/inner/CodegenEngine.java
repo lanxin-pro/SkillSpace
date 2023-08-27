@@ -75,6 +75,12 @@ public class CodegenEngine {
             .put(javaTemplatePath("controller/vo/respVO"), javaModuleImplVOFilePath("RespVO"))
             .put(javaTemplatePath("controller/vo/updateReqVO"), javaModuleImplVOFilePath("UpdateReqVO"))
             .put(javaTemplatePath("controller/controller"), javaModuleImplControllerFilePath())
+            .put(javaTemplatePath("convert/convert"),
+                    javaModuleImplMainFilePath("convert/${table.businessName}/${table.className}Convert"))
+            .put(javaTemplatePath("dal/do"),
+                    javaModuleImplMainFilePath("dal/dataobject/${table.businessName}/${table.className}DO"))
+            .put(javaTemplatePath("dal/mapper"),
+                    javaModuleImplMainFilePath("dal/mysql/${table.businessName}/${table.className}Mapper"))
             .build();
 
     /**
@@ -263,6 +269,9 @@ public class CodegenEngine {
                 "${sceneEnum.prefixClass}${table.className}Controller", "biz", "main");
     }
 
+    private static String javaModuleImplMainFilePath(String path) {
+        return javaModuleFilePath(path, "biz", "main");
+    }
 
     /**
      * 前端模板路径生成

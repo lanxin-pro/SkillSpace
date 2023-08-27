@@ -36,7 +36,6 @@ const uploadRef = ref()
 /** 打开弹窗 */
 const open = async () => {
   dialogVisible.value = true
-  resetForm()
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
