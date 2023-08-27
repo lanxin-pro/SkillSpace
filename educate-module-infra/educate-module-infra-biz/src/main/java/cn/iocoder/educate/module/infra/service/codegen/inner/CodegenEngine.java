@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.service.codegen.inner;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.template.TemplateConfig;
@@ -22,6 +23,7 @@ import cn.iocoder.educate.module.infra.dal.dataobject.codegen.CodegenTableDO;
 import cn.iocoder.educate.module.infra.enums.codegen.CodegenFrontTypeEnum;
 import cn.iocoder.educate.module.infra.enums.codegen.CodegenSceneEnum;
 import cn.iocoder.educate.module.infra.framwork.codegen.config.CodegenProperties;
+import cn.iocoder.educate.module.system.api.user.AdminUserApi;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.collect.ImmutableTable;
@@ -31,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,8 +68,13 @@ public class CodegenEngine {
     private static final Map<String, String> SERVER_TEMPLATES = MapUtil.<String, String>
             // 有序
             builder(new LinkedHashMap<>())
-            // 第一个参数是文件路径，第二哥参数是
+            // 第一个参数是文件路径(模板所在位置)，第二个参数是创建模板()
             .put(javaTemplatePath("controller/vo/baseVO"), javaModuleImplVOFilePath("BaseVO"))
+            .put(javaTemplatePath("controller/vo/createReqVO"), javaModuleImplVOFilePath("CreateReqVO"))
+            .put(javaTemplatePath("controller/vo/pageReqVO"), javaModuleImplVOFilePath("PageReqVO"))
+            .put(javaTemplatePath("controller/vo/respVO"), javaModuleImplVOFilePath("RespVO"))
+            .put(javaTemplatePath("controller/vo/updateReqVO"), javaModuleImplVOFilePath("UpdateReqVO"))
+            .put(javaTemplatePath("controller/controller"), javaModuleImplControllerFilePath())
             .build();
 
     /**
@@ -152,12 +160,22 @@ public class CodegenEngine {
         // 主键字段 filter
         bindingMap.put("primaryColumn", CollUtil.findOne(columnsDO, CodegenColumnDO::getPrimaryKey));
         bindingMap.put("sceneEnum", CodegenSceneEnum.valueOf(tableDO.getScene()));
-
+        // 作者信息字段 TODO 这里需要考量的是需要拿数据库的字段还是直接拿系统时间生成
+        bindingMap.put("createLocalDateTime", DateUtil.parse(DateUtil.now(),"yyyy-MM-dd HH:mm:ss"));
+        bindingMap.put("createCurrentDateUsername", tableDO.getAuthor());
         // className 相关
         // 去掉指定前缀，将 TestDictType 转换成 DictType. 因为在 create 等方法后，不需要带上 Test 前缀
         String simpleClassName = removePrefix(tableDO.getClassName(), upperFirst(tableDO.getModuleName()));
+        bindingMap.put("simpleClassName", simpleClassName);
+        // 将 DictType 转换成 dict_type
+        bindingMap.put("simpleClassName_underlineCase", toUnderlineCase(simpleClassName));
         // 将 DictType 转换成 dictType，用于变量 --- 用户前端package
         bindingMap.put("classNameVar", lowerFirst(simpleClassName));
+        // 将 DictType 转换成 dict-type
+        String simpleClassNameStrikeCase = toSymbolCase(simpleClassName, '-');
+        bindingMap.put("simpleClassName_strikeCase", simpleClassNameStrikeCase);
+        // permission 前缀
+        bindingMap.put("permissionPrefix", tableDO.getModuleName() + ":" + simpleClassNameStrikeCase);
 
         // 执行生成（前端和后端模板）
         Map<String, String> templates = getTemplates(tableDO.getFrontType());
@@ -239,6 +257,12 @@ public class CodegenEngine {
                 "educate-module-${table.moduleName}-" + module + "/" +
                 "src/" + src + "/java/${basePackage}/module/${table.moduleName}/" + path + ".java";
     }
+
+    private static String javaModuleImplControllerFilePath() {
+        return javaModuleFilePath("controller/${sceneEnum.basePackage}/${table.businessName}/" +
+                "${sceneEnum.prefixClass}${table.className}Controller", "biz", "main");
+    }
+
 
     /**
      * 前端模板路径生成
