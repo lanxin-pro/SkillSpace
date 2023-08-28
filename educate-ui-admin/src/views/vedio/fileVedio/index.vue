@@ -123,7 +123,7 @@
 
 </template>
 <script setup>
-import { getFilePage,deleteFile } from '@/api/infra/file/index.js'
+import { getVideoPage } from '@/api/video/videoadmin/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 import { dateFormatter } from '@/utils/formatTime'
 import { fileSizeFormatter } from '@/utils'
@@ -166,7 +166,7 @@ const handlePreview = (row)=>{
 const getList = async ()=>{
   loading.value = true
   try {
-    const response = await getFilePage(queryParams)
+    const response = await getVideoPage(queryParams)
     list.value = response.data.list
     total.value = response.data.total
   } finally {
