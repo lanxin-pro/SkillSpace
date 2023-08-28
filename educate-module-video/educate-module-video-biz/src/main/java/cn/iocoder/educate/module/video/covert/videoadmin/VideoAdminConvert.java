@@ -15,6 +15,8 @@ public interface VideoAdminConvert {
 
     VideoAdminConvert INSTANCE = Mappers.getMapper(VideoAdminConvert.class);
 
+    VideoAdminRespVo convert(VideoAdminDO videoAdminDO);
+
     PageResult<VideoAdminRespVo> convertPage(PageResult<VideoAdminDO> pageResult);
 
 }
