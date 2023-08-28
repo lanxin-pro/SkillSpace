@@ -49,32 +49,125 @@
     </el-row>
 
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="list">
-      <el-table-column label="文件名" align="center" prop="name" width="260">
-        <template #default="scope">
-          <a href='javascript:void(0);' @click.prevent="handleOpenPreview(index)"  class='cover-wrp'>
-            <img :src="vover" style="height: 100%;width: 100%;border-radius: 4px;"/>
-          </a>
-        </template>
-      </el-table-column>
-      <el-table-column label="文件路径" align="center" prop="path" :show-overflow-tooltip="true" />
-      <el-table-column label="URL" align="center" prop="url" :show-overflow-tooltip="true" />
-      <el-table-column
-          label="文件大小"
-          align="center"
-          prop="size"
-          width="120"
-          :formatter="fileSizeFormatter"
-      />
-      <el-table-column label="文件类型" align="center" prop="type" width="180px" />
-      <el-table-column
-          label="上传时间"
-          align="center"
-          prop="createTime"
-          width="180"
-          :formatter="dateFormatter"
-      />
-      <el-table-column label="操作" align="center">
+    <div v-for='(data,index) in list' class="article-card"
+         :class="[(checkVideoIds && checkVideoIds.findIndex(v => v === data.videoCode)!=-1) ? 'checked' : '']"
+    >
+      <a href='javascript:void(0);' @click.prevent="handleOpenPreview(index)"  class='cover-wrp'>
+        <el-image
+            :src="data.cover"
+            fit="contain"
+            style="width: 220px;height: 188px;"
+            lazy
+        />
+      </a>
+      <div>
+        <div class="meta-title">
+          <a href='javascript:void(0);' class='name ellipsis fw c333'>{{ data.title }}</a></div>
+        <div class="meta-status">
+            <el-checkbox-group v-model="checkVideoIds" @change="handleCheckedCitiesChange">
+              <el-checkbox :label="data.videoCode"><strong>视频ID：{{data.videoCode}}</strong></el-checkbox>
+            </el-checkbox-group>
+            <span style="margin-left: 10px;"  v-if='data.tagList'>标签：</span>
+            <!--     如果有标签的话，就添加啊     -->
+            <span v-if='data.tagList'>
+                <el-tag style="margin-left: 5px" v-for="tag in data.tagList.split(',')" size='small' :key='tag'>
+                  {{ tag }}
+                </el-tag>
+            </span>
+            <span v-else>
+                <el-tag size='small'>
+                  暂无
+                </el-tag>
+            </span>
+          <strong style="margin-left:10px;">作者：</strong>
+          <span style="color:#666">{{ handleChangeNames(data.actorNames).join('，') }}</span>
+        </div>
+        <div class='meta-status' v-if='data.categoryId'>
+          <strong>视频分类：</strong>
+          {{ handleChangeCnameToTags(data.categoryPname, data.categoryName).join('，') }}
+        </div>
+        <div class='meta-status'>
+          <div style="color: #677886;">
+            <span>
+              <strong>出厂地域：</strong>
+              <span v-if='data.region==1'>大陆</span>
+              <span v-if='data.region==2'>日本</span>
+              <span v-if='data.region==3'>韩国</span>
+              <span v-if='data.region==4'>欧美</span>
+              <span v-if='data.region==5'>台湾</span>
+              <span v-if='data.region==6'>港澳</span>
+            </span>
+            <span style='padding:0 6px;'>/</span>
+            <span style='margin-left: 12px;'><strong>视频类型：</strong>
+                                <span>{{filterLabel(data.contentType)}}</span>
+                              </span>
+            <span style='padding:0 6px;'>/</span>
+            <span style='margin-left: 12px;'><strong>有无字幕：</strong>
+                                <span v-if='data.subtitleFlag==0'>无字幕</span>
+                                <span v-if='data.subtitleFlag==1'>有字幕</span>
+                              </span>
+            <span style='margin-left: 12px;'>
+                                 <span style='padding:0 6px;'>/</span>
+                                 <strong>视频有无码：</strong>
+                                 <span v-if='data.mosaicFlag==0'>无码</span>
+                                 <span v-if='data.mosaicFlag==1'>有码</span>
+                              </span>
+            <span style='margin-left: 12px;'>
+                                 <span style='padding:0 6px;'>/</span>
+                                 <strong>收费方式：</strong>
+                                 <span v-if='data.priceType==1'>免费</span>
+                                 <span v-if='data.priceType==2'>VIP</span>
+                                 <span v-if='data.priceType==3'>收费(金币)</span>
+                              </span>
+            <span style='margin-left: 12px;' v-if='data.videoCode'>
+                                <span style='padding:0 6px;'>/</span>
+                                <strong>视频编号：</strong>
+                                <span>{{ data.videoCode }}</span>
+                                <span style='padding:0 6px;'>/</span>
+                                <strong>权重值：</strong>
+                                <span>{{ data.weight }}</span>
+                              </span>
+          </div>
+        </div>
+        <div class='meta-footer'>
+          <div style="line-height: 1px">
+            <div title='播放数量' class='click view-stat'>
+              <el-icon style='font-size: 16px; color: rgb(153, 153, 153);'><VideoCamera /></el-icon>
+              <span class='icon-text click-text'>{{ data.playNumber }}</span>
+            </div>
+            <div title='点暂数' class='danmu view-stat'>
+              <el-icon style='font-size: 16px; color: rgb(153, 153, 153);'><Star /></el-icon>
+              <span class='icon-text'>{{ data.likeNumber }}</span>
+            </div>
+            <div title='评论数量' class='comment view-stat'>
+              <el-icon style='font-size: 16px; color: rgb(153, 153, 153);'><ChatDotRound /></el-icon>
+              <span class='icon-text'>{{ data.commentNumber }}</span>
+            </div>
+          </div>
+
+
+          <div title='更新时间' class='comment view-stat'>
+            <span>最后更新于：{{ formatDate(data.updateTime) }}</span>
+            <span style="padding-left:10px;">创建时间：{{ formatDate(data.createTime)}}</span>
+          </div>
+          <div v-if='data.copyRightCode' title='视频番号' class='comment view-stat'>
+            <span>视频番号：{{ data.copyRightCode }}</span>
+          </div>
+          <div class='view-stat'>
+            <strong>来源：</strong>
+            <span>
+             {{ data.datasource === 1 ? "视频后台" : "陌陌数据"}}
+            </span>
+          </div>
+
+        </div>
+        <div class='meta-status' style="max-width: 800px;overflow: auto">
+          <character-more :cdesc='data.intro'></character-more>
+        </div>
+      </div>
+    </div>
+
+<!--      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
               link
@@ -107,8 +200,7 @@
             删除
           </el-button>
         </template>
-      </el-table-column>
-    </el-table>
+      </el-table-column>-->
 
     <!-- 分页 -->
     <Pagination
@@ -125,19 +217,22 @@
 <script setup>
 import { getVideoPage } from '@/api/video/videoadmin/index.js'
 import Pagination from '@/components/Pagination/index.vue'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter,formatDate } from '@/utils/formatTime'
 import { fileSizeFormatter } from '@/utils'
 import ELComponent from '@/plugins/modal.js'
 import { ref, reactive,onMounted } from 'vue'
 import VideoPlay from './VideoPlay.vue'
+import CharacterMore from '@/components/CharacterMore/index.vue'
 
-const vover = ref("http://127.0.0.1:9011/server/admin-api/infra/file/4/get/84167ee95454c659d80f330263218f7b47e3eb9f22f22f2bebf686f4a9622580.png")
+const coverBuff = ref("http://127.0.0.1:9011/server/admin-api/infra/file/4/get/84167ee95454c659d80f330263218f7b47e3eb9f22f22f2bebf686f4a9622580.png")
 // 列表的加载中
 const loading = ref(true)
 // 列表的总页数
 const total = ref(0)
 // 列表的数据
 const list = ref([])
+// 批量操作
+const checkVideoIds = ref([])
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,
@@ -153,10 +248,45 @@ onMounted(() => {
   getList()
 })
 const videoPlayRef = ref()
-// 视频加载
+/** 视频加载 */
 const handleOpenPreview = (index)=>{
   videoPlayRef.value.open(index)
 }
+/** 批量操作 */
+const handleCheckedCitiesChange = (value)=>{
+  console.log("批量操作",value)
+}
+const handleChangeNames = (pnames)=> {
+  if (pnames) {
+    var ppnames = pnames.split(',')
+    var arr = []
+    ppnames.forEach((c, index) => {
+      arr.push(c)
+    })
+    return arr
+  } else {
+    return ['暂无']
+  }
+}
+
+const handleChangeCnameToTags = (pnames, cnames)=> {
+  if (pnames) {
+    var ppnames = pnames.split(',')
+    var ccnames = cnames ? cnames.split(',') : []
+    var arr = []
+    ppnames.forEach((c, index) => {
+      arr.push(c + ' / ' + ccnames[index])
+    })
+    return arr
+  } else {
+    return []
+  }
+}
+
+const filterLabel = (ctype)=> {
+  return  '暂无'
+}
+
 /** 预览 **/
 const previewRef = ref()
 const handlePreview = (row)=>{
@@ -168,6 +298,7 @@ const getList = async ()=>{
   try {
     const response = await getVideoPage(queryParams)
     list.value = response.data.list
+    console.log("重数据库查询到的值",list.value)
     total.value = response.data.total
   } finally {
     loading.value = false
@@ -219,11 +350,86 @@ const resetQuery = () => {
 .cover-wrp {
   position: relative;
   float: left;
-  width: 220px;
-  height: 188px;
+
   border-radius: 4px;
   overflow: hidden;
   margin-right: 20px;
   background: #f1f3f7 no-repeat 50%
 }
+
+.article-card {
+  position: relative;
+  min-height: 140px;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.article-card:hover{
+  border: 1px dashed #409eff
+}
+
+.article-card .meta-title {
+  height: 24px;
+  line-height: 24px
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 20px;
+  vertical-align: middle;
+  color:#333!important;
+  font-weight: bold;
+}
+
+.meta-status {
+  padding: 3px 0;
+  font-size: 14px;
+  color: #505050;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.article-card.checked{
+  border:1px dashed #f56c6c
+}
+
+.view-stat {
+  display: inline-block;
+  float: left;
+  margin-right: 20px;
+  color: #99a2aa
+}
+
+
+.meta-footer .view-stat {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-right: 25px
+}
+
+.icon-text {
+  vertical-align: top;
+  margin-left: 5px;
+}
+.meta-footer {
+  padding: 3px 0;
+  position: relative;
+  font-size: 12px;
+  display: flex;
+}
+
 </style>

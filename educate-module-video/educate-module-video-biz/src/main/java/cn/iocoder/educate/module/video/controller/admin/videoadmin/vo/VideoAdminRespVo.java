@@ -94,15 +94,13 @@ public class VideoAdminRespVo extends PageParam {
     @Schema(description = "密钥")
     private String secretKey;
 
-    @Schema(description = "更新人ID")
-    private Long updateBy;
-
-    @Schema(description = "创建人ID")
-    private Long createBy;
-
     @Schema(description = "创建时间")
     @DateTimeFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime createTime;
+
+    @Schema(description = "更新时间")
+    @DateTimeFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    private LocalDateTime updateTime;
 
     @Schema(description = "作者头像")
     private String actorAvatars;
