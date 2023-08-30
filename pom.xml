@@ -21,6 +21,7 @@
         <!-- 示例项目 -->
         <module>educate-example</module>
         <module>educate-module-video</module>
+        <module>educate-module-mp</module>
     </modules>
 
     <name>${project.artifactId}</name>

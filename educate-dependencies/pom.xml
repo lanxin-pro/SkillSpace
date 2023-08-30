@@ -479,6 +479,13 @@
                 <artifactId>mssql-jdbc</artifactId>
                 <version>${com.microsoft.sqlserver}</version>
             </dependency>
+            <!-- 微信公众号相关 -->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>wx-java-miniapp-spring-boot-starter</artifactId>
+                <version>4.4.0</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>

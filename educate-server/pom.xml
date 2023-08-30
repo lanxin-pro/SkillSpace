@@ -53,6 +53,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 微信公众号模块。默认注释，保证编译速度 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-module-mp-biz</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
@@ -60,8 +67,6 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-
-
 
         <!--防止报错Error creating bean with name 'requestMappingHandlerAdapter' defined in class path resource-->
         <dependency>

@@ -3,25 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>skill-space</artifactId>
+        <artifactId>educate-module-mp</artifactId>
         <groupId>cn.iocoder.boot</groupId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>educate-module-system</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>educate-module-mp-api</artifactId>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
     <description>
-        system 模块下，我们放通用业务，支撑上层的核心业务。
-        例如说：用户、部门、权限、数据字典等等
+        mp 模块 API，暴露给其它模块调用
     </description>
 
-    <modules>
-        <module>educate-module-system-api</module>
-        <module>educate-module-system-biz</module>
-    </modules>
-
+    <dependencies>
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 
 </project>

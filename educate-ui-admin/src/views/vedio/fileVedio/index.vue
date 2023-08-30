@@ -119,8 +119,8 @@
                                  <span v-if='data.priceType==2'>VIP</span>
                                  <span v-if='data.priceType==3'>收费(金币)</span>
                               </span>
-            <span style='margin-left: 12px;' v-if='data.videoCode'>
-                                <span style='padding:0 6px;'>/</span>
+            <br>
+            <span v-if='data.videoCode'>
                                 <strong>视频编号：</strong>
                                 <span>{{ data.videoCode }}</span>
                                 <span style='padding:0 6px;'>/</span>
@@ -164,6 +164,27 @@
         <div class='meta-status' style="max-width: 800px;overflow: auto">
           <character-more :cdesc='data.intro'></character-more>
         </div>
+      </div>
+      <div class='meta-view'>
+        <el-switch
+            style='margin-right: 10px;margin-top: 5px;'
+            v-model='data.enableStatus'
+            @change="handleChange(data,'enableStatus')"
+            :active-value='1'
+            :inactive-value='0'>
+        </el-switch>
+        <el-button
+            size='mini'
+            type='danger'
+            icon='el-icon-delete-solid'
+            @click='handleDelete(index, data)'>删除
+        </el-button>
+        <el-button
+            size='mini'
+            type='primary'
+            icon='el-icon-edit'
+            @click='handleEdit(index, data)'>编辑
+        </el-button>
       </div>
     </div>
 
@@ -362,8 +383,8 @@ const resetQuery = () => {
   min-height: 140px;
   border-radius: 4px;
   background: #fff;
-  margin-bottom: 20px;
-  padding: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -430,6 +451,21 @@ const resetQuery = () => {
   position: relative;
   font-size: 12px;
   display: flex;
+}
+
+
+.article-card .meta-view {
+  position: absolute;
+  top: 50%;
+  margin-top: -16px;
+  right: 10px;
+  color: #99a2aa
+}
+.meta-view {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  right: 0
 }
 
 </style>

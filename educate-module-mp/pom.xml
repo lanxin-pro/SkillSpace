@@ -8,19 +8,17 @@
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>educate-module-system</artifactId>
+    <artifactId>educate-module-mp</artifactId>
     <packaging>pom</packaging>
 
-    <name>${project.artifactId}</name>
     <description>
-        system 模块下，我们放通用业务，支撑上层的核心业务。
-        例如说：用户、部门、权限、数据字典等等
+        wechat 模块，主要实现微信平台的相关业务。
+        例如：微信公众号、企业微信 SCRM 等
     </description>
 
     <modules>
-        <module>educate-module-system-api</module>
-        <module>educate-module-system-biz</module>
+        <module>educate-module-mp-biz</module>
+        <module>educate-module-mp-api</module>
     </modules>
 
 
