@@ -13,7 +13,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication(scanBasePackages = {
         "${lanxin.info.base-package}.server",
         "${lanxin.info.base-package}.module",
-        "com.xingyuv.captcha.config"
+        "com.xingyuv.captcha.config",
+        "com.binarywang.spring.starter.wxjava.miniapp.config"
 })
 public class ServerApplication {
 

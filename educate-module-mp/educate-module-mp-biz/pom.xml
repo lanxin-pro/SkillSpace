@@ -45,11 +45,11 @@
             <version>${revision}</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>cn.iocoder.boot</groupId>-->
-<!--            <artifactId>educate-spring-boot-starter-biz-weixin</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-biz-weixin</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
