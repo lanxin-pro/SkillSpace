@@ -7,6 +7,7 @@ import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateR
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 公众号账号 Service 接口
@@ -65,5 +66,12 @@ public interface MpAccountService {
      * @param id 编号
      */
     void generateAccountQrCode(Long id);
+
+    /**
+     * 获得公众号账号列表
+     *
+     * @return 公众号账号列表
+     */
+    List<MpAccountDO> getAccountList();
 
 }

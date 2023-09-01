@@ -105,3 +105,16 @@ export function clearAccountQuota(id) {
         method: 'put'
     })
 }
+
+/**
+ * 获取公众号账号精简信息列表
+ *
+ * @param id
+ * @returns {*}
+ */
+export function getSimpleAccountList(id) {
+    return request({
+        url: '/mp/account/list-all-simple',
+        method: 'get'
+    })
+}

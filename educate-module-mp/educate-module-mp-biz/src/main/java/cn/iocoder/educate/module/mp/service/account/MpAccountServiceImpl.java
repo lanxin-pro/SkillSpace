@@ -140,6 +140,11 @@ public class MpAccountServiceImpl implements MpAccountService {
         mpAccountMapper.updateById(new MpAccountDO().setId(id).setQrCodeUrl(qrCodeUrl));
     }
 
+    @Override
+    public List<MpAccountDO> getAccountList() {
+        return mpAccountMapper.selectList(new LambdaQueryWrapper<>());
+    }
+
     public void validateAppIdUnique(Long id, String appId) {
         MpAccountDO account = mpAccountMapper.selectByAppId(appId);
         if (account == null) {

@@ -2,10 +2,7 @@ package cn.iocoder.educate.module.mp.controller.admin.account;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
-import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
-import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountRespVO;
-import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateReqVO;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.*;
 import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
@@ -18,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -73,6 +72,14 @@ public class MpAccountController {
     public CommonResult<PageResult<MpAccountRespVO>> getAccountPage(@Valid MpAccountPageReqVO pageVO) {
         PageResult<MpAccountDO> pageResult = mpAccountService.getAccountPage(pageVO);
         return success(MpAccountConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @GetMapping("/list-all-simple")
+    @Operation(summary = "获取公众号账号精简信息列表")
+    @PreAuthorize("@lanxin.hasPermission('mp:account:query')")
+    public CommonResult<List<MpAccountSimpleRespVO>> getSimpleAccounts() {
+        List<MpAccountDO> list = mpAccountService.getAccountList();
+        return success(MpAccountConvert.INSTANCE.convertList02(list));
     }
 
     @PutMapping("/generate-qr-code")
