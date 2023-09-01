@@ -72,17 +72,17 @@ public class DefaultMpServiceFactory implements MpServiceFactory {
 
     @Override
     public WxMpService getMpService(Long id) {
-        return null;
+        return id2MpServices.get(id);
     }
 
     @Override
     public WxMpService getMpService(String appId) {
-        return id2MpServices.get(appId);
+        return appId2MpServices.get(appId);
     }
 
     @Override
     public WxMpMessageRouter getMpMessageRouter(String appId) {
-        return null;
+        return mpMessageRouters.get(appId);
     }
 
     private WxMpService buildMpService(MpAccountDO account) {

@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.mp.controller.admin.account;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountRespVO;
 import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
@@ -31,6 +32,14 @@ public class MpAccountController {
 
     @Resource
     private MpAccountService mpAccountService;
+
+    @PostMapping("/create")
+    @Operation(summary = "创建公众号账号")
+    @PreAuthorize("@lanxin.hasPermission('mp:account:create')")
+    public CommonResult<Long> createAccount(@Valid @RequestBody MpAccountCreateReqVO mpAccountCreateReqVO) {
+        return success(mpAccountService.createAccount(mpAccountCreateReqVO));
+    }
+
 
     @GetMapping("/page")
     @Operation(summary = "获得公众号账号分页")

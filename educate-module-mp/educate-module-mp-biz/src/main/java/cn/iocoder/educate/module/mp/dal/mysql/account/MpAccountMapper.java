@@ -34,4 +34,10 @@ public interface MpAccountMapper extends BaseMapper<MpAccountDO> {
         return new PageResult(mpAccountDOPage.getRecords(),mpAccountDOPage.getTotal());
     }
 
+    default MpAccountDO selectByAppId(String appId) {
+        LambdaQueryWrapper<MpAccountDO> mpAccountDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpAccountDOLambdaQueryWrapper.eq(MpAccountDO::getAppId,appId);
+        return this.selectOne(mpAccountDOLambdaQueryWrapper);
+    }
+
 }

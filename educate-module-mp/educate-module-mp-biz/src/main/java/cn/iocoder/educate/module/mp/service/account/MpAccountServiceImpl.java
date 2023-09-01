@@ -1,12 +1,16 @@
 package cn.iocoder.educate.module.mp.service.account;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
+import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.dal.mysql.account.MpAccountMapper;
 import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.mp.framework.mp.core.MpServiceFactory;
+import cn.iocoder.educate.module.mp.mq.producer.MpAccountProducer;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +53,9 @@ public class MpAccountServiceImpl implements MpAccountService {
     @Resource
     private MpServiceFactory mpServiceFactory;
 
+    @Resource
+    private MpAccountProducer mpAccountProducer;
+
     @Override
     @PostConstruct
     public void initLocalCache() {
@@ -61,6 +68,20 @@ public class MpAccountServiceImpl implements MpAccountService {
         // 这里需要初始化工厂
         accountCache = mpAccountDOS.stream()
                 .collect(Collectors.toMap(MpAccountDO::getAppId, Function.identity(),(v1,v2) -> v1));
+    }
+
+    @Override
+    public Long createAccount(MpAccountCreateReqVO createReqVO) {
+        // 校验 appId 唯一
+        validateAppIdUnique(null, createReqVO.getAppId());
+
+        // 插入
+        MpAccountDO account = MpAccountConvert.INSTANCE.convert(createReqVO);
+        mpAccountMapper.insert(account);
+
+        // 发送刷新消息
+        mpAccountProducer.sendAccountRefreshMessage();
+        return account.getId();
     }
 
     @Override
@@ -85,6 +106,20 @@ public class MpAccountServiceImpl implements MpAccountService {
 
         // 保存二维码
         mpAccountMapper.updateById(new MpAccountDO().setId(id).setQrCodeUrl(qrCodeUrl));
+    }
+
+    public void validateAppIdUnique(Long id, String appId) {
+        MpAccountDO account = mpAccountMapper.selectByAppId(appId);
+        if (account == null) {
+            return;
+        }
+        // 存在 account 记录的情况下
+        // 新增时，说明重复
+        if (id == null
+                // 更新时，如果 id 不一致，说明重复
+                || ObjUtil.notEqual(id, account.getId())) {
+            throw ServiceExceptionUtil.exception(cn.iocoder.educate.module.system.enums.ErrorCodeConstants.USER_USERNAME_EXISTS);
+        }
     }
 
     private MpAccountDO validateAccountExists(Long id) {
