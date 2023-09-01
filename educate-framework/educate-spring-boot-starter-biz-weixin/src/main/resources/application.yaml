@@ -3,7 +3,7 @@ wx: # 参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-sta
   mp:
     # 公众号配置(必填)
     app-id: wx5366992ee348d17e
-    secret: 949fbf4c474324e54f5fc4f94915b61c
+    secret: 653d5d6a6dd0b53e5459fbd32979fcd0
     # 存储配置，解决 AccessToken 的跨节点的共享
 #    config-storage:
 #      type: RedisTemplate # 采用 RedisTemplate 操作 Redis，会自动从 Spring 中获取

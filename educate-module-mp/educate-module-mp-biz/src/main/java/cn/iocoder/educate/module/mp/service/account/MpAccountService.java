@@ -25,4 +25,11 @@ public interface MpAccountService {
      */
     PageResult<MpAccountDO> getAccountPage(MpAccountPageReqVO pageReqVO);
 
+    /**
+     * 生成公众号账号的二维码
+     *
+     * @param id 编号
+     */
+    void generateAccountQrCode(Long id);
+
 }

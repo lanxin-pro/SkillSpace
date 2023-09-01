@@ -8,12 +8,11 @@ import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -39,6 +38,15 @@ public class MpAccountController {
     public CommonResult<PageResult<MpAccountRespVO>> getAccountPage(@Valid MpAccountPageReqVO pageVO) {
         PageResult<MpAccountDO> pageResult = mpAccountService.getAccountPage(pageVO);
         return success(MpAccountConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @PutMapping("/generate-qr-code")
+    @Operation(summary = "生成公众号二维码")
+    @Parameter(name = "id", description = "编号", required = true)
+    @PreAuthorize("@lanxin.hasPermission('mp:account:qr-code')")
+    public CommonResult<Boolean> generateAccountQrCode(@RequestParam("id") Long id) {
+        mpAccountService.generateAccountQrCode(id);
+        return success(true);
     }
 
 }
