@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountRespVO;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateReqVO;
 import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
@@ -40,6 +41,31 @@ public class MpAccountController {
         return success(mpAccountService.createAccount(mpAccountCreateReqVO));
     }
 
+    @PutMapping("/update")
+    @Operation(summary = "更新公众号账号")
+    @PreAuthorize("@lanxin.hasPermission('mp:account:update')")
+    public CommonResult<Boolean> updateAccount(@Valid @RequestBody MpAccountUpdateReqVO updateReqVO) {
+        mpAccountService.updateAccount(updateReqVO);
+        return success(true);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除公众号账号")
+    @Parameter(name = "id", description = "编号", required = true)
+    @PreAuthorize("@lanxin.hasPermission('mp:account:delete')")
+    public CommonResult<Boolean> deleteAccount(@RequestParam("id") Long id) {
+        mpAccountService.deleteAccount(id);
+        return success(true);
+    }
+
+    @GetMapping("/get")
+    @Operation(summary = "获得公众号账号")
+    @Parameter(name = "id", description = "编号", required = true, example = "1024")
+    @PreAuthorize("@lanxin.hasPermission('mp:account:query')")
+    public CommonResult<MpAccountRespVO> getAccount(@RequestParam("id") Long id) {
+        MpAccountDO wxAccount = mpAccountService.getAccount(id);
+        return success(MpAccountConvert.INSTANCE.convert(wxAccount));
+    }
 
     @GetMapping("/page")
     @Operation(summary = "获得公众号账号分页")

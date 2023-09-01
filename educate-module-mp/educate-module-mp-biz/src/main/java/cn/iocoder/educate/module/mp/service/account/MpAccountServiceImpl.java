@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateReqVO;
 import cn.iocoder.educate.module.mp.convert.account.MpAccountConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.dal.mysql.account.MpAccountMapper;
@@ -82,6 +83,37 @@ public class MpAccountServiceImpl implements MpAccountService {
         // 发送刷新消息
         mpAccountProducer.sendAccountRefreshMessage();
         return account.getId();
+    }
+
+    @Override
+    public void updateAccount(MpAccountUpdateReqVO mpAccountUpdateReqVO) {
+        // 校验存在
+        validateAccountExists(mpAccountUpdateReqVO.getId());
+        // 校验 appId 唯一
+        validateAppIdUnique(mpAccountUpdateReqVO.getId(), mpAccountUpdateReqVO.getAppId());
+
+        // 更新
+        MpAccountDO mpAccountDO = MpAccountConvert.INSTANCE.convert(mpAccountUpdateReqVO);
+        mpAccountMapper.updateById(mpAccountDO);
+
+        // 发送刷新消息
+        mpAccountProducer.sendAccountRefreshMessage();
+    }
+
+    @Override
+    public void deleteAccount(Long id) {
+        // 校验存在
+        validateAccountExists(id);
+        // 删除
+        mpAccountMapper.deleteById(id);
+
+        // 发送刷新消息
+        mpAccountProducer.sendAccountRefreshMessage();
+    }
+
+    @Override
+    public MpAccountDO getAccount(Long id) {
+        return mpAccountMapper.selectById(id);
     }
 
     @Override

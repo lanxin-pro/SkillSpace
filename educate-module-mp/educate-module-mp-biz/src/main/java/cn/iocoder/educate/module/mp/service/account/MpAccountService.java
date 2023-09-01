@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.mp.service.account;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
+import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 
 import javax.validation.Valid;
@@ -28,6 +29,27 @@ public interface MpAccountService {
      */
     Long createAccount(@Valid MpAccountCreateReqVO createReqVO);
 
+    /**
+     * 更新公众号账号
+     *
+     * @param updateReqVO 更新信息
+     */
+    void updateAccount(@Valid MpAccountUpdateReqVO updateReqVO);
+
+    /**
+     * 删除公众号账号
+     *
+     * @param id 编号
+     */
+    void deleteAccount(Long id);
+
+    /**
+     * 获得公众号账号
+     *
+     * @param id 编号
+     * @return 公众号账号
+     */
+    MpAccountDO getAccount(Long id);
 
     /**
      * 获得公众号账号分页

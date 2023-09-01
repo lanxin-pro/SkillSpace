@@ -51,6 +51,7 @@
               style="display: inline-block; height: 100px"
           />
           <el-button
+              v-else
               link
               type="primary"
               @click="handleGenerateQrCode(scope.row)"
