@@ -93,3 +93,8 @@ export const ReplyType = {
     Music: 'music',
     Text: 'text'
 }
+
+export const NewsType = {
+    Published: '1',
+    Draft: '2'
+}

@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { getAutoReplyPage } from '@/api/mp/autoReply/index.js'
+import { getAutoReplyPage,updateAutoReply,createAutoReply } from '@/api/mp/autoReply/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 import { dateFormatter,formatDate } from '@/utils/formatTime'
 import { fileSizeFormatter } from '@/utils'
@@ -185,6 +185,37 @@ const cancel = () => {
   showDialog.value = false
   reset()
 }
+/** 新增 */
+const onSubmit = async () => {
+  await formRef.value?.validate()
+
+  // 处理回复消息
+  const submitForm = { ...replyForm.value }
+  submitForm.responseMessageType = reply.value.type
+  submitForm.responseContent = reply.value.content
+  submitForm.responseMediaId = reply.value.mediaId
+  submitForm.responseMediaUrl = reply.value.url
+  submitForm.responseTitle = reply.value.title
+  submitForm.responseDescription = reply.value.description
+  submitForm.responseThumbMediaId = reply.value.thumbMediaId
+  submitForm.responseThumbMediaUrl = reply.value.thumbMediaUrl
+  submitForm.responseArticles = reply.value.articles
+  submitForm.responseMusicUrl = reply.value.musicUrl
+  submitForm.responseHqMusicUrl = reply.value.hqMusicUrl
+
+  if (replyForm.value.id !== undefined) {
+    await updateAutoReply(submitForm)
+    ELComponent.msgSuccess('修改成功')
+  } else {
+    await createAutoReply(submitForm)
+    ELComponent.msgSuccess('新增成功')
+  }
+
+  showDialog.value = false
+  await getList()
+}
+
+
 // 表单重置
 const reset = () => {
   replyForm.value = {
