@@ -1,10 +1,12 @@
 package cn.iocoder.educate.module.mp.service.account;
 
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountCreateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
+import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -73,5 +75,19 @@ public interface MpAccountService {
      * @return 公众号账号列表
      */
     List<MpAccountDO> getAccountList();
+
+    /**
+     * 获得公众号账号。若不存在，则抛出业务异常
+     *
+     * @param id 编号
+     * @return 公众号账号
+     */
+    default MpAccountDO getRequiredAccount(Long id) {
+        MpAccountDO account = getAccount(id);
+        if (account == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.ACCOUNT_NOT_EXISTS);
+        }
+        return account;
+    }
 
 }

@@ -68,8 +68,8 @@
         label="创建时间"
         align="center"
         prop="createTime"
-        :formatter="dateFormatter"
         width="180"
+        :formatter="dateFormatter"
     />
     <el-table-column label="操作" align="center">
       <template #default="scope">
@@ -108,7 +108,7 @@ import WxVideoPlayer from '@/views/mp/components/wx-video-play/index.vue'
 import WxVoicePlayer from '@/views/mp/components/wx-voice-play/index.vue'
 import WxMusic from '@/views/mp/components/wx-music/index.vue'
 import WxNews from '@/views/mp/components/wx-news/index.vue'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter } from '@/utils/formatTime.js'
 import { DICT_TYPE } from '@/utils/dict'
 import { MsgType } from '@/utils/constants.js'
 import DictTag from '@/components/DictTag/index.vue'

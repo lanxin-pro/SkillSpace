@@ -146,6 +146,7 @@ export const dateFormatter = (row, column, cellValue) => {
   if (!cellValue) {
     return
   }
+  console.log(cellValue)
   return formatDate(cellValue)
 }
 

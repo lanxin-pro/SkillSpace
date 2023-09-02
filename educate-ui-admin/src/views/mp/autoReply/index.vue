@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { getAutoReplyPage,updateAutoReply,createAutoReply,getAutoReply } from '@/api/mp/autoReply/index.js'
+import { getAutoReplyPage,updateAutoReply,createAutoReply,getAutoReply,deleteAutoReply } from '@/api/mp/autoReply/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 import { dateFormatter,formatDate } from '@/utils/formatTime'
 import { fileSizeFormatter } from '@/utils'
@@ -143,6 +143,7 @@ const getList = async () => {
       ...queryParams,
       type: msgType.value
     })
+    console.log(response.data)
     list.value = response.data.list
     total.value = response.data.total
   } finally {
@@ -180,6 +181,14 @@ const onCreate = () => {
   isCreating.value = true
   showDialog.value = true
 }
+/** 删除按钮操作 */
+const onDelete = async (id) => {
+  await ELComponent.confirm('是否确认删除此数据?')
+  await deleteAutoReply(id)
+  await getList()
+  ELComponent.msgSuccess('删除成功！')
+}
+
 // 取消按钮
 const cancel = () => {
   showDialog.value = false
@@ -188,7 +197,7 @@ const cancel = () => {
 /** 新增 */
 const onSubmit = async () => {
   await formRef.value?.validate()
-  
+
   // 处理回复消息
   const submitForm = { ...replyForm.value }
   submitForm.responseMessageType = reply.value.type
