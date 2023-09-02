@@ -1,6 +1,16 @@
 <template>
-  <el-select v-model="account.id" placeholder="请选择公众号" class="!w-240px" @change="onChanged">
-    <el-option v-for="item in accountList" :key="item.id" :label="item.name" :value="item.id" />
+  <el-select
+      v-model="account.id"
+      placeholder="请选择公众号"
+      class="!w-240px"
+      @change="onChanged"
+  >
+    <el-option
+        v-for="item in accountList"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+    />
   </el-select>
 </template>
 
@@ -32,6 +42,7 @@ const handleQuery = async () => {
     account.id = accountList.value[0].id
     if (account.id) {
       account.name = accountList.value[0].name
+      // emit传递
       emit('change', account.id, account.name)
     }
   }

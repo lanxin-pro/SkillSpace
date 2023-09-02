@@ -66,10 +66,27 @@
         width="800px"
         destroy-on-close
     >
-      <ReplyForm v-model="replyForm" v-model:reply="reply" :msg-type="msgType" ref="formRef" />
+      <ReplyForm
+          v-model="replyForm"
+          v-model:reply="reply"
+          :msg-type="msgType"
+          ref="formRef"
+      />
       <template #footer>
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="onSubmit">确 定</el-button>
+        <el-button
+            @click="cancel"
+            type="primary"
+            size="default"
+        >
+          取 消
+        </el-button>
+        <el-button
+            size="default"
+            type="primary"
+            @click="onSubmit"
+        >
+          确 定
+        </el-button>
       </template>
     </el-dialog>
 
@@ -122,12 +139,12 @@ const reply = reactive({
 const getList = async () => {
   loading.value = true
   try {
-    const data = await getAutoReplyPage({
+    const response = await getAutoReplyPage({
       ...queryParams,
       type: msgType.value
     })
-    list.value = data.list
-    total.value = data.total
+    list.value = response.data.list
+    total.value = response.data.total
   } finally {
     loading.value = false
   }
@@ -135,9 +152,13 @@ const getList = async () => {
 
 /** 侦听账号变化 */
 const onAccountChanged = (id,name) => {
-
+  accountId.value = id
+  reply.accountId = id
+  queryParams.pageNo = 1
+  getList()
 }
 
+/** 切换tab */
 const onTabChange = (tabName) => {
   msgType.value = tabName
   handleQuery()
@@ -148,7 +169,34 @@ const handleQuery = () => {
   queryParams.pageNo = 1
   getList()
 }
-
+/** 新增按钮操作 */
+const onCreate = () => {
+  reset()
+  // 打开表单，并设置初始化
+  reply.value = {
+    type: ReplyType.Text,
+    accountId: queryParams.accountId
+  }
+  isCreating.value = true
+  showDialog.value = true
+}
+// 取消按钮
+const cancel = () => {
+  showDialog.value = false
+  reset()
+}
+// 表单重置
+const reset = () => {
+  replyForm.value = {
+    id: undefined,
+    accountId: queryParams.accountId,
+    type: msgType.value,
+    requestKeyword: undefined,
+    requestMatch: msgType.value === MsgType.Keyword ? 1 : undefined,
+    requestMessageType: undefined
+  }
+  formRef.value?.resetFields()
+}
 </script>
 
 <style scoped>

@@ -76,6 +76,8 @@
         <el-button
             type="primary"
             link
+            icon="Edit"
+            size="small"
             @click="emit('on-update', scope.row.id)"
             v-hasPermi="['mp:auto-reply:update']"
         >
@@ -84,6 +86,8 @@
         <el-button
             type="danger"
             link
+            icon="Delete"
+            size="small"
             @click="emit('on-delete', scope.row.id)"
             v-hasPermi="['mp:auto-reply:delete']"
         >
