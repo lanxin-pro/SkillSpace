@@ -188,8 +188,7 @@ const cancel = () => {
 /** 新增 */
 const onSubmit = async () => {
   await formRef.value?.validate()
-
-  console.log("reply.value结果",reply.value.content)
+  
   // 处理回复消息
   const submitForm = { ...replyForm.value }
   submitForm.responseMessageType = reply.value.type
