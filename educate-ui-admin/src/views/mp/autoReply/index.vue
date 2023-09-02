@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { getAutoReplyPage,updateAutoReply,createAutoReply } from '@/api/mp/autoReply/index.js'
+import { getAutoReplyPage,updateAutoReply,createAutoReply,getAutoReply } from '@/api/mp/autoReply/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 import { dateFormatter,formatDate } from '@/utils/formatTime'
 import { fileSizeFormatter } from '@/utils'
@@ -129,8 +129,8 @@ const isCreating = ref(false)
 const showDialog = ref(false)
 // 表单参数
 const replyForm = ref({})
-// 回复消息
-const reply = reactive({
+// 回复消息 !!! 这里一定要写ref，因为只有ref才能追加
+const reply = ref({
   type: ReplyType.Text,
   accountId: -1
 })
@@ -153,7 +153,7 @@ const getList = async () => {
 /** 侦听账号变化 */
 const onAccountChanged = (id,name) => {
   accountId.value = id
-  reply.accountId = id
+  reply.value.accountId = id
   queryParams.pageNo = 1
   getList()
 }
@@ -189,6 +189,7 @@ const cancel = () => {
 const onSubmit = async () => {
   await formRef.value?.validate()
 
+  console.log("reply.value结果",reply.value.content)
   // 处理回复消息
   const submitForm = { ...replyForm.value }
   submitForm.responseMessageType = reply.value.type
@@ -215,6 +216,39 @@ const onSubmit = async () => {
   await getList()
 }
 
+/** 修改按钮操作 */
+const onUpdate = async (id) => {
+  reset()
+
+  const response = await getAutoReply(id)
+  const data = response.data
+  // 设置属性
+  replyForm.value = { ...data }
+  delete replyForm.value['responseMessageType']
+  delete replyForm.value['responseContent']
+  delete replyForm.value['responseMediaId']
+  delete replyForm.value['responseMediaUrl']
+  delete replyForm.value['responseDescription']
+  delete replyForm.value['responseArticles']
+  reply.value = {
+    type: data.responseMessageType,
+    accountId: queryParams.accountId,
+    content: data.responseContent,
+    mediaId: data.responseMediaId,
+    url: data.responseMediaUrl,
+    title: data.responseTitle,
+    description: data.responseDescription,
+    thumbMediaId: data.responseThumbMediaId,
+    thumbMediaUrl: data.responseThumbMediaUrl,
+    articles: data.responseArticles,
+    musicUrl: data.responseMusicUrl,
+    hqMusicUrl: data.responseHqMusicUrl
+  }
+
+  // 打开表单
+  isCreating.value = false
+  showDialog.value = true
+}
 
 // 表单重置
 const reset = () => {

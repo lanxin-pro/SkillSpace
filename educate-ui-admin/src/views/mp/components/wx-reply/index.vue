@@ -5,7 +5,7 @@
       <template #label>
         <el-row align="middle"><Icon icon="ep:document" /> 文本</el-row>
       </template>
-      <TabText v-model="reply" />
+      <TabText v-model="reply.content" />
     </el-tab-pane>
 
     <!-- 类型 2：图片 -->
@@ -87,7 +87,9 @@ const currentTab = ref(props.modelValue?.type || ReplyType.Text)
 watch(
     currentTab,
     (newTab, oldTab) => {
-      // 第一次进入：oldTab 为 undefined
+      console.log("newTab",newTab)
+      console.log("oldTab",oldTab)
+      // 第一次进入：oldTab 为 undefined 直接return
       // 判断 newTab 是因为 Reply 为 Partial
       if (oldTab === undefined || newTab === undefined) {
         return
