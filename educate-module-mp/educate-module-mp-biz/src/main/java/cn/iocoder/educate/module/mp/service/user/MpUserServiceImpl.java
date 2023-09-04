@@ -80,7 +80,7 @@ public class MpUserServiceImpl implements MpUserService {
 
         // for 循环，避免递归出意外问题，导致死循环
         String nextOpenid = null;
-
+        //
         for (int i = 0; i < Short.MAX_VALUE; i++) {
             log.info("[syncUser][第({}) 次加载公众号粉丝列表，nextOpenid({})]", i, nextOpenid);
             try {
@@ -101,15 +101,20 @@ public class MpUserServiceImpl implements MpUserService {
         // 第一步，从公众号流式加载粉丝
         WxMpService mpService = mpServiceFactory.getRequiredMpService(account.getId());
         WxMpUserList wxUserList = mpService.getUserService().userList(nextOpenid);
+        // 关注者列表
         if (CollUtil.isEmpty(wxUserList.getOpenids())) {
             return null;
         }
 
         // 第二步，分批加载粉丝信息
+        // 对集合按照指定长度分段，每一个段为单独的集合，返回这个集合的列表
         List<List<String>> openidsList = CollUtil.split(wxUserList.getOpenids(), 100);
+        // 【1-100】【101-200】【201-254】
         for (List<String> openids : openidsList) {
-            log.info("[syncUser][批量加载粉丝信息，openids({})]", openids);
+            log.info("[syncUser][批量加载粉丝信息，一共拥有的批次openids({})]", openids);
+            // 根据用户的openid获取用户的信息
             List<WxMpUser> wxUsers = mpService.getUserService().userInfoList(openids);
+            // 添加
             batchSaveUser(account, wxUsers);
         }
 
@@ -117,25 +122,38 @@ public class MpUserServiceImpl implements MpUserService {
         return wxUserList.getNextOpenid();
     }
 
+    /**
+     * 添加
+     *
+     * @param account 公众号账号
+     * @param wxUsers 公众号用户的信息
+     */
     private void batchSaveUser(MpAccountDO account, List<WxMpUser> wxUsers) {
         if (CollUtil.isEmpty(wxUsers)) {
             return;
         }
-        List<String> OpenIds = wxUsers.stream().map(WxMpUser::getOpenId).collect(Collectors.toList());
+        List<String> openIds = wxUsers.stream()
+                .map(WxMpUser::getOpenId)
+                .collect(Collectors.toList());
+        // TODO j-sentinel 这里可以使用hutool工具类来优化
         // 1. 获得数据库已保存的粉丝列表
-        List<MpUserDO> dbUsers = mpUserMapper.selectListByAppIdAndOpenid(account.getAppId(), OpenIds);
+        List<MpUserDO> dbUsers = mpUserMapper
+                .selectListByAppIdAndOpenid(account.getAppId(), openIds);
         Map<String, MpUserDO> openId2Users = dbUsers.stream()
                 .collect(Collectors.toMap(MpUserDO::getOpenid, Function.identity(), (v1, v2) -> v1));
 
         // 2.1 根据情况，插入或更新
+        // 将account和微信用户转换为数据库的DO
         List<MpUserDO> users = MpUserConvert.INSTANCE.convertList(account, wxUsers);
         List<MpUserDO> newUsers = new ArrayList<>();
         for (MpUserDO user : users) {
+            // 能够从DB数据库钟查询到的
             MpUserDO dbUser = openId2Users.get(user.getOpenid());
-            // 新增：稍后批量插入
+            // 新增：稍后批量插入(数据库没有就add)
             if (dbUser == null) {
                 newUsers.add(user);
-            } else { // 更新：直接执行更新
+            } else {
+                // 更新：直接执行更新
                 user.setId(dbUser.getId());
                 mpUserMapper.updateById(user);
             }
