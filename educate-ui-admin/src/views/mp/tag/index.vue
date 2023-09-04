@@ -53,6 +53,7 @@
           <el-button
               link
               icon="Edit"
+              size="small"
               type="primary"
               @click="openForm('update', scope.row.id)"
               v-hasPermi="['mp:tag:update']"
@@ -61,6 +62,7 @@
           </el-button>
           <el-button
               link
+              size="small"
               icon="Delete"
               type="danger"
               @click="handleDelete(scope.row.id)"
