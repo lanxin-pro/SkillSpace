@@ -132,13 +132,14 @@ public class MpMenuServiceImpl implements MpMenuService {
      * @param menu 菜单
      */
     private void validateMenu(MpMenuSaveReqVO.Menu menu) {
-        MpUtils.validateButton(validator, menu.getType(), menu.getReplyMessageType(), menu);
-        // 子菜单
-        if (CollUtil.isEmpty(menu.getChildren())) {
-            return;
+        // 有子类的话，我就不对父类进行校验了 // TODO 项目经理-蓝欣 这里校验存在问题，我必须需要一个更加合理的校验方式，例如：我添加两个父，一个子
+        if(CollUtil.isEmpty(menu.getChildren())){
+            MpUtils.validateButton(validator, menu.getType(), menu.getReplyMessageType(), menu);
+        } else {
+            // 子菜单校验
+            menu.getChildren().forEach(this::validateMenu);
         }
-        // 子菜单校验
-        menu.getChildren().forEach(this::validateMenu);
+
     }
 
 }
