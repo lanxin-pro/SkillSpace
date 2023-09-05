@@ -37,7 +37,7 @@ public interface MpUserConvert {
     @Mappings(value = {
             @Mapping(source = "openId", target = "openid"),
             @Mapping(source = "headImgUrl", target = "headImageUrl"),
-            // 单独转换
+            // 单独转换 忽略对目标对象的 subscribeTime 属性进行映射
             @Mapping(target = "subscribeTime", ignore = true),
     })
     MpUserDO convert(WxMpUser wxMpUser);
