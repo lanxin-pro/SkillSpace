@@ -88,12 +88,21 @@ public class MpMenuServiceImpl implements MpMenuService {
 
     @Override
     public void deleteMenuByAccountId(Long accountId) {
+        WxMpService mpService = mpServiceFactory.getRequiredMpService(accountId);
+        // 第一步，同步公众号
+        try {
+            mpService.getMenuService().menuDelete();
+        } catch (WxErrorException e) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MENU_DELETE_FAIL, e.getError().getErrorMsg());
+        }
 
+        // 第二步，存储到数据库
+        mpMenuMapper.deleteByAccountId(accountId);
     }
 
     @Override
     public List<MpMenuDO> getMenuListByAccountId(Long accountId) {
-        return null;
+        return mpMenuMapper.selectListByAccountId(accountId);
     }
 
     /**
