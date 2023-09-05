@@ -66,6 +66,7 @@ import WxAccountSelect from '../components/wx-account-select/index.vue'
 import { MsgType,ReplyType } from '@/utils/constants.js'
 import { handleTree } from '@/utils/tree.js'
 import MenuPreviewer from './components/MenuPreviewer.vue'
+import MenuEditor from './components/MenuEditor.vue'
 
 // ======================== 列表查询 ========================
 const MENU_NOT_SELECTED = '__MENU_NOT_SELECTED__'
