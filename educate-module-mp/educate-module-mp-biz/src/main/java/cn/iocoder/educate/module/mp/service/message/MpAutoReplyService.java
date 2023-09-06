@@ -5,6 +5,8 @@ import cn.iocoder.educate.module.mp.controller.admin.message.vo.autoreply.MpAuto
 import cn.iocoder.educate.module.mp.controller.admin.message.vo.autoreply.MpAutoReplyUpdateReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.message.vo.autoreply.MpMessagePageReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.message.MpAutoReplyDO;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
  * 公众号的自动回复 Service 接口
@@ -51,5 +53,14 @@ public interface MpAutoReplyService {
      * @param id 自动回复的编号
      */
     void deleteAutoReply(Long id);
+
+    /**
+     * 当收到消息时，自动回复
+     *
+     * @param appId 微信公众号 appId
+     * @param wxMessage 消息
+     * @return 回复的消息
+     */
+    WxMpXmlOutMessage replyForMessage(String appId, WxMpXmlMessage wxMessage);
 
 }

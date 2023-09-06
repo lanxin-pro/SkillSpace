@@ -25,6 +25,14 @@ public interface MpAccountService {
     void initLocalCache();
 
     /**
+     * 从缓存中，获得公众号账号
+     *
+     * @param appId 微信公众号 appId
+     * @return 公众号账号
+     */
+    MpAccountDO getAccountFromCache(String appId);
+
+    /**
      * 创建公众号账号
      *
      * @param createReqVO 创建信息

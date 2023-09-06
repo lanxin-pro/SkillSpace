@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -52,6 +53,7 @@ public class MpAccountServiceImpl implements MpAccountService {
     private MpAccountMapper mpAccountMapper;
 
     @Resource
+    @Lazy // 延迟加载，解决循环依赖的问题
     private MpServiceFactory mpServiceFactory;
 
     @Resource
@@ -69,6 +71,11 @@ public class MpAccountServiceImpl implements MpAccountService {
         // 这里需要初始化工厂
         accountCache = mpAccountDOS.stream()
                 .collect(Collectors.toMap(MpAccountDO::getAppId, Function.identity(),(v1,v2) -> v1));
+    }
+
+    @Override
+    public MpAccountDO getAccountFromCache(String appId) {
+        return accountCache.get(appId);
     }
 
     @Override

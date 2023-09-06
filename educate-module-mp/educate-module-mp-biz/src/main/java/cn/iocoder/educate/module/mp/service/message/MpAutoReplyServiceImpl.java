@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.mp.service.message;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.iocoder.educate.framework.common.exception.ErrorCode;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
@@ -16,11 +17,14 @@ import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyTypeEnum;
 import cn.iocoder.educate.module.mp.framework.mp.core.util.MpUtils;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import javax.validation.Validator;
+import java.util.List;
 
 /**
  * @Author: j-sentinel
@@ -93,6 +97,11 @@ public class MpAutoReplyServiceImpl implements MpAutoReplyService {
 
         // 删除自动回复
         mpAutoReplyMapper.deleteById(id);
+    }
+
+    @Override
+    public WxMpXmlOutMessage replyForMessage(String appId, WxMpXmlMessage wxMessage) {
+        return null;
     }
 
     /**

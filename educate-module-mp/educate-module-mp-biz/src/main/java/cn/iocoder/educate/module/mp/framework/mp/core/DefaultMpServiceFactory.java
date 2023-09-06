@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.mp.framework.mp.core;
 
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
+import cn.iocoder.educate.module.mp.service.handler.message.MessageAutoReplyHandler;
+import cn.iocoder.educate.module.mp.service.handler.message.MessageReceiveHandler;
 import com.binarywang.spring.starter.wxjava.mp.properties.WxMpProperties;
 import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,9 @@ public class DefaultMpServiceFactory implements MpServiceFactory {
     private final WxMpProperties mpProperties;
 
     // ========== 各种 Handler ==========
+
+    private final MessageAutoReplyHandler messageAutoReplyHandler;
+    private final MessageReceiveHandler messageReceiveHandler;
 
     @Override
     public void init(List<MpAccountDO> list) {
@@ -102,6 +107,12 @@ public class DefaultMpServiceFactory implements MpServiceFactory {
 
     private WxMpMessageRouter buildMpMessageRouter(WxMpService mpService) {
         WxMpMessageRouter router = new WxMpMessageRouter(mpService);
+
+        // 记录所有事件的日志（异步执行）
+        router.rule().async(true).handler(messageReceiveHandler).next();
+        // 默认
+        router.rule().async(false).handler(messageAutoReplyHandler).end();
+
         return router;
     }
 

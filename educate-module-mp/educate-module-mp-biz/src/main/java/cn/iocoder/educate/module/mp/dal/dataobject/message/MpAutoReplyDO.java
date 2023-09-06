@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.mp.dal.dataobject.message;
 
+import cn.iocoder.educate.framework.common.util.collection.SetUtils;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import com.baomidou.mybatisplus.annotation.KeySequence;
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.chanjar.weixin.common.api.WxConsts;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 公众号消息自动回复 DO
@@ -24,6 +26,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class MpAutoReplyDO extends BaseDO {
+
+    public static Set<String> REQUEST_MESSAGE_TYPE = SetUtils.asSet(WxConsts.XmlMsgType.TEXT, WxConsts.XmlMsgType.IMAGE,
+            WxConsts.XmlMsgType.VOICE, WxConsts.XmlMsgType.VIDEO, WxConsts.XmlMsgType.SHORTVIDEO,
+            WxConsts.XmlMsgType.LOCATION, WxConsts.XmlMsgType.LINK);
 
     /**
      * 主键
