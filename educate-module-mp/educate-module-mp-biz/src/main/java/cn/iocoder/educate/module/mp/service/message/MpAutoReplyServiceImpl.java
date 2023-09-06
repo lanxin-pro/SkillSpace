@@ -19,6 +19,7 @@ import cn.iocoder.educate.module.mp.service.account.MpAccountService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -38,7 +39,11 @@ public class MpAutoReplyServiceImpl implements MpAutoReplyService {
     @Resource
     private MpAutoReplyMapper mpAutoReplyMapper;
 
+    /**
+     * 延迟加载，解决循环依赖的问题
+     */
     @Resource
+    @Lazy
     private MpAccountService mpAccountService;
 
     @Resource
