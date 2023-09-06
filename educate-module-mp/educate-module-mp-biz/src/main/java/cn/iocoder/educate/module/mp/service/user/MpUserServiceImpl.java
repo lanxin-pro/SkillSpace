@@ -60,6 +60,11 @@ public class MpUserServiceImpl implements MpUserService {
     }
 
     @Override
+    public MpUserDO getUser(String appId, String openId) {
+        return mpUserMapper.selectByAppIdAndOpenid(appId, openId);
+    }
+
+    @Override
     public void updateUser(MpUserUpdateReqVO updateReqVO) {
         // 校验存在
         MpUserDO user = validateUserExists(updateReqVO.getId());

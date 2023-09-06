@@ -90,6 +90,14 @@ public class MpOpenController {
 
     }
 
+    /**
+     * 响应 注册路由
+     *
+     * @param appId
+     * @param content
+     * @param reqVO
+     * @return
+     */
     private String handleMessage0(String appId, String content, MpOpenHandleMessageReqVO reqVO) {
         // 校验请求签名
         WxMpService mppService = mpServiceFactory.getRequiredMpService(appId);

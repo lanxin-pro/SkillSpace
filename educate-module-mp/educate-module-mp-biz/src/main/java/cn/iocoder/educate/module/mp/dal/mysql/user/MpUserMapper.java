@@ -47,4 +47,12 @@ public interface MpUserMapper extends BaseMapper<MpUserDO> {
     default void insertBatch(List<MpUserDO> newUsers){
         Db.saveBatch(newUsers);
     }
+
+    default MpUserDO selectByAppIdAndOpenid(String appId, String openId){
+        LambdaQueryWrapper<MpUserDO> mpUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpUserDOLambdaQueryWrapper.eq(MpUserDO::getAppId, appId)
+                .eq(MpUserDO::getOpenid, openId);
+        return this.selectOne(mpUserDOLambdaQueryWrapper);
+    }
+
 }
