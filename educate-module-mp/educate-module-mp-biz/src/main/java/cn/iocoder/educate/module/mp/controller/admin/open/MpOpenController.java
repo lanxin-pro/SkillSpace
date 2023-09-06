@@ -1,18 +1,27 @@
 package cn.iocoder.educate.module.mp.controller.admin.open;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.educate.module.mp.controller.admin.open.vo.MpOpenCheckSignatureReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.open.vo.MpOpenHandleMessageReqVO;
+import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.framework.mp.core.MpServiceFactory;
+import cn.iocoder.educate.module.mp.framework.mp.core.context.MpContextHolder;
+import cn.iocoder.educate.module.mp.service.account.MpAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import java.util.Objects;
 
 /**
  * @Author: j-sentinel
@@ -27,6 +36,9 @@ public class MpOpenController {
 
     @Resource
     private MpServiceFactory mpServiceFactory;
+
+    @Resource
+    private MpAccountService mpAccountService;
 
     /**
      * 接收微信公众号的校验签名
@@ -67,7 +79,51 @@ public class MpOpenController {
                                 @RequestBody String content,
                                 MpOpenHandleMessageReqVO reqVO) {
         log.info("[handleMessage][appId({}) 推送消息，参数({}) 内容({})]", appId, reqVO, content);
-        return "success";
+
+        // 获取账号
+        MpAccountDO account = mpAccountService.getAccountFromCache(appId);
+        Assert.notNull(account, "公众号 appId({}) 不存在", appId);
+        // 设置上下文的appId
+        MpContextHolder.setAppId(appId);
+
+        return handleMessage0(appId, content, reqVO);
+
+    }
+
+    private String handleMessage0(String appId, String content, MpOpenHandleMessageReqVO reqVO) {
+        // 校验请求签名
+        WxMpService mppService = mpServiceFactory.getRequiredMpService(appId);
+        Assert.isTrue(mppService.checkSignature(reqVO.getTimestamp(), reqVO.getNonce(), reqVO.getSignature()),
+                "非法请求");
+
+        // 第一步，解析消息
+        WxMpXmlMessage inMessage = null;
+        // 明文模式
+        if (StrUtil.isBlank(reqVO.getEncrypt_type())) {
+            inMessage = WxMpXmlMessage.fromXml(content);
+            // AES 加密模式
+        } else if (Objects.equals(reqVO.getEncrypt_type(), MpOpenHandleMessageReqVO.ENCRYPT_TYPE_AES)) {
+            inMessage = WxMpXmlMessage.fromEncryptedXml(content, mppService.getWxMpConfigStorage(),
+                    reqVO.getTimestamp(), reqVO.getNonce(), reqVO.getMsg_signature());
+        }
+        Assert.notNull(inMessage, "消息解析失败，原因：消息为空");
+
+        // 第二步，处理消息
+        WxMpMessageRouter mpMessageRouter = mpServiceFactory.getRequiredMpMessageRouter(appId);
+        WxMpXmlOutMessage outMessage = mpMessageRouter.route(inMessage);
+        if (outMessage == null) {
+            return "";
+        }
+
+        // 第三步，返回消息
+        // 明文模式
+        if (StrUtil.isBlank(reqVO.getEncrypt_type())) {
+            return outMessage.toXml();
+            // AES 加密模式
+        } else if (Objects.equals(reqVO.getEncrypt_type(), MpOpenHandleMessageReqVO.ENCRYPT_TYPE_AES)) {
+            return outMessage.toEncryptedXml(mppService.getWxMpConfigStorage());
+        }
+        return "";
     }
 
 }
