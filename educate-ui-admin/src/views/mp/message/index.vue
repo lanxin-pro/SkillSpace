@@ -28,7 +28,7 @@
             v-model="queryParams.openid"
             placeholder="请输入用户标识"
             clearable
-            :v-on="handleQuery"
+            @keyup.enter.native="handleQuery"
             class="!w-240px"
         />
       </el-form-item>

@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.util.StringUtils;
 
 /**
  * @Author: j-sentinel
@@ -25,7 +26,7 @@ public interface MpMessageMapper extends BaseMapper<MpMessageDO> {
                         MpMessageDO::getAccountId,mpMessagePageReqVO.getAccountId())
                 .eq(ObjectUtil.isNotEmpty(mpMessagePageReqVO.getType()),
                         MpMessageDO::getType,mpMessagePageReqVO.getType())
-                .eq(ObjectUtil.isNotEmpty(mpMessagePageReqVO.getOpenid()),
+                .like(StringUtils.hasText(mpMessagePageReqVO.getOpenid()),
                         MpMessageDO::getOpenid,mpMessagePageReqVO.getOpenid())
                 .between(ArrayUtils.get(mpMessagePageReqVO.getCreateTime(),0) != null
                                 && ArrayUtils.get(mpMessagePageReqVO.getCreateTime(),1) != null,

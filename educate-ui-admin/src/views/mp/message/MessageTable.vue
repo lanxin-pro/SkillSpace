@@ -109,6 +109,7 @@
           <el-button
               link
               type="primary"
+              icon="DocumentCopy"
               @click="emit('send', scope.row.userId)"
               v-hasPermi="['mp:message:send']"
           >
