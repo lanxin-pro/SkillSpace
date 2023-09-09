@@ -75,7 +75,6 @@
     <el-dialog
         title="粉丝消息列表"
         v-model="messageBox.show"
-        @click="messageBox.show = true"
         width="50%"
         destroy-on-close
     >
@@ -111,7 +110,7 @@ const list = ref([])
 // 搜索参数
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 20,
   openid: '',
   accountId: -1,
   type: MsgType.Text,
