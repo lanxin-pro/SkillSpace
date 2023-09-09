@@ -1,9 +1,11 @@
 package cn.iocoder.educate.module.mp.service.user;
 
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.user.vo.MpUserPageReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.user.vo.MpUserUpdateReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.user.MpUserDO;
+import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 
 /**
  * 公众号粉丝 Service 接口
@@ -51,5 +53,20 @@ public interface MpUserService {
      * @param accountId 公众号账号的编号
      */
     void syncUser(Long accountId);
+
+    /**
+     * 获得公众号粉丝
+     *
+     * @param id 编号
+     * @return 公众号粉丝
+     */
+    default MpUserDO getRequiredUser(Long id) {
+        MpUserDO user = getUser(id);
+        if (user == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+        }
+        return user;
+    }
+
 
 }
