@@ -56,6 +56,8 @@ const getNickname = (sendFrom) =>
 
 .avatar-div {
   width: 80px;
+  height: 80px;
   text-align: center;
+  padding-top: 7px;
 }
 </style>

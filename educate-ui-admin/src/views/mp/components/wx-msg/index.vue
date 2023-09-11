@@ -17,6 +17,7 @@
     <MsgList :list="list" :account-id="accountId" :user="user" />
   </div>
 
+  <!-- 消息发送栏 -->
   <div class="msg-send" v-loading="sendLoading">
     <WxReplySelect ref="replySelectRef" v-model="reply" />
     <el-button type="success" class="send-but" @click="sendMsg">发送(S)</el-button>
@@ -31,6 +32,7 @@ import WxReplySelect from '@/views/mp/components/wx-reply/index.vue'
 import MsgList from './components/MsgList.vue'
 import profile from '@/assets/imgs/profile.jpg'
 import { ReplyType } from '@/utils/constants.js'
+import ELComponent from '@/plugins/modal.js'
 
 const props = defineProps({
   userId: {
@@ -105,7 +107,7 @@ const sendMsg = async () => {
       reply.value.articles.length > 1
   ) {
     reply.value.articles = [reply.value.articles[0]]
-    message.success('图文消息条数限制在 1 条以内，已默认发送第一条')
+    ELComponent.msgSuccess('图文消息条数限制在 1 条以内，已默认发送第一条')
   }
 
   const data = await sendMessage({ userId: props.userId, ...reply.value })
