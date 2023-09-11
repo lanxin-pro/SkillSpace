@@ -98,3 +98,10 @@ export const NewsType = {
     Published: '1',
     Draft: '2'
 }
+
+// tip全部的类型
+export const UploadType = {
+    Image: 'image',
+    Voice: 'voice',
+    Video: 'video'
+}

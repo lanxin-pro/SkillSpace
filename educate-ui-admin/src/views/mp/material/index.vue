@@ -13,7 +13,11 @@
     </el-form>
 
 
-    <el-tabs style="margin-top: 10px" v-model="type" @tab-change="onTabChange">
+    <el-tabs
+        style="margin-top: 10px"
+        v-model="type"
+        @tab-change="onTabChange"
+    >
       <!-- tab 1：图片  -->
       <el-tab-pane :name="UploadType.Image">
         <template #label>
@@ -25,6 +29,8 @@
             图片
           </el-row>
         </template>
+
+        <!--    上传组件    -->
         <UploadFile
             v-hasPermi="['mp:material:upload-permanent']"
             :type="UploadType.Image"
@@ -32,8 +38,14 @@
         >
           支持 bmp/png/jpeg/jpg/gif 格式，大小不超过 2M
         </UploadFile>
+
         <!-- 列表 -->
-        <ImageTable :loading="loading" :list="list" @delete="handleDelete" />
+        <ImageTable
+            :loading="loading"
+            :list="list"
+            @delete="handleDelete"
+        />
+
         <!-- 分页组件 -->
         <Pagination
             :total="total"
@@ -119,9 +131,10 @@ import VoiceTable from './components/VoiceTable.vue'
 import VideoTable from './components/VideoTable.vue'
 import UploadFile from './components/UploadFile.vue'
 import UploadVideo from './components/UploadVideo.vue'
+import { UploadType } from '@/utils/constants.js'
 
 // 素材类型
-const type = ref()
+const type = ref(UploadType.Image)
 // 遮罩层
 const loading = ref(false)
 // 总条数
@@ -131,15 +144,11 @@ const total = ref(0)
 // 查询参数
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 20,
   accountId: -1,
   permanent: true
 })
-const UploadType = reactive({
-  Image: 'image',
-  Voice: 'voice',
-  Video: 'video'
-})
+
 // 是否新建视频的弹窗
 const showCreateVideo = ref(false)
 
@@ -154,6 +163,7 @@ const onAccountChanged = (id) => {
 const getList = async () => {
   loading.value = true
   try {
+    // 解构传递参数
     const response = await getMaterialPage({
       ...queryParams,
       type: type.value
@@ -173,7 +183,7 @@ const handleQuery = () => {
 
 /** 处理 table 切换 */
 const onTabChange = () => {
-  // 提前情况数据，避免 tab 切换后显示垃圾数据
+  // 提前情况数据，避免 tab 切换后显示其他tab节点的数据
   list.value = []
   total.value = 0
   // 从第一页开始查询

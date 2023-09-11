@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流</title>
+</head>
+<body>
+<style>
+    body{
+        width: 100%;
+        background: rebeccapurple;
+    }
+    .shell{
+        max-width: 1600px;
+        column-count: 5;
+        column-gap: 5px;
+    }
+    .image{
+        border: 1px solid slategray;
+        bottom: 10px;
+        padding: 10px;
+        break-inside: avoid;
+        border-radius: 6px;
+
+        /* 给子类 absolute */
+        position: relative;
+        /* 累加 */
+        counter-increment: item-counter;
+    }
+    .image:after{
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        content: counter(item-counter);
+        color: #fff;
+    }
+    .image:nth-child(4n+1){
+        order: 1;
+    }
+    .image:nth-child(4n+2){
+        order: 2;
+    }
+    .image:nth-child(4n+3){
+        order: 3;
+    }
+    .image:nth-child(4n){
+        order: 4;
+    }
+    .content{
+        max-width: 1000px;
+        margin: 0 auto;
+        max-height: 600px;
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+    img{
+        width: 100%;
+        border-radius: 6px;
+
+    }
+    @media (max-width: 1300px) {
+        .shell{
+            column-count: 5;
+        }
+    }
+    @media (max-width: 1000px) {
+        .shell{
+            column-count: 4;
+        }
+    }
+    @media (max-width: 800px) {
+        .shell{
+            column-count: 3;
+        }
+    }
+    @media (max-width: 600px) {
+        .shell{
+            column-count: 2;
+        }
+    }
+</style>
+<div class="content">
+    <div class="shell">
+        <div class="image"><img src="../瀑布流/assert/1.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/2.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/3.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/4.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/5.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/6.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/7.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/8.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/9.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/10.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/11.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/12.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/13.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/14.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/15.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/16.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/17.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/18.jpg" alt=""></div>
+        <div class="image"><img src="../瀑布流/assert/19.jpg" alt=""></div>
+    </div>
+</div>
+
+</body>
+</html>
