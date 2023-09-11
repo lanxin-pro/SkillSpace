@@ -77,6 +77,7 @@
         v-model="messageBox.show"
         width="50%"
         destroy-on-close
+        draggable="true"
     >
 
       <WxMsg

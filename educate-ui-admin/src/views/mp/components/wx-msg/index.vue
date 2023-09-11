@@ -1,14 +1,16 @@
 <template>
   <div class="msg-div" ref="msgDivRef">
     <!-- 加载更多 -->
+
+    <!--  加载动画  -->
     <div v-loading="loading"></div>
     <div v-if="!loading">
-      <div class="el-table__empty-block" v-if="hasMore" @click="loadMore"
-      ><span class="el-table__empty-text">点击加载更多</span></div
-      >
-      <div class="el-table__empty-block" v-if="!hasMore"
-      ><span class="el-table__empty-text">没有更多了</span></div
-      >
+      <div class="el-table__empty-block" v-if="hasMore" @click="loadMore">
+        <span class="el-table__empty-text">点击加载更多</span>
+      </div>
+      <div class="el-table__empty-block" v-if="!hasMore">
+        <span class="el-table__empty-text">没有更多了</span>
+      </div>
     </div>
 
     <!-- 消息列表 -->
@@ -56,7 +58,7 @@ const queryParams = reactive({
 // 由于微信不再提供昵称，直接使用“用户”展示
 const user = reactive({
   nickname: '用户',
-  avatar: '',
+  avatar: 'http://127.0.0.1:9011/server/admin-api/infra/file/4/get/b082ad90dc7724530632d2544277d0ddbac4e9d754d12fa36d2fca1518350096.png',
   // 公众号账号编号
   accountId: accountId
 })
@@ -83,7 +85,8 @@ onMounted(async () => {
   console.log("用户信息",response.data)
   const data = response.data
   user.nickname = data.nickname?.length > 0 ? data.nickname : user.nickname
-  user.avatar = user.avatar?.length > 0 ? data.avatar : user.avatar
+  user.avatar = user.avatar === undefined ? data.avatar : user.avatar
+  console.log("结果", user.avatar?.length > 0 ? data.avatar : user.avatar)
   accountId.value = data.accountId
   reply.value.accountId = data.accountId
 

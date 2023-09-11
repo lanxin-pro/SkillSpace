@@ -14,13 +14,14 @@
         <slot name="title">
           {{ title }}
         </slot>
-        <Icon
+        <font-awesome-icon
             v-if="fullscreen"
             :icon="isFullscreen ? 'zmdi:fullscreen-exit' : 'zmdi:fullscreen'"
             class="mr-22px cursor-pointer is-hover mt-2px z-10"
             color="var(--el-color-info)"
             @click="toggleFull"
-        />
+            icon="fa-solid fa-expand" />
+
       </div>
     </template>
 
