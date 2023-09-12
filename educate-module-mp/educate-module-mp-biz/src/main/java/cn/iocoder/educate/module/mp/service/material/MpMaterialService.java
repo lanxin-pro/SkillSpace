@@ -4,6 +4,9 @@ import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialPageReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.material.MpMaterialDO;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 公众号素材 Service 接口
  *
@@ -26,5 +29,13 @@ public interface MpMaterialService {
      * @param id 编号
      */
     void deleteMaterial(Long id);
+
+    /**
+     * 获得素材列表
+     *
+     * @param mediaIds 素材 mediaId 列表
+     * @return 素材列表
+     */
+    List<MpMaterialDO> getMaterialListByMediaId(Collection<String> mediaIds);
 
 }

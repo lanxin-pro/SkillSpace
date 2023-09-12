@@ -12,6 +12,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/9/11 14:53
@@ -31,6 +34,12 @@ public interface MpMaterialMapper extends BaseMapper<MpMaterialDO> {
         Page<MpMaterialDO> page = new Page<>(mpMaterialPageReqVO.getPageNo(), mpMaterialPageReqVO.getPageSize());
         Page<MpMaterialDO> mpAccountDOPage = this.selectPage(page, mpMaterialDOLambdaQueryWrapper);
         return new PageResult(mpAccountDOPage.getRecords(),mpAccountDOPage.getTotal());
+    }
+
+    default List<MpMaterialDO> selectListByMediaId(Collection<String> mediaIds) {
+        LambdaQueryWrapper<MpMaterialDO> mpMaterialDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpMaterialDOLambdaQueryWrapper.eq(MpMaterialDO::getMediaId, mediaIds);
+        return selectList(mpMaterialDOLambdaQueryWrapper);
     }
 
 }

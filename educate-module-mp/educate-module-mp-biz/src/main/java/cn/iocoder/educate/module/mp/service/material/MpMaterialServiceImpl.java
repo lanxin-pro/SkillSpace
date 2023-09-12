@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 公众号素材 Service 接口
@@ -62,6 +64,11 @@ public class MpMaterialServiceImpl implements MpMaterialService {
 
         // 第二步，从数据库中删除
         mpMaterialMapper.deleteById(id);
+    }
+
+    @Override
+    public List<MpMaterialDO> getMaterialListByMediaId(Collection<String> mediaIds) {
+        return mpMaterialMapper.selectListByMediaId(mediaIds);
     }
 
 }
