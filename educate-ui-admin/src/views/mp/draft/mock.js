@@ -74,7 +74,7 @@ export default {
             onlyFansCanComment: 0,
             url: 'http://mp.weixin.qq.com/s?__biz=MzA3NjM4MzQzOQ==&tempkey=MTIxMl9jelJiaDAzbmdpSkJOZ2M2QWwxQ3R5R0JGTXBDM1Q0N2ZFQm8zeUphOFlwNEpXSWxTYm9RQnJ6cHVuNDNXVVc2ZDRYeTY0Zm1weXR6dE9vQWh1TzEwbEpUVnRfVzJyaGFDNXBkZ0ZXM2JFOTNaRHNhOHRUeFdEanhMeS01X01kMUNWQ1BpRER3cjYwTl9pMnpFLUJhZXFucVVfM1pDUXlTUEl1S25nfn4%3D&chksm=1f6354bc2814ddaa56a90ad5bc3d078601c8d1589ba01827a8170587bc830ff9747b5f59c3a0#rd',
             thumbUrl:
-              'http://mmbiz.qpic.cn/mmbiz_png/btUmCVHwbJUoicwBiacjVeQbu6QxgBVrukfSJXz509boa21SpH8OVHAqXCJiaiaAaHQJNxwwsa0gHRXVr0G5EZYamw/0?wx_fmt=png'
+              'http://localhost:9011/server/admin-api/infra/file/5/get/lantest.jpg'
           }
         ]
       },
@@ -96,7 +96,7 @@ export default {
             onlyFansCanComment: 0,
             url: 'http://mp.weixin.qq.com/s?__biz=MzA3NjM4MzQzOQ==&tempkey=MTIxMl9qdkJ1ZjBoUmg2Uk9TS3RlQWwxQ3R5R0JGTXBDM1Q0N2ZFQm8zeUphOFlwNEpXSWxTYm9RQnJ6cHVuNVg2aTJsaC1fMkU2eXNacUplN3VDTTZFZkhtMjhuTUZvWkxsNDBRSXExY2tiVXRHb09TaHgtREhzY3doZ0JYeC1TSTZ5eWZldXJsOWtfbV8yMi1aYkcyZ2pOY0haM0Ntb3VSWEtxUGVFRlNBfn4%3D&chksm=1f6354ba2814ddacf0184b24d310483641ef190b1faac098c285eb416c70017e2f54decfa1af#rd',
             thumbUrl:
-              'http://test.yudao.iocoder.cn/r6ryvl6LrxBU0miaST4Y-pgFtUNLu1foMSAMkoOsrQrTZ8EtTMssBLfTtzP0dfjG.png'
+              'http://localhost:9011/server/admin-api/infra/file/5/get/110416148_p0_master1200.jpg'
           }
         ]
       },
@@ -118,7 +118,7 @@ export default {
             onlyFansCanComment: 0,
             url: 'http://mp.weixin.qq.com/s?__biz=MzA3NjM4MzQzOQ==&tempkey=MTIxMl9qVVhpSDZUaFJWTzBBWWRVQWwxQ3R5R0JGTXBDM1Q0N2ZFQm8zeUphOFlwNEpXSWxTYm9RQnJ6cHVuNWRnTDJWYmF2NER0clV1bThmQ0xUR3hqQnJkZ3BJSUNmNDJmc0lCZ1dadkVnZ3Z5bkN4YWtVUjhoaWZWYzZURUR4NnpMd0Y4Z3U5aUdib0lkMzI4Rjg3SG9JX2FycTMxbUctOHplaTlQVVhnfn4%3D&chksm=1f6354b62814dda076c778af33f06580165d8aa81f7798d55cfabb1886b5c74d9b2124a3535c#rd',
             thumbUrl:
-              'http://test.yudao.iocoder.cn/r6ryvl6LrxBU0miaST4Y-jVixJGgnBnkBPRbuVptOW0CHYuQFyiOVNtamctS8xU8.jpg'
+              'http://127.0.0.1:9011/server/admin-api/infra/file/4/get/011fbf4337dcca71e445cf60c503ce0e79750f1d.gif.gif'
           }
         ]
       },
@@ -140,7 +140,7 @@ export default {
             onlyFansCanComment: 0,
             url: 'http://mp.weixin.qq.com/s?__biz=MzA3NjM4MzQzOQ==&tempkey=MTIxMl9LT2dqRnpMNUpsR0hjYWtBQWwxQ3R5R0JGTXBDM1Q0N2ZFQm8zeUphOFlwNEpXSWxTYm9RQnJ6cHVuNGNmazZTdlE5WkxvU0tfX2V5cjV2WjJiR0xjQUhyREFSZWo2eWNrUW9EYVh6ZkpWRXBLR3FmTEV6YldBMno3Q2ZvVXBSdzlaVDc3aFhndEpQWUwzWmFMUWt0YVVURE1VZ1FsQTdPMlRtc3JBfn4%3D&chksm=1f6354aa2814ddbcc2637382f963a8742993ac38ebcebe6e3411df5ac82ac7bbdb391be6494a#rd',
             thumbUrl:
-              'http://test.yudao.iocoder.cn/r6ryvl6LrxBU0miaST4Y-pIcmK-zAAId-9TGgy-DrSLhjVuWbuT3ZBjk9K1yQ0Dn.png'
+              'http://127.0.0.1:9011/server/admin-api/infra/file/4/get/logo.gif'
           }
         ]
       },

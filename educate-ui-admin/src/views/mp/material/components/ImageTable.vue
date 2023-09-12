@@ -5,7 +5,9 @@
         <img class="material-img" :src="item.url" />
         <div class="item-name">{{ item.name }}</div>
       </a>
-      <el-row justify="center">
+      <el-row
+          class="iconDelete"
+          justify="center">
         <el-button
             type="danger"
             circle
@@ -32,6 +34,17 @@ const emit = defineEmits(["delete"])
 </script>
 
 <style lang="scss" scoped>
+.iconDelete {
+  display: none;
+}
+.waterfall-item:hover .iconDelete {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+}
 // 媒体查询
 @media (width >= 992px) and (width <= 1300px) {
   .waterfall {
@@ -64,12 +77,12 @@ const emit = defineEmits(["delete"])
 
 .waterfall {
   width: 100%;
+  /* 蓝欣：增加 10px，避免顶着上面 */
   column-gap: 10px;
   // 一行 5 个元素
   column-count: 5;
   margin-top: 10px;
 
-  /* 蓝欣：增加 10px，避免顶着上面 */
 }
 
 .waterfall-item {
@@ -80,6 +93,8 @@ const emit = defineEmits(["delete"])
   break-inside: avoid;
   // 画框
   border: 1px solid #eaeaea;
+
+  position: relative;
 }
 
 .material-img {
@@ -97,5 +112,6 @@ p {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #1c84c6;
+  margin-top: 8px;
 }
 </style>

@@ -8,7 +8,6 @@
             <el-image
                 :src="article.picUrl"
                 class="material-img"
-                style="width: 100%; height: 120px"
             />
             <div class="news-content-title">
               <span>{{ article.title }}</span>
