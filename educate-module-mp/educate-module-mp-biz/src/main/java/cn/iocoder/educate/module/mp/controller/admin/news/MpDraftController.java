@@ -22,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +57,7 @@ public class MpDraftController {
         WxMpDraftList draftList;
         try {
             // 第一个参数：分页页数，从0开始 从全部素材的该偏移位置开始返回，0表示从第一个素材返回
+            // 所以我要自己来编写分页算法 1-1 * 10    10-1 * 20
             draftList = mpService.getDraftService().listDraft(PageUtils.getStart(reqVO), reqVO.getPageSize());
         } catch (WxErrorException e) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_LIST_FAIL, e.getError().getErrorMsg());

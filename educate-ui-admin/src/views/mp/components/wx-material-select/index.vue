@@ -129,6 +129,9 @@
 import { ref,reactive,onMounted } from 'vue'
 import { propTypes } from '@/utils/propTypes.js'
 import { NewsType } from '@/utils/constants.js'
+import { getMaterialPage } from '@/api/mp/material/index.js'
+import { getDraftPage } from '@/api/mp/draft/index.js'
+import Pagination from '@/components/Pagination/index.vue'
 
 const props = defineProps(
     ({
@@ -158,7 +161,7 @@ const selectMaterialFun = (item) => {
 }
 
 onMounted(async () => {
-  getPage()
+  await getPage()
 })
 
 const getPage = async () => {
@@ -180,16 +183,16 @@ const getPage = async () => {
 }
 
 const getMaterialPageFun = async () => {
-  const data = await MpMaterialApi.getMaterialPage({
+  const response = await getMaterialPage({
     ...queryParams,
     type: props.type
   })
-  list.value = data.list
-  total.value = data.total
+  list.value = response.data.list
+  total.value = response.data.total
 }
 
 const getFreePublishPageFun = async () => {
-  const data = await MpFreePublishApi.getFreePublishPage(queryParams)
+  const data = await getFreePublishPage(queryParams)
   data.list.forEach((item) => {
     const articles = item.content.newsItem
     articles.forEach((article) => {
@@ -201,15 +204,15 @@ const getFreePublishPageFun = async () => {
 }
 
 const getDraftPageFun = async () => {
-  const data = await MpDraftApi.getDraftPage(queryParams)
-  data.list.forEach((draft) => {
+  const response = await getDraftPage(queryParams)
+  response.data.list.forEach((draft) => {
     const articles = draft.content.newsItem
     articles.forEach((article) => {
       article.picUrl = article.thumbUrl
     })
   })
-  list.value = data.list
-  total.value = data.total
+  list.value = response.data.list
+  total.value = response.data.total
 }
 
 </script>

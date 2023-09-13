@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-aside width="40%">
-      <div class="select-item">
+      <div style="width: 100%;height: 100%;margin: 40px auto" class="select-item">
 
         <div v-for="(news, index) in newsList" :key="index">
           <div
