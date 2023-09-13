@@ -77,6 +77,8 @@ import NewsForm from './components/NewsForm.vue'
 import drafts from './mock'
 
 const accountId = ref(-1)
+
+// 父组件给子组件传递 accountId
 provide('accountId', accountId)
 
 // 列表的加载中
@@ -126,9 +128,7 @@ const getList = async () => {
       drafts = response.data
     }
     drafts.list.forEach((draft) => {
-      console.log(draft)
       const newsList = draft.content.newsItem
-      console.log("初始化的执行",newsList)
       // 将 thumbUrl 转成 picUrl，保证 wx-news 组件可以预览封面
       newsList.forEach((item) => {
         item.picUrl = item.thumbUrl
@@ -142,10 +142,26 @@ const getList = async () => {
 }
 
 // ======================== 新增/修改草稿 ========================
+
+const createEmptyNewsItem = () => {
+  return {
+    title: '',
+    thumbMediaId: '',
+    author: '',
+    digest: '',
+    showCoverPic: '',
+    content: '',
+    contentSourceUrl: '',
+    needOpenComment: '',
+    onlyFansCanComment: '',
+    thumbUrl: ''
+  }
+}
+
 /** 新增按钮操作 */
 const handleAdd = () => {
   isCreating.value = true
-  newsList.value = []
+  newsList.value = [createEmptyNewsItem()]
   showDialog.value = true
 }
 

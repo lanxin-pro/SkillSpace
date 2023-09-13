@@ -7,9 +7,16 @@
           <img class="material-img" :src="item.url" />
           <p class="item-name">{{ item.name }}</p>
           <el-row class="ope-row">
-            <el-button type="success" @click="selectMaterialFun(item)">
+            <el-button
+                size="small"
+                type="success"
+                @click="selectMaterialFun(item)"
+            >
               选择
-              <Icon icon="ep:circle-check" />
+              <font-awesome-icon
+                  style="margin-left: 3px"
+                  icon="fa-solid fa-check"
+              />
             </el-button>
           </el-row>
         </div>
@@ -133,13 +140,11 @@ import { getMaterialPage } from '@/api/mp/material/index.js'
 import { getDraftPage } from '@/api/mp/draft/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 
-const props = defineProps(
-    ({
-      type: propTypes.string,
-      accountId: propTypes.number,
-      newsType: NewsType,
-    })
-)
+const props = defineProps({
+  type: propTypes.string,
+  accountId: propTypes.number,
+  newsType: NewsType,
+})
 
 const emit = defineEmits(['select-material'])
 
@@ -217,6 +222,10 @@ const getDraftPageFun = async () => {
 
 </script>
 <style lang="scss" scoped>
+.item-name {
+  text-align: center;
+  color: #1c84c6;
+}
 @media (width >= 992px) and (width <= 1300px) {
   .waterfall {
     column-count: 3;

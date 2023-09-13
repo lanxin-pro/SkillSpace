@@ -8,16 +8,19 @@
               class="news-main father"
               v-if="index === 0"
               :class="{ activeAddNews: activeNewsIndex === index }"
-              @click="activeNewsIndex = index"
+              @click="activeNewsIndexClick(index)"
           >
             <div class="news-content">
+              {{news.thumbUrl}}
               <img class="material-img" :src="news.thumbUrl" />
               <div class="news-content-title">{{ news.title }}</div>
             </div>
             <div class="child" v-if="newsList.length > 1">
+
               <el-button type="info" circle size="small" @click="() => moveDownNews(index)">
-                <Icon icon="ep:arrow-down-bold" />
+                <font-awesome-icon icon="fa-solid fa-arrow-down" />
               </el-button>
+
               <el-button
                   v-if="isCreating"
                   type="danger"
@@ -85,6 +88,7 @@
         </el-row>
       </div>
     </el-aside>
+
     <el-main>
       <div v-if="newsList.length > 0">
         <!-- 标题、作者、原文地址 -->
@@ -101,11 +105,18 @@
               style="margin-top: 5px"
           />
         </el-row>
+
         <!-- 封面和摘要 -->
         <el-row :gutter="20">
+
           <el-col :span="12">
-            <CoverSelect v-model="activeNewsItem" :is-first="activeNewsIndex === 0" />
+            {{activeNewsItem.thumbUrl}}
+            <CoverSelect
+                v-model="activeNewsItem"
+                :is-first="activeNewsIndex === 0"
+            />
           </el-col>
+
           <el-col :span="12">
             <p>摘要:</p>
             <el-input
@@ -117,9 +128,10 @@
                 maxlength="120"
             />
           </el-col>
+
         </el-row>
 
-        <!--富文本编辑器组件-->
+        <!-- 富文本编辑器组件 -->
         <el-row>
           <Editor
               v-model="activeNewsItem.content"
@@ -133,7 +145,7 @@
 
 <script setup>
 import { propTypes } from '@/utils/propTypes.js'
-import { ref,reactive,inject,computed } from 'vue'
+import { ref,reactive,inject,computed,watch } from 'vue'
 import ELComponent from '@/plugins/modal.js'
 import { createEditorConfig } from '../editor-config.js'
 import Editor from '@/components/Editor/index.vue'
@@ -162,27 +174,47 @@ const accountId = inject('accountId')
 
 // ========== 文件上传 ==========
 
+// 更改左侧  ！切换 ！
+const activeNewsIndexClick = (index)=>{
+  console.log("点击触发activeNewsIndexClick",index)
+  activeNewsIndex.value = index
+}
+
 // 上传永久素材的地址
 const UPLOAD_URL = import.meta.env.VITE_BASE_URL + '/admin-api/mp/material/upload-permanent'
 const editorConfig = createEditorConfig(UPLOAD_URL, accountId)
 
 // v-model=newsList
 const emit = defineEmits(["update:modelValue"])
+
+// 初次会执行监听器
 const newsList = computed({
   get() {
+    console.log("props.modelValue的值",props.modelValue)
     // 实时监听我的v-model的值，如果model变化就改变（新增 or 修改）
     return props.modelValue.length === 0 ? [createEmptyNewsItem()] : props.modelValue
   },
   set(val) {
+    console.log("set",val)
     emit('update:modelValue', val)
   }
 })
 
 const activeNewsIndex = ref(0)
-const activeNewsItem = computed(() => newsList.value[activeNewsIndex.value])
+
+/** newsList.value[activeNewsIndex.value] 发生变化，activeNewsItem 将会重新计算并执行其中的逻辑 */
+// 修改 CoverSelect 组件的时候 就会触发这个方法，但是不知道为什么在create的时候没有生效
+const activeNewsItem = computed(() => {
+  console.log("开始监听1当前第几个 -> activeNewsIndex.value",activeNewsIndex.value)
+  console.log("开始监听2当前newsList -> newsList.value",newsList.value)
+  console.log("开始监听3当前返回的内容 -> newsList.value[activeNewsIndex.value]",newsList.value[activeNewsIndex.value])
+  // 第几个图文，从0位开始计算 activeNewsIndex.value 保存的地方？
+  return newsList.value[activeNewsIndex.value]
+})
 
 // 将图文向下移动
 const moveDownNews = (index) => {
+  console.log("将图文向下移动")
   const temp = newsList.value[index]
   newsList.value[index] = newsList.value[index + 1]
   newsList.value[index + 1] = temp
@@ -191,6 +223,7 @@ const moveDownNews = (index) => {
 
 // 将图文向上移动
 const moveUpNews = (index) => {
+  console.log("将图文向上移动")
   const temp = newsList.value[index]
   newsList.value[index] = newsList.value[index - 1]
   newsList.value[index - 1] = temp
@@ -199,8 +232,9 @@ const moveUpNews = (index) => {
 
 // 删除指定 index 的图文
 const removeNews = async (index) => {
+  console.log("删除指定 index 的图文")
   try {
-    await message.confirm('确定删除该图文吗?')
+    await ELComponent.confirm('确定删除该图文吗?')
     newsList.value.splice(index, 1)
     if (activeNewsIndex.value === index) {
       activeNewsIndex.value = 0
@@ -210,7 +244,9 @@ const removeNews = async (index) => {
 
 // 添加一个图文
 const plusNews = () => {
+  console.log("添加一个图文")
   newsList.value.push(createEmptyNewsItem())
+  // activeNewsIndex是从0开始 而 newsList 的length 是从1开始的
   activeNewsIndex.value = newsList.value.length - 1
 }
 </script>
@@ -257,9 +293,10 @@ const plusNews = () => {
   display: inline-block;
   width: 98%;
   height: 25px;
+  line-height: 16px;
   padding: 1%;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 14px;
   color: #fff;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -25,7 +25,7 @@ const account = reactive({
 
 const accountList = ref([])
 
-const emit = defineEmits()
+const emit = defineEmits(["change"])
 
 /** 初始化 */
 onMounted(() => {

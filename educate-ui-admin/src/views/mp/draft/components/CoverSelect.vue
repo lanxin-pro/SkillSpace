@@ -44,6 +44,7 @@
           </template>
         </el-upload>
       </div>
+
       <el-dialog
           title="选择图片"
           v-model="showImageDialog"
