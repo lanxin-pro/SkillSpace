@@ -71,6 +71,7 @@ import ELComponent from '@/plugins/modal.js'
 import { ref, reactive,onMounted,provide } from 'vue'
 import WxAccountSelect from '@/views/mp/components/wx-account-select/index.vue'
 import { getDraftPage,createDraft,updateDraft,deleteDraft } from '@/api/mp/draft/index.js'
+import { submitFreePublish } from '@/api/mp/freePublish/index.js'
 import DraftTable from './components/DraftTable.vue'
 import NewsForm from './components/NewsForm.vue'
 // TODO j-sentinel 可以用改本地数据模拟，避免API调用超限
@@ -124,7 +125,7 @@ const getList = async () => {
     const enableDrafts = import.meta.env.VITE_APP_MOCK_SERVER
 
     // 关闭mock才会走后端接口
-    const draftsValue = enableDrafts === 'true' ? drafts : await getDraftPage(queryParams)
+    const draftsValue = enableDrafts === 'true' ? drafts : (await getDraftPage(queryParams)).data
     console.log("我测试接口最想看到的值draftsValue",draftsValue)
     draftsValue.list.forEach((draft) => {
       const newsList = draft.content.newsItem

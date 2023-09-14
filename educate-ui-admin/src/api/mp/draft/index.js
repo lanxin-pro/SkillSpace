@@ -7,12 +7,11 @@ import request from '@/utils/request'
  * @returns {*}
  */
 export function getDraftPage(query) {
-    const response = request({
+    return request({
         url: '/mp/draft/page',
         method: 'get',
         params: query
     })
-    return response.data
 }
 
 /**
