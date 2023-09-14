@@ -11,7 +11,6 @@
               @click="activeNewsIndexClick(index)"
           >
             <div class="news-content">
-              {{news.thumbUrl}}
               <img class="material-img" :src="news.thumbUrl" />
               <div class="news-content-title">{{ news.title }}</div>
             </div>
@@ -110,7 +109,6 @@
         <el-row :gutter="20">
 
           <el-col :span="12">
-            {{activeNewsItem.thumbUrl}}
             <CoverSelect
                 v-model="activeNewsItem"
                 :is-first="activeNewsIndex === 0"

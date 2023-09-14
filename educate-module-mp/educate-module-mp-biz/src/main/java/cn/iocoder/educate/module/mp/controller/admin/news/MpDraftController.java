@@ -12,16 +12,16 @@ import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.mp.framework.mp.core.MpServiceFactory;
 import cn.iocoder.educate.module.mp.service.material.MpMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.draft.WxMpDraftItem;
-import me.chanjar.weixin.mp.bean.draft.WxMpDraftList;
+import me.chanjar.weixin.mp.bean.draft.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +67,79 @@ public class MpDraftController {
         return success(new PageResult<>(draftList.getItems(), draftList.getTotalCount().longValue()));
     }
 
+    /**
+     * {
+     *     "articles": [
+     *         {
+     *             "title":TITLE,
+     *             "author":AUTHOR,
+     *             "digest":DIGEST,
+     *             "content":CONTENT,
+     *             "content_source_url":CONTENT_SOURCE_URL,
+     *             "thumb_media_id":THUMB_MEDIA_ID,
+     *             "need_open_comment":0,
+     *             "only_fans_can_comment":0
+     *         }
+     *         //若新增的是多图文素材，则此处应还有几段articles结构
+     *     ]
+     * }
+     * @param accountId
+     * @param draft
+     * @return
+     */
+    @PostMapping("/create")
+    @Operation(summary = "创建草稿")
+    @Parameter(name = "accountId", description = "公众号账号的编号", required = true, example = "1024")
+    @PreAuthorize("@lanxin.hasPermission('mp:draft:create')")
+    public CommonResult<String> deleteDraft(@RequestParam("accountId") Long accountId,
+                                            @RequestBody WxMpAddDraft draft) {
+        WxMpService mpService = mpServiceFactory.getRequiredMpService(accountId);
+        try {
+            String mediaId = mpService.getDraftService().addDraft(draft);
+            return success(mediaId);
+        } catch (WxErrorException e) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_CREATE_FAIL, e.getError().getErrorMsg());
+        }
+    }
 
+    @PutMapping("/update")
+    @Operation(summary = "更新草稿")
+    @Parameters({
+            @Parameter(name = "accountId", description = "公众号账号的编号", required = true, example = "1024"),
+            @Parameter(name = "mediaId", description = "草稿素材的编号", required = true, example = "xxx")
+    })
+    @PreAuthorize("@lanxin.hasPermission('mp:draft:update')")
+    public CommonResult<Boolean> deleteDraft(@RequestParam("accountId") Long accountId,
+                                             @RequestParam("mediaId") String mediaId,
+                                             @RequestBody List<WxMpDraftArticles> articles) {
+        WxMpService mpService = mpServiceFactory.getRequiredMpService(accountId);
+        try {
+            for (int i = 0; i < articles.size(); i++) {
+                WxMpDraftArticles article = articles.get(i);
+                mpService.getDraftService().updateDraft(new WxMpUpdateDraft(mediaId, i, article));
+            }
+            return success(true);
+        } catch (WxErrorException e) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_UPDATE_FAIL, e.getError().getErrorMsg());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除草稿")
+    @Parameters({
+            @Parameter(name = "accountId", description = "公众号账号的编号", required = true, example = "1024"),
+            @Parameter(name = "mediaId", description = "草稿素材的编号", required = true, example = "xxx")
+    })
+    @PreAuthorize("@lanxin.hasPermission('mp:draft:delete')")
+    public CommonResult<Boolean> deleteDraft(@RequestParam("accountId") Long accountId,
+                                             @RequestParam("mediaId") String mediaId) {
+        WxMpService mpService = mpServiceFactory.getRequiredMpService(accountId);
+        try {
+            mpService.getDraftService().delDraft(mediaId);
+            return success(true);
+        } catch (WxErrorException e) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_DELETE_FAIL, e.getError().getErrorMsg());
+        }
+    }
 
 }

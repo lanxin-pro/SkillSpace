@@ -122,20 +122,20 @@ const getList = async () => {
   loading.value = true
   try {
     const enableDrafts = import.meta.env.VITE_APP_MOCK_SERVER
+
     // 关闭mock才会走后端接口
-    if(!enableDrafts){
-      const response = await getDraftPage(queryParams)
-      drafts = response.data
-    }
-    drafts.list.forEach((draft) => {
+    const draftsValue = enableDrafts === 'true' ? drafts : await getDraftPage(queryParams)
+    console.log("我测试接口最想看到的值draftsValue",draftsValue)
+    draftsValue.list.forEach((draft) => {
       const newsList = draft.content.newsItem
       // 将 thumbUrl 转成 picUrl，保证 wx-news 组件可以预览封面
       newsList.forEach((item) => {
         item.picUrl = item.thumbUrl
       })
     })
-    list.value = drafts.list
-    total.value = drafts.total
+    list.value = draftsValue.list
+    total.value = draftsValue.total
+
   } finally {
     loading.value = false
   }
