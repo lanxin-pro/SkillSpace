@@ -35,6 +35,7 @@
             v-hasPermi="['mp:material:upload-permanent']"
             :type="UploadType.Image"
             @uploaded="getList"
+            :account-id="queryParams.accountId"
         >
           支持 bmp/png/jpeg/jpg/gif 格式，大小不超过 2M
         </UploadFile>
@@ -123,7 +124,7 @@
 <script setup>
 import Pagination from '@/components/Pagination/index.vue'
 import ELComponent from '@/plugins/modal.js'
-import { ref, reactive,onMounted } from 'vue'
+import { ref, reactive, onMounted, provide } from 'vue'
 import WxAccountSelect from '@/views/mp/components/wx-account-select/index.vue'
 import { getMaterialPage,deletePermanentMaterial } from '@/api/mp/material/index.js'
 import ImageTable from './components/ImageTable.vue'

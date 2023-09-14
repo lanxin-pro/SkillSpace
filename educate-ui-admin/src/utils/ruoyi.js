@@ -3,7 +3,7 @@
  * Copyright (c) 2019 ruoyi
  */
 
-const baseURL = import.meta.env.VITE_APP_BASE_API
+const baseURL = import.meta.env.VITE_BASE_API
 
 // 日期格式化
 export function parseTime(time, pattern) {

@@ -9,7 +9,6 @@
       :on-error="onUploadError"
       :before-upload="onBeforeUpload"
       :on-success="onUploadSuccess"
-
   >
     <el-button type="primary" plain> 点击上传 </el-button>
 <!--  提示的tip 	提示说明文字  -->
@@ -23,10 +22,18 @@
 
 <script setup>
 import { propTypes } from '@/utils/propTypes.js'
-import { ref,reactive } from 'vue'
+import { ref, reactive, inject } from 'vue'
 import ELComponent from '@/plugins/modal.js'
+import {
+  HEADERS,
+  UPLOAD_URL,
+  beforeImageUpload,
+  beforeVoiceUpload
+} from './upload.js'
 
-const props = defineProps({})
+const props = defineProps({
+  accountId: propTypes.number
+})
 
 const fileList = ref([])
 const emit = defineEmits(["uploaded"])
@@ -37,14 +44,18 @@ const UploadType = reactive({
   Video: 'video'
 })
 const uploadData = reactive({
+  accountId: -1,
   type: UploadType.Image,
   title: '',
   introduction: ''
 })
 
 /** 上传前检查 */
-// const onBeforeUpload = props.type === UploadType.Image ? beforeImageUpload : beforeVoiceUpload
-const onBeforeUpload = true
+const onBeforeUpload = () => {
+  uploadData.accountId = props.accountId
+  return props.type === UploadType.Image ? beforeImageUpload : beforeVoiceUpload
+}
+
 /** 上传成功处理 */
 const onUploadSuccess = (res) => {
   if (res.code !== 0) {

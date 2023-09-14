@@ -4,6 +4,8 @@ import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialPageReqVO;
 import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialRespVO;
+import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialUploadPermanentReqVO;
+import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialUploadRespVO;
 import cn.iocoder.educate.module.mp.convert.material.MpMaterialConvert;
 import cn.iocoder.educate.module.mp.dal.dataobject.material.MpMaterialDO;
 import cn.iocoder.educate.module.mp.service.material.MpMaterialService;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import java.io.IOException;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -47,6 +51,15 @@ public class MpMaterialController {
     public CommonResult<Boolean> deleteMaterial(@RequestParam("id") Long id) {
         mpMaterialService.deleteMaterial(id);
         return success(true);
+    }
+
+    @Operation(summary = "上传永久素材")
+    @PostMapping("/upload-permanent")
+    @PreAuthorize("@lanxin.hasPermission('mp:material:upload-permanent')")
+    public CommonResult<MpMaterialUploadRespVO> uploadPermanentMaterial(
+            @Valid MpMaterialUploadPermanentReqVO reqVO) throws IOException {
+        MpMaterialDO material = mpMaterialService.uploadPermanentMaterial(reqVO);
+        return success(MpMaterialConvert.INSTANCE.convert(material));
     }
 
 }
