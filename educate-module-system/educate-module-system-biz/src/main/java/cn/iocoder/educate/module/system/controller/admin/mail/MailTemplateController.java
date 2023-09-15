@@ -85,7 +85,7 @@ public class MailTemplateController {
     }
 
     @PostMapping("/send-mail")
-    @Operation(summary = "发送短信")
+    @Operation(summary = "发送邮件")
     @PreAuthorize("@lanxin.hasPermission('system:mail-template:send-mail')")
     public CommonResult<Long> sendMail(@Valid @RequestBody MailTemplateSendReqVO mailTemplateSendReqVO) {
         Long id = mailSendService.sendSingleMailToAdmin(

@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.mp.dal.dataobject.message;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
+import cn.iocoder.educate.module.mp.enums.message.MpMessageSendFromEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -16,6 +16,7 @@ import cn.iocoder.educate.module.mp.enums.message.MpMessageSendFromEnum;
 import cn.iocoder.educate.module.mp.framework.mp.core.MpServiceFactory;
 import cn.iocoder.educate.module.mp.framework.mp.core.util.MpUtils;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
+import cn.iocoder.educate.module.mp.service.message.bo.MpMessageSendOutReqBO;
 import cn.iocoder.educate.module.mp.service.user.MpUserService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -23,6 +24,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -107,6 +109,36 @@ public class MpMessageServiceImpl implements MpMessageService {
                 .setSendFrom(MpMessageSendFromEnum.MP_TO_USER.getFrom());
         mpMessageMapper.insert(message);
         return message;
+    }
+
+    @Override
+    public WxMpXmlOutMessage sendOutMessage(MpMessageSendOutReqBO sendReqBO) {
+        // 校验消息格式
+        MpUtils.validateMessage(validator, sendReqBO.getType(), sendReqBO);
+
+        // 获得关联信息
+        MpAccountDO account = mpAccountService.getAccountFromCache(sendReqBO.getAppId());
+        Assert.notNull(account, "公众号账号({}) 不存在", sendReqBO.getAppId());
+        MpUserDO user = mpUserService.getUser(sendReqBO.getAppId(), sendReqBO.getOpenid());
+        Assert.notNull(user, "公众号粉丝({}/{}) 不存在", sendReqBO.getAppId(), sendReqBO.getOpenid());
+
+        // 记录消息
+        MpMessageDO message = MpMessageConvert.INSTANCE.convert(sendReqBO, account, user).
+                setSendFrom(MpMessageSendFromEnum.MP_TO_USER.getFrom());
+
+        // 发送客服消息
+        WxMpKefuMessage wxMessage = MpMessageConvert.INSTANCE.convert(sendReqBO, user);
+        WxMpService mpService = mpServiceFactory.getRequiredMpService(user.getAppId());
+        try {
+            mpService.getKefuService().sendKefuMessageWithResponse(wxMessage);
+        } catch (WxErrorException e) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.MESSAGE_SEND_FAIL, e.getError().getErrorMsg());
+        }
+
+        mpMessageMapper.insert(message);
+
+        // 转换返回 WxMpXmlOutMessage 对象
+        return MpMessageConvert.INSTANCE.convert02(message, account);
     }
 
 }

@@ -7,6 +7,7 @@ import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountPageReq
 import cn.iocoder.educate.module.mp.controller.admin.message.vo.autoreply.MpMessagePageReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.dal.dataobject.message.MpAutoReplyDO;
+import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyMatchEnum;
 import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -61,6 +62,35 @@ public interface MpAutoReplyMapper extends BaseMapper<MpAutoReplyDO> {
                 .eq(MpAutoReplyDO::getType, MpAutoReplyTypeEnum.KEYWORD.getType())
                 .eq(MpAutoReplyDO::getRequestKeyword, requestKeyword);
         return this.selectOne(mpAutoReplyDOLambdaQueryWrapper);
+    }
+
+    default List<MpAutoReplyDO> selectListByAppIdAndKeywordAll(String appId, String requestKeyword){
+        LambdaQueryWrapper<MpAutoReplyDO> mpAutoReplyDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpAutoReplyDOLambdaQueryWrapper
+                .eq(MpAutoReplyDO::getAppId, appId)
+                .eq(MpAutoReplyDO::getType, MpAutoReplyTypeEnum.KEYWORD.getType())
+                .eq(MpAutoReplyDO::getRequestMatch, MpAutoReplyMatchEnum.ALL.getMatch())
+                .eq(MpAutoReplyDO::getRequestKeyword, requestKeyword);
+        return this.selectList(mpAutoReplyDOLambdaQueryWrapper);
+    }
+
+    default List<MpAutoReplyDO> selectListByAppIdAndKeywordLike(String appId, String requestKeyword) {
+        LambdaQueryWrapper<MpAutoReplyDO> mpAutoReplyDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpAutoReplyDOLambdaQueryWrapper
+                .eq(MpAutoReplyDO::getAppId, appId)
+                .eq(MpAutoReplyDO::getType, MpAutoReplyTypeEnum.KEYWORD.getType())
+                .eq(MpAutoReplyDO::getRequestMatch, MpAutoReplyMatchEnum.LIKE.getMatch())
+                .like(MpAutoReplyDO::getRequestKeyword, requestKeyword);
+        return this.selectList(mpAutoReplyDOLambdaQueryWrapper);
+    }
+
+    default List<MpAutoReplyDO> selectListByAppIdAndMessage(String appId, String requestMessageType){
+        LambdaQueryWrapper<MpAutoReplyDO> mpAutoReplyDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        mpAutoReplyDOLambdaQueryWrapper
+                .eq(MpAutoReplyDO::getAppId, appId)
+                .eq(MpAutoReplyDO::getType, MpAutoReplyTypeEnum.MESSAGE.getType())
+                .eq(MpAutoReplyDO::getRequestMessageType, requestMessageType);
+        return this.selectList(mpAutoReplyDOLambdaQueryWrapper);
     }
 
 }

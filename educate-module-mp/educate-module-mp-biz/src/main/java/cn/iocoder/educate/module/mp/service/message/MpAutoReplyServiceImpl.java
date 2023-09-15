@@ -16,7 +16,9 @@ import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyTypeEnum;
 import cn.iocoder.educate.module.mp.framework.mp.core.util.MpUtils;
 import cn.iocoder.educate.module.mp.service.account.MpAccountService;
+import cn.iocoder.educate.module.mp.service.message.bo.MpMessageSendOutReqBO;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.context.annotation.Lazy;
@@ -48,6 +50,9 @@ public class MpAutoReplyServiceImpl implements MpAutoReplyService {
 
     @Resource
     private Validator validator;
+
+    @Resource
+    private MpMessageService mpMessageService;
 
     @Override
     public PageResult<MpAutoReplyDO> getAutoReplyPage(MpMessagePageReqVO mpMessagePageReqVO) {
@@ -106,7 +111,29 @@ public class MpAutoReplyServiceImpl implements MpAutoReplyService {
 
     @Override
     public WxMpXmlOutMessage replyForMessage(String appId, WxMpXmlMessage wxMessage) {
-        return null;
+        // 第一步，匹配自动回复
+        List<MpAutoReplyDO> replies = null;
+        // 1.1 关键字
+        if (wxMessage.getMsgType().equals(WxConsts.XmlMsgType.TEXT)) {
+            // 完全匹配
+            replies = mpAutoReplyMapper.selectListByAppIdAndKeywordAll(appId, wxMessage.getContent());
+            if (CollUtil.isEmpty(replies)) {
+                // 模糊匹配
+                replies = mpAutoReplyMapper.selectListByAppIdAndKeywordLike(appId, wxMessage.getContent());
+            }
+        }
+        // 1.2 消息类型
+        if (CollUtil.isEmpty(replies)) {
+            replies = mpAutoReplyMapper.selectListByAppIdAndMessage(appId, wxMessage.getMsgType());
+        }
+        if (CollUtil.isEmpty(replies)) {
+            return null;
+        }
+        MpAutoReplyDO reply = CollUtil.getFirst(replies);
+
+        // 第二步，基于自动回复，创建消息
+        MpMessageSendOutReqBO sendReqBO = MpAutoReplyConvert.INSTANCE.convert(wxMessage.getFromUser(), reply);
+        return mpMessageService.sendOutMessage(sendReqBO);
     }
 
     /**

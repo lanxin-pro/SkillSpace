@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.mp.dal.dataobject.message;
 import cn.iocoder.educate.framework.common.util.collection.SetUtils;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
+import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyMatchEnum;
+import cn.iocoder.educate.module.mp.enums.message.MpAutoReplyTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
