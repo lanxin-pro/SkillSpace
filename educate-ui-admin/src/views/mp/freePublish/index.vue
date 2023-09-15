@@ -2,7 +2,6 @@
   <div class="app-container">
     <!-- 搜索工作栏 -->
     <el-form
-        class="-mb-15px"
         :model="queryParams"
         ref="queryFormRef"
         :inline="true"
@@ -218,6 +217,7 @@ const handleDelete = async (item) => {
   margin-bottom: 10px;
   break-inside: avoid;
   border: 1px solid #eaeaea;
+  width: 300px;
 }
 
 p {

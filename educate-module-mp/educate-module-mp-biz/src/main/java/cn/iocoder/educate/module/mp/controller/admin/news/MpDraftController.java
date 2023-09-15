@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.draft.*;
+import me.chanjar.weixin.mp.bean.freepublish.WxMpFreePublishItem;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +63,9 @@ public class MpDraftController {
         } catch (WxErrorException e) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_LIST_FAIL, e.getError().getErrorMsg());
         }
+
+        // 查询对应的图片地址。目的：解决公众号的图片链接无法在我们后台展示
+        setDraftThumbUrl(draftList.getItems());
 
         // 返回分页
         return success(new PageResult<>(draftList.getItems(), draftList.getTotalCount().longValue()));
@@ -140,6 +144,31 @@ public class MpDraftController {
         } catch (WxErrorException e) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.DRAFT_DELETE_FAIL, e.getError().getErrorMsg());
         }
+    }
+
+    private void setDraftThumbUrl(List<WxMpDraftItem> items) {
+        // 1.1 获得 mediaId 数组
+        Set<String> mediaIds = new HashSet<>();
+        items.forEach(item -> item.getContent().getNewsItem().forEach(newsItem -> {
+            mediaIds.add(newsItem.getThumbMediaId());
+        }));
+        if (CollUtil.isEmpty(mediaIds)) {
+            return;
+        }
+        // 1.2 批量查询对应的 Media 素材
+        Map<String, MpMaterialDO> materials = mpMaterialService.getMaterialListByMediaId(mediaIds)
+                .stream()
+                .collect(Collectors.toMap(MpMaterialDO::getMediaId, Function.identity(),(v1,v2) -> v1));
+
+        // 2. 设置回 WxMpFreePublishItem 记录
+        items.forEach(item -> {
+            item.getContent().getNewsItem().forEach(newsItem ->
+                // 从哈希表查找到 key 对应的 value，然后进一步处理
+                MapUtils.findAndThen(materials, newsItem.getThumbMediaId(),
+                    material -> {
+                        newsItem.setThumbUrl(material.getUrl());
+                    }));
+        });
     }
 
 }

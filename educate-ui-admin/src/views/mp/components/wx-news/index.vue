@@ -45,7 +45,6 @@ defineExpose({
 
 <style lang="scss" scoped>
 .news-home {
-  width: 100%;
   margin: auto;
   background-color: #fff;
 }
