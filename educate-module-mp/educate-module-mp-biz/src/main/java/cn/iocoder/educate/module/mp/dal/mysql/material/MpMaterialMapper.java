@@ -38,7 +38,7 @@ public interface MpMaterialMapper extends BaseMapper<MpMaterialDO> {
 
     default List<MpMaterialDO> selectListByMediaId(Collection<String> mediaIds) {
         LambdaQueryWrapper<MpMaterialDO> mpMaterialDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        mpMaterialDOLambdaQueryWrapper.eq(MpMaterialDO::getMediaId, mediaIds);
+        mpMaterialDOLambdaQueryWrapper.in(MpMaterialDO::getMediaId, mediaIds);
         return selectList(mpMaterialDOLambdaQueryWrapper);
     }
 
