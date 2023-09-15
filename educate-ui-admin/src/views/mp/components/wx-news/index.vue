@@ -6,7 +6,7 @@
         <div class="news-main">
           <div class="news-content">
             <el-image
-                :src="article.picUrl"
+                :src="article.thumbUrl"
                 class="material-img"
             />
             <div class="news-content-title">
@@ -21,7 +21,7 @@
           <div class="news-content-item">
             <div class="news-content-item-title">{{ article.title }}</div>
             <div class="news-content-item-img">
-              <img :src="article.picUrl" class="material-img" height="100%" />
+              <img :src="article.thumbUrl" class="material-img" height="100%" />
             </div>
           </div>
         </div>

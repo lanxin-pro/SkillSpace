@@ -63,7 +63,7 @@ const list = ref([])
 
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 15,
   accountId: -1
 })
 
@@ -79,6 +79,7 @@ const getList = async () => {
   try {
     loading.value = true
     const response = await getFreePublishPage(queryParams)
+    console.log("发表的图文信息页",response.data)
     list.value = response.data.list
     total.value = response.data.total
   } finally {

@@ -1,10 +1,13 @@
 package cn.iocoder.educate.module.mp.controller.admin.news;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.common.util.collection.MapUtils;
 import cn.iocoder.educate.framework.common.util.object.PageUtils;
 import cn.iocoder.educate.module.mp.controller.admin.news.vo.MpFreePublishPageReqVO;
+import cn.iocoder.educate.module.mp.dal.dataobject.material.MpMaterialDO;
 import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.mp.framework.mp.core.MpServiceFactory;
 import cn.iocoder.educate.module.mp.service.material.MpMaterialService;
@@ -21,6 +24,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -56,6 +66,9 @@ public class MpFreePublishController {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.FREE_PUBLISH_LIST_FAIL,
                     e.getError().getErrorMsg());
         }
+        // 查询对应的图片地址。目的：解决公众号的图片链接无法在我们后台展示
+        setFreePublishThumbUrl(publicationRecords.getItems());
+
 
         // 返回分页
         return success(new PageResult<>(publicationRecords.getItems(), publicationRecords.getTotalCount().longValue()));
@@ -80,5 +93,29 @@ public class MpFreePublishController {
         }
     }
 
+    private void setFreePublishThumbUrl(List<WxMpFreePublishItem> items) {
+        // 1.1 获得 mediaId 数组
+        Set<String> mediaIds = new HashSet<>();
+        items.forEach(item -> item.getContent().getNewsItem().forEach(newsItem -> {
+            mediaIds.add(newsItem.getThumbMediaId());
+        }));
+        if (CollUtil.isEmpty(mediaIds)) {
+            return;
+        }
+        // 1.2 批量查询对应的 Media 素材
+        Map<String, MpMaterialDO> materials = mpMaterialService.getMaterialListByMediaId(mediaIds)
+                .stream()
+                .collect(Collectors.toMap(MpMaterialDO::getMediaId, Function.identity(),(v1,v2) -> v1));
+
+        // 2. 设置回 WxMpFreePublishItem 记录
+        items.forEach(item -> {
+            item.getContent().getNewsItem().forEach(newsItem ->
+                    // 从哈希表查找到 key 对应的 value，然后进一步处理
+                MapUtils.findAndThen(materials, newsItem.getThumbMediaId(),
+                        material -> {
+                            newsItem.setThumbUrl(material.getUrl());
+                        }));
+        });
+    }
 
 }
