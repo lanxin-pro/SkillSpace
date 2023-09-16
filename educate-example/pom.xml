@@ -14,6 +14,9 @@
         <module>lab-01-demo01-rabbitmq-java</module>
         <module>lab-01-demo02-rabbitmq-springboot</module>
         <module>educate-jenkins</module>
+        <module>lab-28-task-demo</module>
+        <module>lab-28-task-quartz-memory</module>
+        <module>lab-28-task-xxl-job</module>
     </modules>
     <packaging>pom</packaging>
 
