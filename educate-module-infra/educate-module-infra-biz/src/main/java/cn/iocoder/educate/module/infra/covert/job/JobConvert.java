@@ -22,6 +22,8 @@ public interface JobConvert {
 
     JobDO convert(JobCreateReqVO bean);
 
+    JobRespVO convert(JobDO bean);
+
     PageResult<JobRespVO> convertPage(PageResult<JobDO> page);
 
 }

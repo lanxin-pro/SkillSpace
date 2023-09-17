@@ -25,6 +25,14 @@ public interface JobService {
     PageResult<JobDO> getJobPage(JobPageReqVO pageReqVO);
 
     /**
+     * 获得定时任务
+     *
+     * @param id 编号
+     * @return 定时任务
+     */
+    JobDO getJob(Long id);
+
+    /**
      * 创建定时任务
      *
      * @param createReqVO 创建信息

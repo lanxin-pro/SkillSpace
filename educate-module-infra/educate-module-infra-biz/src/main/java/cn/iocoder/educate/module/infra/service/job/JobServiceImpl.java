@@ -34,6 +34,11 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public JobDO getJob(Long id) {
+        return jobMapper.selectById(id);
+    }
+
+    @Override
     public Long createJob(JobCreateReqVO createReqVO) throws SchedulerException {
         return null;
     }
