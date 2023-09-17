@@ -29,6 +29,7 @@
         <module>educate-spring-boot-starter-biz-data-permission</module>
         <module>educate-spring-boot-starter-biz-error-code</module>
         <module>educate-spring-boot-starter-biz-weixin</module>
+        <module>educate-spring-boot-starter-job</module>
     </modules>
 
     <description>
