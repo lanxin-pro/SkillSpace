@@ -58,6 +58,18 @@ export const InfraApiErrorLogProcessStatusEnum = {
 }
 
 /**
+ * 任务状态的枚举
+ */
+export const InfraJobStatusEnum = {
+    // 初始化中
+    INIT: 0,
+    // 运行中
+    NORMAL: 1,
+    // 暂停运行
+    STOP: 2
+}
+
+/**
  * 数据权限的范围枚举
  */
 export const SystemDataScopeEnum = {
