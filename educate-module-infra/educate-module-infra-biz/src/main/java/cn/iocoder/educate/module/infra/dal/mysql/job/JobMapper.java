@@ -36,4 +36,10 @@ public interface JobMapper extends BaseMapper<JobDO> {
         return new PageResult<>(jobDOPage.getRecords(),jobDOPage.getTotal());
     }
 
+    default JobDO selectByHandlerName(String handlerName) {
+        LambdaQueryWrapper<JobDO> jobDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        jobDOLambdaQueryWrapper.eq(JobDO::getHandlerName, handlerName);
+        return this.selectOne(jobDOLambdaQueryWrapper);
+    }
+
 }

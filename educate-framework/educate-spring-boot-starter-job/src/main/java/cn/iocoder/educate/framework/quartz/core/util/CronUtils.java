@@ -18,6 +18,16 @@ import java.util.List;
 public class CronUtils {
 
     /**
+     * 校验 CRON 表达式是否有效
+     *
+     * @param cronExpression CRON 表达式
+     * @return 是否有效
+     */
+    public static boolean isValid(String cronExpression) {
+        return CronExpression.isValidExpression(cronExpression);
+    }
+
+    /**
      * 基于 CRON 表达式，获得下 n 个满足执行的时间
      *
      * @param cronExpression CRON 表达式
