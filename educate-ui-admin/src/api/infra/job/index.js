@@ -61,7 +61,7 @@ export function updateJob(data) {
  * @param jobId
  * @returns {*}
  */
-export function delJob(jobId) {
+export function deleteJob(jobId) {
     return request({
         url: '/infra/job/delete?id=' + jobId,
         method: 'delete'
