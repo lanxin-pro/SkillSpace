@@ -33,7 +33,7 @@ export function getJob(jobId) {
  * @param data
  * @returns {*}
  */
-export function addJob(data) {
+export function createJob(data) {
     return request({
         url: '/infra/job/create',
         method: 'post',
