@@ -101,4 +101,35 @@ public class SchedulerManager {
         scheduler.pauseJob(new JobKey(jobHandlerName));
     }
 
+    /**
+     * 删除 Quartz 中的 Job
+     *
+     * @param jobHandlerName 任务处理器的名字
+     * @throws SchedulerException 删除异常
+     */
+    public void deleteJob(String jobHandlerName) throws SchedulerException {
+        ListenerManager listenerManager = scheduler.getListenerManager();
+
+        scheduler.deleteJob(new JobKey(jobHandlerName));
+    }
+
+    /**
+     * 立即触发一次 Quartz 中的 Job
+     *
+     * @param jobId 任务编号
+     * @param jobHandlerName 任务处理器的名字
+     * @param jobHandlerParam 任务处理器的参数
+     * @throws SchedulerException 触发异常
+     */
+    public void triggerJob(Long jobId, String jobHandlerName, String jobHandlerParam)
+            throws SchedulerException {
+        // 无需重试，所以不设置 retryCount 和 retryInterval
+        JobDataMap data = new JobDataMap();
+        data.put(JobDataKeyEnum.JOB_ID.name(), jobId);
+        data.put(JobDataKeyEnum.JOB_HANDLER_NAME.name(), jobHandlerName);
+        data.put(JobDataKeyEnum.JOB_HANDLER_PARAM.name(), jobHandlerParam);
+        // 触发任务
+        scheduler.triggerJob(new JobKey(jobHandlerName), data);
+    }
+
 }

@@ -107,4 +107,23 @@ public class JobController {
         return success(true);
     }
 
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除定时任务")
+    @Parameter(name = "id", description = "编号", required = true, example = "1024")
+    @PreAuthorize("@lanxin.hasPermission('infra:job:delete')")
+    public CommonResult<Boolean> deleteJob(@RequestParam("id") Long id)
+            throws SchedulerException {
+        jobService.deleteJob(id);
+        return success(true);
+    }
+
+    @PutMapping("/trigger")
+    @Operation(summary = "触发定时任务")
+    @Parameter(name = "id", description = "编号", required = true, example = "1024")
+    @PreAuthorize("@lanxin.hasPermission('infra:job:trigger')")
+    public CommonResult<Boolean> triggerJob(@RequestParam("id") Long id) throws SchedulerException {
+        jobService.triggerJob(id);
+        return success(true);
+    }
+
 }

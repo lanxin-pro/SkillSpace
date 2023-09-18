@@ -187,7 +187,7 @@ import ELComponent from '@/plugins/modal.js'
 import JobDetail from './JobDetail.vue'
 import JobForm from './JobForm.vue'
 import { parseTime } from '@/utils/ruoyi.js'
-import { getJobPage,exportJob,deleteJob,updateJobStatus } from '@/api/infra/job/index.js'
+import { getJobPage,exportJob,deleteJob,updateJobStatus,runJob } from '@/api/infra/job/index.js'
 import DictTag from '@/components/DictTag/index.vue'
 import download from '@/utils/download.js'
 import { formatDate } from '@/utils/formatTime.js'
@@ -290,8 +290,8 @@ const handleChangeStatus = async (row) => {
     await getList()
   } catch {
     // TODO j-sentinel 这里逻辑后面等写完了再看
-    row.status =
-        row.status === InfraJobStatusEnum.NORMAL ? InfraJobStatusEnum.STOP : InfraJobStatusEnum.NORMAL
+    // row.status =
+    //     row.status === InfraJobStatusEnum.NORMAL ? InfraJobStatusEnum.STOP : InfraJobStatusEnum.NORMAL
   }
 }
 
@@ -302,7 +302,7 @@ const handleDelete = async (id) => {
     await ELComponent.confirm('您确定要删除吗？')
     // 发起删除
     await deleteJob(id)
-    ELComponent.success('删除成功！')
+    ELComponent.msgSuccess('删除成功！')
     // 刷新列表
     await getList()
   } catch {}
@@ -332,7 +332,7 @@ const handleRun = async (row) => {
     await ELComponent.confirm('确认要立即执行一次' + row.name + '?', '温馨提示')
     // 提交执行
     await runJob(row.id)
-    message.success('执行成功')
+    ELComponent.msgSuccess('执行成功')
     // 刷新列表
     await getList()
   } catch {}

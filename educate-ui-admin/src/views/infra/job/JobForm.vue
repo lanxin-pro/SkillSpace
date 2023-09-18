@@ -119,10 +119,10 @@ const submitForm = async () => {
     const data = formData.value
     if (formType.value === 'create') {
       await createJob(data)
-      ELComponent.success('添加成功！')
+      ELComponent.msgSuccess('添加成功！')
     } else {
       await updateJob(data)
-      ELComponent.success('更新成功！')
+      ELComponent.msgSuccess('更新成功！')
     }
     dialogVisible.value = false
     // 发送操作成功的事件

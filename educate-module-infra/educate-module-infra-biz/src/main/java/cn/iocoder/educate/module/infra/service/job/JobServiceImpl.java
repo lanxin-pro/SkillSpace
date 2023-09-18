@@ -129,6 +129,27 @@ public class JobServiceImpl implements JobService {
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteJob(Long id) throws SchedulerException {
+        // 校验存在
+        JobDO job = validateJobExists(id);
+        // 更新
+        jobMapper.deleteById(id);
+
+        // 删除 Job 到 Quartz 中
+        schedulerManager.deleteJob(job.getHandlerName());
+    }
+
+    @Override
+    public void triggerJob(Long id) throws SchedulerException {
+        // 校验存在
+        JobDO job = validateJobExists(id);
+
+        // 触发 Quartz 中的 Job
+        schedulerManager.triggerJob(job.getId(), job.getHandlerName(), job.getHandlerParam());
+    }
+
     private void validateCronExpression(String cronExpression) {
         if (!CronUtils.isValid(cronExpression)) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_CRON_EXPRESSION_VALID);
