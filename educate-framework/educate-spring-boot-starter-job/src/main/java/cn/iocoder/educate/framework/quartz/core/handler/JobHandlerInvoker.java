@@ -1,12 +1,16 @@
 package cn.iocoder.educate.framework.quartz.core.handler;
 
+import cn.hutool.core.lang.Assert;
 import cn.iocoder.educate.framework.quartz.core.enums.JobDataKeyEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.PersistJobDataAfterExecution;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import javax.annotation.Resource;
 
 /**
  * 基础 Job 调用者，负责调用 {@link JobHandler#execute(String)} 执行任务
@@ -27,10 +31,35 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 @Slf4j
 public class JobHandlerInvoker extends QuartzJobBean {
 
+    @Resource
+    private ApplicationContext applicationContext;
+
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         // 第一步，获得 Job 数据
         Long jobId = jobExecutionContext.getMergedJobDataMap().getLong(JobDataKeyEnum.JOB_ID.name());
+        String jobHandlerName = jobExecutionContext.getMergedJobDataMap().getString(JobDataKeyEnum.JOB_HANDLER_NAME.name());
+        String jobHandlerParam = jobExecutionContext.getMergedJobDataMap().getString(JobDataKeyEnum.JOB_HANDLER_PARAM.name());
+        int refireCount  = jobExecutionContext.getRefireCount();
+        int retryCount = (Integer) jobExecutionContext.getMergedJobDataMap().getOrDefault(JobDataKeyEnum.JOB_RETRY_COUNT.name(), 0);
+        int retryInterval = (Integer) jobExecutionContext.getMergedJobDataMap().getOrDefault(JobDataKeyEnum.JOB_RETRY_INTERVAL.name(), 0);
+        // 执行任务
+        try {
+            this.executeInternal(jobHandlerName, jobHandlerParam);
+        } catch (Exception e) {
+            log.error("出大事了!!!!!!!!!!!!!!");
+            e.printStackTrace();
+        }
+    }
+
+    private String executeInternal(String jobHandlerName, String jobHandlerParam) throws Exception {
+        JobHandler bean = (JobHandler) applicationContext.getBean(jobHandlerName);
+        log.info("当前JobHandler加载的对象{}",bean);
+        // 获得 JobHandler 对象
+        JobHandler jobHandler = applicationContext.getBean(jobHandlerName, JobHandler.class);
+        Assert.notNull(jobHandler, "JobHandler 不会为空");
+        // 执行任务
+        return jobHandler.execute(jobHandlerParam);
     }
 
 }

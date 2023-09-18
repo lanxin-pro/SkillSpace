@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.infra.dal.dataobject.job;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.module.infra.enums.job.JobStatusEnum;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -25,8 +26,10 @@ public class JobDO extends BaseDO {
 
     /**
      * 任务编号
+     *
+     * TODO j-sentinel 为什么这里要显示的定义出type，我的@{link IdTypeEnvironmentPostProcessor}没有生效
      */
-    @TableId
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
