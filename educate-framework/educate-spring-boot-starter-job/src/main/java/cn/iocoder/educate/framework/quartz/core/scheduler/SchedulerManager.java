@@ -61,4 +61,44 @@ public class SchedulerManager {
                 .build();
     }
 
+    /**
+     * 更新 Job 到 Quartz
+     *
+     * @param jobHandlerName 任务处理器的名字
+     * @param jobHandlerParam 任务处理器的参数
+     * @param cronExpression CRON 表达式
+     * @param retryCount 重试次数
+     * @param retryInterval 重试间隔
+     * @throws SchedulerException 更新异常
+     */
+    public void updateJob(String jobHandlerName, String jobHandlerParam, String cronExpression,
+                          Integer retryCount, Integer retryInterval) throws SchedulerException {
+        // 创建新 Trigger 对象
+        Trigger newTrigger = this.buildTrigger(jobHandlerName, jobHandlerParam, cronExpression,
+                retryCount, retryInterval);
+        // 修改调度
+        scheduler.rescheduleJob(new TriggerKey(jobHandlerName), newTrigger);
+    }
+
+    /**
+     * 启动 Quartz 中的 Job
+     *
+     * @param jobHandlerName 任务处理器的名字
+     * @throws SchedulerException 启动异常
+     */
+    public void resumeJob(String jobHandlerName) throws SchedulerException {
+        scheduler.resumeJob(new JobKey(jobHandlerName));
+        scheduler.resumeTrigger(new TriggerKey(jobHandlerName));
+    }
+
+    /**
+     * 暂停 Quartz 中的 Job
+     *
+     * @param jobHandlerName 任务处理器的名字
+     * @throws SchedulerException 暂停异常
+     */
+    public void pauseJob(String jobHandlerName) throws SchedulerException {
+        scheduler.pauseJob(new JobKey(jobHandlerName));
+    }
+
 }

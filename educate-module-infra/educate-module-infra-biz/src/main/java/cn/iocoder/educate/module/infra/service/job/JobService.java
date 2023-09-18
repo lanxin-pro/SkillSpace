@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.infra.service.job;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobCreateReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobPageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobUpdateReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.job.JobDO;
 import org.quartz.SchedulerException;
 
@@ -39,5 +40,20 @@ public interface JobService {
      * @return 编号
      */
     Long createJob(@Valid JobCreateReqVO createReqVO) throws SchedulerException;
+
+    /**
+     * 更新定时任务
+     *
+     * @param updateReqVO 更新信息
+     */
+    void updateJob(JobUpdateReqVO updateReqVO) throws SchedulerException;
+
+    /**
+     * 更新定时任务的状态
+     *
+     * @param id     任务编号
+     * @param status 状态
+     */
+    void updateJobStatus(Long id, Integer status) throws SchedulerException;
 
 }

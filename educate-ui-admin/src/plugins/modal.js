@@ -59,6 +59,14 @@ export default {
       type: "warning",
     })
   },
+  // 确认窗体
+  confirmTip(content, tip) {
+    return ElMessageBox.confirm(content, tip ? tip : '系统提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+},
   // 提交内容
   prompt(content) {
     return ElMessageBox.prompt(content, "系统提示", {

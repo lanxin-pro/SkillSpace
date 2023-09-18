@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.infra.covert.job;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobCreateReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobRespVO;
+import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobUpdateReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.job.JobDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -21,6 +22,8 @@ public interface JobConvert {
     JobConvert INSTANCE = Mappers.getMapper(JobConvert.class);
 
     JobDO convert(JobCreateReqVO bean);
+
+    JobDO convert(JobUpdateReqVO bean);
 
     JobRespVO convert(JobDO bean);
 

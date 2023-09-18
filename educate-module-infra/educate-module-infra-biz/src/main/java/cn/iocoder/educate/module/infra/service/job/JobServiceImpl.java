@@ -6,6 +6,7 @@ import cn.iocoder.educate.framework.quartz.core.scheduler.SchedulerManager;
 import cn.iocoder.educate.framework.quartz.core.util.CronUtils;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobCreateReqVO;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobPageReqVO;
+import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobUpdateReqVO;
 import cn.iocoder.educate.module.infra.covert.job.JobConvert;
 import cn.iocoder.educate.module.infra.dal.dataobject.job.JobDO;
 import cn.iocoder.educate.module.infra.dal.mysql.job.JobMapper;
@@ -15,11 +16,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.quartz.SchedulerException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
 
 /**
  * 定时任务 Service 实现类
@@ -76,6 +79,56 @@ public class JobServiceImpl implements JobService {
         return job.getId();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateJob(JobUpdateReqVO updateReqVO) throws SchedulerException {
+        validateCronExpression(updateReqVO.getCronExpression());
+        // 校验存在
+        JobDO job = validateJobExists(updateReqVO.getId());
+        // 只有开启状态，才可以修改.原因是，如果出暂停状态，修改 Quartz Job 时，会导致任务又开始执行
+        if (!job.getStatus().equals(JobStatusEnum.NORMAL.getStatus())) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_UPDATE_ONLY_NORMAL_STATUS);
+        }
+        // 更新
+        JobDO jobDO = JobConvert.INSTANCE.convert(updateReqVO);
+        // 监控超时时间 为空就为0
+        fillJobMonitorTimeoutEmpty(jobDO);
+        jobMapper.updateById(jobDO);
+
+        // 更新 Job 到 Quartz 中
+        schedulerManager.updateJob(job.getHandlerName(), updateReqVO.getHandlerParam(), updateReqVO.getCronExpression(),
+                updateReqVO.getRetryCount(), updateReqVO.getRetryInterval());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateJobStatus(Long id, Integer status) throws SchedulerException {
+        // 校验 status
+        if (!Arrays.asList(JobStatusEnum.NORMAL.getStatus(),JobStatusEnum.STOP.getStatus()).contains(status)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_CHANGE_STATUS_INVALID);
+        }
+        // 校验存在
+        JobDO job = validateJobExists(id);
+        // 校验是否已经为当前状态
+        if (job.getStatus().equals(status)) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_CHANGE_STATUS_EQUALS);
+        }
+        // 更新 Job 状态
+        JobDO jobDO = JobDO
+                .builder()
+                .id(id)
+                .status(status)
+                .build();
+        jobMapper.updateById(jobDO);
+        // 更新状态 Job 到 Quartz 中
+        // 开启
+        if (JobStatusEnum.NORMAL.getStatus().equals(status)) {
+            schedulerManager.resumeJob(job.getHandlerName());
+        } else { // 暂停
+            schedulerManager.pauseJob(job.getHandlerName());
+        }
+    }
+
     private void validateCronExpression(String cronExpression) {
         if (!CronUtils.isValid(cronExpression)) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_CRON_EXPRESSION_VALID);
@@ -86,6 +139,14 @@ public class JobServiceImpl implements JobService {
         if (job.getMonitorTimeout() == null) {
             job.setMonitorTimeout(0);
         }
+    }
+
+    private JobDO validateJobExists(Long id) {
+        JobDO job = jobMapper.selectById(id);
+        if (job == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.JOB_NOT_EXISTS);
+        }
+        return job;
     }
 
 }

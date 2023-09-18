@@ -227,7 +227,6 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await getJobPage(queryParams)
-    console.log(response.data)
     list.value = response.data.list
     total.value = response.data.total
   } finally {
@@ -270,21 +269,27 @@ const openForm = (type, id) => {
 
 /** 修改状态操作 */
 const handleChangeStatus = async (row) => {
+  // 修改状态的二次确认
+  const text = row.status === InfraJobStatusEnum.STOP ? '开启' : '关闭'
+  await ELComponent.confirmTip(
+      '确认要' + text + '定时任务编号为"' + row.id + '"的数据项?',
+      '温馨提示'
+  )
+  const status = ref()
+  console.log(row.status === InfraJobStatusEnum.INIT)
+  if(row.status === InfraJobStatusEnum.INIT){
+    status.value = InfraJobStatusEnum.INIT
+  }else{
+    status.value = row.status === InfraJobStatusEnum.STOP ? InfraJobStatusEnum.NORMAL : InfraJobStatusEnum.STOP
+  }
   try {
-    // 修改状态的二次确认
-    const text = row.status === InfraJobStatusEnum.STOP ? '开启' : '关闭'
-    await message.confirm(
-        '确认要' + text + '定时任务编号为"' + row.id + '"的数据项?',
-        '温馨提示'
-    )
-    const status =
-        row.status === InfraJobStatusEnum.STOP ? InfraJobStatusEnum.NORMAL : InfraJobStatusEnum.STOP
-    await updateJobStatus(row.id, status)
-    message.success(text + '成功')
+    // 更新
+    await updateJobStatus(row.id, status.value)
+    ELComponent.msgSuccess(text + '成功')
     // 刷新列表
     await getList()
   } catch {
-    // 取消后，进行恢复按钮
+    // TODO j-sentinel 这里逻辑后面等写完了再看
     row.status =
         row.status === InfraJobStatusEnum.NORMAL ? InfraJobStatusEnum.STOP : InfraJobStatusEnum.NORMAL
   }
