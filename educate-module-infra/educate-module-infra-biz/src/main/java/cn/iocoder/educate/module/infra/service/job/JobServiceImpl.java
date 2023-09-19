@@ -51,6 +51,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createJob(JobCreateReqVO createReqVO) throws SchedulerException {
         // 校验cron是否正确
         validateCronExpression(createReqVO.getCronExpression());

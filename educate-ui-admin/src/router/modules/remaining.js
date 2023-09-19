@@ -108,6 +108,27 @@ const constantRoutes = [
         ]
     },
     {
+        path: '/job',
+        component: Frame,
+        name: 'JobL',
+        hidden: true,
+        children: [
+            {
+                path: 'job-log',
+                component: () => import('@/views/infra/job/logger/index.vue'),
+                name: 'InfraJobLog',
+                meta: {
+                    noCache: true,
+                    hidden: true,
+                    canTo: true,
+                    icon: 'fa-solid fa-edit',
+                    title: '调度日志',
+                    activeMenu: 'infra/job/index'
+                }
+            }
+        ]
+    },
+    {
         path: '/dict',
         component: Frame,
         name: 'dict',
