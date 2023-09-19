@@ -67,7 +67,8 @@ const props = defineProps({
   video: {
     type: Object,
     default: {
-      url: 'http://localhost:9011/server/admin-api/infra/file/5/get/20230824-190210.mp4', //视频地址
+      //视频地址
+      url: 'http://localhost:9011/server/admin-api/infra/file/5/get/20230824-190210.mp4',
       type: 'customHls',
       pic: "http://127.0.0.1:9011/server/admin-api/infra/file/4/get/Snipaste_2023-04-24_14-35-14(1).png",
       customType: {

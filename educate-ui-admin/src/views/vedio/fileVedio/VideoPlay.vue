@@ -40,18 +40,21 @@ const open = async () => {
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
 
+const type = ref()
 
 const dplayerObj = reactive({
   video: {
     // 视频地址
-    url: 'https://api.dogecloud.com/player/get.m3u8?vcode=5ac682e6f8231991&userId=17&ext=.m3u8',
-    type: 'customHls',
+    url: 'http://127.0.0.1:9011/server/admin-api/infra/file/4/get/WeChat_20230919160349.mp4',
+    // mp4不要走
+    type: 'mp4',
     // 封面地址
     pic: "http://127.0.0.1:9011/server/admin-api/infra/file/4/get/Snipaste_2023-04-24_14-35-14(1).png",
-    // 自定义类型
+    // 自定义类型 u3u8的处理方式
     customType: {
       customHls: function (video, player) {
-        const hls = new Hls(); //实例化Hls  用于解析m3u8
+        //实例化Hls  用于解析m3u8
+        const hls = new Hls();
         hls.loadSource(video.src);
         hls.attachMedia(video);
       }
@@ -59,10 +62,10 @@ const dplayerObj = reactive({
   },
   danmaku: {
     id: '9E2E3368B56CDBB4',
-    api: 'https://api.prprpr.me/dplayer/',
+    api: 'http://localhost:9011/server/admin-api/video/danmu/',
     token: 'tokendemo',
     maximum: 1000,
-    addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
+    addition: ['https://s-sh-17-dplayercdn.oss.dogecdn.com/1678963.json'],
     user: 'DIYgod',
     bottom: '15%',
     unlimited: true,

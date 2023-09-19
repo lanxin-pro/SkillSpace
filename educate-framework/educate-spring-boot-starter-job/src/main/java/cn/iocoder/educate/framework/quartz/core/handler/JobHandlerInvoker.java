@@ -46,12 +46,24 @@ public class JobHandlerInvoker extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         // 第一步，获得 Job 数据
-        Long jobId = jobExecutionContext.getMergedJobDataMap().getLong(JobDataKeyEnum.JOB_ID.name());
-        String jobHandlerName = jobExecutionContext.getMergedJobDataMap().getString(JobDataKeyEnum.JOB_HANDLER_NAME.name());
-        String jobHandlerParam = jobExecutionContext.getMergedJobDataMap().getString(JobDataKeyEnum.JOB_HANDLER_PARAM.name());
+        Long jobId = jobExecutionContext.getMergedJobDataMap()
+                .getLong(JobDataKeyEnum.JOB_ID.name());
+
+        // 控制器名称
+        String jobHandlerName = jobExecutionContext.getMergedJobDataMap()
+                .getString(JobDataKeyEnum.JOB_HANDLER_NAME.name());
+
+        // 参数名称
+        String jobHandlerParam = jobExecutionContext.getMergedJobDataMap()
+                .getString(JobDataKeyEnum.JOB_HANDLER_PARAM.name());
+
         int refireCount  = jobExecutionContext.getRefireCount();
-        int retryCount = (Integer) jobExecutionContext.getMergedJobDataMap().getOrDefault(JobDataKeyEnum.JOB_RETRY_COUNT.name(), 0);
-        int retryInterval = (Integer) jobExecutionContext.getMergedJobDataMap().getOrDefault(JobDataKeyEnum.JOB_RETRY_INTERVAL.name(), 0);
+
+        int retryCount = (Integer) jobExecutionContext.getMergedJobDataMap()
+                .getOrDefault(JobDataKeyEnum.JOB_RETRY_COUNT.name(), 0);
+
+        int retryInterval = (Integer) jobExecutionContext.getMergedJobDataMap()
+                .getOrDefault(JobDataKeyEnum.JOB_RETRY_INTERVAL.name(), 0);
 
         // 第二步，执行任务
         Long jobLogId = null;
