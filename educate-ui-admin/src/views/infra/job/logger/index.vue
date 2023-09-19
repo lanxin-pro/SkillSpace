@@ -107,7 +107,11 @@
       <el-table-column label="第几次执行" align="center" prop="executeIndex" />
       <el-table-column label="执行时间" align="center" width="170s">
         <template #default="scope">
-          <span>{{ formatDate(scope.row.beginTime) + ' ~ ' + formatDate(scope.row.endTime) }}</span>
+          <span>
+            {{ formatDate(scope.row.beginTime)}}
+            <div style="height: 6px;line-height: 6px">~</div>
+            {{ formatDate(scope.row.endTime) }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="执行时长" align="center" prop="duration">
@@ -173,7 +177,7 @@ const total = ref(0)
 const list = ref([])
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 20,
   jobId: query.id,
   handlerName: undefined,
   beginTime: undefined,
