@@ -4,7 +4,7 @@
 
 <script setup>
 import DPlayer from 'dplayer'
-import Hls from 'hls.js';
+import Hls from 'hls.js'
 import { ref, reactive, onBeforeUnmount, onMounted } from 'vue'
 
 const videoRef = ref()
@@ -145,4 +145,18 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang='scss' scoped>
+/*.dplayer-danmaku .dplayer-danmaku-right.dplayer-danmaku-move {
+  will-change: transform;
+  animation-name: slide-in-right;
+  animation-timing-function: linear;
+  animation-play-state: paused;
+}
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}*/
 </style>

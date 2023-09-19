@@ -45,6 +45,7 @@ const type = ref()
 const dplayerObj = reactive({
   video: {
     // 视频地址
+    // url: https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f8231991&userId=17&ext=.mp4
     url: 'http://127.0.0.1:9011/server/admin-api/infra/file/4/get/WeChat_20230919160349.mp4',
     // mp4不要走
     type: 'mp4',
@@ -60,6 +61,8 @@ const dplayerObj = reactive({
       }
     }
   },
+  //可选，启用截图功能，默认值：false，注意：如果设置为 true，视频和视频截图必须启用跨域
+  screenshot: true,
   danmaku: {
     id: '2779e3b7c71be93b8103aef6985fbdd0',
     // api: 'https://angustar.tech/api/dplayer/',
@@ -68,6 +71,7 @@ const dplayerObj = reactive({
     maximum: 1000,
     addition: ['https://s-sh-17-dplayercdn.oss.dogecdn.com/1678963.json'],
     user: 'DIYgod',
+    // 弹幕距离播放器底部的距离，防止遮挡字幕，取值形如: '10px' '10%'
     bottom: '15%',
     unlimited: true,
     speedRate: 0.5,
