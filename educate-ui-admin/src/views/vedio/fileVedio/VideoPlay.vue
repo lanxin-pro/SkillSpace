@@ -61,8 +61,9 @@ const dplayerObj = reactive({
     }
   },
   danmaku: {
-    id: '9E2E3368B56CDBB4',
-    api: 'http://localhost:9011/server/admin-api/video/danmu/',
+    id: '2779e3b7c71be93b8103aef6985fbdd0',
+    // api: 'https://angustar.tech/api/dplayer/',
+    api: 'http://127.0.0.1:9011/server/admin-api/video/danmu/',
     token: 'tokendemo',
     maximum: 1000,
     addition: ['https://s-sh-17-dplayercdn.oss.dogecdn.com/1678963.json'],

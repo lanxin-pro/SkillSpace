@@ -128,10 +128,13 @@ onMounted(() => {
     player.subtitle = props.subtitle
   }
   if (props.danmaku) {
+    console.log("aaaaaaaaaaaa",props.danmaku)
     player.danmaku = props.danmaku
   }
-  console.log(player);
+  console.log("player",player);
+
   state.instance = new DPlayer(player)
+  console.log("state.instance",state.instance)
 })
 // 销毁
 onBeforeUnmount(() => {

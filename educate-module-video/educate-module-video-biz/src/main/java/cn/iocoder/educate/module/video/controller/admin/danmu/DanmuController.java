@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,12 @@ public class DanmuController {
     public String getVideoPage(String id) throws Exception {
         System.out.println(id);
         Map map = new HashMap();
+        List superData = new ArrayList();
         List data = new ArrayList();
         data = DPlayerConstants.barrage_init(data);
         map.put("code", DPlayerConstants.DPLAYER_SUCCESS_CODE);
-        map.put("data",data);
+        superData.add(data);
+        map.put("data",superData);
         return obj2json(map);
     }
 
@@ -54,6 +57,7 @@ public class DanmuController {
     @PostMapping("/v3/")
     @Operation(summary = "发送视频弹幕")
     @PermitAll
+    @OperateLog(enable = false)
     public String postv3(@RequestBody Map<String,String> param) throws Exception {
         Map map = new HashMap();
         System.out.println(param);
