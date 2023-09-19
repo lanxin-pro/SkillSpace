@@ -1,7 +1,9 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.job;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
@@ -26,6 +28,7 @@ public class JobLogDO extends BaseDO {
     /**
      * 日志编号
      */
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**

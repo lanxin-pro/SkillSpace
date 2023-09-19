@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.service.job;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.quartz.core.service.JobLogFrameworkService;
 import cn.iocoder.educate.module.infra.controller.admin.job.vo.log.JobLogPageReqVO;
 import cn.iocoder.educate.module.infra.dal.dataobject.job.JobLogDO;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @Author: j-sentinel
  * @Date: 2023/9/19 13:39
  */
-public interface JobLogService {
+public interface JobLogService extends JobLogFrameworkService {
 
     /**
      * 获得定时任务
