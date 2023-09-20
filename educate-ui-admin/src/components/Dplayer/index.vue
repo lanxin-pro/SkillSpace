@@ -144,8 +144,9 @@ onBeforeUnmount(() => {
 
 </script>
 
-<style lang='scss' scoped>
-/*.dplayer-danmaku .dplayer-danmaku-right.dplayer-danmaku-move {
+<style lang='scss'>
+// TODO j-sentinel 并没有解决核心问题，依旧是animation-name不会动态显示，甚至没有
+.dplayer-danmaku .dplayer-danmaku-right.dplayer-danmaku-move {
   will-change: transform;
   animation-name: slide-in-right;
   animation-timing-function: linear;
@@ -158,5 +159,5 @@ onBeforeUnmount(() => {
   100% {
     transform: translateX(-100%);
   }
-}*/
+}
 </style>
