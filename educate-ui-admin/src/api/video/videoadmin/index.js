@@ -13,3 +13,16 @@ export const getVideoPage = params => {
         params
     })
 }
+
+/**
+ * 获取视频信息详情
+ *
+ * @param videoId
+ * @returns {*}
+ */
+export function getVideoAdmin(videoId) {
+    return request({
+        url: '/video/admin/get?id=' + videoId,
+        method: 'get'
+    })
+}

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class VideoAdminRespVo extends PageParam {
+public class VideoAdminRespVo extends VideoAdminBaseVO {
 
     @Schema(description = "模块类型 1：视频 2：漫画 3：动漫", example = "2")
     private Byte moduleType;

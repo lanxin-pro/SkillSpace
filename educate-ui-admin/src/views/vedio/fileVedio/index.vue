@@ -167,24 +167,29 @@
       </div>
       <div class='meta-view'>
         <el-switch
-            style='margin-right: 10px;margin-top: 5px;'
+            style='margin-right: 10px;'
             v-model='data.enableStatus'
             @change="handleChange(data,'enableStatus')"
             :active-value='1'
             :inactive-value='0'>
         </el-switch>
-        <el-button
-            size='mini'
-            type='danger'
-            icon='el-icon-delete-solid'
-            @click='handleDelete(index, data)'>删除
-        </el-button>
-        <el-button
-            size='mini'
-            type='primary'
-            icon='el-icon-edit'
-            @click='handleEdit(index, data)'>编辑
-        </el-button>
+        <div class="between">
+          <el-button
+              size='small'
+              type='danger'
+              icon='Delete'
+              @click='handleDelete(index, data)'>删除
+          </el-button>
+        </div>
+        <div class="between">
+          <el-button
+              size='small'
+              type='primary'
+              icon='Edit'
+              @click='handleEdit(index, data)'>编辑
+          </el-button>
+        </div>
+
       </div>
     </div>
 
@@ -232,6 +237,9 @@
     />
 
     <VideoPlay ref="videoPlayRef"/>
+
+    <!-- 表单弹窗：添加/修改 -->
+    <VideoForm ref="formRef" @success="getList" />
   </div>
 
 </template>
@@ -243,7 +251,9 @@ import { fileSizeFormatter } from '@/utils'
 import ELComponent from '@/plugins/modal.js'
 import { ref, reactive,onMounted } from 'vue'
 import VideoPlay from './VideoPlay.vue'
+import VideoForm from './VideoForm.vue'
 import CharacterMore from '@/components/CharacterMore/index.vue'
+import { SystemCreateOrUpdate } from '@/utils/constants.js'
 
 const coverBuff = ref("http://127.0.0.1:9011/server/admin-api/infra/file/4/get/84167ee95454c659d80f330263218f7b47e3eb9f22f22f2bebf686f4a9622580.png")
 // 列表的加载中
@@ -319,16 +329,10 @@ const getList = async ()=>{
   try {
     const response = await getVideoPage(queryParams)
     list.value = response.data.list
-    console.log("重数据库查询到的值",list.value)
     total.value = response.data.total
   } finally {
     loading.value = false
   }
-}
-/** 上传文件操作 */
-const formRef = ref()
-const openForm = () => {
-  formRef.value.open()
 }
 /** 下载 */
 const handleDownload = (row)=>{
@@ -352,6 +356,15 @@ const handleDelete = async (id) => {
     // 刷新列表
     await getList()
   } catch {}
+}
+/** 编辑修改操作 */
+const formRef = ref()
+const openForm = (index,data) => {
+  formRef.value.open(index,data)
+}
+/** 修改按钮操作 */
+const handleEdit = async (index,data) => {
+  await openForm(SystemCreateOrUpdate.UPDATE,data.id)
 }
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -467,5 +480,9 @@ const resetQuery = () => {
   display: flex;
   right: 0
 }
-
+.between {
+  display: flex;
+  align-items: center;
+  margin: 0 6px;
+}
 </style>

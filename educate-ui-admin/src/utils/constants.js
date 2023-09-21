@@ -70,6 +70,18 @@ export const InfraJobStatusEnum = {
 }
 
 /**
+ * 弹窗的标识
+ *
+ * @type {{}}
+ */
+export const SystemCreateOrUpdate = {
+    // 创建
+    CREATE: "创建",
+    // 修改
+    UPDATE: "修改"
+}
+
+/**
  * 数据权限的范围枚举
  */
 export const SystemDataScopeEnum = {
