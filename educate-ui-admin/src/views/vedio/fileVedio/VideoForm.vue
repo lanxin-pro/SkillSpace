@@ -48,7 +48,7 @@
             <div style='display: flex;justify-content: space-between'>
               <el-button
                   type='primary'
-                  @click='handleOpenTagDidlog'
+                  @click='handleOpenTagDialog'
                   size='small'
                   icon='Plus'
                   style='width: 176px;'
@@ -91,6 +91,7 @@
 
 
     <VideoCategory ref="videoCategoryRef" @select='handleVideoSelectCategory'></VideoCategory>
+    <VideoTag ref="videoTagRef" @select='handleVideoSelectTag'></VideoTag>
 
 
 
@@ -143,6 +144,7 @@ import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
 import VideoCategory from './components/VideoCategory.vue'
+import VideoTag from './components/VideoTag.vue'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -296,13 +298,22 @@ const submitForm = async () => {
   }
 }
 
-/** 弹窗操作 */
+/** 分类操作弹窗操作 */
 const videoCategoryRef = ref()
-const handleOpenCategory = ()=>{
+const handleOpenCategory = () => {
   videoCategoryRef.value.open()
 }
+/** 标签操作弹窗操作 */
+const videoTagRef = ref()
+const handleOpenTagDialog = () => {
+  videoTagRef.value.open()
+}
+/** 分类操作的返回 */
 const handleVideoSelectCategory = (data) => {
   console.log("啊哈",data)
+}
+const handleVideoSelectTag = (data) => {
+  console.log("啊哈2",data)
 }
 /** 重置表单 */
 const resetForm = () => {
