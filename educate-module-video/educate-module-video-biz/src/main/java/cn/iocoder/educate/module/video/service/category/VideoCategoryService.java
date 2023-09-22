@@ -1,6 +1,6 @@
 package cn.iocoder.educate.module.video.service.category;
 
-import cn.iocoder.educate.module.video.controller.admin.category.vo.VideoCategoryRespVO;
+import cn.iocoder.educate.module.video.controller.admin.category.vo.category.VideoCategoryRespVO;
 
 import java.util.List;
 

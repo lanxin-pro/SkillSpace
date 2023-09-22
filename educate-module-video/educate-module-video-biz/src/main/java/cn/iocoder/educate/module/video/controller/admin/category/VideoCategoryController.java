@@ -1,7 +1,7 @@
 package cn.iocoder.educate.module.video.controller.admin.category;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
-import cn.iocoder.educate.module.video.controller.admin.category.vo.VideoCategoryRespVO;
+import cn.iocoder.educate.module.video.controller.admin.category.vo.category.VideoCategoryRespVO;
 import cn.iocoder.educate.module.video.service.category.VideoCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

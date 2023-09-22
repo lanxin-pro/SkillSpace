@@ -1,6 +1,6 @@
 package cn.iocoder.educate.module.video.covert.category;
 
-import cn.iocoder.educate.module.video.controller.admin.category.vo.VideoCategoryRespVO;
+import cn.iocoder.educate.module.video.controller.admin.category.vo.category.VideoCategoryRespVO;
 import cn.iocoder.educate.module.video.dal.dataobject.category.VideoCategoryDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -1,13 +1,11 @@
 package cn.iocoder.educate.module.video.service.category;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
-import cn.iocoder.educate.module.video.controller.admin.category.vo.VideoCategoryRespVO;
+import cn.iocoder.educate.module.video.controller.admin.category.vo.category.VideoCategoryRespVO;
 import cn.iocoder.educate.module.video.covert.category.VideoCategoryConvert;
 import cn.iocoder.educate.module.video.dal.dataobject.category.VideoCategoryDO;
 import cn.iocoder.educate.module.video.dal.mysql.category.VideoCategoryMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

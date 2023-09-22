@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.video.controller.admin.category.vo;
+package cn.iocoder.educate.module.video.controller.admin.category.vo.category;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
