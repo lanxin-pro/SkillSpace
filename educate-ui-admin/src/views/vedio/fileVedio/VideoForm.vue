@@ -7,6 +7,95 @@
         :rules="formRules"
         label-width="80px"
     >
+      <div style='margin: 0 0 20px;padding:20px 120px 20px 20px;background: #fafafa;'>
+        <h2 style='padding: 20px 0px 20px 120px'>基础信息</h2>
+        <div style="display:none">
+          <el-input v-model='formData.categoryId' type='hidden'></el-input>
+          <el-input v-model='formData.categoryName' type='hidden'></el-input>
+          <el-input v-model='formData.categoryPid' type='hidden'></el-input>
+          <el-input v-model='formData.categoryPname' type='hidden'></el-input>
+        </div>
+        <el-form-item label='视频分类：' required label-width='200px'>
+          <template v-if='selectCategoryList && selectCategoryList.length > 0'>
+            <el-tag
+                v-for='(tag,index) in selectCategoryList'
+                @close='handleRemoveTag(index)'
+                :key='index'
+                closable
+            >
+              {{ tag.pname }} / {{ tag.name }}
+            </el-tag>
+          </template>
+          <el-button
+              @click='handleOpenCategory'
+              type="primary"
+              size='small'
+              icon='Plus'
+          >
+            选择分类
+          </el-button>
+        </el-form-item>
+
+        <el-form-item label='视频名称：' prop='title' required label-width='200px'>
+          <el-input v-model='formData.title' placeholder='请输入视频名称，<=100字符' maxlength='100'></el-input>
+        </el-form-item>
+        <el-form-item label='视频介绍：' prop='intro' label-width='200px'>
+          <el-input type='textarea' maxlength='400' placeholder='请输入附加参数 少于400字'
+                    v-model='formData.intro'></el-input>
+        </el-form-item>
+        <el-form-item label='视频标签：' prop='intro' label-width='200px'>
+          <div style='position: relative'>
+            <div style='display: flex;justify-content: space-between'>
+              <el-button
+                  type='primary'
+                  @click='handleOpenTagDidlog'
+                  size='small'
+                  icon='Plus'
+                  style='width: 176px;'
+              >
+                选择标签
+              </el-button>
+              <el-input
+                  type='hidden'
+                  maxlength='100'
+                  v-model='formData.tagList'
+                  readonly style='width: 100%;'></el-input>
+            </div>
+            <div>
+              <el-tag
+                  v-for='tag in tagArr'
+                  :key='tag'
+                  closable
+                  @close='handleCloseTag(tag)'>
+                {{ tag }}
+              </el-tag>
+              <el-input
+                  class='input-new-tag'
+                  v-model.trim='inputValue'
+                  v-if='inputVisible'
+                  ref='saveTagInput'
+                  size='small'
+                  @keyup.enter.native='handleInputConfirm'
+                  @blur='handleInputConfirm'
+              >
+              </el-input>
+              <el-button v-else class='button-new-tag' size='small' @click='showInput'>+ 新建标签</el-button>
+            </div>
+          </div>
+        </el-form-item>
+      </div>
+
+
+
+
+
+
+    <VideoCategory ref="videoCategoryRef" @select='handleVideoSelectCategory'></VideoCategory>
+
+
+
+
+
       <el-form-item label="公告标题" prop="title">
         <el-input v-model="formData.title" placeholder="请输入公告标题" />
       </el-form-item>
@@ -53,6 +142,7 @@ import { getVideoAdmin } from '@/api/video/videoadmin/index.js'
 import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
+import VideoCategory from './components/VideoCategory.vue'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -62,19 +152,94 @@ const dialogTitle = ref('')
 const formLoading = ref(false)
 // 表单的类型：create - 新增；update - 修改
 const formType = ref('')
+
+// 表单选择分类数组
+const selectCategoryList = ref([])
+
 const formData = ref({
-  id: undefined,
+// 标题：须限定字数200
   title: '',
-  type: undefined,
-  content: '',
-  status: CommonStatusEnum.ENABLE,
-  remark: ''
+  // 简介：须限定字数500
+  intro: '',
+  // 视频地址
+  url: '',
+  // 视频大小
+  size: 0,
+  // 标清视频地址
+  stanUrl: '',
+  // 高清视频地址
+  highUrl: '',
+  // 超清视频地址
+  superUrl: '',
+  // 标清视频大小
+  stanSize: 0,
+  // 高清视频大小
+  highSize: 0,
+  // 超清视频大小
+  superSize: 0,
+  // 预览视频地址
+  preview: 0,
+  // 封面
+  cover: '',
+  imgcover: '',
+  // 内容类型 1：AV 2：三级 3：动漫 4：自拍
+  contentType: 1,
+  // 时长：秒
+  duration: 0,
+  // 默认1=免费,2=VIP,3=收费(金币)
+  priceType: 1,
+  // 免费为0，VIP填用户等级，收费为收费值
+  price: 0,
+  // VIP等级优惠价
+  discountPrice: '',
+  // 开启状态 1：开启 0：未开启
+  enableStatus: 1,
+  // 当前点赞数
+  likeNumber: 0,
+  // 播放数量
+  playNumber: 0,
+  // 评论数量
+  commentNumber: 0,
+  // 所属分类
+  categoryPid: '',
+  categoryPname: '',
+  categoryId: '',
+  categoryName: '',
+  selectCategoryDatas: '',
+  // 关联标签多个标签以空格隔开
+  tagList: '',
+  // 1：大陆 2：日本 3：韩国 4：欧美 5：台湾 6：港澳
+  region: 1,
+  // 0：无码 1有码
+  mosaicFlag: 0,
+  // 字幕 0：无中字幕 1：有中字幕
+  subtitleFlag: 0,
+  // 作者ID
+  actorIds: '',
+  // 作者昵称
+  actorNames: '',
+  // 作者头像
+  actorAvatars: '',
+  // 视频秘钥
+  secretKey: '',
+  // 权重
+  weight: 1,
+  // 番号
+  copyRightCode: ''
 })
 const formRules = reactive({
-  title: [{ required: true, message: '公告标题不能为空', trigger: 'blur' }],
-  type: [{ required: true, message: '公告类型不能为空', trigger: 'change' }],
-  status: [{ required: true, message: '状态不能为空', trigger: 'change' }],
-  content: [{ required: true, message: '公告内容不能为空', trigger: 'blur' }]
+  title: [
+    { required: true, message: '请输入视频的名称', trigger: 'blur' }
+  ],
+  cover: [
+    { required: true, message: '请上传一个封面', trigger: 'blur' }
+  ],
+  url: [
+    { required: true, message: '请上传一个视频', trigger: 'blur' }
+  ],
+  categoryId: [
+    { required: true, message: '请选择一个分类', trigger: 'blur' }
+  ]
 })
 // 表单 Ref
 const formRef = ref()
@@ -131,6 +296,14 @@ const submitForm = async () => {
   }
 }
 
+/** 弹窗操作 */
+const videoCategoryRef = ref()
+const handleOpenCategory = ()=>{
+  videoCategoryRef.value.open()
+}
+const handleVideoSelectCategory = (data) => {
+  console.log("啊哈",data)
+}
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {
