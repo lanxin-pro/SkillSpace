@@ -146,7 +146,7 @@
             <el-button
                 type='primary'
                 icon='Top'
-                @click='handleOpenUload'
+                @click='handleOpenUpload'
                 class="mr5"
             >
               上传
@@ -542,7 +542,11 @@ const uniqueArray = (arr) => {
   }
   return newArr
 }
-
+const videoUploadRef = ref()
+/** 视频上传 */
+const handleOpenUpload = () => {
+  videoUploadRef.value.expandUpload()
+}
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {
