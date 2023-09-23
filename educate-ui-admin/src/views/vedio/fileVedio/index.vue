@@ -9,22 +9,101 @@
         label-width="68px"
         size="small"
     >
-      <el-form-item label="文件路径" prop="path">
-        <el-input
-            v-model="queryParams.path"
-            placeholder="请输入文件路径"
-            clearable
-            @keyup.enter="handleQuery"
-        />
+      <VideoSearchCategory
+          @select='handleSelectCategory'
+      />
+
+      <el-form-item label="内容类型" prop="path">
+        <el-select
+            v-model='queryParams.contentType'
+            size='small'
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'内容类型'},{id:1,label:'AV'},{id:2,label:'三级'},{id:3,label:'动漫'},{id:4,label:'自拍'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="文件类型" prop="type" width="80">
-        <el-input
-            v-model="queryParams.type"
-            placeholder="请输入文件类型"
-            clearable
-            @keyup.enter="handleQuery"
-        />
+
+      <el-form-item label="是否收费" prop="type" width="80">
+        <el-select
+            v-model='queryParams.priceType'
+            size='small'
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'是否收费'},{id:1,label:'免费'},{id:2,label:'VIP'},{id:3,label:'收费(金币)'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
       </el-form-item>
+
+      <el-form-item label="发布状态" prop="type" width="80">
+        <el-select
+            v-model='queryParams.enableStatus'
+            size="small"
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'发布状态'},{id:1,label:'启用'},{id:0,label:'禁用'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="选择字幕" prop="type" width="80">
+        <el-select
+            v-model='queryParams.subtitleFlag'
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'字幕'},{id:0,label:'无中字幕'},{id:1,label:'有中字幕'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="有/无码" prop="type" width="80">
+        <el-select
+            v-model='queryParams.mosaicFlag'
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'有/无码'},{id:0,label:'无码'},{id:1,label:'有码'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
+          label="地域"
+          prop="type"
+          width="80"
+      >
+        <el-select
+            v-model='queryParams.region'
+            @change='handleSearch'
+        >
+          <el-option
+              v-for="item in [{id:'',label:'地域'},{id:1,label:'大陆'},{id:2,label:'日本'},{id:3,label:'韩国'},{id:4,label:'欧美'},{id:5,label:'台湾'},{id:6,label:'港澳'}]"
+              :key='item.id'
+              :label='item.label'
+              :value='item.id'>
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
             v-model="queryParams.createTime"
@@ -35,6 +114,15 @@
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
         />
       </el-form-item>
+
+      <el-form-item label="其他" prop="createTime">
+        <el-input
+            placeholder="视频标题、标签、演员"
+            v-model='queryParams.keyword'
+            maxlength='20'
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -44,7 +132,7 @@
     <!-- 操作工具栏 -->
     <el-row :gutter="10" class="mb8 mt10">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" size="small" @click="openForm()">新建视频</el-button>
+        <el-button type="primary" plain icon="Plus" size="small" @click="openForm(SystemCreateOrUpdate.CREATE)">新建视频</el-button>
       </el-col>
     </el-row>
 
@@ -186,7 +274,7 @@
               size='small'
               type='primary'
               icon='Edit'
-              @click='handleEdit(index, data)'>编辑
+              @click='handleEdit(SystemCreateOrUpdate.UPDATE, data)'>编辑
           </el-button>
         </div>
 
@@ -254,6 +342,7 @@ import VideoPlay from './VideoPlay.vue'
 import VideoForm from './VideoForm.vue'
 import CharacterMore from '@/components/CharacterMore/index.vue'
 import { SystemCreateOrUpdate } from '@/utils/constants.js'
+import VideoSearchCategory from '@/components/VideoSearchCategory/index.vue'
 
 const coverBuff = ref("http://127.0.0.1:9011/server/admin-api/infra/file/4/get/84167ee95454c659d80f330263218f7b47e3eb9f22f22f2bebf686f4a9622580.png")
 // 列表的加载中
@@ -265,11 +354,24 @@ const list = ref([])
 // 批量操作
 const checkVideoIds = ref([])
 const queryParams = reactive({
-  pageNo: 1,
+  createTime: '',
+  endTime: '',
+  priceType: '',
+  subtitleFlag: '',
+  mosaicFlag: '',
+  region: '',
+  weight: '',
+  enableStatus: '',
+  categoryId: '',
+  categoryPid: '',
+  contentType: '',
+  datasource: '',
+  keyword: '',
   pageSize: 10,
-  name: undefined,
-  type: undefined,
-  createTime: []
+  pageNum: 1,
+  total: 0,
+  pages: 0,
+  resultList: []
 })
 // 搜索的表单
 const queryFormRef = ref()

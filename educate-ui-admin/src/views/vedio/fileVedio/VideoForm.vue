@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" :title="dialogTitle" width="1200">
+  <Dialog lock-scroll="false" v-model="dialogVisible" :title="dialogTitle" width="1200">
     <el-form
         ref="formRef"
         v-loading="formLoading"
@@ -329,6 +329,7 @@ import VideoCategory from './components/VideoCategory.vue'
 import VideoTag from './components/VideoTag.vue'
 import UploadImg from '@/components/UploadImg/index.vue'
 import VideoUpload from '@/components/VideoUpload/index.vue'
+import { SystemCreateOrUpdate } from '@/utils/constants.js'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -488,12 +489,12 @@ const submitForm = async () => {
 /** 分类操作弹窗操作 */
 const videoCategoryRef = ref()
 const handleOpenCategory = () => {
-  videoCategoryRef.value.open()
+  videoCategoryRef.value.open("添加分类")
 }
 /** 标签操作弹窗操作 */
 const videoTagRef = ref()
 const handleOpenTagDialog = () => {
-  videoTagRef.value.open()
+  videoTagRef.value.open("选择标签")
 }
 /** 分类操作的返回 */
 const handleVideoSelectCategory = (data) => {
