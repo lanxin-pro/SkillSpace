@@ -12,7 +12,24 @@
     </div>
 
     <div class="div-uploader-expand" v-show="isExpandShow">
-     12312312312321
+
+      <uploader
+          :options="options"
+          :file-status-text="statusText"
+          class="uploader-example"
+          ref="uploaderRef"
+          @file-complete="fileComplete"
+          @complete="complete"
+      >
+         <uploader-unsupport></uploader-unsupport>
+        <uploader-drop>
+          <p>Drop files here to upload or</p>
+          <uploader-btn>select files</uploader-btn>
+          <uploader-btn :attrs="attrs">select images</uploader-btn>
+          <uploader-btn :directory="true">select folder</uploader-btn>
+        </uploader-drop>
+        <uploader-list></uploader-list>
+      </uploader>
     </div>
 
   </div>
@@ -22,8 +39,27 @@
 <script setup>
 import { ref } from 'vue'
 
+
 // 分片大小，20MB
 const CHUNK_SIZE = 10 * 1024 * 1024
+
+const options = {
+  target: '//localhost:3000/upload', // '//jsonplaceholder.typicode.com/posts/',
+  testChunks: false
+}
+const statusText = {
+  success: 'success',
+  error: 'error',
+  uploading: 'uploading',
+  paused: 'paused',
+  waiting: 'waiting'
+}
+const complete = () => {
+  console.log('complete', arguments)
+}
+const fileComplete = () => {
+  console.log('file complete', arguments)
+}
 
 const isCollapseShow = ref(false)
 const isExpandShow = ref(false)

@@ -14,6 +14,8 @@ import '@/styles/index.scss' // 引入全局样式
 import '@/assets/styles/index.scss' // 引入全局样式
 import 'nprogress/nprogress.css' // 导入进度条样式动画
 import '@/assets/styles/scrollbar.scss' // 引入滚动条样式
+import uploader from 'vue-simple-uploader' // 文件分页上传插件
+import 'vue-simple-uploader/dist/style.css' // 文件分页上传插件样式
 import './permission.js' // 权限控制
 import plugins from './plugins' // plugins
 Logger.prettyPrimary(`欢迎使用`, import.meta.env.VITE_APP_TITLE)
@@ -35,6 +37,7 @@ setupStore(app) // pinia
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
+app.use(uploader)
 app.use(ElementPlus) // 使用ElementPlus
 app.use(plugins) // plugins
 // 注册element-plus所有图标组件
