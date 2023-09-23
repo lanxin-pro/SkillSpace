@@ -104,6 +104,14 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="其他" prop="createTime">
+        <el-input
+            placeholder="视频标题、标签、演员"
+            v-model='queryParams.keyword'
+            maxlength='20'
+        />
+      </el-form-item>
+
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
             v-model="queryParams.createTime"
@@ -112,14 +120,6 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
-        />
-      </el-form-item>
-
-      <el-form-item label="其他" prop="createTime">
-        <el-input
-            placeholder="视频标题、标签、演员"
-            v-model='queryParams.keyword'
-            maxlength='20'
         />
       </el-form-item>
 
