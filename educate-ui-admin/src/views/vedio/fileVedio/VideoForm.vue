@@ -8,12 +8,12 @@
         label-width="80px"
     >
       <div style='margin: 0 0 20px;padding:20px 120px 20px 20px;background: #fafafa;'>
-        <div style='padding: 20px 0 20px 120px;font-size: 22px;font-weight: bold'>基础信息</div>
+        <div class="h2-title">基础信息</div>
         <div style="display:none">
-          <el-input v-model='formData.categoryId' type='hidden'></el-input>
-          <el-input v-model='formData.categoryName' type='hidden'></el-input>
-          <el-input v-model='formData.categoryPid' type='hidden'></el-input>
-          <el-input v-model='formData.categoryPname' type='hidden'></el-input>
+          <el-input v-model='formData.categoryId' type='hidden'/>
+          <el-input v-model='formData.categoryName' type='hidden'/>
+          <el-input v-model='formData.categoryPid' type='hidden'/>
+          <el-input v-model='formData.categoryPname' type='hidden'/>
         </div>
         <el-form-item label='视频分类：' required label-width='200px'>
           <template v-if='selectCategoryList && selectCategoryList.length > 0'>
@@ -35,7 +35,6 @@
             选择分类
           </el-button>
         </el-form-item>
-
         <el-form-item label='视频名称：' prop='title' required label-width='200px'>
           <el-input
               v-model='formData.title'
@@ -101,54 +100,219 @@
         </el-form-item>
       </div>
 
-    
+      <div style='margin: 0 0 20px;padding:20px 120px 20px 20px;background: #fafafa;'>
+        <div class="h2-title">视频&封面</div>
+        <el-form-item
+            label='视频封面'
+            prop='cover'
+            required label-width='200px'
+        >
 
+          <UploadImg
+              :url='formData.cover'
+              ref='imguplodRef'
+              @success='handleUploadSuccess'
+         />
+        </el-form-item>
 
-
-
-
-
-    <VideoCategory ref="videoCategoryRef" @select='handleVideoSelectCategory'></VideoCategory>
-    <VideoTag ref="videoTagRef" @select='handleVideoSelectTag'></VideoTag>
-
-
-
-
-
-      <el-form-item label="公告标题" prop="title">
-        <el-input v-model="formData.title" placeholder="请输入公告标题" />
-      </el-form-item>
-      <el-form-item label="公告类型" prop="type">
-        <el-select v-model="formData.type" clearable placeholder="请选择公告类型">
-          <el-option
-              v-for="dict in getIntDictOptions(DICT_TYPE.SYSTEM_NOTICE_TYPE)"
-              :key="parseInt(dict.value)"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
+        <el-form-item label='视频信息:' prop='url' required label-width='200px'>
+          <VideoUpload
+              ref='videoUploadRef'
+              @success='handleUploadVideoSuccess'
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="formData.status" clearable placeholder="请选择状态">
-          <el-option
-              v-for="dict in getIntDictOptions(DICT_TYPE.COMMON_STATUS)"
-              :key="parseInt(dict.value)"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
+          <div style='display: flex;justify-content: space-between'>
+            <el-input
+                v-model='formData.url'
+                title="视频原始地址(B)"
+                placeholder='视频原始地址'
+                style='width: 35%'
+            />
+            <el-input
+                type='number'
+                v-model='formData.size'
+                title='视频原始大小(B)'
+                placeholder='原始大小'
+                maxlength='20'
+                style='width: 24%;margin: 0 1%;'
+            />
+            <el-input
+                type='number'
+                v-model='formData.duration'
+                title='视频时长(秒)'
+                placeholder='时长：秒'
+                maxlength='20'
+                style='width: 24%;margin-right: 1%;'
+            />
+            <el-button
+                type='primary'
+                icon='Top'
+                @click='handleOpenUload'
+                class="mr5"
+            >
+              上传
+            </el-button>
+            <el-button
+                class="mr5"
+                type='danger'
+                icon='Delete'
+                @click='handleClearVideo'
+            >
+              清空
+            </el-button>
+          </div>
+        </el-form-item>
+        <el-form-item label='视频权重：' label-width='200px'>
+          <el-input
+              type='number'
+              style='width: 49.5%;margin-right: 1%;'
+              v-model='formData.weight'
+              placeholder='视频权重'
+              maxlength='10'
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" placeholder="请输备注" type="textarea" />
-      </el-form-item>
+          <el-input
+              v-model='formData.secretKey'
+              style='width: 49.5%;'
+              placeholder='视频秘钥'
+              maxlength='100'
+          />
+        </el-form-item>
+        <el-form-item label='标清视频名称：' prop='stanUrl' label-width='200px'>
+          <el-input v-model='formData.stanUrl' style='width: 49.5%;margin-right: 1%;' placeholder='标清视频地址' maxlength='200'></el-input>
+          <el-input v-model='formData.stanSize' placeholder='标清大小' style='width: 49.5%' maxlength='20'></el-input>
+        </el-form-item>
+        <el-form-item label='高清视频名称：' prop='highUrl' label-width='200px'>
+          <el-input
+              v-model='formData.highUrl'
+              placeholder='高清视频地址'
+              style='width: 49.5%;margin-right: 1%;'
+              maxlength='200'
+          />
+          <el-input
+              type='number'
+              v-model='formData.highSize'
+              placeholder='高清大小'
+              style='width: 49.5%'
+              maxlength='20'
+          />
+        </el-form-item>
+        <el-form-item label='超清视频名称：' prop='superUrl' label-width='200px'>
+          <el-input v-model='formData.superUrl' placeholder='超清视频地址' style='width: 49.5%;margin-right: 1%;'
+                    maxlength='200'></el-input>
+          <el-input v-model='formData.superSize' placeholder='超清大小' style='width: 49.5%' maxlength='20'></el-input>
+        </el-form-item>
+      </div>
+
+
+      <div style='margin: 0 0 20px;padding:20px 120px 20px 20px;background: #fafafa;'>
+        <div class="h2-title">视频相关</div>
+        <el-form-item label='视频番号：' label-width='200px'>
+          <el-input v-model='formData.copyRightCode' placeholder='视频番号' maxlength='60'></el-input>
+        </el-form-item>
+        <el-form-item label='请选择内容类型：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.contentType' placeholder='请选择内容类型'>
+            <el-option
+                v-for="item in dynamicsData"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='请选择是否收费：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.priceType' placeholder='请选择是否收费'>
+            <el-option
+                v-for="item in [{id:'',label:'请选择是否收费'},{id:1,label:'免费'},{id:2,label:'VIP'},{id:3,label:'收费(金币)'}]"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='收费价格：' label-width='200px' v-if='formData.priceType == 3'>
+          <el-input type='text' v-model='formData.price' placeholder='免费为0，VIP填用户等级，收费为收费值' maxlength='20'
+                    style='width: 20%;margin-left: 10px;'></el-input>
+        </el-form-item>
+        <el-form-item label='优惠价格：' label-width='200px' v-if='formData.priceType == 3'>
+          <el-input type='number' v-model='formData.discountPrice' placeholder='VIP等级优惠价' maxlength='20'
+                    style='width: 20%;margin-left: 10px;'></el-input>
+        </el-form-item>
+        <el-form-item label='内容类型：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.enableStatus' placeholder='请选择发布状态'>
+            <el-option
+                v-for="item in [{id:1,label:'启用'},{id:0,label:'禁用'}]"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='请选择字幕：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.subtitleFlag' placeholder='请选择字幕'>
+            <el-option
+                v-for="item in [{id:0,label:'无中字幕'},{id:1,label:'有中字幕'}]"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='请选择有/无码：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.mosaicFlag' placeholder='请选择有/无码'>
+            <el-option
+                v-for="item in [{id:0,label:'无码'},{id:1,label:'有码'}]"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='请选择地域：' label-width='200px'>
+          <el-select style='margin:  0 5px;width: 100%' v-model='formData.region' placeholder='请选择地域'>
+            <el-option
+                v-for="item in [{id:1,label:'大陆'},{id:2,label:'日本'},{id:3,label:'韩国'},{id:4,label:'欧美'},{id:5,label:'台湾'},{id:6,label:'港澳'}]"
+                :key='item.id'
+                :label='item.label'
+                :value='item.id'>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label='播放数量：' label-width='200px'>
+          <el-input type='number' v-model='formData.playNumber' placeholder='播放数量' maxlength='20'></el-input>
+        </el-form-item>
+        <el-form-item label='当前点赞数：' label-width='200px'>
+          <el-input type='number' v-model='formData.likeNumber' placeholder='当前点赞数' maxlength='20'></el-input>
+        </el-form-item>
+        <el-form-item label='演员明星：' label-width='200px'>
+          <el-tag
+              v-for='(i,index) in actorIdssArr'
+              :key='actorIdssArr[index]'
+              closable
+              @close='handleCloseAuthor(actorIdssArr[index],index)'>
+              <span>
+              <img style='width: 20px;height: 20px'   v-image-decrypt='actorAvatarsArr[index]' />
+              {{ actorIdssArr[index] }} /{{ actorNamessArr[index] }}
+              </span>
+          </el-tag>
+          <el-button  size="mini" icon="el-icon-plus" type="primary" @click='handleOpenedActor' v-re-click >选择作者</el-button>
+        </el-form-item>
+
+      </div>
+
+
+
+
+
+
+
     </el-form>
-    <el-form-item label="公告内容" prop="content">
-      <Editor v-model="formData.content" height="800px" />
-    </el-form-item>
     <template #footer>
       <el-button :disabled="formLoading" type="primary" @click="submitForm">确 定</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </template>
+
+    <VideoCategory ref="videoCategoryRef" @select='handleVideoSelectCategory'></VideoCategory>
+    <VideoTag ref="videoTagRef" @select='handleVideoSelectTag'></VideoTag>
+
   </Dialog>
 </template>
 
@@ -163,6 +327,8 @@ import ElComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
 import VideoCategory from './components/VideoCategory.vue'
 import VideoTag from './components/VideoTag.vue'
+import UploadImg from '@/components/UploadImg/index.vue'
+import VideoUpload from '@/components/VideoUpload/index.vue'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -398,5 +564,10 @@ const resetForm = () => {
 }
 .ml-tag10:not(:first-child) {
   margin-left: 10px;
+}
+.h2-title {
+  padding: 20px 0 20px 120px;
+  font-size: 22px;
+  font-weight: bold;
 }
 </style>
