@@ -8,7 +8,7 @@
         label-width="80px"
     >
       <div style='margin: 0 0 20px;padding:20px 120px 20px 20px;background: #fafafa;'>
-        <h2 style='padding: 20px 0px 20px 120px'>基础信息</h2>
+        <div style='padding: 20px 0 20px 120px;font-size: 22px;font-weight: bold'>基础信息</div>
         <div style="display:none">
           <el-input v-model='formData.categoryId' type='hidden'></el-input>
           <el-input v-model='formData.categoryName' type='hidden'></el-input>
@@ -37,11 +37,19 @@
         </el-form-item>
 
         <el-form-item label='视频名称：' prop='title' required label-width='200px'>
-          <el-input v-model='formData.title' placeholder='请输入视频名称，<=100字符' maxlength='100'></el-input>
+          <el-input
+              v-model='formData.title'
+              placeholder='请输入视频名称，<=100字符'
+              maxlength='100'
+          />
         </el-form-item>
         <el-form-item label='视频介绍：' prop='intro' label-width='200px'>
-          <el-input type='textarea' maxlength='400' placeholder='请输入附加参数 少于400字'
-                    v-model='formData.intro'></el-input>
+          <el-input
+              type='textarea'
+              maxlength='400'
+              placeholder='请输入附加参数 少于400字'
+              v-model='formData.intro'
+          />
         </el-form-item>
         <el-form-item label='视频标签：' prop='intro' label-width='200px'>
           <div style='position: relative'>
@@ -63,7 +71,8 @@
             </div>
             <div>
               <el-tag
-                  v-for='tag in tagArr'
+                  class="ml-tag10"
+                  v-for='tag in tagArray'
                   :key='tag'
                   closable
                   @close='handleCloseTag(tag)'>
@@ -79,11 +88,20 @@
                   @blur='handleInputConfirm'
               >
               </el-input>
-              <el-button v-else class='button-new-tag' size='small' @click='showInput'>+ 新建标签</el-button>
+              <el-button
+                  v-else
+                  class='button-new-tag'
+                  size='small'
+                  @click='showInput'
+              >
+                + 新建标签
+              </el-button>
             </div>
           </div>
         </el-form-item>
       </div>
+
+    
 
 
 
@@ -135,7 +153,7 @@
 </template>
 
 <script setup>
-import { ref,reactive } from 'vue'
+import { ref,reactive,nextTick } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict.js'
 import { getSimpleMenusList,getMenu,createMenu,updateMenu } from '@/api/system/menu/index.js'
@@ -157,8 +175,11 @@ const formType = ref('')
 
 // 表单选择分类数组
 const selectCategoryList = ref([])
-
-const formData = ref({
+// 标签输入的内容
+const inputValue = ref()
+// 标签名
+const tagArray = ref([])
+const formData = reactive({
 // 标题：须限定字数200
   title: '',
   // 简介：须限定字数500
@@ -312,9 +333,49 @@ const handleOpenTagDialog = () => {
 const handleVideoSelectCategory = (data) => {
   console.log("啊哈",data)
 }
+/** 标签操作的返回 */
 const handleVideoSelectTag = (data) => {
   console.log("啊哈2",data)
 }
+// 是否打开新建标签的输入栏
+const inputVisible = ref(false)
+// 标签输入栏的ref
+const saveTagInput = ref()
+/** 新建标签 */
+const showInput = () => {
+  inputVisible.value = true
+  nextTick(_ => {
+    saveTagInput.value.focus()
+    console.log(saveTagInput.value.focus())
+  })
+}
+/** 标签的blur和@keyup.enter.native事件*/
+const  handleInputConfirm = () => {
+  if (!inputValue.value) {
+    ElComponent.msgError('请输入标签！！！')
+    return
+  }
+  // 不重复就添加
+  if (inputValue.value && tagArray.value.indexOf(inputValue.value) === -1) {
+    tagArray.value.push(inputValue.value)
+    formData.tagList = uniqueArray(tagArray.value).join(',')
+    inputVisible.value = false
+    inputValue.value = ''
+  } else {
+    ElComponent.msgError('标签已经存在!!')
+  }
+}
+/** 处理string数组，以，分割 */
+const uniqueArray = (arr) => {
+  const newArr = []
+  for (let i = 0; i < arr.length; i++) {
+    if (newArr.indexOf(arr[i]) === -1) {
+      newArr.push(arr[i])
+    }
+  }
+  return newArr
+}
+
 /** 重置表单 */
 const resetForm = () => {
   formData.value = {
@@ -330,5 +391,12 @@ const resetForm = () => {
 </script>
 
 <style scoped>
-
+.button-new-tag:not(:first-child) {
+  margin-left: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.ml-tag10:not(:first-child) {
+  margin-left: 10px;
+}
 </style>

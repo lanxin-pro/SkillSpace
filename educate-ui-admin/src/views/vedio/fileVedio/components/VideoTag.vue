@@ -8,10 +8,12 @@
             <el-input
                 placeholder="请输入标签标题或者标签"
                 v-model.trim="queryParams.keyword"
+                @keyup.enter.native="handleQuery"
                 maxlength="20"
                 size="small"
-                style="margin:0 10px;">
-              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                prefix-icon="Search"
+                style="margin:0 10px;"
+            >
             </el-input>
             <el-button
                 type="success"
@@ -44,9 +46,10 @@
                 <template v-slot="scope">
                   <template v-if="scope.row.tagList">
                     <el-tag
+                        class="ml20 mt5"
                         v-for="tag in scope.row.tagList.split(',')"
                         effect="light"
-                        style="cursor: pointer"
+                        style="cursor: pointer;border-radius: 10px"
                         @click="handleSelect(tag)"
                         :closable="selectTagList.findIndex(c=> c===tag) !== -1"
                         :type="selectTagList.findIndex(c=>c === tag) === -1? 'info' : 'primary'"
@@ -133,6 +136,7 @@ const open = async (type) => {
 }
 /** 搜索按钮操作 */
 const handleQuery = () => {
+  queryParams.pageNo = 1
   getList()
 }
 /** 重置按钮操作 */
@@ -185,11 +189,10 @@ const handleUnSelect = (tag) => {
 
 </script>
 
-<style>
+<style scoped>
 .navleft {
   border: 1px solid #eee;
   background: #fafafa;
   padding: 20px;
 }
-
 </style>

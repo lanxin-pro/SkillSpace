@@ -44,7 +44,7 @@
     <!-- 操作工具栏 -->
     <el-row :gutter="10" class="mb8 mt10">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="Plus" size="small" @click="openForm()">上传文件</el-button>
+        <el-button type="primary" plain icon="Plus" size="small" @click="openForm()">新建视频</el-button>
       </el-col>
     </el-row>
 
