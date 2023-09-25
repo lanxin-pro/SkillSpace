@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 
+import java.io.IOException;
+
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
 /**
@@ -42,8 +44,13 @@ public class VideoUploaderController {
     @PostMapping("/chunkUpload")
     @PermitAll
     @OperateLog(enable = false)
-    public CommonResult<String> uploadChunk() {
-        return success("success");
+    public CommonResult<String> uploadChunk(VideoFileChunkVO videoFileChunkVO) {
+        try {
+            videoUploaderService.uploadChunk(videoFileChunkVO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return success(videoFileChunkVO.getIdentifier());
     }
 
     /**

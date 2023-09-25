@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.video.service.uploader;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
 
+import java.io.IOException;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/9/25 19:41
@@ -15,5 +17,11 @@ public interface VideoUploaderService {
      * @return
      */
     VideoFileChunkRespVO checkChunkExist(VideoFileChunkVO chunkDTO);
+
+    /**
+     * 上传文件分片
+     * @param chunkDTO
+     */
+    void uploadChunk(VideoFileChunkVO chunkDTO) throws IOException;
 
 }
