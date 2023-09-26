@@ -504,6 +504,10 @@ const handleVideoSelectCategory = (data) => {
 const handleVideoSelectTag = (data) => {
   console.log("啊哈2",data)
 }
+/** 视频分片上传的返回 */
+const handleUploadVideoSuccess = (data) => {
+  console.log("啊哈3",data)
+}
 // 是否打开新建标签的输入栏
 const inputVisible = ref(false)
 // 标签输入栏的ref

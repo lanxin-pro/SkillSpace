@@ -44,6 +44,7 @@ public class VideoUploaderController {
     @PostMapping("/chunkUpload")
     @PermitAll
     @OperateLog(enable = false)
+    @Operation(summary = "检查分片是否存在")
     public CommonResult<String> uploadChunk(VideoFileChunkVO videoFileChunkVO) {
         try {
             videoUploaderService.uploadChunk(videoFileChunkVO);
@@ -59,6 +60,7 @@ public class VideoUploaderController {
     @PostMapping("/merge")
     @PermitAll
     @OperateLog(enable = false)
+    @Operation(summary = "检查分片是否存在")
     public CommonResult<Boolean> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws IOException {
         boolean b = videoUploaderService.mergeChunk(chunkDTO.getIdentifier(), chunkDTO.getFilename(), chunkDTO.getTotalChunks());
         return success(b);
