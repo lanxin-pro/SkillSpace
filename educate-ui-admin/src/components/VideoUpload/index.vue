@@ -67,12 +67,102 @@ isCollapseShow.value = true
             </div>
 <!--     collapse false是折叠       -->
             <ul class="file-list" :class=" collapse ? 'uploader-list-ul-show' : 'uploader-list-ul-hidden'">
-                <uploader-files
-                    :file="uploadFileList"
-                    :list="true"
-                    ref="uploaderFile"
-                >
-                </uploader-files>
+              <li v-for="file in uploadFileList" :key="file.id">
+                  <uploader-file :file="file" :list="false">
+                    <template v-slot="props">
+                      <div class="filebox">
+                        <p class="fileNameBox">
+                          <span class="fileIcon"></span>
+                          {{ file.name }}
+                        </p>
+                        <p class="fileProgressBox">
+                          <el-progress
+                              class="progressLength"
+                              :stroke-width="15"
+                              :percentage="parseInt(props.progress.toFixed(2) * 100 - 1 < 0
+                               ? 0 : props.progress.toFixed(2))"
+                          />
+                        </p>
+
+                        <span class="statusBtn progressBtn" v-if="!file.completed" @click="pause(file)">
+                           <el-icon v-if="!file.paused" title="暂停"><Close /></el-icon>
+                           <el-icon v-else title="继续"><Close /></el-icon>
+                        </span>
+                        <span v-else class="downloadBtn progressBtn" v-show="file.completed" @click="download(file)">
+                          <el-button>下载</el-button>
+                        </span>
+                        <span class="reuploadBtn progressBtn" v-show="false" @click="reupload(file)">
+                                    <i class="el-icon-upload2" title="重新上传"></i>
+                                       <el-button>重新上传</el-button>
+                                  </span>
+                        <span class="cancelBtn progressBtn" @click="remove(file)">
+                                    <i class="el-icon-error" title="删除"></i>
+                                       <el-button>删除</el-button>
+                                  </span>
+
+
+                      </div>
+                    </template>
+                  </uploader-file>
+              </li>
+
+<!--              <uploader-files>
+                <template v-slot="filess">
+                  <div>
+                    <el-table :data="filess.files">
+                      <el-table-column label="名称">
+                        <template v-slot="scope">
+                          {{ scope.row.name }}
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="路径">
+                        <template v-slot="scope">
+                          {{ scope.row.relativePath }}
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="文件大小">
+                        <template v-slot="scope">
+                          <uploader-file :file="scope.row" :list="false" :key="scope.index">
+                            <template v-slot="kk">
+                              {{ kk.formatedSize }}
+                            </template>
+                          </uploader-file>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="状态">
+                        <template  v-slot="scope">
+                          <uploader-file :file="scope.row" :list="false" :key="scope.index">
+                            <template v-slot="kk">
+                              {{ fileStatusText[kk.status] }}
+                            </template>
+                          </uploader-file>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="进度">
+                        <template v-slot="scope">
+                          <uploader-file :file="scope.row" :list="false" :key="scope.index">
+                            <template v-slot="kk">
+                              ll{{kk}}
+                              <el-progress :text-inside="true" :stroke-width="18" :percentage="Math.floor(kk.progress*100)" color="rgba(142, 113, 199, 0.7)"></el-progress>
+                            </template>
+                          </uploader-file>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="操作">
+                        <template v-slot="scope">
+                          <el-button size="small" type="danger" plain icon="el-icon-delete" @click="remove(scope.row)">移除</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                    <div class="control-container">
+                      <el-button size="small" type="primary" @click="resumes(filess.files)">全部上传</el-button>
+                      <el-button size="small" type="danger" @click="removeAll(filess.files)">全部取消</el-button>
+                    </div>
+                  </div>
+                </template>
+              </uploader-files>-->
+
+
               <div class="no-file" v-if="!uploadFileList.length">
                 <font-awesome-icon icon="fa-regular fa-folder-open" />
                 暂无待上传文件
@@ -419,5 +509,52 @@ const getFileMD5 = (file, callback) => {
   display: inline-block;
   line-height: 20px;
   width: 70%;
+}
+
+
+.statusBtn {
+  right: 90px;
+  color: #ffba00;
+}
+.statusBtn:hover {
+  color: #ffc833;
+}
+.cancelBtn {
+  right: 30px;
+  color: #ff4949;
+}
+.cancelBtn {
+  margin-left: 10px;
+}
+.cancelBtn:hover {
+  color: #ff6d6d;
+}
+.reuploadBtn {
+  right: 90px;
+  color: #67c23a;
+}
+.reuploadBtn {
+  margin-left: 10px;
+}
+.reuploadBtn:hover {
+  color: #ff6d6d;
+}
+.downloadBtn {
+  right: 150px;
+  color: #67c23a;
+}
+.downloadBtn:hover {
+  color: #85ce61;
+}
+.progressBtn {
+  margin-top: -5px;
+  position: absolute;
+  display: inline-block;
+  font-size: 36px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.uploader-file {
+   overflow: inherit;
 }
 </style>
