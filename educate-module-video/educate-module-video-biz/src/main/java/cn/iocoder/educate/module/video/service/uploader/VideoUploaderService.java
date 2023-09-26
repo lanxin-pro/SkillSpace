@@ -24,4 +24,14 @@ public interface VideoUploaderService {
      */
     void uploadChunk(VideoFileChunkVO chunkDTO) throws IOException;
 
+    /**
+     * 合并文件分片
+     * @param identifier
+     * @param fileName
+     * @param totalChunks
+     * @return
+     * @throws IOException
+     */
+    boolean mergeChunk(String identifier,String fileName,Integer totalChunks)throws IOException;
+
 }

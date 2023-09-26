@@ -9,14 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 /**
  * @Author: j-sentinel
@@ -87,6 +81,11 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
         }
     }
 
+    @Override
+    public boolean mergeChunk(String identifier, String fileName, Integer totalChunks) throws IOException {
+        return mergeChunks(identifier, fileName, totalChunks);
+    }
+
     /**
      * 分片写入Redis
      *
@@ -109,6 +108,67 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             redisTemplate.opsForHash().put(chunkDTO.getIdentifier(), "uploaded", uploaded);
         }
         return uploaded.size();
+    }
+
+    /**
+     * 合并分片
+     *
+     * @param identifier
+     * @param filename
+     */
+    private boolean mergeChunks(String identifier, String filename, Integer totalChunks) {
+        String chunkFileFolderPath = getChunkFileFolderPath(identifier);
+        String filePath = getFilePath(identifier, filename);
+        // 检查分片是否都存在
+        if (checkChunks(chunkFileFolderPath, totalChunks)) {
+            File chunkFileFolder = new File(chunkFileFolderPath);
+            File mergeFile = new File(filePath);
+            File[] chunks = chunkFileFolder.listFiles();
+            //排序
+            List fileList = Arrays.asList(chunks);
+            Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
+                return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
+            });
+            try {
+                RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
+                byte[] bytes = new byte[1024];
+                for (File chunk : chunks) {
+                    RandomAccessFile randomAccessFileReader = new RandomAccessFile(chunk, "r");
+                    int len;
+                    while ((len = randomAccessFileReader.read(bytes)) != -1) {
+                        randomAccessFileWriter.write(bytes, 0, len);
+                    }
+                    randomAccessFileReader.close();
+                }
+                randomAccessFileWriter.close();
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 检查分片是否都存在
+     * @param chunkFileFolderPath
+     * @param totalChunks
+     * @return
+     */
+    private boolean checkChunks(String chunkFileFolderPath, Integer totalChunks) {
+        try {
+            for (int i = 1; i <= totalChunks + 1; i++) {
+                File file = new File(chunkFileFolderPath + File.separator + i);
+                if (file.exists()) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /**
