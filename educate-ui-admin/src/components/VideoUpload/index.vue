@@ -76,6 +76,7 @@ isCollapseShow.value = true
                           {{ file.name }}
                         </p>
                         <p class="fileProgressBox">
+<!--                          props.progress.toFixed(2) * 100 - 1 < 0 ? 0 : props.progress.toFixed(2) * 100)        -->
                           <el-progress
                               class="progressLength"
                               :stroke-width="15"
@@ -85,20 +86,18 @@ isCollapseShow.value = true
                         </p>
 
                         <span class="statusBtn progressBtn" v-if="!file.completed" @click="pause(file)">
-                           <el-icon v-if="!file.paused" title="暂停"><Close /></el-icon>
-                           <el-icon v-else title="继续"><Close /></el-icon>
+                          <font-awesome-icon v-if="!file.paused" icon="fa-solid fa-pause" />
+                          <font-awesome-icon v-else icon="fa-solid fa-play" />
                         </span>
                         <span v-else class="downloadBtn progressBtn" v-show="file.completed" @click="download(file)">
-                          <el-button>下载</el-button>
+                          <font-awesome-icon icon="fa-solid fa-arrow-down" />
                         </span>
-                        <span class="reuploadBtn progressBtn" v-show="false" @click="reupload(file)">
-                                    <i class="el-icon-upload2" title="重新上传"></i>
-                                       <el-button>重新上传</el-button>
-                                  </span>
+                        <span class="reuploadBtn progressBtn" @click="reupload(file)">
+                          <font-awesome-icon icon="fa-solid fa-file-import" />
+                        </span>
                         <span class="cancelBtn progressBtn" @click="remove(file)">
-                                    <i class="el-icon-error" title="删除"></i>
-                                       <el-button>删除</el-button>
-                                  </span>
+                          <font-awesome-icon icon="fa-solid fa-xmark" />
+                        </span>
 
 
                       </div>
@@ -179,7 +178,7 @@ isCollapseShow.value = true
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
+import { reactive, ref, nextTick } from 'vue'
 import { getAccessToken } from '@/utils/auth'
 import ELComponent from '@/plugins/modal.js'
 import SparkMD5 from 'spark-md5'
@@ -267,6 +266,7 @@ const fileComplete = () => {
   console.log('file complete', arguments)
 }
 const fileSize = ref()
+/** 文件的分片 */
 const onFileAdded = (file,fileList , event) => {
   uploadFileList.value.push(file)
   console.log('file :>> ', file)
@@ -288,6 +288,7 @@ const onFileAdded = (file,fileList , event) => {
   })
 }
 
+/** 上传成功的事件 */
 const onFileSuccess = async (rootFile, file, response, chunk) => {
   console.log("上传成功的返回结果",response)
   if (!response) {
@@ -315,6 +316,38 @@ const onFileSuccess = async (rootFile, file, response, chunk) => {
 }
 const onFileError = (rootFile, file, message, chunk) => {
   console.log('上传出错：' + message)
+}
+
+/** 点击暂停 */
+const pause = (file, id) => {
+  if (file.paused) {
+    file.resume()
+  } else {
+    file.pause()
+  }
+}
+/** 点击删除 */
+const remove = (file) => {
+  file.cancel()
+  uploadFileList.value.findIndex((item, index) => {
+    if (item.id === file.id) {
+      nextTick(() => {
+        uploadFileList.value.splice(index, 1)
+      })
+    }
+  })
+}
+
+/** 强制重新上传 */
+const reupload = async (file) => {
+  await ELComponent.confirm('确定是否强制重新上传，这将覆盖之前的上传?')
+  options.query.reupload = true
+  file.retry()
+}
+
+/** 点击下载 */
+const download = (file, id) => {
+  window.location.href = file.cloudFilename
 }
 
 const isCollapseShow = ref(false)
