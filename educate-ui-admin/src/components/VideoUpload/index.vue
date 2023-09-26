@@ -21,10 +21,11 @@ isCollapseShow.value = true
      <div class="div-uploader-expand" v-show="isExpandShow">
 
       <uploader
-          :options="options"
-          :file-status-text="statusText"
-          class="uploader-example"
           ref="uploaderRef"
+          :options="options"
+          :autoStart="false"
+          :file-status-text="fileStatusText"
+          class="uploader-example"
           @complete="complete"
           @file-added="onFileAdded"
           @file-complete="fileComplete"
@@ -66,6 +67,12 @@ isCollapseShow.value = true
             </div>
 <!--     collapse false是折叠       -->
             <ul class="file-list" :class=" collapse ? 'uploader-list-ul-show' : 'uploader-list-ul-hidden'">
+                <uploader-files
+                    :file="uploadFileList"
+                    :list="true"
+                    ref="uploaderFile"
+                >
+                </uploader-files>
               <div class="no-file" v-if="!uploadFileList.length">
                 <font-awesome-icon icon="fa-regular fa-folder-open" />
                 暂无待上传文件
@@ -82,7 +89,7 @@ isCollapseShow.value = true
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {reactive, ref} from 'vue'
 import { getAccessToken } from '@/utils/auth'
 import ELComponent from '@/plugins/modal.js'
 import SparkMD5 from 'spark-md5'
@@ -155,13 +162,14 @@ const options = {
         .replace(/\sseconds?/, '秒')
   }
 }
-const statusText = {
-  success: 'success',
-  error: 'error',
-  uploading: 'uploading',
-  paused: 'paused',
-  waiting: 'waiting'
-}
+// 修改上传状态
+const fileStatusTextObj =  reactive({
+  success: '上传成功',
+  error: '上传错误',
+  uploading: '正在上传',
+  paused: '停止上传',
+  waiting: '等待中'
+})
 const complete = () => {
   console.log('complete', arguments)
 }
@@ -250,6 +258,15 @@ const close = () => {
 // 提供 open 方法，用于打开弹窗
 defineExpose({ expandUpload })
 
+
+/** file字段返回 */
+const fileStatusText = (status, response) => {
+  if (status === 'md5') {
+    return '校验MD5'
+  } else {
+    return fileStatusTextObj[status]
+  }
+}
 
 // 计算文件的MD5值
 const getFileMD5 = (file, callback) => {
@@ -372,5 +389,35 @@ const getFileMD5 = (file, callback) => {
 
 .uploader-list-ul-hidden {
   height: 0;
+}
+
+.filebox {
+  width: 100%;
+  height: 60px;
+}
+
+.fileNameBox {
+  width: 85%;
+  padding: 0;
+  font-size: 16px;
+  margin-top: 5px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.fileProgressBox {
+  padding: 0;
+  height: 20px;
+  line-height: 20px;
+  margin-top: 5px;
+  margin-left: 10px;
+  width: 100%;
+}
+
+.progressLength {
+  display: inline-block;
+  line-height: 20px;
+  width: 70%;
 }
 </style>
