@@ -74,7 +74,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
         ) {
             IOUtils.copy(inputStream, outputStream);
             log.info("文件标识:{},chunkNumber:{}", chunkDTO.getIdentifier(), chunkDTO.getChunkNumber());
-            //将该分片写入redis
+            // 将该分片写入redis
             long size = saveToRedis(chunkDTO);
         } catch (Exception e) {
             e.printStackTrace();

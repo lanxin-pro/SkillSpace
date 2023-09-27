@@ -202,7 +202,7 @@ const options = {
     debugger
     return {
       'fileIdentifier': file.uniqueIdentifier,
-      'Authorization': getAccessToken()
+      'Authorization': 'Bearer ' + getAccessToken()
     }
   },
   query: {

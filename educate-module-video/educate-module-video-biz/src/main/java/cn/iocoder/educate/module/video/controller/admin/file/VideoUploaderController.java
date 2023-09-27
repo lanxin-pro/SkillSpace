@@ -32,19 +32,12 @@ public class VideoUploaderController {
 
     @GetMapping("/chunkUpload")
     @Operation(summary = "检查分片是否存在")
-    @PermitAll
-    @OperateLog(enable = false)
     public CommonResult<VideoFileChunkRespVO> getVideoPage(VideoFileChunkVO videoFileChunkVO) {
         return success(videoUploaderService.checkChunkExist(videoFileChunkVO));
     }
 
-    /**
-     * 上传文件分片
-     */
     @PostMapping("/chunkUpload")
-    @PermitAll
-    @OperateLog(enable = false)
-    @Operation(summary = "检查分片是否存在")
+    @Operation(summary = "上传文件分片")
     public CommonResult<String> uploadChunk(VideoFileChunkVO videoFileChunkVO) {
         try {
             videoUploaderService.uploadChunk(videoFileChunkVO);
@@ -54,13 +47,8 @@ public class VideoUploaderController {
         return success(videoFileChunkVO.getIdentifier());
     }
 
-    /**
-     * 请求合并文件分片
-     */
     @PostMapping("/merge")
-    @PermitAll
-    @OperateLog(enable = false)
-    @Operation(summary = "检查分片是否存在")
+    @Operation(summary = "请求合并文件分片")
     public CommonResult<Boolean> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws IOException {
         boolean b = videoUploaderService.mergeChunk(chunkDTO.getIdentifier(), chunkDTO.getFilename(), chunkDTO.getTotalChunks());
         return success(b);
