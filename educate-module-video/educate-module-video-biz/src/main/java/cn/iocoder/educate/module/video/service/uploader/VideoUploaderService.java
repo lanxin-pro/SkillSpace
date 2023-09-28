@@ -31,9 +31,10 @@ public interface VideoUploaderService {
      * @param identifier 文件md5的值
      * @param fileName 文件名字
      * @param totalChunks 拥有多少个分片
-     * @return
+     *
+     * @return String 返回上传访问路径
      * @throws IOException
      */
-    boolean mergeChunk(String identifier,String fileName,Integer totalChunks)throws IOException;
+    String mergeChunk(String identifier,String fileName,Integer totalChunks)throws IOException;
 
 }

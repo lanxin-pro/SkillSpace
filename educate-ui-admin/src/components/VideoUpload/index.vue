@@ -304,14 +304,14 @@ const onFileSuccess = async (rootFile, file, response, chunk) => {
   let data = result.data || {}
   if (data) {
     ELComponent.msgSuccess("上传成功！3")
-    await mergeChunks({
+    const response = await mergeChunks({
       identifier: file.uniqueIdentifier,
       filename: file.name,
       totalChunks: chunk.offset,
     })
     // data.filesize = fileSize.value || 0
     // 发送操作成功的事件
-    emit('success',data)
+    emit('success',response.data)
   }
 }
 const onFileError = (rootFile, file, message, chunk) => {

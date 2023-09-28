@@ -1,5 +1,5 @@
 <template>
-  <Dialog lock-scroll="false" v-model="dialogVisible" :title="dialogTitle" width="1200">
+  <Dialog lock-scroll="false" v-model="dialogVisible" :dialog-enable-status="true" :title="dialogTitle" width="1200">
     <el-form
         ref="formRef"
         v-loading="formLoading"
@@ -506,7 +506,7 @@ const handleVideoSelectTag = (data) => {
 }
 /** 视频分片上传的返回 */
 const handleUploadVideoSuccess = (data) => {
-  console.log("啊哈3",data)
+  console.log("啊哈3---------------------------",data)
 }
 // 是否打开新建标签的输入栏
 const inputVisible = ref(false)

@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.video.service.uploader;
 
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.module.infra.api.file.FileApi;
+import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +86,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
     }
 
     @Override
-    public boolean mergeChunk(String identifier, String fileName, Integer totalChunks) throws IOException {
+    public String mergeChunk(String identifier, String fileName, Integer totalChunks) throws IOException {
         return mergeChunks(identifier, fileName, totalChunks);
     }
 
@@ -118,7 +120,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
      * @param identifier
      * @param filename
      */
-    private boolean mergeChunks(String identifier, String filename, Integer totalChunks) {
+    private String mergeChunks(String identifier, String filename, Integer totalChunks) {
         String chunkFileFolderPath = getChunkFileFolderPath(identifier);
         String filePath = getFilePath(identifier, filename);
         // 检查分片是否都存在
@@ -131,6 +133,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
                 return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
             });
+            String url = "";
             try {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
@@ -150,15 +153,15 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 // 获取合并后的完整文件数据
                 byte[] mergedBytes = outputStream.toByteArray();
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
-                fileApi.createFile(filename,null,mergedBytes);
-
+                url = fileApi.createFile(filename, null, mergedBytes);
+                outputStream.close();
                 randomAccessFileWriter.close();
             } catch (Exception e) {
-                return false;
+                throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_STREAM_ERROR);
             }
-            return true;
+            return url;
         }
-        return false;
+        throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_EMPTY);
     }
 
     /**
