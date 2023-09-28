@@ -25,6 +25,7 @@ public interface FileClient {
 
     /**
      * 获得文件的内容
+     *
      * @param path 相对路径
      * @return 文件的内容
      */

@@ -18,4 +18,5 @@ public class EducateFileAutoConfiguration {
     public FileClientFactory fileClientFactory(){
         return new FileClientFactoryImpl();
     }
+
 }

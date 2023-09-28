@@ -13,22 +13,24 @@ public interface VideoUploaderService {
 
     /**
      * 检查文件是否存在，如果存在则跳过该文件的上传，如果不存在，返回需要上传的分片集合
-     * @param chunkDTO
+     *
+     * @param chunkDTO 分片的VO对象
      * @return
      */
     VideoFileChunkRespVO checkChunkExist(VideoFileChunkVO chunkDTO);
 
     /**
      * 上传文件分片
-     * @param chunkDTO
+     *
+     * @param chunkDTO 分片的VO对象
      */
     void uploadChunk(VideoFileChunkVO chunkDTO) throws IOException;
 
     /**
      * 合并文件分片
-     * @param identifier
-     * @param fileName
-     * @param totalChunks
+     * @param identifier 文件md5的值
+     * @param fileName 文件名字
+     * @param totalChunks 拥有多少个分片
      * @return
      * @throws IOException
      */

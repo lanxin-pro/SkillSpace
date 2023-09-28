@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.video.service.uploader;
 
+import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +8,6 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.*;
@@ -26,6 +26,9 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
 
+    @Resource
+    private FileApi fileApi;
+
     /**
      * 检查文件是否存在，如果存在则跳过该文件的上传，如果不存在，返回需要上传的分片集合
      *
@@ -34,14 +37,13 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
      */
     @Override
     public VideoFileChunkRespVO checkChunkExist(VideoFileChunkVO chunkDTO) {
-        // 1.检查文件是否已上传过
-        // 1.1)检查在磁盘中是否存在
+        // 1.1 检查在磁盘中是否存在
         String fileFolderPath = getFileFolderPath(chunkDTO.getIdentifier());
-        log.info("fileFolderPath-->{}", fileFolderPath);
+        log.info("fileFolderPath------------->{}", fileFolderPath);
         String filePath = getFilePath(chunkDTO.getIdentifier(), chunkDTO.getFilename());
         File file = new File(filePath);
         boolean exists = file.exists();
-        //1.2)检查Redis中是否存在,并且所有分片已经上传完成。
+        // 1.2 检查Redis中是否存在,并且所有分片已经上传完成。
         Set<Integer> uploaded = (Set<Integer>) redisTemplate.opsForHash().get(chunkDTO.getIdentifier(),
                 "uploaded");
         if (uploaded != null && uploaded.size() == chunkDTO.getTotalChunks() && exists) {
@@ -58,19 +60,19 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
 
     @Override
     public void uploadChunk(VideoFileChunkVO chunkDTO) throws IOException {
-        //分块的目录
+        // 分块的目录
         String chunkFileFolderPath = getChunkFileFolderPath(chunkDTO.getIdentifier());
-        log.info("分块的目录 -> {}", chunkFileFolderPath);
+        log.info("分块的目录 ---------------> {}", chunkFileFolderPath);
         File chunkFileFolder = new File(chunkFileFolderPath);
         if (!chunkFileFolder.exists()) {
             boolean mkdirs = chunkFileFolder.mkdirs();
             log.info("创建分片文件夹:{}", mkdirs);
         }
-        //写入分片
+        // 写入分片
         try (
-                InputStream inputStream = chunkDTO.getFile().getInputStream();
-                FileOutputStream outputStream = new FileOutputStream(new File(chunkFileFolderPath +
-                        chunkDTO.getChunkNumber()))
+            InputStream inputStream = chunkDTO.getFile().getInputStream();
+            FileOutputStream outputStream = new FileOutputStream(new File(chunkFileFolderPath +
+                    chunkDTO.getChunkNumber()))
         ) {
             IOUtils.copy(inputStream, outputStream);
             log.info("文件标识:{},chunkNumber:{}", chunkDTO.getIdentifier(), chunkDTO.getChunkNumber());
@@ -124,22 +126,32 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             File chunkFileFolder = new File(chunkFileFolderPath);
             File mergeFile = new File(filePath);
             File[] chunks = chunkFileFolder.listFiles();
-            //排序
+            // 排序
             List fileList = Arrays.asList(chunks);
             Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
                 return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
             });
             try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
                 byte[] bytes = new byte[1024];
                 for (File chunk : chunks) {
                     RandomAccessFile randomAccessFileReader = new RandomAccessFile(chunk, "r");
                     int len;
+                    // 每次去添加 1024 k
                     while ((len = randomAccessFileReader.read(bytes)) != -1) {
-                        randomAccessFileWriter.write(bytes, 0, len);
+                        // 数据库添加
+                        outputStream.write(bytes, 0, len);
+                        // 本地文件添加
+                        randomAccessFileWriter.write(bytes,0,len);
                     }
                     randomAccessFileReader.close();
                 }
+                // 获取合并后的完整文件数据
+                byte[] mergedBytes = outputStream.toByteArray();
+                // 将 mergedBytes 添加到数据库中，调用 createFile 方法
+                fileApi.createFile(filename,null,mergedBytes);
+
                 randomAccessFileWriter.close();
             } catch (Exception e) {
                 return false;
