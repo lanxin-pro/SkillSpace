@@ -5,6 +5,7 @@ import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.util.VideoCaptureUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -152,6 +153,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 }
                 // 获取合并后的完整文件数据
                 byte[] mergedBytes = outputStream.toByteArray();
+                VideoCaptureUtils.getVideoCoverByUrl("https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f8231991&userId=17&ext=.mp4");
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
                 url = fileApi.createFile(filename, null, mergedBytes);
                 outputStream.close();

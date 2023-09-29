@@ -75,7 +75,7 @@ const handleClose = (done) => {
     })
   }
   // ESC 和 点击弹窗外的关闭事件
-  done()
+  // done()
 }
 
 const getBindValue = computed(() => {
