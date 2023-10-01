@@ -49,7 +49,6 @@ import static cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCod
  * 全局异常处理器，将 Exception 翻译成 CommonResult + 对应的异常编号
  */
 @Slf4j
-@AllArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -59,6 +58,11 @@ public class GlobalExceptionHandler {
     private final String applicationName;
 
     private final ApiErrorLogFrameworkService apiErrorLogFrameworkService;
+
+    public GlobalExceptionHandler(String applicationName, ApiErrorLogFrameworkService apiErrorLogFrameworkService) {
+        this.applicationName = applicationName;
+        this.apiErrorLogFrameworkService = apiErrorLogFrameworkService;
+    }
 
     /**
      * 处理 SpringMVC 请求参数缺失
