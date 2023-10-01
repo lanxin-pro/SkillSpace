@@ -53,7 +53,7 @@ public class VideoUtils {
         }
 
         Java2DFrameConverter converter =new Java2DFrameConverter();
-        BufferedImage srcBi =converter.getBufferedImage(frame);
+        BufferedImage srcBi = converter.getBufferedImage(frame);
         int owidth = srcBi.getWidth();
         int oheight = srcBi.getHeight();
         // 对截取的帧进行等比例缩放
@@ -61,12 +61,61 @@ public class VideoUtils {
         int height = (int) (((double) width / owidth) * oheight);
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         bi.getGraphics().drawImage(srcBi.getScaledInstance(width, height, Image.SCALE_SMOOTH),0, 0, null);
+
         try {
             ImageIO.write(bi, imgSuffix, targetFile);
         }catch (Exception e) {
             e.printStackTrace();
         }
         ff.stop();
+    }
+
+    /**
+     * 获取指定视频byte[]流的帧并保存为图片
+     *
+     * @param file 源视频
+     * @return 视频封面的byte[]
+     * @throws Exception
+     */
+    public static byte[] fetchUrl(byte[] file) throws Exception {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file);
+        FFmpegFrameGrabber ff = new FFmpegFrameGrabber(byteArrayInputStream);
+        ff.start();
+        int lenght = ff.getLengthInFrames();
+
+        int i = 0;
+        Frame frame = null;
+        while (i < lenght) {
+            // 过滤前5帧，避免出现全黑的图片，依自己情况而定
+
+            frame = ff.grabFrame();
+
+            if ((i > 5) && (frame.image != null)) {
+                break;
+            }
+            i++;
+        }
+
+        String imgSuffix = "jpg";
+
+        Java2DFrameConverter converter =new Java2DFrameConverter();
+        BufferedImage srcBi = converter.getBufferedImage(frame);
+        int owidth = srcBi.getWidth();
+        int oheight = srcBi.getHeight();
+        // 对截取的帧进行等比例缩放
+        int width = 800;
+        int height = (int) (((double) width / owidth) * oheight);
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        bi.getGraphics().drawImage(srcBi.getScaledInstance(width, height, Image.SCALE_SMOOTH),0, 0, null);
+
+        // 创建字节数组输出流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(bi, imgSuffix, baos);
+        // 获取字节数组
+        byte[] bytes = baos.toByteArray();
+
+        ff.stop();
+        return bytes;
     }
 
     /**

@@ -140,7 +140,8 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
                 return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
             });
-            String url = "";
+            String videoUrl = "";
+            String videCoverUpload = "";
             ByteArrayOutputStream outputStream = null;
             RandomAccessFile randomAccessFileWriter = null;
             try {
@@ -171,9 +172,16 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 // 获取合并后的完整文件数据
                 byte[] mergedBytes = outputStream.toByteArray();
 
+                // TODO j-sentinel 可以对视频信息的返回合并 例如：视频大小、视频时长、视频帧数等等...
+
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
-                url = fileApi.createFile(filename, null, mergedBytes);
-                VideoUtils.fetchPic(mergedBytes,"D:\\auploadFile\\1.jpg");
+                videoUrl = fileApi.createFile(filename, null, mergedBytes);
+                byte[] videCover = VideoUtils.fetchUrl(mergedBytes);
+
+                // 将 mergedBytes 添加到数据库中，调用 createFile 方法
+                videCoverUpload = fileApi.createFile(filename + ".jpg", null, videCover);
+                log.info("获取封面图片成功，地址为：({})",videCoverUpload);
+
             } catch (Exception e) {
                 throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_MERGE_STREAM_ERROR);
             // 关闭流
@@ -193,7 +201,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                     }
                 }
             }
-            return url;
+            return videCoverUpload;
         }
         throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_EMPTY);
     }
