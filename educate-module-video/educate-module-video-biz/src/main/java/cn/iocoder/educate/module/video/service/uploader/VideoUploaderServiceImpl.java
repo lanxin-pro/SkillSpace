@@ -5,9 +5,11 @@ import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
-import cn.iocoder.educate.module.video.util.VideoCaptureUtils;
+import cn.iocoder.educate.module.video.util.VideoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.jboss.marshalling.ByteInputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -95,6 +97,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
      * 分片写入Redis
      *
      * @param chunkDTO
+     * @return
      */
     private synchronized long saveToRedis(VideoFileChunkVO chunkDTO) {
         Set<Integer> uploaded = (Set<Integer>) redisTemplate.opsForHash().get(chunkDTO.getIdentifier(),
@@ -120,6 +123,9 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
      *
      * @param identifier
      * @param filename
+     * @param totalChunks
+     *
+     * @return 返回给前端的值
      */
     private String mergeChunks(String identifier, String filename, Integer totalChunks) {
         String chunkFileFolderPath = getChunkFileFolderPath(identifier);
@@ -135,31 +141,57 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
             });
             String url = "";
+            ByteArrayOutputStream outputStream = null;
+            RandomAccessFile randomAccessFileWriter = null;
             try {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
+                outputStream = new ByteArrayOutputStream();
+                randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
                 byte[] bytes = new byte[1024];
                 for (File chunk : chunks) {
-                    RandomAccessFile randomAccessFileReader = new RandomAccessFile(chunk, "r");
-                    int len;
-                    // 每次去添加 1024 k
-                    while ((len = randomAccessFileReader.read(bytes)) != -1) {
-                        // 数据库添加
-                        outputStream.write(bytes, 0, len);
-                        // 本地文件添加
-                        randomAccessFileWriter.write(bytes,0,len);
+                    RandomAccessFile randomAccessFileReader = null;
+                    try {
+                        randomAccessFileReader = new RandomAccessFile(chunk, "r");
+                        int len;
+                        // 每次去添加 1024 k
+                        while ((len = randomAccessFileReader.read(bytes)) != -1) {
+                            // 数据库添加
+                            outputStream.write(bytes, 0, len);
+                            // 本地文件添加
+                            randomAccessFileWriter.write(bytes,0,len);
+                        }
+                        // 关闭流
+                    } catch (Exception e) {
+                        throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_STREAM_ERROR);
+                    } finally {
+                        if(randomAccessFileReader != null){
+                            randomAccessFileReader.close();
+                        }
                     }
-                    randomAccessFileReader.close();
                 }
                 // 获取合并后的完整文件数据
                 byte[] mergedBytes = outputStream.toByteArray();
-                VideoCaptureUtils.getVideoCoverByUrl("https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f8231991&userId=17&ext=.mp4");
+
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
                 url = fileApi.createFile(filename, null, mergedBytes);
-                outputStream.close();
-                randomAccessFileWriter.close();
+                VideoUtils.fetchPic(mergedBytes,"D:\\auploadFile\\1.jpg");
             } catch (Exception e) {
-                throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_STREAM_ERROR);
+                throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_MERGE_STREAM_ERROR);
+            // 关闭流
+            } finally {
+                if(outputStream != null){
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(randomAccessFileWriter != null){
+                    try {
+                        randomAccessFileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             return url;
         }
