@@ -73,9 +73,10 @@ const handleClose = (done) => {
     }).catch(() => {
       // catch error
     })
+  } else {
+    // ESC 和 点击弹窗外的关闭事件
+    done()
   }
-  // ESC 和 点击弹窗外的关闭事件
-  // done()
 }
 
 const getBindValue = computed(() => {

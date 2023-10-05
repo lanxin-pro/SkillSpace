@@ -33,8 +33,8 @@ public interface VideoUploaderService {
      * @param totalChunks 拥有多少个分片
      *
      * @return String 返回上传访问路径
-     * @throws IOException
+     * @throws Exception
      */
-    String mergeChunk(String identifier,String fileName,Integer totalChunks)throws IOException;
+    String mergeChunk(String identifier,String fileName,Integer totalChunks)throws Exception;
 
 }

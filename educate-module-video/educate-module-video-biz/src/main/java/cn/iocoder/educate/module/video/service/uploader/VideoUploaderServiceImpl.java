@@ -89,7 +89,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
     }
 
     @Override
-    public String mergeChunk(String identifier, String fileName, Integer totalChunks) throws IOException {
+    public String mergeChunk(String identifier, String fileName, Integer totalChunks) throws Exception {
         return mergeChunks(identifier, fileName, totalChunks);
     }
 
@@ -127,7 +127,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
      *
      * @return 返回给前端的值
      */
-    private String mergeChunks(String identifier, String filename, Integer totalChunks) {
+    private String mergeChunks(String identifier, String filename, Integer totalChunks) throws Exception {
         String chunkFileFolderPath = getChunkFileFolderPath(identifier);
         String filePath = getFilePath(identifier, filename);
         // 检查分片是否都存在
@@ -182,9 +182,6 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 videCoverUpload = fileApi.createFile(filename + ".jpg", null, videCover);
                 log.info("获取封面图片成功，地址为：({})",videCoverUpload);
 
-            } catch (Exception e) {
-                throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_MERGE_STREAM_ERROR);
-            // 关闭流
             } finally {
                 if(outputStream != null){
                     try {

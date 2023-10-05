@@ -109,7 +109,7 @@
         >
 
           <UploadImg
-              :url='formData.cover'
+              v-model='formData.cover'
               ref='imguplodRef'
               @success='handleUploadSuccess'
          />
@@ -507,6 +507,7 @@ const handleVideoSelectTag = (data) => {
 /** 视频分片上传的返回 */
 const handleUploadVideoSuccess = (data) => {
   console.log("啊哈3---------------------------",data)
+  formData.cover = data
 }
 // 是否打开新建标签的输入栏
 const inputVisible = ref(false)

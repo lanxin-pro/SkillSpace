@@ -49,7 +49,7 @@ public class VideoUploaderController {
 
     @PostMapping("/merge")
     @Operation(summary = "请求合并文件分片")
-    public CommonResult<String> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws IOException {
+    public CommonResult<String> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws Exception {
         String url = videoUploaderService.mergeChunk(chunkDTO.getIdentifier(), chunkDTO.getFilename(),
                 chunkDTO.getTotalChunks());
         return success(url);
