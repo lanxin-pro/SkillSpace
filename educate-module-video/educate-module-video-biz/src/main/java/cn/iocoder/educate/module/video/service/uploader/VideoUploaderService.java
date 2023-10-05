@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.video.service.uploader;
 
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileMergeRespVO;
 
 import java.io.IOException;
 
@@ -35,6 +36,6 @@ public interface VideoUploaderService {
      * @return String 返回上传访问路径
      * @throws Exception
      */
-    String mergeChunk(String identifier,String fileName,Integer totalChunks)throws Exception;
+    VideoFileMergeRespVO mergeChunk(String identifier, String fileName, Integer totalChunks)throws Exception;
 
 }

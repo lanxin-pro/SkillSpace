@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * FFmpeg 来获取视频截取指定帧图片
@@ -126,6 +128,60 @@ public class VideoUtils {
             }
         }
         return bytes;
+    }
+
+    public static Map<String,Object> fetchMap(byte[] file) {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(file);
+        FFmpegFrameGrabber ff = new FFmpegFrameGrabber(byteArrayInputStream);
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        byte[] bytes = null;
+        Integer times;
+        try {
+            ff.start();
+            times = (int)ff.getLengthInTime()/(1000*1000);
+            int lenght = ff.getLengthInFrames();
+
+            int i = 0;
+            Frame frame = null;
+            while (i < lenght) {
+                // 过滤前5帧，避免出现全黑的图片，依自己情况而定
+
+                frame = ff.grabFrame();
+
+                if ((i > 5) && (frame.image != null)) {
+                    break;
+                }
+                i++;
+            }
+            String imgSuffix = "jpg";
+
+            Java2DFrameConverter converter =new Java2DFrameConverter();
+            BufferedImage srcBi = converter.getBufferedImage(frame);
+            int owidth = srcBi.getWidth();
+            int oheight = srcBi.getHeight();
+            // 对截取的帧进行等比例缩放
+            int width = 800;
+            int height = (int) (((double) width / owidth) * oheight);
+            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            bi.getGraphics().drawImage(srcBi.getScaledInstance(width, height, Image.SCALE_SMOOTH),0, 0, null);
+
+            // 创建字节数组输出流
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bi, imgSuffix, baos);
+            // 获取字节数组
+            bytes = baos.toByteArray();
+            stringObjectHashMap.put("videoCover",bytes);
+            stringObjectHashMap.put("videoTimes",times);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ff.stop();
+            } catch (FrameGrabber.Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return stringObjectHashMap;
     }
 
     /**

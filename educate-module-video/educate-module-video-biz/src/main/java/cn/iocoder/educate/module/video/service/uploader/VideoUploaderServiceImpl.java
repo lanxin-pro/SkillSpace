@@ -5,6 +5,7 @@ import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileMergeRespVO;
 import cn.iocoder.educate.module.video.util.VideoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -89,47 +90,9 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
     }
 
     @Override
-    public String mergeChunk(String identifier, String fileName, Integer totalChunks) throws Exception {
-        return mergeChunks(identifier, fileName, totalChunks);
-    }
-
-    /**
-     * 分片写入Redis
-     *
-     * @param chunkDTO
-     * @return
-     */
-    private synchronized long saveToRedis(VideoFileChunkVO chunkDTO) {
-        Set<Integer> uploaded = (Set<Integer>) redisTemplate.opsForHash().get(chunkDTO.getIdentifier(),
-                "uploaded");
-        if (uploaded == null) {
-            uploaded = new HashSet<>(Arrays.asList(chunkDTO.getChunkNumber()));
-            HashMap<String, Object> objectObjectHashMap = new HashMap<>();
-            objectObjectHashMap.put("uploaded", uploaded);
-            objectObjectHashMap.put("totalChunks", chunkDTO.getTotalChunks());
-            objectObjectHashMap.put("totalSize", chunkDTO.getTotalSize());
-//            objectObjectHashMap.put("path", getFileRelativelyPath(chunkDTO.getIdentifier(), chunkDTO.getFilename()));
-            objectObjectHashMap.put("path", chunkDTO.getFilename());
-            redisTemplate.opsForHash().putAll(chunkDTO.getIdentifier(), objectObjectHashMap);
-        } else {
-            uploaded.add(chunkDTO.getChunkNumber());
-            redisTemplate.opsForHash().put(chunkDTO.getIdentifier(), "uploaded", uploaded);
-        }
-        return uploaded.size();
-    }
-
-    /**
-     * 合并分片
-     *
-     * @param identifier
-     * @param filename
-     * @param totalChunks
-     *
-     * @return 返回给前端的值
-     */
-    private String mergeChunks(String identifier, String filename, Integer totalChunks) throws Exception {
+    public VideoFileMergeRespVO mergeChunk(String identifier, String fileName, Integer totalChunks) throws Exception {
         String chunkFileFolderPath = getChunkFileFolderPath(identifier);
-        String filePath = getFilePath(identifier, filename);
+        String filePath = getFilePath(identifier, fileName);
         // 检查分片是否都存在
         if (checkChunks(chunkFileFolderPath, totalChunks)) {
             File chunkFileFolder = new File(chunkFileFolderPath);
@@ -144,6 +107,7 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             String videCoverUpload = "";
             ByteArrayOutputStream outputStream = null;
             RandomAccessFile randomAccessFileWriter = null;
+            VideoFileMergeRespVO videoFileMergeRespVO = new VideoFileMergeRespVO();
             try {
                 outputStream = new ByteArrayOutputStream();
                 randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
@@ -175,13 +139,14 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                 // TODO j-sentinel 可以对视频信息的返回合并 例如：视频大小、视频时长、视频帧数等等...
 
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
-                videoUrl = fileApi.createFile(filename, null, mergedBytes);
-                byte[] videCover = VideoUtils.fetchUrl(mergedBytes);
-
+                videoUrl = fileApi.createFile(fileName, null, mergedBytes);
+                Map<String, Object> map = VideoUtils.fetchMap(mergedBytes);
                 // 将 mergedBytes 添加到数据库中，调用 createFile 方法
-                videCoverUpload = fileApi.createFile(filename + ".jpg", null, videCover);
-                log.info("获取封面图片成功，地址为：({})",videCoverUpload);
-
+                videCoverUpload = fileApi.createFile(fileName + ".jpg", null, (byte[]) map.get("videoCover"));
+                log.info("[图片上传](mergeChunk)获取封面图片成功，地址为：({})",videCoverUpload);
+                videoFileMergeRespVO.setCover(videCoverUpload);
+                videoFileMergeRespVO.setUrl(videoUrl);
+                videoFileMergeRespVO.setDuration((Integer) map.get("videoTimes"));
             } finally {
                 if(outputStream != null){
                     try {
@@ -198,9 +163,34 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
                     }
                 }
             }
-            return videCoverUpload;
+            return videoFileMergeRespVO;
         }
         throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_EMPTY);
+    }
+
+    /**
+     * 分片写入Redis
+     *
+     * @param chunkDTO
+     * @return
+     */
+    private synchronized long saveToRedis(VideoFileChunkVO chunkDTO) {
+        Set<Integer> uploaded = (Set<Integer>) redisTemplate.opsForHash().get(chunkDTO.getIdentifier(),
+                "uploaded");
+        if (uploaded == null) {
+            uploaded = new HashSet<>(Arrays.asList(chunkDTO.getChunkNumber()));
+            HashMap<String, Object> objectObjectHashMap = new HashMap<>();
+            objectObjectHashMap.put("uploaded", uploaded);
+            objectObjectHashMap.put("totalChunks", chunkDTO.getTotalChunks());
+            objectObjectHashMap.put("totalSize", chunkDTO.getTotalSize());
+//            objectObjectHashMap.put("path", getFileRelativelyPath(chunkDTO.getIdentifier(), chunkDTO.getFilename()));
+            objectObjectHashMap.put("path", chunkDTO.getFilename());
+            redisTemplate.opsForHash().putAll(chunkDTO.getIdentifier(), objectObjectHashMap);
+        } else {
+            uploaded.add(chunkDTO.getChunkNumber());
+            redisTemplate.opsForHash().put(chunkDTO.getIdentifier(), "uploaded", uploaded);
+        }
+        return uploaded.size();
     }
 
     /**

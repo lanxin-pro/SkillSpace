@@ -18,6 +18,7 @@
         <el-form-item label='视频分类：' required label-width='200px'>
           <template v-if='selectCategoryList && selectCategoryList.length > 0'>
             <el-tag
+                class='button-new-tag'
                 v-for='(tag,index) in selectCategoryList'
                 @close='handleRemoveTag(index)'
                 :key='index'
@@ -27,6 +28,7 @@
             </el-tag>
           </template>
           <el-button
+              class='button-new-tag'
               @click='handleOpenCategory'
               type="primary"
               size='small'
@@ -282,27 +284,7 @@
         <el-form-item label='当前点赞数：' label-width='200px'>
           <el-input type='number' v-model='formData.likeNumber' placeholder='当前点赞数' maxlength='20'></el-input>
         </el-form-item>
-        <el-form-item label='演员明星：' label-width='200px'>
-          <el-tag
-              v-for='(i,index) in actorIdssArr'
-              :key='actorIdssArr[index]'
-              closable
-              @close='handleCloseAuthor(actorIdssArr[index],index)'>
-              <span>
-              <img style='width: 20px;height: 20px'   v-image-decrypt='actorAvatarsArr[index]' />
-              {{ actorIdssArr[index] }} /{{ actorNamessArr[index] }}
-              </span>
-          </el-tag>
-          <el-button  size="mini" icon="el-icon-plus" type="primary" @click='handleOpenedActor' v-re-click >选择作者</el-button>
-        </el-form-item>
-
       </div>
-
-
-
-
-
-
 
     </el-form>
     <template #footer>
@@ -321,7 +303,7 @@ import { ref,reactive,nextTick } from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict.js'
 import { getSimpleMenusList,getMenu,createMenu,updateMenu } from '@/api/system/menu/index.js'
-import { getVideoAdmin } from '@/api/video/videoadmin/index.js'
+import { getVideoAdmin, createVideo, updateVideo } from '@/api/video/videoadmin/index.js'
 import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
@@ -347,7 +329,7 @@ const inputValue = ref()
 // 标签名
 const tagArray = ref([])
 const formData = reactive({
-// 标题：须限定字数200
+  // 标题：须限定字数200
   title: '',
   // 简介：须限定字数500
   intro: '',
@@ -472,10 +454,10 @@ const submitForm = async () => {
   try {
     const data = formData.value
     if (formType.value === 'create') {
-      await createNotice(data)
+      await createVideo(data)
       ElComponent.msgSuccess("创建成功")
     } else {
-      await updateNotice(data)
+      await updateVideo(data)
       ElComponent.msgSuccess("更新成功")
     }
     dialogVisible.value = false
@@ -498,16 +480,26 @@ const handleOpenTagDialog = () => {
 }
 /** 分类操作的返回 */
 const handleVideoSelectCategory = (data) => {
-  console.log("啊哈",data)
+  selectCategoryList.value = data[0]
+  formData.categoryId = data[0].map(c => c.id).join(',')
+  formData.categoryName = data[0].map(c => c.name).join(',')
+  formData.categoryPid = data[0].map(c => c.pid).join(',')
+  formData.categoryPname = data[0].map(c => c.pname).join(',')
 }
 /** 标签操作的返回 */
-const handleVideoSelectTag = (data) => {
-  console.log("啊哈2",data)
+const handleVideoSelectTag = (selectTags) => {
+  tagArray.value = selectTags
+  formData.tagList = selectTags.join(',')
 }
 /** 视频分片上传的返回 */
 const handleUploadVideoSuccess = (data) => {
-  console.log("啊哈3---------------------------",data)
-  formData.cover = data
+  console.log("aaaaaaaaa",data)
+  formData.url = data.url
+  formData.cover = data.cover
+  formData.duration = parseInt(data.duration)
+  formData.stanUrl = data.url
+  formData.highUrl = data.url
+  formData.superUrl = data.url
 }
 // 是否打开新建标签的输入栏
 const inputVisible = ref(false)

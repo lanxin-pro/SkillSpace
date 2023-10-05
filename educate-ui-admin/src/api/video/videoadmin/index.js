@@ -26,3 +26,31 @@ export function getVideoAdmin(videoId) {
         method: 'get'
     })
 }
+
+/**
+ * 创建视频详情
+ *
+ * @param data
+ * @returns {*}
+ */
+export function createVideo(data) {
+    return request({
+        url: '/video/admin/create',
+        method: 'post',
+        data: data
+    })
+}
+
+/**
+ * 修改视频详细
+ *
+ * @param data
+ * @returns {*}
+ */
+export function updateVideo(data) {
+    return request({
+        url: '/video/admin/update',
+        method: 'post',
+        data: data
+    })
+}
