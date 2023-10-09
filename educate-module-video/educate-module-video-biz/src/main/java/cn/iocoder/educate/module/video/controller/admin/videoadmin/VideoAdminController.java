@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.video.controller.admin.videoadmin;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminCreateReqVO;
 import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminPageReqVO;
 import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminRespVo;
 import cn.iocoder.educate.module.video.covert.videoadmin.VideoAdminConvert;
@@ -11,9 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -35,10 +34,26 @@ public class VideoAdminController {
 
     @GetMapping("/page")
     @Operation(summary = "获得视频详情分页")
-    @PreAuthorize("@lanxin.hasPermission('video:file:query')")
+    @PreAuthorize("@lanxin.hasPermission('video:admin:query')")
     public CommonResult<PageResult<VideoAdminRespVo>> getVideoPage(@Valid VideoAdminPageReqVO videoPageReqVO) {
         PageResult<VideoAdminDO> pageResult = videoAdminService.getVideoAdminPage(videoPageReqVO);
         return success(VideoAdminConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @PostMapping("/create")
+    @Operation(summary = "获得视频详情分页")
+    @PreAuthorize("@lanxin.hasPermission('video:admin:create')")
+    public CommonResult<Long> createVideo(@Valid @RequestBody VideoAdminCreateReqVO liveStudioSourceManegeVO) {
+        Long adminId = videoAdminService.createVideo(liveStudioSourceManegeVO);
+        return success(adminId);
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "获得视频详情分页")
+    @PreAuthorize("@lanxin.hasPermission('video:admin:update')")
+    public CommonResult<Boolean> updateVideo(@Valid @RequestBody VideoAdminCreateReqVO liveStudioSourceManegeVO) {
+        videoAdminService.updateVideo(liveStudioSourceManegeVO);
+        return success(true);
     }
 
 }

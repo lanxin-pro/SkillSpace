@@ -50,7 +50,7 @@ export function createVideo(data) {
 export function updateVideo(data) {
     return request({
         url: '/video/admin/update',
-        method: 'post',
+        method: 'put',
         data: data
     })
 }

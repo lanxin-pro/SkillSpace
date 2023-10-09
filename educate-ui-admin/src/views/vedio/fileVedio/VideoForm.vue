@@ -328,7 +328,8 @@ const selectCategoryList = ref([])
 const inputValue = ref()
 // 标签名
 const tagArray = ref([])
-const formData = reactive({
+const formData = ref({
+  id: undefined,
   // 标题：须限定字数200
   title: '',
   // 简介：须限定字数500
@@ -453,7 +454,8 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value
-    if (formType.value === 'create') {
+    if (formType.value === SystemCreateOrUpdate.CREATE) {
+      console.log(formData.value)
       await createVideo(data)
       ElComponent.msgSuccess("创建成功")
     } else {
@@ -481,25 +483,25 @@ const handleOpenTagDialog = () => {
 /** 分类操作的返回 */
 const handleVideoSelectCategory = (data) => {
   selectCategoryList.value = data[0]
-  formData.categoryId = data[0].map(c => c.id).join(',')
-  formData.categoryName = data[0].map(c => c.name).join(',')
-  formData.categoryPid = data[0].map(c => c.pid).join(',')
-  formData.categoryPname = data[0].map(c => c.pname).join(',')
+  formData.value.categoryId = data[0].map(c => c.id).join(',')
+  formData.value.categoryName = data[0].map(c => c.name).join(',')
+  formData.value.categoryPid = data[0].map(c => c.pid).join(',')
+  formData.value.categoryPname = data[0].map(c => c.pname).join(',')
 }
 /** 标签操作的返回 */
 const handleVideoSelectTag = (selectTags) => {
   tagArray.value = selectTags
-  formData.tagList = selectTags.join(',')
+  formData.value.tagList = selectTags.join(',')
 }
 /** 视频分片上传的返回 */
 const handleUploadVideoSuccess = (data) => {
   console.log("aaaaaaaaa",data)
-  formData.url = data.url
-  formData.cover = data.cover
-  formData.duration = parseInt(data.duration)
-  formData.stanUrl = data.url
-  formData.highUrl = data.url
-  formData.superUrl = data.url
+  formData.value.url = data.url
+  formData.value.cover = data.cover
+  formData.value.duration = parseInt(data.duration)
+  formData.value.stanUrl = data.url
+  formData.value.highUrl = data.url
+  formData.value.superUrl = data.url
 }
 // 是否打开新建标签的输入栏
 const inputVisible = ref(false)
@@ -522,7 +524,7 @@ const  handleInputConfirm = () => {
   // 不重复就添加
   if (inputValue.value && tagArray.value.indexOf(inputValue.value) === -1) {
     tagArray.value.push(inputValue.value)
-    formData.tagList = uniqueArray(tagArray.value).join(',')
+    formData.value.tagList = uniqueArray(tagArray.value).join(',')
     inputVisible.value = false
     inputValue.value = ''
   } else {

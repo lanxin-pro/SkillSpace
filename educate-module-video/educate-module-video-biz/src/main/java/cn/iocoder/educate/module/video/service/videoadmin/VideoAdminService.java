@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.video.service.videoadmin;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminCreateReqVO;
 import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminPageReqVO;
 import cn.iocoder.educate.module.video.dal.dataobject.VideoAdminDO;
 
@@ -20,4 +21,18 @@ public interface VideoAdminService {
      */
     PageResult<VideoAdminDO> getVideoAdminPage(VideoAdminPageReqVO videoPageReqVO);
 
+    /**
+     * 创建视频
+     *
+     * @param liveStudioSourceManegeVO 视频craeteVO
+     * @return
+     */
+    Long createVideo(VideoAdminCreateReqVO liveStudioSourceManegeVO);
+
+    /**
+     * 修改视频
+     *
+     * @param liveStudioSourceManegeVO 修改视频updateVO
+     */
+    void updateVideo(VideoAdminCreateReqVO liveStudioSourceManegeVO);
 }
