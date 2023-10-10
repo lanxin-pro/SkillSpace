@@ -4,6 +4,7 @@ import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminCreateReqVO;
 import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminPageReqVO;
+import cn.iocoder.educate.module.video.controller.admin.videoadmin.vo.VideoAdminUpdateReqVO;
 import cn.iocoder.educate.module.video.covert.videoadmin.VideoAdminConvert;
 import cn.iocoder.educate.module.video.dal.dataobject.VideoAdminDO;
 import cn.iocoder.educate.module.video.dal.mysql.VideoAdminMapper;
@@ -47,9 +48,14 @@ public class VideoAdminServiceImpl implements VideoAdminService {
     }
 
     @Override
-    public void updateVideo(VideoAdminCreateReqVO videoAdminReqVO) {
+    public void updateVideo(VideoAdminUpdateReqVO videoAdminReqVO) {
         VideoAdminDO videoAdminDO = VideoAdminConvert.INSTANCE.convert(videoAdminReqVO);
         videoAdminMapper.updateById(videoAdminDO);
+    }
+
+    @Override
+    public VideoAdminDO getFileVideo(Long id) {
+        return videoAdminMapper.selectById(id);
     }
 
 }

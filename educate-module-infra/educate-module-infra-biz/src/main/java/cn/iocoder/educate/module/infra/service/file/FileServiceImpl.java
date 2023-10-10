@@ -52,7 +52,7 @@ public class FileServiceImpl implements FileService {
         try {
             url = client.upload(content, path, mineType);
         } catch (Exception exception){
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_OVER_ERROR);
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_OVER_ERROR,exception);
         }
 
         // 保存到数据库

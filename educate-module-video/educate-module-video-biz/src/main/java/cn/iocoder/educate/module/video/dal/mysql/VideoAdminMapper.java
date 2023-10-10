@@ -51,7 +51,8 @@ public interface VideoAdminMapper extends BaseMapper<VideoAdminDO> {
                 .between(null != ArrayUtils.get(videoPageReqVO.getCreateTime(),0) &&
                                 ArrayUtils.get(videoPageReqVO.getCreateTime(),1) != null,
                         VideoAdminDO::getCreateTime, ArrayUtils.get(videoPageReqVO.getCreateTime(),0),
-                        ArrayUtils.get(videoPageReqVO.getCreateTime(),1));
+                        ArrayUtils.get(videoPageReqVO.getCreateTime(),1))
+                .orderByDesc(VideoAdminDO::getCreateTime);
         Page<VideoAdminDO> mpPage = new Page<>(videoPageReqVO.getPageNo(), videoPageReqVO.getPageSize());
         Page<VideoAdminDO> adminUserDOPage = this.selectPage(mpPage, videoAdminDOLambdaQueryWrapper);
         return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());

@@ -428,7 +428,6 @@ const open = async (type, id) => {
     formLoading.value = true
     try {
       const response = await getVideoAdmin(id)
-      console.log("视频详情",response.data)
       formData.value = response.data
     } finally {
       formLoading.value = false

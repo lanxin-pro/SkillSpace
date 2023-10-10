@@ -140,7 +140,7 @@
     <div v-for='(data,index) in list' class="article-card"
          :class="[(checkVideoIds && checkVideoIds.findIndex(v => v === data.videoCode)!=-1) ? 'checked' : '']"
     >
-      <a href='javascript:void(0);' @click.prevent="handleOpenPreview(index)"  class='cover-wrp'>
+      <a href='javascript:void(0);' @click.prevent="handleOpenPreview(data)"  class='cover-wrp'>
         <el-image
             :src="data.cover"
             fit="contain"
@@ -382,8 +382,8 @@ onMounted(() => {
 })
 const videoPlayRef = ref()
 /** 视频加载 */
-const handleOpenPreview = (index)=>{
-  videoPlayRef.value.open(index)
+const handleOpenPreview = (data)=>{
+  videoPlayRef.value.open(data)
 }
 /** 批量操作 */
 const handleCheckedCitiesChange = (value)=>{
