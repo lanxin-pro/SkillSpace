@@ -30,6 +30,8 @@
         <module>educate-spring-boot-starter-biz-error-code</module>
         <module>educate-spring-boot-starter-biz-weixin</module>
         <module>educate-spring-boot-starter-job</module>
+        <module>educate-spring-boot-starter-desensitize</module>
+        <module>educate-spring-boot-starter-excel</module>
     </modules>
 
     <description>
