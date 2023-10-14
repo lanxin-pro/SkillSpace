@@ -81,7 +81,7 @@
         </template>
       </el-table-column>
       <el-table-column label="用户编号" align="center" prop="userId" width="80" />
-      <el-table-column label="模板编码" align="center" prop="templateCode" width="80" />
+      <el-table-column label="模板编码" align="center" prop="templateCode" width="110" />
       <el-table-column label="发送人名称" align="center" prop="templateNickname" width="180" />
       <el-table-column
           label="模版内容"
@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column label="是否已读" align="center" prop="readStatus" width="100">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.readStatus" />
+          <DictTag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.readStatus" />
         </template>
       </el-table-column>
       <el-table-column
@@ -128,6 +128,8 @@
           <el-button
               link
               type="primary"
+              icon="View"
+              size="small"
               @click="openDetail(scope.row)"
               v-hasPermi="['system:notify-message:query']"
           >
@@ -154,23 +156,28 @@
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict.js'
 import { dateFormatter } from '@/utils/formatTime.js'
 import { ref,reactive,onMounted } from 'vue'
-import ELComponent from '@/plugins/modal.js'
 import Pagination from '@/components/Pagination/index.vue'
-import { getNotifyTemplatePage } from '@/api/system/notify/template/index.js'
+import { getNotifyMessagePage } from '@/api/system/notify/message/index.js'
+import NotifyMessageDetail from './NotifyMessageDetail.vue'
+import DictTag from '@/components/DictTag/index.vue'
 
-const loading = ref(true) // 列表的加载中
-const total = ref(0) // 列表的总页数
-const list = ref([]) // 列表的数据
+// 列表的加载中
+const loading = ref(true)
+// 列表的总页数
+const total = ref(0)
+// 列表的数据
+const list = ref([])
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 15,
   userType: undefined,
   userId: undefined,
   templateCode: undefined,
   templateType: undefined,
   createTime: []
 })
-const queryFormRef = ref() // 搜索的表单
+// 搜索的表单
+const queryFormRef = ref()
 
 /** 查询列表 */
 const getList = async () => {
