@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.system.service.notify;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.notify.vo.message.NotifyMessagePageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyMessageDO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyTemplateDO;
 import cn.iocoder.educate.module.system.dal.mysql.notify.NotifyMessageMapper;
@@ -40,6 +42,16 @@ public class NotifyMessageServiceImpl implements NotifyMessageService {
                 .setTemplateContent(templateContent).setTemplateParams(templateParams).setReadStatus(false);
         notifyMessageMapper.insert(message);
         return message.getId();
+    }
+
+    @Override
+    public PageResult<NotifyMessageDO> getNotifyMessagePage(NotifyMessagePageReqVO pageReqVO) {
+        return notifyMessageMapper.selectPage(pageReqVO);
+    }
+
+    @Override
+    public NotifyMessageDO getNotifyMessage(Long id) {
+        return notifyMessageMapper.selectById(id);
     }
 
 }

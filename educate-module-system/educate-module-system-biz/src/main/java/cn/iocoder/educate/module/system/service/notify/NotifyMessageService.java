@@ -1,5 +1,8 @@
 package cn.iocoder.educate.module.system.service.notify;
 
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.notify.vo.message.NotifyMessagePageReqVO;
+import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyMessageDO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyTemplateDO;
 
 import java.util.Map;
@@ -24,5 +27,21 @@ public interface NotifyMessageService {
      */
     Long createNotifyMessage(Long userId, Integer userType, NotifyTemplateDO template, String templateContent,
                              Map<String, Object> templateParams);
+
+    /**
+     * 获得站内信分页
+     *
+     * @param pageReqVO 分页查询
+     * @return 站内信分页
+     */
+    PageResult<NotifyMessageDO> getNotifyMessagePage(NotifyMessagePageReqVO pageReqVO);
+
+    /**
+     * 获得站内信
+     *
+     * @param id 编号
+     * @return 站内信
+     */
+    NotifyMessageDO getNotifyMessage(Long id);
 
 }
