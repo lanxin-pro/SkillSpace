@@ -71,4 +71,14 @@ public class NotifyMessageServiceImpl implements NotifyMessageService {
         return notifyMessageMapper.selectPage(pageReqVO, userId, userType);
     }
 
+    @Override
+    public int updateNotifyMessageRead(List<Long> ids, Long userId, Integer userType) {
+        return notifyMessageMapper.updateListRead(ids, userId, userType);
+    }
+
+    @Override
+    public int updateAllNotifyMessageRead(Long userId, Integer userType) {
+        return notifyMessageMapper.updateListRead(userId, userType);
+    }
+
 }

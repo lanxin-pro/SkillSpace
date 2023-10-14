@@ -75,4 +75,22 @@ public interface NotifyMessageService {
      */
     PageResult<NotifyMessageDO> getMyMyNotifyMessagePage(NotifyMessageMyPageReqVO pageReqVO,
                                                          Long userId, Integer userType);
+    /**
+     * 标记站内信为已读
+     *
+     * @param ids    站内信编号集合
+     * @param userId 用户编号
+     * @param userType 用户类型
+     * @return 更新到的条数
+     */
+    int updateNotifyMessageRead(List<Long> ids, Long userId, Integer userType);
+
+    /**
+     * 标记所有站内信为已读
+     *
+     * @param userId   用户编号
+     * @param userType 用户类型
+     * @return 更新到的条数
+     */
+    int updateAllNotifyMessageRead(Long userId, Integer userType);
 }

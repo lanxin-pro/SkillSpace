@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -66,7 +68,9 @@ public interface NotifyMessageMapper extends BaseMapper<NotifyMessageDO> {
     default PageResult<NotifyMessageDO> selectPage(NotifyMessageMyPageReqVO notifyMessageMyPageReqVO,
                                                    Long userId, Integer userType) {
         LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        notifyMessageDOLambdaQueryWrapper.eq(NotifyMessageDO::getReadStatus, false)
+        notifyMessageDOLambdaQueryWrapper
+                .eq(ObjectUtil.isNotEmpty(notifyMessageMyPageReqVO.getReadStatus()),
+                        NotifyMessageDO::getReadStatus,notifyMessageMyPageReqVO.getReadStatus())
                 .eq(NotifyMessageDO::getUserId, userId)
                 .eq(NotifyMessageDO::getUserType, userType)
                 .between(ArrayUtils.get(notifyMessageMyPageReqVO.getCreateTime(),0) != null
@@ -78,6 +82,25 @@ public interface NotifyMessageMapper extends BaseMapper<NotifyMessageDO> {
         Page<NotifyMessageDO> page = new Page<>(notifyMessageMyPageReqVO.getPageNo(),notifyMessageMyPageReqVO.getPageSize());
         Page<NotifyMessageDO> notifyMessageDOPage = this.selectPage(page, notifyMessageDOLambdaQueryWrapper);
         return new PageResult<>(notifyMessageDOPage.getRecords(),notifyMessageDOPage.getTotal());
+    }
+
+    default int updateListRead(Collection<Long> ids, Long userId, Integer userType) {
+        LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        return update(new NotifyMessageDO().setReadStatus(true).setReadTime(LocalDateTime.now()),
+            notifyMessageDOLambdaQueryWrapper
+                    .in(NotifyMessageDO::getId, ids)
+                    .eq(NotifyMessageDO::getUserId, userId)
+                    .eq(NotifyMessageDO::getUserType, userType)
+                    .eq(NotifyMessageDO::getReadStatus, false));
+    }
+
+    default int updateListRead(Long userId, Integer userType) {
+        LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        return update(new NotifyMessageDO().setReadStatus(true).setReadTime(LocalDateTime.now()),
+                notifyMessageDOLambdaQueryWrapper
+                        .eq(NotifyMessageDO::getUserId, userId)
+                        .eq(NotifyMessageDO::getUserType, userType)
+                        .eq(NotifyMessageDO::getReadStatus, false));
     }
 
 }

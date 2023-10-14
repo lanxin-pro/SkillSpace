@@ -57,14 +57,6 @@ public class NotifyMessageController {
 
     // ========== 查看自己的站内信 ==========
 
-    @GetMapping("/my-page")
-    @Operation(summary = "获得我的站内信分页")
-    public CommonResult<PageResult<NotifyMessageRespVO>> getMyMyNotifyMessagePage(@Valid NotifyMessageMyPageReqVO pageVO) {
-        PageResult<NotifyMessageDO> pageResult = notifyMessageService.getMyMyNotifyMessagePage(pageVO,
-                getLoginUserId(), UserTypeEnum.ADMIN.getValue());
-        return success(NotifyMessageConvert.INSTANCE.convertPage(pageResult));
-    }
-
     @GetMapping("/get-unread-list")
     @Operation(summary = "获取当前用户的最新站内信列表，默认 10 条")
     @Parameter(name = "size", description = "10")
@@ -75,11 +67,34 @@ public class NotifyMessageController {
         return success(NotifyMessageConvert.INSTANCE.convertList(list));
     }
 
+    @GetMapping("/my-page")
+    @Operation(summary = "获得我的站内信分页")
+    public CommonResult<PageResult<NotifyMessageRespVO>> getMyMyNotifyMessagePage(@Valid NotifyMessageMyPageReqVO pageVO) {
+        PageResult<NotifyMessageDO> pageResult = notifyMessageService.getMyMyNotifyMessagePage(pageVO,
+                getLoginUserId(), UserTypeEnum.ADMIN.getValue());
+        return success(NotifyMessageConvert.INSTANCE.convertPage(pageResult));
+    }
+
     @GetMapping("/get-unread-count")
     @Operation(summary = "获得当前用户的未读站内信数量")
     public CommonResult<Long> getUnreadNotifyMessageCount() {
         return success(notifyMessageService.getUnreadNotifyMessageCount(getLoginUserId(),
                 UserTypeEnum.ADMIN.getValue()));
+    }
+
+    @PutMapping("/update-read")
+    @Operation(summary = "标记站内信为已读")
+    @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
+    public CommonResult<Boolean> updateNotifyMessageRead(@RequestParam("ids") List<Long> ids) {
+        notifyMessageService.updateNotifyMessageRead(ids, getLoginUserId(), UserTypeEnum.ADMIN.getValue());
+        return success(Boolean.TRUE);
+    }
+
+    @PutMapping("/update-all-read")
+    @Operation(summary = "标记所有站内信为已读")
+    public CommonResult<Boolean> updateAllNotifyMessageRead() {
+        notifyMessageService.updateAllNotifyMessageRead(getLoginUserId(), UserTypeEnum.ADMIN.getValue());
+        return success(Boolean.TRUE);
     }
 
 }

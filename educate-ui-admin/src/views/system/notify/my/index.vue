@@ -198,14 +198,14 @@ const resetQuery = () => {
 /** 详情操作 */
 const detailRef = ref()
 const openDetail = (data) => {
-  console.log("data状态",data)
   // 判断阅读状态
   if (!data.readStatus) {
     // 已读
     handleReadOne(data.id)
+  }else{
+    // 打开详情
+    detailRef.value.open(data)
   }
-  // 打开详情
-  detailRef.value.open(data)
 }
 
 /** 标记一条站内信已读 */
