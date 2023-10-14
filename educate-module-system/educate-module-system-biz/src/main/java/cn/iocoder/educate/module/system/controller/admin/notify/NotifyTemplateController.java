@@ -76,12 +76,12 @@ public class NotifyTemplateController {
         return success(NotifyTemplateConvert.INSTANCE.convertPage(pageResult));
     }
 
-/*    @PostMapping("/send-notify")
+    @PostMapping("/send-notify")
     @Operation(summary = "发送站内信")
     @PreAuthorize("@lanxin.hasPermission('system:notify-template:send-notify')")
     public CommonResult<Long> sendNotify(@Valid @RequestBody NotifyTemplateSendReqVO sendReqVO) {
         return success(notifySendService.sendSingleNotifyToAdmin(sendReqVO.getUserId(),
                 sendReqVO.getTemplateCode(), sendReqVO.getTemplateParams()));
-    }*/
+    }
 
 }

@@ -80,6 +80,7 @@ public class NotifyTemplateServiceImpl implements NotifyTemplateService {
 
         // 插入
         NotifyTemplateDO notifyTemplate = NotifyTemplateConvert.INSTANCE.convert(createReqVO);
+        // 根据规则生成一个List<String>数组
         notifyTemplate.setParams(parseTemplateContentParams(notifyTemplate.getContent()));
         notifyTemplateMapper.insert(notifyTemplate);
 

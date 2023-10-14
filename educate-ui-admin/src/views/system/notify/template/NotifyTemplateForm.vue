@@ -59,6 +59,7 @@ import { getNotifyTemplate,createNotifyTemplate,updateNotifyTemplate } from '@/a
 import { CommonStatusEnum, SystemMenuTypeEnum } from '@/utils/constants.js'
 import ElComponent from '@/plugins/modal.js'
 
+const tipContent = ref("ceshi")
 // 弹窗的是否展示
 const dialogVisible = ref(false)
 // 弹窗的标题
