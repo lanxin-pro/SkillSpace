@@ -55,4 +55,31 @@ public class NotifyMessageController {
         return success(NotifyMessageConvert.INSTANCE.convertPage(pageResult));
     }
 
+    // ========== 查看自己的站内信 ==========
+
+    @GetMapping("/my-page")
+    @Operation(summary = "获得我的站内信分页")
+    public CommonResult<PageResult<NotifyMessageRespVO>> getMyMyNotifyMessagePage(@Valid NotifyMessageMyPageReqVO pageVO) {
+        PageResult<NotifyMessageDO> pageResult = notifyMessageService.getMyMyNotifyMessagePage(pageVO,
+                getLoginUserId(), UserTypeEnum.ADMIN.getValue());
+        return success(NotifyMessageConvert.INSTANCE.convertPage(pageResult));
+    }
+
+    @GetMapping("/get-unread-list")
+    @Operation(summary = "获取当前用户的最新站内信列表，默认 10 条")
+    @Parameter(name = "size", description = "10")
+    public CommonResult<List<NotifyMessageRespVO>> getUnreadNotifyMessageList(
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        List<NotifyMessageDO> list = notifyMessageService.getUnreadNotifyMessageList(
+                getLoginUserId(), UserTypeEnum.ADMIN.getValue(), size);
+        return success(NotifyMessageConvert.INSTANCE.convertList(list));
+    }
+
+    @GetMapping("/get-unread-count")
+    @Operation(summary = "获得当前用户的未读站内信数量")
+    public CommonResult<Long> getUnreadNotifyMessageCount() {
+        return success(notifyMessageService.getUnreadNotifyMessageCount(getLoginUserId(),
+                UserTypeEnum.ADMIN.getValue()));
+    }
+
 }

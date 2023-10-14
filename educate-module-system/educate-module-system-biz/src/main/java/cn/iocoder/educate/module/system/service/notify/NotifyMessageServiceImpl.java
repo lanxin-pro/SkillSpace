@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.system.service.notify;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.system.controller.admin.notify.vo.message.NotifyMessageMyPageReqVO;
 import cn.iocoder.educate.module.system.controller.admin.notify.vo.message.NotifyMessagePageReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyMessageDO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyTemplateDO;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,6 +54,21 @@ public class NotifyMessageServiceImpl implements NotifyMessageService {
     @Override
     public NotifyMessageDO getNotifyMessage(Long id) {
         return notifyMessageMapper.selectById(id);
+    }
+
+    @Override
+    public List<NotifyMessageDO> getUnreadNotifyMessageList(Long userId, Integer userType, Integer size) {
+        return notifyMessageMapper.selectUnreadListByUserIdAndUserType(userId, userType, size);
+    }
+
+    @Override
+    public Long getUnreadNotifyMessageCount(Long userId, Integer userType) {
+        return notifyMessageMapper.selectUnreadCountByUserIdAndUserType(userId, userType);
+    }
+
+    @Override
+    public PageResult<NotifyMessageDO> getMyMyNotifyMessagePage(NotifyMessageMyPageReqVO pageReqVO, Long userId, Integer userType) {
+        return notifyMessageMapper.selectPage(pageReqVO, userId, userType);
     }
 
 }

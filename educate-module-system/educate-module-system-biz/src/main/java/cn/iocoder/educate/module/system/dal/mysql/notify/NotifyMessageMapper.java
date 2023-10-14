@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/10/14 12:32
@@ -39,6 +41,42 @@ public interface NotifyMessageMapper extends BaseMapper<NotifyMessageDO> {
                 .orderByDesc(NotifyMessageDO::getId);
         Page<NotifyMessageDO> page = new Page<>(notifyMessagePageReqVO.getPageNo(),notifyMessagePageReqVO.getPageSize());
         Page<NotifyMessageDO> notifyMessageDOPage = this.selectPage(page, notifyTemplateDOLambdaQueryWrapper);
+        return new PageResult<>(notifyMessageDOPage.getRecords(),notifyMessageDOPage.getTotal());
+    }
+
+    default List<NotifyMessageDO> selectUnreadListByUserIdAndUserType(Long userId, Integer userType, Integer size){
+        LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        notifyMessageDOLambdaQueryWrapper.eq(NotifyMessageDO::getUserId,userId)
+                .eq(NotifyMessageDO::getUserType,userType)
+                .eq(NotifyMessageDO::getReadStatus,false)
+                .orderByDesc(NotifyMessageDO::getId)
+                .last("LIMIT " + size);
+        return this.selectList(notifyMessageDOLambdaQueryWrapper);
+
+    }
+
+    default Long selectUnreadCountByUserIdAndUserType(Long userId, Integer userType){
+        LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        notifyMessageDOLambdaQueryWrapper.eq(NotifyMessageDO::getReadStatus, false)
+                .eq(NotifyMessageDO::getUserId, userId)
+                .eq(NotifyMessageDO::getUserType, userType);
+        return this.selectCount(notifyMessageDOLambdaQueryWrapper);
+    }
+
+    default PageResult<NotifyMessageDO> selectPage(NotifyMessageMyPageReqVO notifyMessageMyPageReqVO,
+                                                   Long userId, Integer userType) {
+        LambdaQueryWrapper<NotifyMessageDO> notifyMessageDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        notifyMessageDOLambdaQueryWrapper.eq(NotifyMessageDO::getReadStatus, false)
+                .eq(NotifyMessageDO::getUserId, userId)
+                .eq(NotifyMessageDO::getUserType, userType)
+                .between(ArrayUtils.get(notifyMessageMyPageReqVO.getCreateTime(),0) != null
+                                && ArrayUtils.get(notifyMessageMyPageReqVO.getCreateTime(),1) != null,
+                        NotifyMessageDO::getCreateTime,
+                        ArrayUtils.get(notifyMessageMyPageReqVO.getCreateTime(),0),
+                        ArrayUtils.get(notifyMessageMyPageReqVO.getCreateTime(),1))
+                .orderByDesc(NotifyMessageDO::getId);
+        Page<NotifyMessageDO> page = new Page<>(notifyMessageMyPageReqVO.getPageNo(),notifyMessageMyPageReqVO.getPageSize());
+        Page<NotifyMessageDO> notifyMessageDOPage = this.selectPage(page, notifyMessageDOLambdaQueryWrapper);
         return new PageResult<>(notifyMessageDOPage.getRecords(),notifyMessageDOPage.getTotal());
     }
 

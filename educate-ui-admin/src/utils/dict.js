@@ -81,6 +81,17 @@ export function getDictData(dictType, value) {
     return undefined
 }
 
+export const getBoolDictOptions = (dictType) => {
+    const dictOption = []
+    const dictOptions = getDictOptions(dictType)
+    dictOptions.forEach((dict) => {
+        dictOption.push({
+            ...dict,
+            value: dict.value + '' === 'true'
+        })
+    })
+    return dictOption
+}
 
 /**
  * 获得字典数据的文本展示
