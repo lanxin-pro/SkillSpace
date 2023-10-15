@@ -7,7 +7,7 @@
         </ElBadge>
       </template>
       <ElTabs v-model="activeName">
-        <ElTabPane label="我的站内信" name="notice">
+        <ElTabPane label="我的站内信" name="notice" v-loading="loading">
           <div class="message-list">
             <template v-for="item in list" :key="item.id">
               <div class="message-item">
@@ -47,6 +47,7 @@ const activeName = ref('notice')
 const unreadCount = ref(0)
 // 消息列表
 const list = ref([])
+const loading = ref(true)
 
 // 获得消息列表
 const getList = async () => {
@@ -58,9 +59,12 @@ const getList = async () => {
 
 // 获得未读消息数
 const getUnreadCount = async () => {
+  loading.value = true
   getUnreadNotifyMessageCount().then((data) => {
     unreadCount.value = data
-  })
+  }).finally(
+    loading.value = false
+  )
 }
 
 // 跳转我的站内信
