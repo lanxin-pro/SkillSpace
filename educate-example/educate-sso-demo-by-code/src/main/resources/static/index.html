@@ -12,12 +12,10 @@
      * 跳转单点登录
      */
     function ssoLogin() {
-      const clientId = 'lanxin-sso-demo-by-code'; // 可以改写成，你的 clientId
+      const clientId = 'educate-sso-demo-by-code'; // 可以改写成，你的 clientId
       const redirectUri = encodeURIComponent('http://127.0.0.1:18080/callback.html'); // 注意，需要使用 encodeURIComponent 编码地址
       const responseType = 'code'; // 1）授权码模式，对应 code；2）简化模式，对应 token
-      window.location.href = 'http://127.0.0.1:5173/sso?client_id=' + clientId
-        + '&redirect_uri=' + redirectUri
-        + '&response_type=' + responseType;
+	  window.location.href = `http://127.0.0.1:5173/sso?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}`
     }
 
     /**

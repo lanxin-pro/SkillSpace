@@ -25,8 +25,11 @@ public interface OAuth2OpenConvert {
         // 构建 scopes
         List<KeyValue<String, Boolean>> scopes = new ArrayList<>(client.getScopes().size());
         // List->Map
-        Map<String, OAuth2ApproveDO> approveMap = approves.stream().collect(Collectors.toMap(OAuth2ApproveDO::getScope,
-                Function.identity(), (oldValue, newValue) -> newValue));
+        Map<String, OAuth2ApproveDO> approveMap = approves
+                .stream()
+                .collect(Collectors.toMap(OAuth2ApproveDO::getScope, Function.identity(), (oldValue, newValue) -> newValue));
+        // 每一个授权范围 从 approveMap 中获取对应的 OAuth2ApproveDO 对象，并判断是否为空。如果不为空，
+        // 则取出对应的 approve.getApproved() 值，否则设为 false。
         client.getScopes().forEach(scope -> {
             OAuth2ApproveDO approve = approveMap.get(scope);
             scopes.add(new KeyValue<>(scope, approve != null ? approve.getApproved() : false));

@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.dal.dataobject.oauth2;
 
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.module.system.enums.oauth2.OAuth2GrantTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -8,15 +8,29 @@
 
     <div>
       <el-form :model="formData" class="login-form">
+        <div style="display: flex;align-items: center;justify-content: center">
+          <el-image
+              style="width: 100px; height: 100px;margin-bottom: 10px"
+              :src="client.logo"
+              :zoom-rate="1.2"
+              :max-scale="7"
+              :min-scale="0.2"
+              :initial-index="4"
+              fit="cover"
+          />
+        </div>
+
         <!-- 授权范围的选择 -->
         此第三方应用请求获得以下权限：
         <el-form-item prop="scopes">
+          <!--    绑定的值      -->
           <el-checkbox-group v-model="formData.scopes">
+            <!--     展示出所有的列表       -->
             <el-checkbox
                 v-for="scope in queryParams.scopes"
                 :key="scope"
                 :label="scope"
-                style="display: block; margin-bottom: -10px"
+                style="display: flex;"
             >
               {{ formatScope(scope) }}
             </el-checkbox>
@@ -45,8 +59,9 @@ import { ref,reactive,computed,unref,watch } from 'vue'
 import { LoginStateEnum, useLoginState } from './useLogin.js'
 import { LoginFormTitle } from './index.js'
 import * as OAuth2Api from '@/api/login/oauth2'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 
+const route = useRoute() // 路由
 const { currentRoute } = useRouter()
 const { setLoginState,getLoginState } = useLoginState()
 
@@ -75,35 +90,35 @@ const ssoVisible = computed(() => {
   return unref(getLoginState) === LoginStateEnum.SSO_ACCREDIT
 })
 
-
-
 /**
  * 初始化授权信息
  * @returns {Promise<void>}
  */
 const init = async () => {
-  console.log(currentRoute.value)
+  console.log(route.query)
+  // 防止在没有登录的情况下循环弹窗
+  if (typeof route.query.client_id === 'undefined') return
   // 解析参数
   // 例如说【自动授权不通过】：client_id=default&redirect_uri=https%3A%2F%2Fwww.iocoder.cn&response_type=code&scope=user.read%20user.write
   // 例如说【自动授权通过】：client_id=default&redirect_uri=https%3A%2F%2Fwww.iocoder.cn&response_type=code&scope=user.read
-  queryParams.responseType = currentRoute.value.query.response_type
-  queryParams.clientId = currentRoute.value.query.client_id
-  queryParams.redirectUri = currentRoute.value.query.redirect_uri
-  queryParams.state = currentRoute.value.query.state
+  queryParams.responseType = route.query.response_type
+  queryParams.clientId = route.query.client_id
+  queryParams.redirectUri = route.query.redirect_uri
+  queryParams.state = route.query.state
   console.log("授权码类型",queryParams.responseType)
   console.log("客户端",queryParams.clientId)
   console.log("回调地址",queryParams.redirectUri)
   console.log("状态",queryParams.state)
-  if (currentRoute.value.query.scope) {
+  if (route.query.scope) {
     queryParams.scopes = (currentRoute.value.query.scope).split(' ')
     console.log("作用域参数",queryParams.scopes)
   }
-
+  console.log("queryParams.scopes.length > 0",queryParams.scopes.length > 0)
   // 如果有 scope 参数，先执行一次自动授权，看看是否之前都授权过了。
   if (queryParams.scopes.length > 0) {
-    const data = await doAuthorize(true, queryParams.scopes, [])
-    if (data) {
-      location.href = data
+    const response = await doAuthorize(true, queryParams.scopes, [])
+    if (response.data) {
+      location.href = response.data
       return
     }
   }
@@ -130,6 +145,7 @@ const init = async () => {
   }
   // 生成已选中的 checkedScopes
   for (const scope of scopes) {
+    // 存在权限的，就给formData赋值
     if (scope.value) {
       formData.scopes.push(scope.key)
     }
@@ -153,11 +169,11 @@ const handleAuthorize = async (approved)=>{
   // 提交授权的请求
   formLoading.value = true
   try {
-    const data = await doAuthorize(false, checkedScopes, uncheckedScopes)
-    if (!data) {
+    const response = await doAuthorize(false, checkedScopes, uncheckedScopes)
+    if (!response.data) {
       return
     }
-    location.href = data
+    location.href = response.data
   } finally {
     formLoading.value = false
   }

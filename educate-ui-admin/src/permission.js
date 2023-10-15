@@ -56,8 +56,8 @@ import { showFullLoading,hideFullLoading } from '@/utils/index.js'
 import { getAccessToken } from '@/utils/auth'
 
 
-// 增加三方登陆 测试方便我添加了sso的白名单
-const whiteList = ['/login', '/social-login',  '/auth-redirect', '/bind', '/register', '/oauthLogin/gitee','/sso']
+// 增加三方登陆
+const whiteList = ['/login', '/social-login',  '/auth-redirect', '/bind', '/register', '/oauthLogin/gitee']
 
 /**
  * to 来的页面
