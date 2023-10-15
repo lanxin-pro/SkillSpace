@@ -119,6 +119,7 @@ import RuoYiDoc from '@/components/RuoYi/Doc/index.vue'
 import NotifyMessage from '@/frame/components/Message/index.vue'
 import { getCurrentInstance,computed } from 'vue'
 import { getPath } from '@/utils/ruoyi'
+import { useAppStore } from '@/piniastore/modules/app.js'
 import store from '@/store'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/piniastore/modules/user.js'
@@ -134,6 +135,7 @@ import { handleZoneToTimeUtils } from '@/utils/formatTime.js'
 const { wsCache } = useCache()
 const { push, replace } = useRouter()
 const userStore = useUserStore()
+const appStore = useAppStore()
 const wsCacheUser = wsCache.get(CACHE_KEY.USER)
 // 时间
 const timeList = ref([])
@@ -200,10 +202,10 @@ const handleZoneToTime = (cnTime)=>{
   }, delay.value)
 }
 const sidebar = computed(()=>{
-  return store.getters['app/getSidebar']
+  return appStore.getSidebar
 })
 const device = computed(()=>{
-  return store.getters['app/getDevice']
+  return appStore.getDevice
 })
 const avatar = computed(()=>{
   // 这个执行时机有点快

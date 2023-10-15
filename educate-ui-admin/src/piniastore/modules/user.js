@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { socialLogin,getInfo,logout } from '@/api/login'
+import { socialLogin, getInfo, logout, login } from '@/api/login'
 import { getAccessToken,setToken, removeToken } from '@/utils/auth.js'
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 const { wsCache } = useCache()
@@ -90,7 +90,24 @@ export const useUserStore = defineStore('admin-user', {
             removeToken()
             wsCache.clear()
             this.resetState()
-        }
+        },
+        // 登录
+        async Login(userInfo) {
+            const username = userInfo.username.trim()
+            const password = userInfo.password
+            const captchaVerification = userInfo.captchaVerification
+            const socialCode = userInfo.socialCode
+            const socialState = userInfo.socialState
+            const socialType = userInfo.socialType
+            try{
+                const serverResponse = await login(username, password, captchaVerification, socialType, socialCode, socialState)
+                // 设置 token
+                setToken(serverResponse.data)
+                return Promise.resolve(serverResponse)
+            }catch(err){
+                return Promise.reject(err)
+            }
+        },
 
 
 

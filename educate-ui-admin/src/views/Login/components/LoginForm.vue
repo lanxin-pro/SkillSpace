@@ -269,7 +269,9 @@ const handleLogin = async (captchaParams)=>{
         removeTenantName()
       }
       loginData.loginForm.captchaVerification = captchaParams.captchaVerification
-      store.dispatch(loginData.loginForm.loginType === "sms" ? "user/SmsLogin" : "user/Login",loginData.loginForm)
+      pinia.Login(loginData.loginForm)
+      // TODO j-sentinel 这里的SmsLogin到底是谁？
+      // store.dispatch(loginData.loginForm.loginType === "sms" ? "user/SmsLogin" : "user/Login",loginData.loginForm)
           .then(()=>{
           router.push({path: redirect.value || "/"}).catch(()=>{
             console.log("路由error")
