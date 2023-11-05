@@ -49,6 +49,8 @@ import static cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils.HEADE
 @ConditionalOnProperty(prefix = "springdoc.api-docs", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class EducateSwaggerAutoConfiguration {
 
+    // ========== 全局 OpenAPI 配置 ==========
+
     @Bean
     public OpenAPI createApi(SwaggerProperties properties) {
         Map<String, SecurityScheme> securitySchemas = buildSecuritySchemes();
@@ -69,6 +71,7 @@ public class EducateSwaggerAutoConfiguration {
                 .title(properties.getTitle())
                 .description(properties.getDescription())
                 .version(properties.getVersion())
+                .termsOfService(properties.getTermsOfService())
                 .contact(new Contact()
                         .name(properties.getAuthor())
                         .url(properties.getUrl())
