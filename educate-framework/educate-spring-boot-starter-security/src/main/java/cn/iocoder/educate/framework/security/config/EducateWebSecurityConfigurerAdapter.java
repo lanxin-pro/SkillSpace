@@ -98,6 +98,10 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .antMatchers("/captcha/get", "/captcha/check").permitAll()
                 // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
                 .antMatchers("/websocket/message").permitAll()
+                // TODO j-sentinel swagger文档json格式的测试
+                .antMatchers("/v3/api-docs").permitAll()
+                // 必开，不然swagger加载就会报错
+                .antMatchers("/v3/api-docs/swagger-config").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

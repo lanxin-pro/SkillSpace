@@ -1,5 +1,7 @@
 package cn.iocoder.educate.module.infra.dal.dataobject.logger;
 
+import cn.iocoder.educate.framework.common.enums.UserTypeEnum;
+import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -25,22 +27,26 @@ public class ApiAccessLogDO {
      */
     @TableId
     private Long id;
+
     /**
      * 链路追踪编号
      *
      * 一般来说，通过链路追踪编号，可以将访问日志，错误日志，链路追踪日志，logger 打印日志等，结合在一起，从而进行排错。
      */
     private String traceId;
+
     /**
      * 用户编号
      */
     private Long userId;
+
     /**
      * 用户类型
      *
      * 枚举 {@link UserTypeEnum}
      */
     private Integer userType;
+
     /**
      * 应用名
      *
@@ -54,10 +60,12 @@ public class ApiAccessLogDO {
      * 请求方法名
      */
     private String requestMethod;
+
     /**
      * 访问地址
      */
     private String requestUrl;
+
     /**
      * 请求参数
      *
@@ -65,10 +73,12 @@ public class ApiAccessLogDO {
      * body: Quest Body
      */
     private String requestParams;
+
     /**
      * 用户 IP
      */
     private String userIp;
+
     /**
      * 浏览器 UA
      */
@@ -80,20 +90,24 @@ public class ApiAccessLogDO {
      * 开始请求时间
      */
     private LocalDateTime beginTime;
+
     /**
      * 结束请求时间
      */
     private LocalDateTime endTime;
+
     /**
      * 执行时长，单位：毫秒
      */
     private Integer duration;
+
     /**
      * 结果码
      *
      * 目前使用的 {@link CommonResult#getCode()} 属性
      */
     private Integer resultCode;
+
     /**
      * 结果提示
      *
