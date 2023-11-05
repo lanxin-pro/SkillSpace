@@ -66,4 +66,14 @@ public interface OAuth2TokenService {
      */
     PageResult<OAuth2AccessTokenDO> getAccessTokenPage(OAuth2AccessTokenPageReqVO reqVO);
 
+    /**
+     * 获得访问令牌
+     *
+     * 参考 DefaultTokenServices 的 getAccessToken 方法
+     *
+     * @param accessToken 访问令牌
+     * @return 访问令牌的信息
+     */
+    OAuth2AccessTokenDO getAccessToken(String accessToken);
+
 }

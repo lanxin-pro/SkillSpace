@@ -1,8 +1,15 @@
 package cn.iocoder.educate.module.system.util.oauth2;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.util.http.HttpUtils;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +48,18 @@ public class OAuth2Utils {
             query.put("state", state);
         }
         return HttpUtils.append(redirectUri, query, null, false);
+    }
+
+    public static List<String> buildScopes(String scope) {
+        return StrUtil.split(scope, ' ');
+    }
+
+    public static long getExpiresIn(LocalDateTime expireTime) {
+        return LocalDateTimeUtil.between(LocalDateTime.now(), expireTime, ChronoUnit.SECONDS);
+    }
+
+    public static String buildScopeStr(Collection<String> scopes) {
+        return CollUtil.join(scopes, " ");
     }
 
 }

@@ -1,8 +1,12 @@
 package cn.iocoder.educate.module.system.service.oauth2;
 
 import cn.hutool.core.util.IdUtil;
+import cn.iocoder.educate.framework.common.exception.ErrorCode;
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.framework.common.util.date.DateUtils;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2CodeDO;
 import cn.iocoder.educate.module.system.dal.mysql.oauth2.OAuth2CodeMapper;
+import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -36,6 +40,20 @@ public class OAuth2CodeServiceImpl implements OAuth2CodeService {
                 .setExpiresTime(LocalDateTime.now().plusSeconds(TIMEOUT))
                 .setRedirectUri(redirectUri).setState(state);
         oauth2CodeMapper.insert(codeDO);
+        return codeDO;
+    }
+
+    @Override
+    public OAuth2CodeDO consumeAuthorizationCode(String code) {
+        OAuth2CodeDO codeDO = oauth2CodeMapper.selectByCode(code);
+        if (codeDO == null) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.OAUTH2_CODE_NOT_EXISTS);
+        }
+        // 过期时间的判断
+        if (DateUtils.isExpired(codeDO.getExpiresTime())) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.OAUTH2_CODE_EXPIRE);
+        }
+        oauth2CodeMapper.deleteById(codeDO.getId());
         return codeDO;
     }
 

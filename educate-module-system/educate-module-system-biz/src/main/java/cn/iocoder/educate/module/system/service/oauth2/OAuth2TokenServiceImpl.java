@@ -121,6 +121,7 @@ public class OAuth2TokenServiceImpl implements OAuth2TokenService{
         return oauth2AccessTokenMapper.selectPage(oAuth2AccessTokenPageReqVO);
     }
 
+    @Override
     public OAuth2AccessTokenDO getAccessToken(String accessToken) {
         // 优先从 Redis 中获取
         OAuth2AccessTokenDO accessTokenDO = oauth2AccessTokenRedisDAO.get(accessToken);

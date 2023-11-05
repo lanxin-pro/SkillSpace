@@ -30,4 +30,11 @@ public interface OAuth2CodeService {
     OAuth2CodeDO createAuthorizationCode(Long userId, Integer userType, String clientId,
                                          List<String> scopes, String redirectUri, String state);
 
+    /**
+     * 使用授权码
+     *
+     * @param code 授权码
+     */
+    OAuth2CodeDO consumeAuthorizationCode(String code);
+
 }
