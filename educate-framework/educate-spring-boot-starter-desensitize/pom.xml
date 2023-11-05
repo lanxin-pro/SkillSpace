@@ -17,6 +17,7 @@
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-common</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- jackson -->
@@ -33,6 +34,7 @@
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-test</artifactId>
+            <version>${revision}</version>
             <scope>test</scope>
         </dependency>
 

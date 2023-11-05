@@ -20,14 +20,9 @@
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-common</artifactId>
+            <version>${revision}</version>
         </dependency>
 
-        <!-- 业务组件 -->
-        <dependency>
-            <groupId>cn.iocoder.boot</groupId>
-            <artifactId>educate-spring-boot-s-biz-</artifactId>
-            <optional>true</optional> <!-- 如果希望使用 @DictFormat 注解，需要引入该依赖 -->
-        </dependency>
 
         <!-- Web 相关 -->
         <dependency>
