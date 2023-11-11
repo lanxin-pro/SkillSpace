@@ -14,7 +14,6 @@
 
     <name>${project.artifactId}</name>
     <description>服务监控，提供链路追踪、日志服务、指标收集等等功能</description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
 
     <dependencies>
         <dependency>
@@ -69,6 +68,7 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId> <!-- 实现 Spring Boot Admin Server 服务端 -->
+            <version>2.2.0</version>
         </dependency>
     </dependencies>
 </project>

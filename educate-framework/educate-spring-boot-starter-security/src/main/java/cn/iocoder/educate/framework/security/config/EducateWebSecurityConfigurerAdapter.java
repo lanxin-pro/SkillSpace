@@ -99,9 +99,21 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
                 .antMatchers("/websocket/message").permitAll()
                 // TODO j-sentinel swagger文档json格式的测试
-                .antMatchers("/v3/api-docs").permitAll()
-                // 必开，不然swagger加载就会报错
-                .antMatchers("/v3/api-docs/swagger-config").permitAll()
+                // Swagger 接口文档
+                .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources/**").anonymous()
+                .antMatchers("/webjars/**").anonymous()
+                .antMatchers("/*/api-docs").anonymous()
+                // Spring Boot Actuator 的安全配置
+                .antMatchers("/actuator").anonymous()
+                .antMatchers("/actuator/**").anonymous()
+                // Spring Boot Admin Server 的安全配置
+                .antMatchers("/admin").anonymous()
+                .antMatchers("/admin/**").anonymous()
+                // Druid 监控
+                .antMatchers("/druid/**").anonymous()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

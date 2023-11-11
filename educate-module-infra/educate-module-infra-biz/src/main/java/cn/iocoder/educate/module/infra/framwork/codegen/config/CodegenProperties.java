@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.infra.framwork.codegen.config;
 
+import cn.iocoder.educate.module.infra.enums.codegen.CodegenFrontTypeEnum;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

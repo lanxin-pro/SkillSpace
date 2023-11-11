@@ -95,7 +95,6 @@
         </dependency>
 
         <!-- 监控相关 -->
-<!--
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-monitor</artifactId>
@@ -104,9 +103,9 @@
 
         <dependency>
             <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-server</artifactId> &lt;!&ndash; 实现 Spring Boot Admin Server 服务端 &ndash;&gt;
+            <artifactId>spring-boot-admin-starter-server</artifactId> <!-- 实现 Spring Boot Admin Server 服务端 -->
+            <version>2.2.0</version>
         </dependency>
--->
 
         <!-- 工具类相关 -->
         <dependency>
