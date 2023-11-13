@@ -14,4 +14,6 @@
 
 <style>
 	/*每个页面公共css */
+	@import url("@/plugin/animate/animate.min.css");
+	@import 'static/css/base.css';
 </style>

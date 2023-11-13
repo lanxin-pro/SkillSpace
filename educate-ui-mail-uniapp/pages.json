@@ -3,16 +3,26 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path" : "pages/user/index",
-			"style" : 
-			{
-				"navigationBarTitleText" : "个人中心",
-				"navigationBarBackgroundColor": "#e93323",
-				"enablePullDownRefresh" : false
+			"path": "pages/dynamic_state/dynamic_state",
+			"style": {
+				"navigationBarTitleText": "动态"
+			}
+		},
+		{
+			"path": "pages/member_purchase/member_purchase",
+			"style": {
+				"navigationBarTitleText": "会员购"
+			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的"
 			}
 		}
 	],
@@ -29,9 +39,42 @@
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTitleText": "蓝欣",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#F8F8F8",
+		"titleNView": false
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#fb7299",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"iconWidth": "20px",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/1-001.png",
+				"selectedIconPath": "static/images/1-002.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/dynamic_state/dynamic_state",
+				"iconPath": "static/images/2-001.png",
+				"selectedIconPath": "static/images/2-002.png",
+				"text": "动态"
+			},
+			{
+				"pagePath": "pages/member_purchase/member_purchase",
+				"iconPath": "static/images/3-001.png",
+				"selectedIconPath": "static/images/3-002.png",
+				"text": "会员购"
+			},
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "我的"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }

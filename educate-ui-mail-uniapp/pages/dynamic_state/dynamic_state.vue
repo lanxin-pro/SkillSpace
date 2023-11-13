@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<text>用户管理页面</text>
+		<text>动态</text>
 	</view>
 </template>
 
