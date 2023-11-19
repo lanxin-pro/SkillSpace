@@ -243,9 +243,12 @@
             <view class="content-item-box">
               <view class="content-item-title">{{ item.title }}</view>
               <view class="content-item-ranking-list">
-                <text v-if="item.ranking">
+                <view class="text ranking-text" v-if="item.ranking">
                   原创排行榜No.{{ item.ranking }}
-                </text>
+                </view>
+                <view class="text first-week-only-couples" v-if="item.onlyCouples">
+                  新人首周专享
+                </view>
               </view>
               <view class="content-item-price">
                 <view class="price-row">
@@ -257,6 +260,10 @@
                     <text style="margin-right: -4rpx">￥</text>
                     426
                   </view>
+                </view>
+                <view class="collect">
+                  <view class='iconfont icon-shoucang' />
+                  <view class="collect-number">121</view>
                 </view>
               </view>
             </view>
@@ -272,9 +279,12 @@
             <view class="content-item-box">
               <view class="content-item-title">{{ item.title }}</view>
               <view class="content-item-ranking-list">
-                <text v-if="item.ranking">
+                <view class="text ranking-text" v-if="item.ranking">
                   原创排行榜No.{{ item.ranking }}
-                </text>
+                </view>
+                <view class="text first-week-only-couples" v-if="item.onlyCouples">
+                  新人首周专享
+                </view>
               </view>
               <view class="content-item-price">
                 <view class="price-row">
@@ -286,6 +296,10 @@
                     <text style="margin-right: -4rpx">￥</text>
                     300
                   </view>
+                </view>
+                <view class="collect">
+                  <view class='iconfont icon-shoucang' />
+                  <view class="collect-number">121</view>
                 </view>
               </view>
             </view>
@@ -309,7 +323,7 @@
                 title: '虞美人有大长腿',
                 url: 'https://img1.baidu.com/it/u=610726533,1686239110&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750',
                 avatar: 'https://img1.baidu.com/it/u=610726533,1686239110&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750',
-                ranking: '3'
+                ranking: '3',
               },
               {
                 name: '苏苏6',
@@ -317,7 +331,9 @@
                 title: '苏苏哇哈哈-苏苏的bug-苏苏小苏苏',
                 url: 'https://img0.baidu.com/it/u=1555018837,2431012166&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
                 avatar: 'https://img0.baidu.com/it/u=1555018837,2431012166&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-                ranking: '1'
+                ranking: '1',
+                onlyCouples: '1',
+                advertising: '1'
               },
               {
                 name: '苏苏2',
@@ -562,6 +578,7 @@
       overflow: hidden;
       .content-item-img {
         width: 100%;
+        position: relative;
       }
       .content-item-box {
         font-size: 24rpx;
@@ -580,14 +597,24 @@
         }
         .content-item-ranking-list {
           margin-top: 10rpx;
-          /* 一行省略 */
-          text {
+          display: flex;
+          gap: 10rpx;
+          font-size: 21rpx;
+          font-family: cursive;
+          // 换行
+          flex-wrap: wrap;
+          .text{
             border-radius: 10rpx;
-            background: rgb(254, 244, 235);
             padding: 5rpx 7rpx;
-            font-size: 21rpx;
+          }
+          /* 一行省略 */
+          .ranking-text {
+            background: rgb(254, 244, 235);
             color: rgb(242, 131, 50);
-            font-family: cursive;
+          }
+          .first-week-only-couples {
+            background: rgb(254, 242, 244);
+            color: rgb(236, 109, 151);
           }
         }
         .content-item-price {
@@ -596,6 +623,9 @@
           padding-bottom: 12rpx;
           font-size: 22rpx;
           margin-left: 5rpx;
+
+          display: flex;
+          justify-content: space-between;
           .price-row {
             display: flex;
             height: 30rpx;
@@ -618,7 +648,19 @@
               font-size: 19rpx;
             }
           }
-
+          .collect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon-shoucang {
+              font-size: 28rpx;
+              color: rgb(178, 178, 178);
+              margin-right: 5rpx;
+            }
+            .collect-number {
+              color: rgb(148, 153, 159);
+            }
+          }
         }
       }
     }
