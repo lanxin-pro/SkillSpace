@@ -21,6 +21,8 @@
         <module>educate-module-infra</module>
         <module>educate-module-video</module>
         <module>educate-module-mp</module>
+        <module>educate-module-mall</module>
+        <module>educate-module-member</module>
     </modules>
 
     <name>${project.artifactId}</name>
