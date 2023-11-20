@@ -53,12 +53,21 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 会员中心。默认注释，保证编译速度 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-module-member</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 微信公众号模块。默认注释，保证编译速度 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-module-mp-biz</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- 商城相关模块。默认注释，保证编译速度-->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>

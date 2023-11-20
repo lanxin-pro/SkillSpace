@@ -14,6 +14,7 @@
     <name>${project.artifactId}</name>
     <description>Redis 封装拓展</description>
     <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <!-- TODO 非常严重的警告 j-sentinel 绝对不能将mq的框架和redis的框架写在同一个子项目当中 -->
 
     <dependencies>
         <dependency>
