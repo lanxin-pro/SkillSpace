@@ -21,6 +21,7 @@
         <module>educate-module-infra</module>
         <module>educate-module-video</module>
         <module>educate-module-mp</module>
+        <!-- TODO j-sentinel 报错点，目前原因还在审查 -->
         <module>educate-module-mall</module>
         <module>educate-module-member</module>
     </modules>
