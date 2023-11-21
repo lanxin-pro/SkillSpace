@@ -21,4 +21,9 @@ public class MemberUserServiceImpl implements MemberUserService {
         return 0L;
     }
 
+    @Override
+    public Long getUserCountByGroupId(Long groupId) {
+        return 0L;
+    }
+
 }
