@@ -17,6 +17,7 @@
             <el-input-number
                 v-model="computedTradeDeductUnitPrice"
                 placeholder="请输入积分抵扣金额"
+                :step="0.1"
                 :precision="2"
             />
             <el-text class="w-full" size="small" type="info">
