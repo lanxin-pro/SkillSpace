@@ -12,15 +12,17 @@
     <artifactId>educate-module-member</artifactId>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>educate-module-member-api</module>
+        <module>educate-module-member-biz</module>
+    </modules>
+
     <name>${project.artifactId}</name>
 
     <description>
         member 模块，我们放会员业务。
         例如说：会员中心等等
     </description>
-    <modules>
-        <module>eudcate-module-member-api</module>
-        <module>eudcate-module-member-biz</module>
-    </modules>
+
 
 </project>
