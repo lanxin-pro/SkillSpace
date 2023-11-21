@@ -1,0 +1,19 @@
+package cn.iocoder.educate.module.member.service.user;
+
+/**
+ * 会员用户 Service 接口
+ *
+ * @Author: j-sentinel
+ * @Date: 2023/11/21 22:29
+ */
+public interface MemberUserService {
+
+    /**
+     * 获得指定会员标签下的用户数量
+     *
+     * @param tagId 用户标签编号
+     * @return 用户数量
+     */
+    Long getUserCountByTagId(Long tagId);
+
+}
