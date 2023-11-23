@@ -26,4 +26,9 @@ public class MemberUserServiceImpl implements MemberUserService {
         return 0L;
     }
 
+    @Override
+    public Long getUserCountByLevelId(Long levelId) {
+        return 0L;
+    }
+
 }

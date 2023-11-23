@@ -50,10 +50,10 @@
       <el-table-column label="编号" align="center" prop="id" min-width="60" />
       <el-table-column label="等级图标" align="center" prop="icon" min-width="80">
         <template #default="scope">
+<!--    :preview-src-list="[scope.row.icon]"       -->
           <el-image
               :src="scope.row.icon"
               class="h-30px w-30px"
-              :preview-src-list="[scope.row.icon]"
           />
         </template>
       </el-table-column>
@@ -61,7 +61,7 @@
         <template #default="scope">
           <el-image
               :src="scope.row.backgroundUrl"
-              class="h-30px w-30px"
+              class="h-30px w-50px"
               :preview-src-list="[scope.row.backgroundUrl]"
           />
         </template>
@@ -72,7 +72,7 @@
       <el-table-column label="享受折扣(%)" align="center" prop="discountPercent" min-width="110" />
       <el-table-column label="状态" align="center" prop="status" min-width="70">
         <template #default="scope">
-          <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
+          <DictTag :type="DICT_TYPE.COMMON_STATUS" :value="scope.row.status" />
         </template>
       </el-table-column>
       <el-table-column
@@ -82,13 +82,15 @@
           :formatter="dateFormatter"
           min-width="170"
       />
-      <el-table-column label="操作" align="center" min-width="110px" fixed="right">
+      <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
           <el-button
               link
               type="primary"
               @click="openForm('update', scope.row.id)"
               v-hasPermi="['member:level:update']"
+              icon="Edit"
+              size="small"
           >
             编辑
           </el-button>
@@ -97,6 +99,8 @@
               type="danger"
               @click="handleDelete(scope.row.id)"
               v-hasPermi="['member:level:delete']"
+              icon="Delete"
+              size="small"
           >
             删除
           </el-button>
@@ -149,6 +153,7 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await getLevelPage(queryParams)
+    console.log('输出',response)
     list.value = response.data.list
     total.value = response.data.total
   } finally {
