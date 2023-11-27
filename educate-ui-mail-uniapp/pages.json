@@ -43,7 +43,14 @@
 			{
 				"navigationBarTitleText" : "隐私协议"
 			}
-		}]
+		},
+		{
+			"path": "login/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}
+		]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

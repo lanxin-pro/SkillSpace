@@ -10,7 +10,7 @@ import { getConfigKey } from '@/api/infra/config/index.js'
 // 是否加载中
 const loading = ref(true)
 // Knife4j UI
-const src = ref(import.meta.env.VITE_SERVER_BASE_API + '/druid/index.html')
+const src = ref(import.meta.env.VITE_SERVER_BASE_API + '/druid/1.html')
 // Swagger UI
 
 </script>
