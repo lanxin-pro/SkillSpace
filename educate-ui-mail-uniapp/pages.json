@@ -27,7 +27,7 @@
 		},
 		{
 			"path" : "pages/goods_search/index",
-			"style" : 
+			"style" :
 			{
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
@@ -37,19 +37,28 @@
 	"subPackages": [{
 		"root": "pages/users",
 		"name": "users",
-		"pages": [{
-			"path" : "privacy/index",
-			"style" : 
+		"pages": [
 			{
-				"navigationBarTitleText" : "隐私协议"
+				"path" : "agreement/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "沐智课堂用户使用协议",
+					"titleNView": true
+				}
+			},
+			{
+				"path" : "privacy/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "隐私协议"
+				}
+			},
+			{
+				"path": "login/index",
+				"style": {
+					"navigationBarTitleText": "登录"
+				}
 			}
-		},
-		{
-			"path": "login/index",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		}
 		]
 	}],
 	"globalStyle": {
@@ -57,6 +66,7 @@
 		"navigationBarTitleText": "蓝欣",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8",
+		/* 默认关闭titleView */
 		"titleNView": false
 	},
 	"tabBar": {
