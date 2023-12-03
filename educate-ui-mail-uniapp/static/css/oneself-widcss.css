@@ -1,3 +1,7 @@
+.mtm10 {
+	margin: 10rpx 0;
+}
+
 .ml10 {
 	margin-left: 10rpx;
 }
@@ -21,4 +25,12 @@
 }
 .bg-green {
 	background: green;
+}
+
+.font-weight-bold {
+	font-weight: bold;
+}
+
+.underline-text {
+	text-decoration: underline;
 }

@@ -385,3 +385,7 @@ checkbox .uni-checkbox-input.uni-checkbox-input-checked::before {
 	/* 兼容 IOS>11.2 */
 	height: calc(100rpx + env(safe-area-inset-bottom));
 }
+
+navigator {
+	color: #00a1d6;
+}
