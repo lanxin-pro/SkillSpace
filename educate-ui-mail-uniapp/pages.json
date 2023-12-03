@@ -50,19 +50,24 @@
 				"path" : "privacy/index",
 				"style" :
 				{
-					"navigationBarTitleText" : "隐私协议"
+					"navigationBarTitleText" : "沐智课堂用户隐私协议",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path": "login/index",
 				"style": {
-					"navigationBarTitleText": "登录"
+					"navigationBarTitleText": "登录",
+					"titleNView": true
 				}
 			}
 		]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
+		/* 默认title名 */
 		"navigationBarTitleText": "蓝欣",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8",

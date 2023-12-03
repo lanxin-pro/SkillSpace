@@ -53,7 +53,7 @@
       </block>
     </view>
     <view class="content-right">
-      <block v-for="(item, index) in list" :key="item.id">
+      <block v-for="(item, index) in list" :key="item.num">
         <view v-if="index % 2 === 1" class="content-item">
           <!-- 同上，复制左侧的内容 -->
           <!-- 数据绑定使用 v-bind 或简写 : -->
