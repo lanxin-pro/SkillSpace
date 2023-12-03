@@ -52,25 +52,25 @@
           <view class="register">
             <view class="item">
               <view class="num">
-                <span class="selected" area="1">中国大陆</span>
+               <view class="loginForm">
+                 <CountryPicker @change="onCountryChange"></CountryPicker>
+                 <view class="acea-row row-middle">
+                   <image src="/static/images/login/phone_1.png" />
+                   <input type="text" class="texts" placeholder="输入手机号码" v-model="account" required/>
 
-                <view class="acea-row row-middle">
-                  <image src="/static/images/login/phone_1.png" />
-                  <input type="text" class="texts" placeholder="输入手机号码" v-model="account" required/>
-                </view>
+                 </view>
+               </view>
               </view>
             </view>
           </view>
-
         </view>
-
       </view>
-
     </view>
 	</view>
 </template>
 
 <script>
+	import CountryPicker from '@/components/country-picker/CountryPicker.vue'
 	export default {
 		data() {
 			return {
@@ -81,7 +81,12 @@
 			}
 		},
 		methods: {
-
+      onCountryChange(selectedCountry) {
+          console.log(selectedCountry);
+      },
+		},
+		components: {
+			CountryPicker
 		}
 	}
 </script>
@@ -120,12 +125,17 @@
       .register {
         .item {
           margin-top: 160rpx;
-          border-bottom: 1px solid #F0F0F0;
-          background: #fff;
           .num {
+            .loginForm {
+              display: flex;
+              align-items: center;
+              gap: 30rpx;
+            }
             .acea-row.row-middle {
+              border-bottom: 1px solid #F0F0F0;
+              background: #fff;
               input {
-                margin-left: 20rpx;
+                margin-left: 10rpx;
               }
             }
             image {
@@ -140,7 +150,9 @@
               display: flex;
               justify-content: center;
               align-items: center;
+
             }
+
           }
 
         }

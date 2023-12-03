@@ -1,0 +1,122 @@
+{
+  "CN": {
+    "name": "中国",
+    "code": "+86"
+  },
+  "JP": {
+    "name": "日本",
+    "code": "+81"
+  },
+  "KR": {
+    "name": "대한민국",
+    "code": "+82"
+  },
+  "IN": {
+    "name": "भारत",
+    "code": "+91"
+  },
+  "PK": {
+    "name": "پاکستان",
+    "code": "+92"
+  },
+  "SA": {
+    "name": "العربية السعودية",
+    "code": "+966"
+  },
+  "RU": {
+    "name": "Россия",
+    "code": "+7"
+  },
+  "FR": {
+    "name": "France",
+    "code": "+33"
+  },
+  "DE": {
+    "name": "Deutschland",
+    "code": "+49"
+  },
+  "GB": {
+    "name": "United Kingdom",
+    "code": "+44"
+  },
+  "IT": {
+    "name": "Italia",
+    "code": "+39"
+  },
+  "ES": {
+    "name": "España",
+    "code": "+34"
+  },
+  "TR": {
+    "name": "Türkiye",
+    "code": "+90"
+  },
+  "IR": {
+    "name": "ایران",
+    "code": "+98"
+  },
+  "TH": {
+    "name": "ไทย",
+    "code": "+66"
+  },
+  "ID": {
+    "name": "Indonesia",
+    "code": "+62"
+  },
+  "VN": {
+    "name": "Việt Nam",
+    "code": "+84"
+  },
+  "MY": {
+    "name": "Malaysia",
+    "code": "+60"
+  },
+  "PH": {
+    "name": "Pilipinas",
+    "code": "+63"
+  },
+  "PL": {
+    "name": "Polska",
+    "code": "+48"
+  },
+  "NL": {
+    "name": "Nederland",
+    "code": "+31"
+  },
+  "GR": {
+    "name": "Ελλάδα",
+    "code": "+30"
+  },
+  "BE": {
+    "name": "België",
+    "code": "+32"
+  },
+  "PT": {
+    "name": "Portugal",
+    "code": "+351"
+  },
+  "CZ": {
+    "name": "Česká republika",
+    "code": "+420"
+  },
+  "SE": {
+    "name": "Sverige",
+    "code": "+46"
+  },
+  "CH": {
+    "name": "Schweiz",
+    "code": "+41"
+  },
+  "NO": {
+    "name": "Norge",
+    "code": "+47"
+  },
+  "DK": {
+    "name": "Danmark",
+    "code": "+45"
+  },
+  "FI": {
+    "name": "Suomi",
+    "code": "+358"
+  }
+}
