@@ -27,7 +27,7 @@
           </view>
           <view class="loginbtn">
             <!--    base.css里面有专属loading    -->
-            <text class="loading" v-if="loading">登录</text>
+            <text class="loading" v-if="loading" @click="open">登录</text>
             <text class="loading" :class="!loading ? 'loadingImg' : '' " v-else>登录中...</text>
           </view>
           <view class="login-explain">
@@ -46,6 +46,34 @@
               </view>
             </checkbox>
           </view>
+
+          <!--    登录弹出层      -->
+          <uni-popup ref="popup" type="dialog">
+            <uni-popup-dialog
+                type="warn"
+                mode="base"
+                title="用户协议与隐私条款"
+                :duration="2000"
+                :before-close="true"
+                content='欢迎使用 uni-popup!'
+                @close="close"
+                @confirm="confirm"
+				    >
+              <slot>
+                <view class="tip-interests">
+                  为了保障您的合法权益，请您先阅读并同意
+                  <navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline-block">
+                    用户协议
+                  </navigator>
+                  、
+                  <navigator url="/pages/users/privacy/index" hover-class="navigator-hover" class="display-inline-block">
+                    隐私政策
+                  </navigator>
+                </view>
+              </slot>
+            </uni-popup-dialog>
+          </uni-popup>
+
         </view>
         <view v-else>
           <!-- 注册页 -->
@@ -57,12 +85,14 @@
                  <view class="acea-row row-middle">
                    <image src="/static/images/login/phone_1.png" />
                    <input type="text" class="texts" placeholder="输入手机号码" v-model="account" required/>
-
                  </view>
                </view>
               </view>
             </view>
           </view>
+        </view>
+        <view class="issue">
+          遇到问题?<navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline-block">查看帮助</navigator>
         </view>
       </view>
     </view>
@@ -84,7 +114,37 @@
       onCountryChange(selectedCountry) {
           console.log(selectedCountry);
       },
+      open() {
+        this.$refs.popup.open()
+      },
+      /**
+       * 点击取消按钮触发
+       * @param {Object} done
+       */
+      close() {
+        // TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
+        // ...
+        // 每次打开的时候关闭协议
+        this.agreement = false
+        this.$refs.popup.close()
+      },
+      /**
+       * 点击确认按钮触发
+       * @param {Object} done
+       * @param {Object} value
+       */
+      confirm() {
+        this.agreement = true
+        // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
+        // ...
+        this.$refs.popup.close()
+      }
+
 		},
+    onLoad() {
+      // 每次打开的时候关闭协议
+      this.agreement = false
+    },
 		components: {
 			CountryPicker
 		}
@@ -92,6 +152,11 @@
 </script>
 
 <style lang="scss">
+/* 弹出层 */
+.tip-interests {
+  font-size: 24rpx;
+  line-height: 34rpx;
+}
 .content {
   background: url(https://static.hdslb.com/passport/img/mini-login/banner.jpg) left top no-repeat #fff;
   border-radius: 8px;
@@ -222,6 +287,13 @@
             padding: 5rpx;
           }
         }
+      }
+      .issue {
+        margin-top: 60rpx;
+        text-align: center;
+        font-size: 23rpx;
+        display: flex;
+        justify-content: center;
       }
     }
   }

@@ -34,3 +34,7 @@
 .underline-text {
 	text-decoration: underline;
 }
+
+.display-inline-block {
+	display: inline;
+}
