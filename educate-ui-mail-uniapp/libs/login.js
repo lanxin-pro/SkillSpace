@@ -4,7 +4,7 @@ import { LOGIN_STATUS, USER_INFO, EXPIRES_TIME, STATE_R_KEY, BACK_URL } from '@/
 import Cache from '@/utils/cache.js'
 
 // 防抖函数
-export const toLogin = Debounce(_toLogin,300)
+export const toLogin = Debounce(_toLogin, 300)
 
 function prePage(){
     let pages = getCurrentPages();
@@ -31,4 +31,27 @@ export function _toLogin(push, pathLogin) {
             url: '/pages/users/login/index'
         })
     }
+}
+
+export function checkLogin()
+{
+    let token = Cache.get(LOGIN_STATUS);
+    let expiresTime = Cache.get(EXPIRES_TIME);
+    let newTime = Math.round(new Date() / 1000);
+    if (expiresTime < newTime || !token){
+        Cache.clear(LOGIN_STATUS);
+        Cache.clear(EXPIRES_TIME);
+        Cache.clear(USER_INFO);
+        Cache.clear(STATE_R_KEY);
+        return false;
+    }else {
+        console.log('开始刷新令牌')
+        store.commit('UPDATE_LOGIN', token);
+        let userInfo = Cache.get(USER_INFO,true);
+        if(userInfo){
+            store.commit('UPDATE_USERINFO', userInfo);
+        }
+        return true;
+    }
+
 }

@@ -22,7 +22,10 @@
           <view class="item">
             <view class="acea-row row-middle">
               <image src="/static/images/login/code_2.png"></image>
-              <input type="password" class="texts" placeholder="填写登录密码" v-model="password" required />
+              <input type="password" class="texts" placeholder="填写验证码" v-model="captcha" required />
+              <button class="code" >
+                获取验证码
+              </button>
             </view>
           </view>
           <view class="loginbtn">
@@ -31,7 +34,7 @@
             <text class="loading" :class="!loading ? 'loadingImg' : '' " v-else>登录中...</text>
           </view>
           <view class="login-explain">
-            <checkbox :value="agreement" :checked="false">
+            <checkbox :value="agreement" :checked="agreement">
               登录即代表你同意
               <view class="user-agreement">
                 <navigator url="/pages/users/agreement/index" hover-class="navigator-hover">
@@ -101,13 +104,20 @@
 
 <script>
 	import CountryPicker from '@/components/country-picker/CountryPicker.vue'
+  import * as AuthApi from "@/api/member/auth.js"
+
 	export default {
 		data() {
 			return {
         // 1：登录；0：注册
         loginOrRegister: 1,
         loading: true,
-        agreement: false
+        agreement: false,
+        // 手机号
+        account: "",
+        // 验证码
+        captcha: "",
+
 			}
 		},
 		methods: {
@@ -138,6 +148,56 @@
         // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
         // ...
         this.$refs.popup.close()
+        this.loginMobile()
+      },
+      /**
+       * 手机 + 验证码登录
+       */
+      loginMobile() {
+       /* if (!this.account) {
+          return this.$util.Tips({
+            title: '请填写手机号码'
+          });
+        }
+        if (!/^1(3|4|5|7|8|9|6)\d{9}$/i.test(this.account)) {
+          return this.$util.Tips({
+            title: '请输入正确的手机号码'
+          });
+        }
+        if (!this.captcha) {
+          return this.$util.Tips({
+            title: '请填写验证码'
+          });
+        }
+        if (!/^[\w\d]+$/i.test(this.captcha)) {
+          return this.$util.Tips({
+            title: '请输入正确的验证码'
+          });
+        }*/
+
+        // 有其他端
+
+        // 1. 三方登录的特殊逻辑
+        let socialType = undefined;
+        let socialCode = undefined;
+        let socialState = undefined;
+        // 2. 短信登录
+        AuthApi.smsLogin({
+          mobile: this.account,
+          code: this.captcha,
+          socialType: socialType,
+          socialCode: socialCode,
+          socialState: socialState
+        }).then(res => {
+          let data = res.data
+          console.log('请求成功->', data)
+        }).catch(res => {
+          this.agreement = false
+          this.$util.Tips({
+            title: res
+          });
+        });
+
       }
 
 		},
@@ -236,8 +296,17 @@
           border-bottom: 1px solid #F0F0F0;
           background: #fff;
           .acea-row.row-middle {
+            position: relative;
             input {
               margin-left: 20rpx;
+            }
+            .code {
+              position: absolute;
+              right: 16rpx;
+              top: 50%;
+              color: rgb(251, 114, 153);
+              font-size: 26rpx;
+              transform: translateY(-50%);
             }
           }
           image {
