@@ -23,8 +23,8 @@
             <view class="acea-row row-middle">
               <image src="/static/images/login/code_2.png"></image>
               <input type="password" class="texts" placeholder="填写验证码" v-model="captcha" required />
-              <button class="code" >
-                获取验证码
+              <button class="code" :disabled="disabled" :class="disabled === true ? 'on' : ''" @click="code()">
+                {{ text }}
               </button>
             </view>
           </view>
@@ -117,6 +117,10 @@
         account: "",
         // 验证码
         captcha: "",
+        // 验证码状态
+        disabled: false,
+        // 验证码文字
+        text: "获取验证码"
 
 			}
 		},
@@ -149,6 +153,52 @@
         // ...
         this.$refs.popup.close()
         this.loginMobile()
+      },
+      async code() {
+        if (!this.account) {
+          return this.$util.Tips({
+            title: '请填写手机号码'
+          });
+        }
+        if (!/^1(3|4|5|7|8|9|6)\d{9}$/i.test(this.account)) {
+          return this.$util.Tips({
+            title: '请输入正确的手机号码'
+          });
+        }
+        await AuthApi.sendSmsCode(this.account, 23)
+            .then(res => {
+              this.$util.Tips({ title: res.message })
+              // 发送验证码
+              this.sendCode()
+            }).catch(err => {
+              return this.$util.Tips({
+                title: err
+              });
+            });
+      },
+      /**
+       * 发送验证码
+       */
+      sendCode() {
+        if (this.disabled) {
+          return
+        }
+        // 禁用
+        this.disabled = true
+        let n = 60
+        this.text = "剩余 " + n + "s"
+        const run = setInterval(() => {
+          n = n - 1
+          if (n < 0) {
+            clearInterval(run)
+          }
+          this.text = "剩余 " + n + "s"
+          // 时间到了在开启
+          if (this.text < "剩余 " + 0 + "s") {
+            this.disabled = false
+            this.text = "重新获取"
+          }
+        }, 1000)
       },
       /**
        * 手机 + 验证码登录
@@ -307,6 +357,12 @@
               color: rgb(251, 114, 153);
               font-size: 26rpx;
               transform: translateY(-50%);
+              /* 这是一个属性选择器，用于选择带有 disabled 属性的元素 */
+              &[disabled] {
+                padding: 2rpx 10rpx;
+                background: rgba(0, 0, 0, 0.05);
+                color: #999;
+              }
             }
           }
           image {
