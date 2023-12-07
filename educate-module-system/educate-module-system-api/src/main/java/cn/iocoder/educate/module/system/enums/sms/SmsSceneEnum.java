@@ -16,10 +16,13 @@ public enum SmsSceneEnum implements IntArrayValuable {
 
     MEMBER_LOGIN(1, "user-sms-login", "会员用户 - 手机号登陆"),
     MEMBER_UPDATE_MOBILE(2, "user-sms-reset-password", "会员用户 - 修改手机"),
-    MEMBER_FORGET_PASSWORD(3, "user-sms-update-mobile", "会员用户 - 忘记密码"),
+    MEMBER_RESET_PASSWORD(3, "user-sms-update-mobile", "会员用户 - 忘记密码"),
 
     ADMIN_ALIYUN_MEMBER_LOGIN(21, "admin-aliyun-sms-login", "后台用户 - 手机号登录"),
-    ADMIN_DEBUG_MEMBER_LOGIN(22, "admin-debug-ding-sms-login", "后台用户 - 手机号登录");
+    ADMIN_DEBUG_MEMBER_LOGIN(22, "admin-debug-ding-sms-login", "后台用户 - 手机号登录"),
+    MEMBER_DEBUG_MEMBER_LOGIN(23, "member-debug-ding-sms-login", "会员用户 - 手机号登录"),
+    MEMBER_DEBUG_UPDATE_MOBILE(24, "member-debug-ding-reset-password", "会员用户 - 修改手机"),
+    MEMBER_DEBUG_RESET_PASSWORD(25, "member-debug-ding-update-mobile", "会员用户 - 忘记密码");
 
     /**
      * 验证场景的编号

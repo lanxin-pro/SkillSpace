@@ -167,6 +167,7 @@
         }
         await AuthApi.sendSmsCode(this.account, 23)
             .then(res => {
+              console.log('发送短信的sms', res)
               this.$util.Tips({ title: res.message })
               // 发送验证码
               this.sendCode()

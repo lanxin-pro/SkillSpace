@@ -1,8 +1,10 @@
 package cn.iocoder.educate.module.member.controller.app.auth;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.member.controller.app.auth.vo.AppAuthLoginRespVO;
 import cn.iocoder.educate.module.member.controller.app.auth.vo.AppAuthSmsLoginReqVO;
+import cn.iocoder.educate.module.member.controller.app.auth.vo.AppAuthSmsSendReqVO;
 import cn.iocoder.educate.module.member.service.auth.MemberAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +31,14 @@ public class AppAuthController {
     private MemberAuthService memberAuthService;
 
     // ========== 短信登录相关 ==========
+
+    @PostMapping("/send-sms-code")
+    @Operation(summary = "发送手机验证码")
+    @PermitAll
+    public CommonResult<Boolean> sendSmsCode(@RequestBody @Valid AppAuthSmsSendReqVO appAuthSmsSendReqVO) {
+        memberAuthService.sendSmsCode(SecurityFrameworkUtils.getLoginUserId(), appAuthSmsSendReqVO);
+        return CommonResult.success(true);
+    }
 
     @PostMapping("/sms-login")
     @Operation(summary = "使用手机 + 验证码登录")
