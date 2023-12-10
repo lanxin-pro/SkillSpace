@@ -44,7 +44,7 @@ export function checkLogin() {
         Cache.clear(USER_INFO);
         Cache.clear(STATE_R_KEY);
         return false;
-    }else {
+    } else {
         console.log('开始刷新令牌')
         store.commit('UPDATE_LOGIN', token);
         let userInfo = Cache.get(USER_INFO,true);

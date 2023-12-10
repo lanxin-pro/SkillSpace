@@ -20,8 +20,12 @@
 				</view>
 			</view>
 			<view class="header-top-right">
-				<text class='iconfont icon-gouwuche6 icon-top-right mr20' />
-				<text class='iconfont icon-yonghu3 icon-top-right' />
+        <navigator url="/pages/member_purchases/shopping-trolley/index" class="display-inline-block" style="color: rgb(95, 98, 105);">
+          <text class='iconfont icon-gouwuche6 icon-top-right mr20' />
+        </navigator>
+        <navigator url="/pages/member_purchases/user/index" class="display-inline-block" style="color: rgb(95, 98, 105);">
+          <text class='iconfont icon-yonghu3 icon-top-right' />
+        </navigator>
 			</view>
 		</view>
 

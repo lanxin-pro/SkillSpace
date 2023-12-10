@@ -3,10 +3,32 @@
 		<view class="user-header-info">
 			<view class="user-status">
         <view class="left-info">
-          <image class="user-avatar" src="../../static/images/user-info/noface.jpg" />
-          <view class="title" v-if="!isLogin" @tap="openAuto">点击登录</view>
+          <!-- 头像 -->
+          <image class="user-avatar" v-if="userInfo.avatar" :src="userInfo.avatar" />
+          <image class="user-avatar" v-else src="../../static/images/user-info/noface.jpg" />
+          <view class="info">
+            <view class="title" v-if="!isLogin" @tap="openAuto">点击登录</view>
+            <view class="user-info" v-else>
+              <view class="user-name">
+                落寞帝妃夜呻吟
+                {{ userInfo.nickname }}
+                <text class="iconfont icon-xiugai" style="font-size: 27rpx" />
+              </view>
+              <text class="membership-type">正式会员</text>
+              <view class="quantity">
+                <view>
+                  B币：0.0
+                </view>
+                <view>
+                  硬币：783
+                </view>
+              </view>
+
+            </view>
+          </view>
         </view>
         <view class="right-info">
+          <text class="interspace" v-if="isLogin">空间</text>
           <text class='iconfont icon-xiangyou' />
         </view>
 			</view>
@@ -93,7 +115,7 @@
   import { mapGetters } from "vuex"
 
 	export default {
-    computed: mapGetters(['isLogin']),
+    computed: mapGetters(['isLogin','userInfo']),
 		data() {
 			return {
 
@@ -130,21 +152,57 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        .title {
-          margin-left: 30rpx;
-          font-size: 28rpx;
-          font-weight: 600;
-        }
         .user-avatar {
           cursor: pointer;
           width: 55px;
           height: 55px;
           border-radius: 50%;
         }
+        .info {
+          .title {
+            margin-left: 30rpx;
+            font-size: 28rpx;
+            font-weight: 600;
+          }
+          .user-info {
+            padding-left: 20rpx;
+            .user-name {
+              font-weight: 600;
+              font-size: 28rpx;
+              font-family: cursive;
+              .iconfont {
+                margin-left: -10rpx;
+                color: rgb(141, 141, 141);
+              }
+            }
+            .membership-type {
+              padding: 1rpx 7rpx;
+              font-size: 20rpx;
+              border: 1px solid rgb(204, 138, 162);
+              border-radius: 7rpx;
+              color: rgb(215, 130, 160);
+            }
+            .quantity {
+              margin-top: 5rpx;
+              display: flex;
+              color: rgb(146, 146, 146);
+              gap: 20rpx;
+              font-size: 22rpx;
+            }
+          }
+        }
       }
       .right-info {
+        line-height: 30rpx;
+        height: 30rpx;
         text {
-          color: rgb(149, 149, 149);
+          /* 灰色 */
+          color: rgb(143, 143, 143);
+          font-size: 26rpx;
+        }
+        .interspace {
+          margin-right: 5rpx;
+          font-size: 24rpx;
         }
       }
     }

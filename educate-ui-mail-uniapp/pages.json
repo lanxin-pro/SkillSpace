@@ -64,6 +64,31 @@
 				}
 			}
 		]
+	},
+	{
+		"root": "pages/member_purchases",
+		"name": "member_purchases",
+		"pages": [
+			{
+				"path" : "shopping-trolley/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "购物车",
+					"titleNView": true
+				}
+			},
+			{
+				"path" : "user/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "用户中心",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
+			}
+
+		]
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
