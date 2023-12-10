@@ -1,6 +1,5 @@
 <template>
   <view>
-    <hx-navbar :config="config"/>
     <view style="background: #FFFFFF;padding:0 15px 15px;" v-for="(item,index) in 4" :key="index">
       <text>{{item}}.{{doc}}</text>
       <view style="padding-top: 15px;"/>
@@ -10,7 +9,6 @@
 </template>
 
 <script>
-import hxNavbar from "@/components/hx-navbar/hx-navbar.vue"
 
 export default {
 
@@ -28,8 +26,7 @@ export default {
   },
   methods: {
 
-  },
-  components: { hxNavbar }
+  }
 }
 </script>
 

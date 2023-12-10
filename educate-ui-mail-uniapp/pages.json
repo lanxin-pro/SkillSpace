@@ -74,7 +74,9 @@
 				"style" :
 				{
 					"navigationBarTitleText" : "购物车",
-					"titleNView": true
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
 				}
 			},
 			{
