@@ -14,6 +14,7 @@ function prePage(){
 
 /** 通用登录函数 */
 export function _toLogin(push, pathLogin) {
+    console.log('登出')
     let login_back_url = Cache.get(BACK_URL)
     let path = prePage()
     store.commit("LOGOUT")
@@ -33,8 +34,7 @@ export function _toLogin(push, pathLogin) {
     }
 }
 
-export function checkLogin()
-{
+export function checkLogin() {
     let token = Cache.get(LOGIN_STATUS);
     let expiresTime = Cache.get(EXPIRES_TIME);
     let newTime = Math.round(new Date() / 1000);

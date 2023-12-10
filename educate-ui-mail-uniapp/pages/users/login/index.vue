@@ -167,7 +167,6 @@
         }
         await AuthApi.sendSmsCode(this.account, 23)
             .then(res => {
-              console.log('发送短信的sms', res)
               this.$util.Tips({ title: res.message })
               // 发送验证码
               this.sendCode()
@@ -205,7 +204,7 @@
        * 手机 + 验证码登录
        */
       loginMobile() {
-       /* if (!this.account) {
+        if (!this.account) {
           return this.$util.Tips({
             title: '请填写手机号码'
           });
@@ -224,7 +223,7 @@
           return this.$util.Tips({
             title: '请输入正确的验证码'
           });
-        }*/
+        }
 
         // 有其他端
 
@@ -241,6 +240,11 @@
           socialState: socialState
         }).then(res => {
           let data = res.data
+
+          this.$store.commit("LOGIN", {
+            'token': res.data.accessToken
+          })
+
           console.log('请求成功->', data)
         }).catch(res => {
           this.agreement = false
