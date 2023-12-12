@@ -65,11 +65,11 @@
               <slot>
                 <view class="tip-interests">
                   为了保障您的合法权益，请您先阅读并同意
-                  <navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline-block">
+                  <navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline">
                     用户协议
                   </navigator>
                   、
-                  <navigator url="/pages/users/privacy/index" hover-class="navigator-hover" class="display-inline-block">
+                  <navigator url="/pages/users/privacy/index" hover-class="navigator-hover" class="display-inline">
                     隐私政策
                   </navigator>
                 </view>
@@ -95,7 +95,7 @@
           </view>
         </view>
         <view class="issue">
-          遇到问题?<navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline-block">查看帮助</navigator>
+          遇到问题?<navigator url="/pages/users/agreement/index" hover-class="navigator-hover" class="display-inline">查看帮助</navigator>
         </view>
       </view>
     </view>
