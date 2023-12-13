@@ -324,11 +324,15 @@
 </template>
 
 <script>
+import { silenceBindingSpread } from '@/utils/index.js'
+import { mapGetters } from "vuex"
+
 	export default {
+      computed: mapGetters(['isLogin']),
 	    data() {
 	        return {
-            // 首页 title
-            site_name: '首页',
+            // 会员购页面的 title
+            site_name: '会员购 ~',
             // 商品
             goodScroll: true,
             loading: false,
@@ -388,12 +392,38 @@
             ]
 	        }
 	    },
-
+      onLoad() {
+        let that = this
+        uni.getLocation({
+          type: 'wgs84',
+          altitude: true,
+          geocode: true,
+          // gcj02 需要权限 App 和 H5 需配置定位 SDK 信息才可支持 gcj02
+          // https://blog.csdn.net/m0_65878076/article/details/129474617
+          // type: 'gcj02',
+          success: function(res) {
+              // 地理数据的缓存
+              // https://uniapp.dcloud.net.cn/api/storage/storage.html#setstorage
+              uni.setStorageSync('user_latitude', res.latitude)
+              uni.setStorageSync('user_longitude', res.longitude)
+          }
+        })
+        // 是登录状态 才会走 静默推广
+        this.isLogin && silenceBindingSpread()
+        this.getIndexConfig()
+      },
+      onShow() {
+        uni.setNavigationBarTitle({
+          title: this.site_name
+        })
+      },
       onReachBottom : function() {
         this.loading = true
       },
       methods: {
-
+        getIndexConfig: function () {
+          // TODO j-sentinel 页面店铺装修？
+        }
 	    }
 	}
 
