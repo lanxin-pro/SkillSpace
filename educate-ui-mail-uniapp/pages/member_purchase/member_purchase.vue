@@ -313,6 +313,13 @@
 
 
 		</view>
+    <view class='loadingicon acea-row row-center-wrapper' v-if="goodScroll">
+      <!--   加载的时候显示   -->
+      <text class='loading iconfont icon-jiazai' :hidden='!loading' />
+    </view>
+    <view class="mores-txt" v-if="!goodScroll">
+      <text>我是有底线的</text>
+    </view>
 	</view>
 </template>
 
@@ -320,8 +327,14 @@
 	export default {
 	    data() {
 	        return {
+            // 首页 title
+            site_name: '首页',
+            // 商品
+            goodScroll: true,
+            loading: false,
             list: [
               {
+                id: 1,
                 price: 389,
                 num: '10',
                 title: '虞美人有大长腿',
@@ -330,6 +343,7 @@
                 ranking: '3',
               },
               {
+                id: 2,
                 name: '苏苏6',
                 num: '8',
                 title: '苏苏哇哈哈-苏苏的bug-苏苏小苏苏',
@@ -340,6 +354,7 @@
                 advertising: '1'
               },
               {
+                id: 3,
                 name: '苏苏2',
                 num: '12',
                 title: '你好旧时光',
@@ -347,6 +362,7 @@
                 avatar: 'https://img2.baidu.com/it/u=2656232546,4221523240&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=777'
               },
               {
+                id: 4,
                 name: '苏苏3',
                 num: '99+',
                 title: '黑暗荣耀',
@@ -354,6 +370,7 @@
                 avatar: 'https://img1.baidu.com/it/u=2602506082,2229028687&fm=253&fmt=auto&app=138&f=JPEG?w=796&h=500'
               },
               {
+                id: 5,
                 name: '苏苏4',
                 num: '66',
                 title: '归路',
@@ -361,6 +378,7 @@
                 avatar: 'https://img1.baidu.com/it/u=3462460603,3220043498&fm=253&fmt=auto&app=120&f=JPEG?w=690&h=458'
               },
               {
+                id: 6,
                 name: '苏苏5',
                 num: '8',
                 title: '花琉璃',
@@ -370,7 +388,11 @@
             ]
 	        }
 	    },
-	    methods: {
+
+      onReachBottom : function() {
+        this.loading = true
+      },
+      methods: {
 
 	    }
 	}
@@ -381,6 +403,16 @@
 .continer {
 	padding: 20rpx 15rpx;
   background: linear-gradient(rgb(255, 255, 255),rgb(241, 242, 244),rgb(241, 242, 244),rgb(241, 242, 244));
+
+  .mores-txt {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 40rpx;
+    color: #999;
+    font-size: 24rpx;
+    display: flex;
+  }
 }
 .header-top {
 	display: flex;
