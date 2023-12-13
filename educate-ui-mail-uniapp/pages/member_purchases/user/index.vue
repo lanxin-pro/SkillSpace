@@ -121,19 +121,42 @@
       </view>
     </view>
     <view class="information">
-      <view>
-        <cn-money color="#fffff" :money="0" :showUnit="false" :showZeroDecimal="false" />
-        优惠卷
+      <view class="discounts">
+        <view class="number">
+          <view>
+            <cn-money :size="44" color="#fffff" :money="0" :showUnit="false" :showZeroDecimal="false" />
+          </view>
+          <view class="number-title">
+            张
+          </view>
+        </view>
+        <view class="title">
+          优惠券
+        </view>
       </view>
-      <view>
-        <cn-money color="#fffff" :money="0" thousandth />
-        红包
+      <view class="discounts">
+        <view class="number">
+          <view>
+           <cn-money :size="44" color="#fffff" :money="0" thousandth />
+          </view>
+        </view>
+        <view class="title">
+          红包
+        </view>
       </view>
-      <view>
-        <cn-money color="#fffff" :money="0" :showUnit="false" :showZeroDecimal="false" />
-        我的奖品
+      <view class="discounts">
+        <view class="number">
+          <view>
+           <cn-money :size="44" color="#fffff" :money="0" :showUnit="false" :showZeroDecimal="false" />
+          </view>
+          <view class="number-title">
+            份
+          </view>
+        </view>
+        <view class="title">
+          我的奖品
+        </view>
       </view>
-
     </view>
 	</view>
 </template>
@@ -314,9 +337,32 @@ export default {
   margin-top: 20rpx;
   background: #ffffff;
   border-radius: 30rpx;
-  padding: 30rpx 30rpx 15rpx;
+  padding: 30rpx 80rpx 30rpx;
   display: flex;
-
+  justify-content: space-between;
+  .component {
+    font-size: 30rpx;
+  }
+  .number {
+    display: flex;
+    align-items: end;
+    height: 60rpx;
+    line-height: 60rpx;
+    .number-title {
+      margin-left: 5rpx;
+      font-size: 24rpx;
+      color: rgb(96, 100, 106);
+    }
+  }
+  .discounts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .title {
+    font-size: 20rpx;
+    font-weight: 600;
+  }
 }
 
 
