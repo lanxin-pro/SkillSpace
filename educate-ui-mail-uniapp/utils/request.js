@@ -73,7 +73,7 @@ function baseRequest(url, method, data, {
 
     if (store.state.app.token) {
         // header[TOKENNAME] = store.state.app.token;
-        header['Authorization'] = 'Bearer ' + store.state.app.token;
+        header['Authorization'] = 'Bearer ' + store.state.app.token
     }
     return new Promise((reslove, reject) => {
         uni.request({
@@ -82,18 +82,15 @@ function baseRequest(url, method, data, {
             header: header,
             data: data || {},
             success: (res) => {
-                console.log('请求返回的值', res)
-                console.log(noVerify)
-                if (noVerify) {
+                if (noVerify)
                     reslove(res.data, res);
-                } else if (res.data.code === 200 || res.data.code === 0) {
+                else if (res.data.code === 200 || res.data.code === 0)
                     reslove(res.data, res);
-                } else if ([410000, 410001, 410002, 401].indexOf(res.data.code) !== -1) {
+                else if ([410000, 410001, 410002, 401].indexOf(res.data.code) !== -1) {
                     toLogin();
                     reject(res.data);
-                } else {
+                } else
                     reject(res.data.msg || res.data.message || '系统错误');
-                }
             },
             fail: (msg) => {
                 reject('请求失败', msg);

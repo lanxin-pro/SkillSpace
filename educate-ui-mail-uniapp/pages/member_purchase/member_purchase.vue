@@ -236,21 +236,22 @@
           </swiper>
         </view>
         <!-- 使用 v-for 进行列表渲染，:key 提供唯一键 -->
-        <block v-for="(item, index) in list" :key="item.id">
+        <block v-for="(item, index) in tempArr" :key="item.id">
           <!-- 使用 v-if 进行条件渲染 -->
-          <view v-if="index % 2 === 0" class="content-item">
+<!--      click.stop可以终止这个事件    -->
+          <view v-if="index % 2 === 0" class="content-item" @click.prevent="goDetail(item)">
             <!--     这个属性可能是用来指定图片的缩放或适应模式。
             在这个上下文中，widthFix 可能意味着图片的宽度会被固定或调整以适应其容器，
             而高度可能会相应地改变以保持图片的比例。不过，这取决于你使用的具体框架或库，
             因为 mode 并非标准的HTML属性。       -->
-            <image :src="item.url" class="content-item-img" mode="widthFix" />
+            <image :src="item.picUrl" class="content-item-img" mode="widthFix" />
             <view class="content-item-box">
-              <view class="content-item-title">{{ item.title }}</view>
+              <view class="content-item-title">{{ item.name }}</view>
               <view class="content-item-ranking-list">
-                <view class="text ranking-text" v-if="item.ranking">
-                  原创排行榜No.{{ item.ranking }}
+                <view class="text ranking-text" v-if="item.id">
+                  原创排行榜No.{{ item.id }}
                 </view>
-                <view class="text first-week-only-couples" v-if="item.onlyCouples">
+                <view class="text first-week-only-couples" v-if="item.stock">
                   新人首周专享
                 </view>
               </view>
@@ -258,11 +259,11 @@
                 <view class="price-row">
                   <view class="roll-text text-color">新人劵后</view>
                   <view class="text-color-price">￥</view>
-                  <view class="now-price text-color-price">{{ item.price }}</view>
+                  <view class="now-price text-color-price">{{ fen2yuan(item.price) }}</view>
 
                   <view class="original-price">
                     <text style="margin-right: -4rpx">￥</text>
-                    426
+                    {{ fen2yuan(item.marketPrice) }}
                   </view>
                 </view>
                 <view class="collect">
@@ -275,18 +276,19 @@
         </block>
       </view>
       <view class="content-right">
-        <block v-for="(item, index) in list" :key="item.id">
-          <view v-if="index % 2 === 1" class="content-item">
+        <block v-for="(item, index) in tempArr" :key="item.id">
+          <!--      click.stop可以终止这个事件    -->
+          <view v-if="index % 2 === 1" class="content-item" @click.prevent="goDetail(item)">
             <!-- 同上，复制左侧的内容 -->
             <!-- 数据绑定使用 v-bind 或简写 : -->
-            <image :src="item.url" class="content-item-img" mode="widthFix" />
+            <image :src="item.picUrl" class="content-item-img" mode="widthFix" />
             <view class="content-item-box">
-              <view class="content-item-title">{{ item.title }}</view>
+              <view class="content-item-title">{{ item.name }}</view>
               <view class="content-item-ranking-list">
-                <view class="text ranking-text" v-if="item.ranking">
-                  原创排行榜No.{{ item.ranking }}
+                <view class="text ranking-text" v-if="item.id">
+                  原创排行榜No.{{ item.id }}
                 </view>
-                <view class="text first-week-only-couples" v-if="item.onlyCouples">
+                <view class="text first-week-only-couples" v-if="item.stock">
                   新人首周专享
                 </view>
               </view>
@@ -294,13 +296,14 @@
                 <view class="price-row">
                   <view class="roll-text text-color">新人劵后</view>
                   <view class="text-color-price">￥</view>
-                  <view class="now-price text-color-price">{{ item.price }}</view>
+                  <view class="now-price text-color-price">{{ fen2yuan(item.price) }}</view>
 
                   <view class="original-price">
                     <text style="margin-right: -4rpx">￥</text>
-                    300
+                      {{ fen2yuan(item.marketPrice) }}
                   </view>
                 </view>
+
                 <view class="collect">
                   <view class='iconfont icon-shoucang' />
                   <view class="collect-number">121</view>
@@ -326,6 +329,8 @@
 <script>
 import { silenceBindingSpread } from '@/utils/index.js'
 import { mapGetters } from "vuex"
+import * as ProductSpuApi from '@/api/product/spu.js'
+import * as Util from '@/utils/util.js'
 
 	export default {
       computed: mapGetters(['isLogin']),
@@ -333,9 +338,19 @@ import { mapGetters } from "vuex"
 	        return {
             // 会员购页面的 title
             site_name: '会员购 ~',
-            // 商品
+            // ========== 精品推荐 ===========
+            // 商品 精品推荐开关
             goodScroll: true,
             loading: false,
+            listActive: 0, // 当前选中项
+            goodType: 1, //精品推荐 Type
+            params: { //精品推荐分页
+              page: 1,
+              limit: 10,
+            },
+            tempArr: [], // 精品推荐临时数组
+            iSshowH: false,
+
             list: [
               {
                 id: 1,
@@ -417,12 +432,47 @@ import { mapGetters } from "vuex"
           title: this.site_name
         })
       },
+      mounted() {
+        this.checkWrap();
+      },
+      /**
+       * 下拉刷新
+       */
       onReachBottom : function() {
-        this.loading = true
+          this.loading = true
+
       },
       methods: {
         getIndexConfig: function () {
           // TODO j-sentinel 页面店铺装修？
+          ProductSpuApi.getSpuPage({
+            recommendType: this.goodType,
+            pageNo: this.params.page,
+            pageSize: this.params.limit
+          }).then(res => {
+            const good_list = res.data.list
+            this.goodScroll = good_list.length >= this.params.limit
+            this.tempArr = good_list
+            console.log('good_list', good_list)
+          }).catch(error => {
+            console.log('发生错误', error)
+          })
+        },
+        fen2yuan(price) {
+          return Util.fen2yuan(price)
+        },
+        /**
+         * 前往商品详情
+         *
+         * @param item
+         */
+        goDetail(item) {
+          uni.navigateTo({
+            url: `/pages/goods_details/index?id=${item.id}`
+          })
+        },
+        test(){
+          alert(1)
         }
 	    }
 	}
@@ -692,10 +742,12 @@ import { mapGetters } from "vuex"
 
           display: flex;
           justify-content: space-between;
+          flex-wrap: wrap;
           .price-row {
             display: flex;
             height: 30rpx;
             line-height: 30rpx;
+            flex-wrap: wrap;
             .text-color {
               color: rgb(223, 118, 153);
             }
