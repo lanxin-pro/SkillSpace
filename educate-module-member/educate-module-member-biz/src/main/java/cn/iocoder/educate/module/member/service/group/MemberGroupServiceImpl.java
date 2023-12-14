@@ -12,7 +12,7 @@ import cn.iocoder.educate.module.member.convert.group.MemberGroupConvert;
 import cn.iocoder.educate.module.member.dal.dataobject.group.MemberGroupDO;
 import cn.iocoder.educate.module.member.dal.mysql.group.MemberGroupMapper;
 import cn.iocoder.educate.module.member.service.user.MemberUserService;
-import cn.iocoder.yudao.module.member.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.member.enums.ErrorCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

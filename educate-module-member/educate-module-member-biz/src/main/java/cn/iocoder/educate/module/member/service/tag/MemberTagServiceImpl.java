@@ -12,7 +12,7 @@ import cn.iocoder.educate.module.member.convert.tag.MemberTagConvert;
 import cn.iocoder.educate.module.member.dal.dataobject.tag.MemberTagDO;
 import cn.iocoder.educate.module.member.dal.mysql.tag.MemberTagMapper;
 import cn.iocoder.educate.module.member.service.user.MemberUserService;
-import cn.iocoder.yudao.module.member.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.member.enums.ErrorCodeConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -27,8 +27,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Objects;
 
-import static cn.iocoder.yudao.module.member.enums.ErrorCodeConstants.AUTH_MOBILE_USED;
-import static cn.iocoder.yudao.module.member.enums.ErrorCodeConstants.USER_MOBILE_NOT_EXISTS;
+import static cn.iocoder.educate.module.member.enums.ErrorCodeConstants.AUTH_MOBILE_USED;
+import static cn.iocoder.educate.module.member.enums.ErrorCodeConstants.USER_MOBILE_NOT_EXISTS;
 
 /**
  * 会员的认证 Service 接口

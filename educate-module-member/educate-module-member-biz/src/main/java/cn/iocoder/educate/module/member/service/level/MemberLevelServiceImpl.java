@@ -10,7 +10,7 @@ import cn.iocoder.educate.module.member.convert.level.MemberLevelConvert;
 import cn.iocoder.educate.module.member.dal.dataobject.level.MemberLevelDO;
 import cn.iocoder.educate.module.member.dal.mysql.level.MemberLevelMapper;
 import cn.iocoder.educate.module.member.service.user.MemberUserService;
-import cn.iocoder.yudao.module.member.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.member.enums.ErrorCodeConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import static cn.iocoder.yudao.module.member.enums.ErrorCodeConstants.*;
-import static cn.iocoder.yudao.module.member.enums.ErrorCodeConstants.LEVEL_EXPERIENCE_MAX;
 
 /**
  * 会员等级 Service 实现类
