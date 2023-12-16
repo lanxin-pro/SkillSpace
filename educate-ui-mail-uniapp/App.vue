@@ -1,6 +1,24 @@
 <script>
 	export default {
-
+    globalData: {
+      spid: 0,
+      code: 0,
+      isLogin: false,
+      userInfo: {},
+      MyMenus: [],
+      windowHeight: 0,
+      id: 0
+    },
+    // 初始化完成时触发（全局只触发一次）
+    onLaunch: function(option) {
+      let that = this
+      // 获取导航高度；
+      uni.getSystemInfo({
+        success: function (res) {
+          that.globalData.navHeight = res.statusBarHeight * (750 / res.windowWidth) + 91;
+        }
+      })
+    }
 	}
 </script>
 

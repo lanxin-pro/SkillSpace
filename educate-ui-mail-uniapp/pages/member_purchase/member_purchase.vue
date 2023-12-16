@@ -468,7 +468,7 @@ import * as Util from '@/utils/util.js'
          */
         goDetail(item) {
           uni.navigateTo({
-            url: `/pages/goods_details/index?id=${item.id}`
+            url: `/pages/member_purchases/goods_details/index?id=${item.id}`
           })
         },
         test(){

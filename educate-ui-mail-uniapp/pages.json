@@ -88,6 +88,16 @@
 					/* 自定义title */
 					"navigationStyle": "custom"
 				}
+			},
+			{
+				"path" : "goods_details/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "商品详情",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
 			}
 
 		]
