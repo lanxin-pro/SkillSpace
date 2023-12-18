@@ -44,13 +44,78 @@
               :seizeHeight="750"
           />
         </view>
+        <view class="amount-area">
+          <view class="money-area-left">
+            <view>
+              <text class="font-weight-bold title">定金</text>
+              <cn-money :size="46" color="#fffff" :money="16.35"  />
+            </view>
+            <view class="optimized-display">
+              <view class="postcoupon">
+                新人劵后 ￥275
+                <text class="iconfont icon-xiangyou" />
+              </view>
+              <view class="original-price">
+                原价￥285
+              </view>
+            </view>
+          </view>
+          <view class="money-area-right">
+            <view>
+              定金预售
+            </view>
+            <view>
+              距离结束53天
+            </view>
+          </view>
+        </view>
+        <view class="property">
+          <view class="coupon-area">
+            <view class="flex">
+              <view class="reduce">
+                满139减10元
+              </view>
+              <view class="reduce">
+                满99减8元
+              </view>
+              <view class="reduce">
+                立减5元
+              </view>
+            </view>
+            <view class="go-get">
+              领劵
+              <text class="iconfont icon-xiangyou" />
+            </view>
+          </view>
+          <view class="newcomer-discount">
+            新人专属礼包，
+          </view>
+          <view class="commodity-header-area">
+            <view class="commodity-title">
+              ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办
+            </view>
+            <view class="collect-number">
+              <view>
+                桃心
+              </view>
+              <view class="desired-number">
+                3649人想要
+              </view>
+            </view>
+
+          </view>
+          <view>
+            小文字
+          </view>
+        </view>
+
         <view id="past1">
-          <view id="evaluation-page" class="evaluation-page" v-for="(item) of 30">评价页面</view>
+          <view v-for="(item) of 30">评价页面</view>
         </view>
         <view id="past2">
-          <view class="detail-page" v-for="(item) of 40">详细页面</view>
+          <view v-for="(item) of 40">详细页面</view>
         </view>
-        <text  class='iconfont icon-shouye-xianxing'></text>
+        <text class='iconfont icon-shouye-xianxing'></text>
       </scroll-view>
     </view>
   </view>
@@ -274,6 +339,107 @@ export default {
       color: #333;
     }
   }
+  .amount-area {
+    padding: 10rpx 25rpx;
+    background: #fafcfa;
+    border-radius: 0 0 10rpx 10rpx;
+    color: #f57097;
+    display: flex;
+    justify-content: space-between;
+    .money-area-left {
+      display: flex;
+      flex-direction: column;
+      .title {
+        font-size: 28rpx;
+        margin-right: 8rpx;
+      }
+      .optimized-display {
+        display: flex;
+        align-items: center;
+        .postcoupon {
+          border-radius: 20rpx;
+          background: #feedf3;
+          padding: 7rpx 5rpx 7rpx 10rpx;
+          font-size: 22rpx;
+          margin: 5rpx 0 0 -7rpx;
+          text {
+            font-size: 20rpx;
+          }
+        }
+        .original-price {
+          font-size: 22rpx;
+          text-decoration: line-through;
+          margin-left: 13rpx;
+          color: black;
+        }
+      }
+    }
+    .money-area-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: end;
+    }
+  }
+  .property {
+    padding: 10rpx 25rpx 35rpx;
+    background: #ffffff;
+    border-radius: 0 0 10rpx 10rpx;
+    .coupon-area {
+      display: flex;
+      justify-content: space-between;
+      .reduce {
+        border-radius: 8rpx;
+        padding: 5rpx 12rpx;
+        font-size: 22rpx;
+        font-weight: 600;
+        background: #feeff4;
+        color: #ed769f;
+        margin-left: 10rpx;
+      }
+      .reduce:first-child {
+        margin-left: 0;
+      }
+      .go-get {
+        color: #ffffff;
+        background: #ff689b;
+        font-size: 25rpx;
+        border-radius: 19rpx 0 0 19rpx;
+        margin-right: -26rpx;
+        padding: 5rpx 30rpx 5rpx 16rpx;
+        text {
+          font-size: 22rpx;
+          margin-left: 5rpx;
+        }
+      }
+
+    }
+    .newcomer-discount {
+      margin-top: 17rpx;
+    }
+    .commodity-header-area {
+      margin-top: 17rpx;
+      display: flex;
+      gap: 55rpx;
+      .commodity-title {
+        font-size: 34rpx;
+        font-weight: 600;
+        line-height: 45rpx;
+      }
+      .collect-number {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: red;
+        margin-right: -6rpx;
+        .desired-number {
+          font-size: 18rpx;
+        }
+      }
+    }
+  }
+
 }
 .navbar {
   position: fixed;

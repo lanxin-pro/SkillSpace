@@ -47,4 +47,9 @@ public class ProductSpuServiceImpl implements ProductSpuService {
         }
         return productSpuMapper.selectPage(pageReqVO, categoryIds);
     }
+
+    @Override
+    public ProductSpuDO getSpu(Long id) {
+        return productSpuMapper.selectById(id);
+    }
 }

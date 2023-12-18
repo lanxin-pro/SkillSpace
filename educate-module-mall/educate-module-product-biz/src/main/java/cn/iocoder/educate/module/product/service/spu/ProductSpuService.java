@@ -20,4 +20,12 @@ public interface ProductSpuService {
      */
     PageResult<ProductSpuDO> getSpuPage(AppProductSpuPageReqVO pageReqVO);
 
+    /**
+     * 获得商品 SPU
+     *
+     * @param id 编号
+     * @return 商品 SPU
+     */
+    ProductSpuDO getSpu(Long id);
+
 }
