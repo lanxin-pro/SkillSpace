@@ -68,6 +68,21 @@
 	color: black;
 }
 
+.gap10 {
+	gap: 10rpx;
+}
+
+.gap20 {
+	gap: 20rpx;
+}
+
+.gap30 {
+	gap: 30rpx;
+}
+
+.gap40 {
+	gap: 40rpx;
+}
 
 /* ==================       按钮       ==================== */
 .reset-button {
