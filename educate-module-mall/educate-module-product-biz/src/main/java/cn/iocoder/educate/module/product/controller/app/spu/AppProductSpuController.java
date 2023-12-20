@@ -62,7 +62,7 @@ public class AppProductSpuController {
     @Operation(summary = "获得商品 SPU 明细")
     @Parameter(name = "id", description = "编号", required = true)
     @PermitAll
-    public CommonResult<ProductSpuDO> getSpuDetail(@RequestParam("id") Long id) {
+    public CommonResult<AppProductSpuDetailRespVO> getSpuDetail(@RequestParam("id") Long id) {
         // 获得商品 SPU
         ProductSpuDO spu = productSpuService.getSpu(id);
         if (spu == null) {
@@ -74,11 +74,11 @@ public class AppProductSpuController {
 
         // TODO j-sentinel 这里的代码有待考察意思，我先加上去预防报错
         // SKU 拼接返回
-        // List<ProductSkuDO> skus = productSkuService.getSkuListBySpuId(spu.getId());
-        // AppProductSpuDetailRespVO detailVO = ProductSpuConvert.INSTANCE.convertForGetSpuDetail(spu, skus);
+        List<ProductSkuDO> skus = productSkuService.getSkuListBySpuId(spu.getId());
+        AppProductSpuDetailRespVO detailVO = ProductSpuConvert.INSTANCE.convertForGetSpuDetail(spu, skus);
         // TODO j-sentinel 这里需要处理 vip 价格
 
-        return CommonResult.success(spu);
+        return CommonResult.success(detailVO);
     }
 
 

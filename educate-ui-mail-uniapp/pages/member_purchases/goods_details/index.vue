@@ -38,8 +38,13 @@
               isPreview
               dotStyle="tag"
               imageMode="widthFix"
-              :list="[{'type': 'image','src': 'https://img0.baidu.com/it/u=3267277686,3164996635&fm=253&fmt=auto&app=138&f=JPEG?w=712&h=500'},
-            {'type': 'image','src': 'https://foruda.gitee.com/avatar/1677162358460872852/9088484_lanxindx_1656652703.png!avatar30'}]"
+              :list="[{'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=My5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Mi5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=MDAxLmpwZw==&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NC5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NS5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Ni5qcGc=&version_id=null'},
+            ]"
               dotCur="bg-mask-40"
               :seizeHeight="750"
           />
@@ -61,11 +66,16 @@
             </view>
           </view>
           <view class="money-area-right">
-            <view>
-              定金预售
+            <view class="presell" v-if="true">
+              <view>
+                定金预售
+              </view>
+              <view>
+                距离结束53天
+              </view>
             </view>
-            <view>
-              距离结束53天
+            <view class="sell-out" v-else>
+              <view>售完为止</view>
             </view>
           </view>
         </view>
@@ -88,25 +98,64 @@
             </view>
           </view>
           <view class="newcomer-discount">
-            新人专属礼包，
+            <view class="new-user-coupon-pack-price-container">
+              <view class="new-user-coupon-pack">
+                <view data-v-a6a54e38="" class="price-symbol">¥</view>
+                <view data-v-a6a54e38="" class="price-2">50</view>
+              </view>
+              <view class="new-user-coupon-pack-content">
+                新人专享礼包，及领取收单包邮
+              </view>
+              <view class="new-user-coupon-pack-receive-btn">立即领取</view>
+            </view>
+
+
           </view>
           <view class="commodity-header-area">
             <view class="commodity-title">
-              ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办
+<!--       TODO j-sentinel 这里的文字长度应该进行优化       -->
+              ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办我的期待
             </view>
             <view class="collect-number">
-              <view>
-                桃心
+              <view class="collect">
+                <text class="iconfont icon-shoucang"></text>
               </view>
               <view class="desired-number">
-                3649人想要
+                  3649人想要
               </view>
             </view>
 
           </view>
-          <view>
-            小文字
+          <view class="ranking-list">
+            <view class="ranking-left">
+              <image
+                  class="swiper-image"
+                  src="@/static/images/member-purchase/project/ranking-list.png"
+              />
+              <text class="character">Myethos榜 No.1</text>
+            </view>
+            <view class="ranking-right">
+              <text class="iconfont icon-xiangyou"></text>
+            </view>
           </view>
+        </view>
+        <view class="empty">
+
+        </view>
+
+        <view class="commodity-size">
+          <view>
+            参数
+          </view>
+
+          <view>
+            预售流程
+          </view>
+
+          <view>
+            分类？
+          </view>
+          <DetailCell @top="test" />
         </view>
 
         <view id="past1">
@@ -116,7 +165,12 @@
           <view v-for="(item) of 40">详细页面</view>
         </view>
         <text class='iconfont icon-shouye-xianxing'></text>
+
+        <!-- 详情 tabbar -->
+        <DetailTabbar />
       </scroll-view>
+<!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
+
     </view>
   </view>
 </template>
@@ -124,13 +178,15 @@
 <script>
 import * as ProductSpuApi from '@/api/product/spu.js'
 import SuSwiper from '@/components/ui/su-swiper/su-swiper.vue'
+import DetailCell from './../components/detail-cell'
+import DetailTabbar from './../components/detail-tabbar'
 
 // APP.vue全局的作用域
 const app = getApp()
 
 export default {
   components: {
-    SuSwiper
+    SuSwiper, DetailCell, DetailTabbar
   },
   data() {
     return {
@@ -185,6 +241,9 @@ export default {
     this.getGoodsDetails()
   },
   methods: {
+    test: function(){
+      console.log('最外层的点击事件')
+    },
     getGoodsDetails: function() {
       ProductSpuApi.getSpuDetail(this.id).then(res => {
         console.log('res的结果', res)
@@ -293,7 +352,8 @@ export default {
     width: 56rpx;
     height: 56rpx;
     line-height: 56rpx;
-    z-index: 999;
+    /* 防止uni-popup冲突 */
+    z-index: 1;
     left: 33rpx;
     background: rgba(212, 210, 210, 0.8);
     border-radius: 50%;
@@ -321,7 +381,8 @@ export default {
     width: 56rpx;
     height: 56rpx;
     line-height: 56rpx;
-    z-index: 999;
+    /* 防止uni-popup冲突 */
+    z-index: 1;
     right: 33rpx;
     background: rgba(212, 210, 210, 0.8);
     border-radius: 50%;
@@ -379,12 +440,27 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: end;
+      background-image: url("@/static/images/member-purchase/project/money-background.png");
+      background-size: cover;
+      background-position: center center; /* 设置背景图片位置，居中显示 */
+      background-repeat: no-repeat; /* 防止背景图片重复显示 */
+      width: 300rpx;
+      .presell {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        font-size: 26rpx;
+      }
+      .sell-out {
+
+      }
     }
   }
   .property {
-    padding: 10rpx 25rpx 35rpx;
+    padding: 25rpx;
     background: #ffffff;
-    border-radius: 0 0 10rpx 10rpx;
+    border-radius: 0 0 20rpx 20rpx;
     .coupon-area {
       display: flex;
       justify-content: space-between;
@@ -403,7 +479,7 @@ export default {
       .go-get {
         color: #ffffff;
         background: #ff689b;
-        font-size: 25rpx;
+        font-size: 22rpx;
         border-radius: 19rpx 0 0 19rpx;
         margin-right: -26rpx;
         padding: 5rpx 30rpx 5rpx 16rpx;
@@ -416,13 +492,64 @@ export default {
     }
     .newcomer-discount {
       margin-top: 17rpx;
+      .new-user-coupon-pack-price-container {
+        background-image: url(http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=VUw0TFFPUjR2Ri5wbmc=&version_id=null);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        font-size: 28rpx;
+        height: 84rpx;
+        padding: 30rpx;
+        margin-bottom: 24rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .new-user-coupon-pack {
+          color: #ff007a;
+          display: flex;
+          align-items: center;
+          .price-symbol {
+            font-family: PingFang SC;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 28px;
+            margin-right: 2px;
+            color: #ff007a;
+          }
+          .price-2 {
+            font-family: PingFang SC;
+            font-size: 38rpx;
+            font-weight: 600;
+            line-height: 36rpx;
+            letter-spacing: 0;
+            text-align: center;
+          }
+        }
+        .new-user-coupon-pack-content {
+          font-family: PingFang SC;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 17px;
+          letter-spacing: 0;
+          text-align: left;
+          color: #18191c;
+        }
+        .new-user-coupon-pack-receive-btn {
+          font-family: PingFang SC;
+          font-size: 24rpx;
+          font-weight: 500;
+          line-height: 36rpx;
+          letter-spacing: 0;
+          text-align: center;
+          color: #eeeeee;
+        }
+      }
     }
     .commodity-header-area {
       margin-top: 17rpx;
       display: flex;
-      gap: 55rpx;
+      gap: 75rpx;
       .commodity-title {
-        font-size: 34rpx;
+        font-size: 30rpx;
         font-weight: 600;
         line-height: 45rpx;
       }
@@ -431,13 +558,58 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: red;
         margin-right: -6rpx;
+        .collect text {
+          font-size: 36rpx;
+          font-weight: 600;
+        }
         .desired-number {
           font-size: 18rpx;
+          white-space: nowrap;
+          margin-top: 8rpx;
         }
       }
     }
+    .ranking-list {
+      margin-top: 20rpx;
+      padding-top: 20rpx;
+      border-top: 1px solid rgb(231, 231, 231);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .ranking-left {
+        display: flex;
+        gap: 17rpx;
+        align-items: center;
+        image {
+          width: 140rpx;
+          height: 38rpx;
+        }
+        .character {
+          font-size: 24rpx;
+        }
+      }
+      .ranking-right {
+        text {
+          font-size: 24rpx;
+          color: rgb(205, 205, 205);
+          font-weight: 600;
+        }
+
+      }
+
+    }
+  }
+  .empty {
+    margin: 20rpx 0 20rpx;
+    padding: 15rpx 25rpx 25rpx;
+    background: #ffffff;
+    border-radius: 15rpx;
+  }
+  .commodity-size {
+    padding: 15rpx 25rpx 25rpx;
+    background: #ffffff;
+    border-radius: 15rpx;
   }
 
 }

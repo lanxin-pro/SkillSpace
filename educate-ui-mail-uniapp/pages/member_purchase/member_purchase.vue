@@ -433,7 +433,7 @@ import * as Util from '@/utils/util.js'
         })
       },
       mounted() {
-        this.checkWrap();
+
       },
       /**
        * 下拉刷新
