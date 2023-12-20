@@ -144,7 +144,8 @@ export default {
         }
         .pay-in-advance {
           padding: 4rpx 0;
-          width: 256rpx;
+          /* 不知道是不是错觉的问题，总感觉两个不一样大 */
+          width: 260rpx;
           height: 72rpx;
           border-radius: 35rpx;
           /* 高级的颜色 */

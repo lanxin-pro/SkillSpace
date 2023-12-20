@@ -145,17 +145,17 @@
 
         <view class="commodity-size">
           <view>
-            参数
+            <DetailSpecification />
           </view>
 
-          <view>
+          <view style="margin-top: 20rpx">
             预售流程
           </view>
 
           <view>
             分类？
           </view>
-          <DetailCell @top="test" />
+          <DetailCellSafeguard @top="test" />
         </view>
 
         <view id="past1">
@@ -178,7 +178,8 @@
 <script>
 import * as ProductSpuApi from '@/api/product/spu.js'
 import SuSwiper from '@/components/ui/su-swiper/su-swiper.vue'
-import DetailCell from './../components/detail-cell'
+import DetailCellSafeguard from './../components/detail-cell-safeguard'
+import DetailSpecification from './../components/detail-specification'
 import DetailTabbar from './../components/detail-tabbar'
 
 // APP.vue全局的作用域
@@ -186,7 +187,7 @@ const app = getApp()
 
 export default {
   components: {
-    SuSwiper, DetailCell, DetailTabbar
+    SuSwiper, DetailCellSafeguard, DetailTabbar, DetailSpecification
   },
   data() {
     return {
@@ -607,7 +608,7 @@ export default {
     border-radius: 15rpx;
   }
   .commodity-size {
-    padding: 15rpx 25rpx 25rpx;
+    padding: 30rpx 25rpx;
     background: #ffffff;
     border-radius: 15rpx;
   }
