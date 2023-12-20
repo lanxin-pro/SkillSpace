@@ -152,8 +152,22 @@
             预售流程
           </view>
 
-          <view>
-            分类？
+          <view class="commodity-category">
+            <view class="tagC-ip">
+              <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZmI4ZGZmODJiMjc1YmQyOWQ2MWNmZTVmNTJhYTQzODYucG5n&version_id=null">
+              <div class="tagC-ip-con">
+                五等分的新娘
+              </div>
+              <div class="tagC-ip-right iconfont icon-xiangyou"></div>
+            </view>
+            <view class="tagC-ip">
+              <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZWU2NTM1MzExZmYxODdkYTE4YjAyNWJkYWExNGY1ZjAuanBn&version_id=null">
+              <div class="tagC-ip-con">
+                FuRyu
+              </div>
+              <div class="tagC-ip-right iconfont icon-xiangyou"></div>
+            </view>
+
           </view>
           <DetailCellSafeguard @top="test" />
         </view>
@@ -608,9 +622,50 @@ export default {
     border-radius: 15rpx;
   }
   .commodity-size {
-    padding: 30rpx 25rpx;
+    padding: 30rpx 25rpx 20rpx;
     background: #ffffff;
-    border-radius: 15rpx;
+    border-radius: 25rpx;
+    .commodity-category {
+      padding-bottom: 10rpx;
+      margin: 20rpx 0;
+      border-bottom: 1px solid #e7e7e7;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .tagC-ip {
+        display: flex;
+        align-items: center;
+        width: 48.5%;
+        height: 80rpx;
+        border: 1rpx solid #e7e7e7;
+        border-radius: 12rpx;
+        margin-bottom: 10rpx;
+        padding: 0 4px;
+        .tagC-ip-icon {
+          width: 26px;
+          height: 26px;
+        }
+        .tagC-ip-con {
+          flex: 1;
+          margin-left: 16rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          padding: 8rpx 0;
+          font-size: 20rpx;
+        }
+        .tagC-ip-right {
+          font-size: 16rpx;
+          padding: 5rpx;
+          background: #d9d9d9;
+          border-radius: 40rpx;
+          color: #ffffff;
+        }
+
+      }
+    }
   }
 
 }
