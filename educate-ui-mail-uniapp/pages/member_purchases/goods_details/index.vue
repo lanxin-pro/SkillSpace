@@ -149,7 +149,7 @@
           </view>
 
           <view style="margin-top: 20rpx">
-            预售流程
+            <DetailProcedure />
           </view>
 
           <view class="commodity-category">
@@ -163,7 +163,21 @@
             <view class="tagC-ip">
               <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZWU2NTM1MzExZmYxODdkYTE4YjAyNWJkYWExNGY1ZjAuanBn&version_id=null">
               <div class="tagC-ip-con">
-                FuRyu
+                <view>
+                  FuRyu
+                </view>
+                <view style="color: #7d7d7d;font-size: 18rpx;">
+                  综合评分
+                  <uni-rate
+                      class="display-inline-block"
+                      :readonly="true"
+                      :size="10"
+                      :value="4.5"
+                      color="#dfe6e4"
+                      active-color="#fa6c9c"
+                  />
+                </view>
+
               </div>
               <div class="tagC-ip-right iconfont icon-xiangyou"></div>
             </view>
@@ -195,12 +209,14 @@ import SuSwiper from '@/components/ui/su-swiper/su-swiper.vue'
 import DetailCellSafeguard from './../components/detail-cell-safeguard'
 import DetailSpecification from './../components/detail-specification'
 import DetailTabbar from './../components/detail-tabbar'
+import DetailProcedure from "./../components/detail-procedure"
 
 // APP.vue全局的作用域
 const app = getApp()
 
 export default {
   components: {
+    DetailProcedure,
     SuSwiper, DetailCellSafeguard, DetailTabbar, DetailSpecification
   },
   data() {
@@ -654,7 +670,7 @@ export default {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           padding: 8rpx 0;
-          font-size: 20rpx;
+          font-size: 22rpx;
         }
         .tagC-ip-right {
           font-size: 16rpx;

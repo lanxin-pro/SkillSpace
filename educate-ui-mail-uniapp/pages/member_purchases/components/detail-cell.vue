@@ -63,7 +63,7 @@ export default {
   display: flex;
   align-items: center;
   .list-title {
-    width: 13%;
+    width: 10%;
     font-size: 24rpx;
     color: #9d9d9d;
   }

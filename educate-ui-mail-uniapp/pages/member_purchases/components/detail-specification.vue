@@ -111,7 +111,7 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 26rpx;
+      font-size: 24rpx;
       line-height: 32rpx;
       color: #212121;
       margin-top: 12rpx;
