@@ -186,8 +186,8 @@
           <DetailCellSafeguard @top="test" />
         </view>
 
-        <view id="past1">
-          <view v-for="(item) of 30">评价页面</view>
+        <view class="detail-comment-card" id="past1">
+          <DetailCommentCard />
         </view>
         <view id="past2">
           <view v-for="(item) of 40">详细页面</view>
@@ -210,12 +210,14 @@ import DetailCellSafeguard from './../components/detail-cell-safeguard'
 import DetailSpecification from './../components/detail-specification'
 import DetailTabbar from './../components/detail-tabbar'
 import DetailProcedure from "./../components/detail-procedure"
+import DetailCommentCard from "./../components/detail-comment-card"
 
 // APP.vue全局的作用域
 const app = getApp()
 
 export default {
   components: {
+    DetailCommentCard,
     DetailProcedure,
     SuSwiper, DetailCellSafeguard, DetailTabbar, DetailSpecification
   },
@@ -682,6 +684,9 @@ export default {
 
       }
     }
+  }
+  .detail-comment-card {
+    margin-top: 20rpx;
   }
 
 }
