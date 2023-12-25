@@ -109,7 +109,10 @@ public class WebFrameworkUtils {
         if (request.getRequestURI().startsWith(prefix)) {
             return UserTypeEnum.ADMIN.getValue();
         }
-        if (request.getRequestURI().startsWith(properties.getAppApi().getPrefix())) {
+        prefix = properties.getAppApi().getPrefix();
+        prefix = "/" + properties.getPrePath() + prefix;
+        // TODO j-sentinel 12月25日以前 这里C端会员判断有误
+        if (request.getRequestURI().startsWith(prefix)) {
             return UserTypeEnum.MEMBER.getValue();
         }
         return null;
