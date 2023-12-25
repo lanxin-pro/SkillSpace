@@ -189,16 +189,22 @@
         <view class="detail-comment-card" id="past1">
           <DetailCommentCard />
         </view>
-        <view id="past2">
-          <view v-for="(item) of 40">详细页面</view>
-        </view>
-        <text class='iconfont icon-shouye-xianxing'></text>
 
-        <!-- 详情 tabbar -->
-        <DetailTabbar />
+        <view class="detail-content-card" id="past2">
+          <DetailContentCard />
+        </view>
+
+<!--   TODO j-sentinel 这里的布局有些问题     -->
+        <view class="pb150" />
+
+
+
+
+
       </scroll-view>
 <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
-
+      <!-- 底部导航，详情 tabbar -->
+      <DetailTabbar />
     </view>
   </view>
 </template>
@@ -211,6 +217,8 @@ import DetailSpecification from './../components/detail-specification'
 import DetailTabbar from './../components/detail-tabbar'
 import DetailProcedure from "./../components/detail-procedure"
 import DetailCommentCard from "./../components/detail-comment-card"
+import DetailContentCard from "./../components/detail-content-card"
+import * as ProductUtil from '@/utils/product.js'
 
 // APP.vue全局的作用域
 const app = getApp()
@@ -219,7 +227,11 @@ export default {
   components: {
     DetailCommentCard,
     DetailProcedure,
-    SuSwiper, DetailCellSafeguard, DetailTabbar, DetailSpecification
+    DetailContentCard,
+    SuSwiper,
+    DetailCellSafeguard,
+    DetailTabbar,
+    DetailSpecification
   },
   data() {
     return {
@@ -281,6 +293,9 @@ export default {
       ProductSpuApi.getSpuDetail(this.id).then(res => {
         console.log('res的结果', res)
         let spu = res.data
+        let skus = res.data.skus
+        this.$set(this, 'spu', spu);
+        this.$set(this, 'skuMap', ProductUtil.convertProductSkuMap(skus));
 
         // 处理滚动条
         setTimeout(() => {
@@ -686,6 +701,9 @@ export default {
     }
   }
   .detail-comment-card {
+    margin-top: 20rpx;
+  }
+  .detail-content-card {
     margin-top: 20rpx;
   }
 

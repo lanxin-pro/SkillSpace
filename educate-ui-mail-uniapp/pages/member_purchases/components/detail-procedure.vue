@@ -25,7 +25,7 @@
           <view class="pro-item">
             <view class="pro-item-top">
               <view class="top-time">
-                2023.09.06
+                2024.04.03
               </view>
             </view>
             <view class="progress-dot">
@@ -39,7 +39,7 @@
           <view class="pro-item">
             <view class="pro-item-top">
               <view class="top-time">
-                2023.09.06
+                2024.04.08
               </view>
             </view>
             <view class="progress-dot">
