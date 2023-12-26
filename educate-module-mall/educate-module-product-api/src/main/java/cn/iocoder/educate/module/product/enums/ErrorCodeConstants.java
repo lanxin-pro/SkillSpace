@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.product.enums;
+package cn.iocoder.educate.module.product.enums;
 
 import cn.iocoder.educate.framework.common.exception.ErrorCode;
 

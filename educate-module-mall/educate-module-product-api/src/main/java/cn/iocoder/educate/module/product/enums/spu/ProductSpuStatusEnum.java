@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.product.enums.spu;
+package cn.iocoder.educate.module.product.enums.spu;
 
 import cn.iocoder.educate.framework.common.core.IntArrayValuable;
 import lombok.AllArgsConstructor;
