@@ -326,6 +326,11 @@
 </template>
 
 <script setup>
+import {
+  onLoad,
+  onPageScroll
+} from '@dcloudio/uni-app';
+import { getSpuPage } from '@/sheep/api/product/spu.js'
 import { ref } from 'vue'
 import * as Util from '@/sheep/utils/util.js'
 
@@ -347,6 +352,14 @@ const iSshowH = ref(false)
 const fen2yuan = (price)=> {
   return Util.fen2yuan(price)
 }
+onLoad(() => {
+  console.log('加载啊')
+  getSpuPage().then((res)=>{
+    console.log('快点看结果', res)
+  }).catch((error)=>{
+    console.log('error', error)
+  })
+})
 </script>
 
 <style lang="scss">
