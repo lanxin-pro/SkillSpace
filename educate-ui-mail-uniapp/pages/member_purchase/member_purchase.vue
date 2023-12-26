@@ -423,8 +423,9 @@ import * as Util from '@/utils/util.js'
               uni.setStorageSync('user_longitude', res.longitude)
           }
         })
+        // TODO j-sentinel 我这里为了测试方便先注释掉
         // 是登录状态 才会走 静默推广
-        this.isLogin && silenceBindingSpread()
+        // this.isLogin && silenceBindingSpread()
         this.getIndexConfig()
       },
       onShow() {

@@ -246,6 +246,10 @@
           })
 
           console.log('请求成功->', data)
+
+          // 成功进行登录返回
+          uni.navigateBack({})
+
         }).catch(res => {
           this.agreement = false
           this.$util.Tips({

@@ -117,10 +117,13 @@
               ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办我的期待
             </view>
             <view class="collect-number">
-              <view class="collect">
-                <text class="iconfont icon-shoucang"></text>
+              <view class="collect" @click="setCollect">
+<!--        收藏        -->
+                <text v-if="!userCollect" class="iconfont icon-shoucang"></text>
+                <text v-else style="color: #fb759b" class="iconfont icon-shoucang1"></text>
               </view>
               <view class="desired-number">
+<!--       TODO j-sentinel 后期可以优化这里，思考一下怎么进行架构设计         -->
                   3649人想要
               </view>
             </view>
@@ -204,13 +207,16 @@
       </scroll-view>
 <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
       <!-- 底部导航，详情 tabbar -->
-      <DetailTabbar />
+      <DetailTabbar :cartCount="cartCount" />
     </view>
   </view>
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import * as ProductSpuApi from '@/api/product/spu.js'
+import * as TradeCartApi from '@/api/trade/cart.js'
+import * as ProductFavoriteApi from '@/api/product/favorite.js'
 import SuSwiper from '@/components/ui/su-swiper/su-swiper.vue'
 import DetailCellSafeguard from './../components/detail-cell-safeguard'
 import DetailSpecification from './../components/detail-specification'
@@ -218,7 +224,8 @@ import DetailTabbar from './../components/detail-tabbar'
 import DetailProcedure from "./../components/detail-procedure"
 import DetailCommentCard from "./../components/detail-comment-card"
 import DetailContentCard from "./../components/detail-content-card"
-import * as ProductUtil from '@/utils/product.js'
+import { convertProductSkuMap, convertProductPropertyList } from '@/utils/product.js'
+import { toLogin } from '@/libs/login.js'
 
 // APP.vue全局的作用域
 const app = getApp()
@@ -237,8 +244,39 @@ export default {
     return {
 
       // ========== 商品相关变量 ==========
+      id: 0, // 商品 id
+      type: "", // 商品展示类型；normal - 普通；video - 视频
       spu: {}, // 商品 SPU 详情
       skuMap: [], // 商品 SKU Map
+      attrValue: '', // 已选属性名的拼接，例如说 红色,大 这样的格式
+      attr: { // productWindow 组件，使用该属性
+        cartAttr: false, // 是否打开属性的选择弹出
+        // ↓↓↓ 属性数组，结构为：id = 属性编号；name = 属性编号的名字；values[].id = 属性值的编号，values[].name = 属性值的名字；index = 选中的属性值的名字
+        properties: [],
+        productSelect: {} // 选中的 SKU
+      },
+      cartCount: 0, // 购物车的数量
+      cartAnimated: false, // 购物车的动画开关
+      tagStyle: { // 商品描述的样式
+        img: 'width:100%;display:block;',
+        table: 'width:100%',
+        video: 'width:100%'
+      },
+
+      // ========== 评价相关的变量 ==========
+      replyCount: 0, // 总评论数量
+      replyChance: 0, // 好评率
+      reply: [], // 评论列表
+
+      // ========== 收藏相关的变量 ==========
+      userCollect: false,
+
+      // ========== 优惠劵相关的变量 ==========
+      coupon: {
+        coupon: false, // 弹窗是否打开
+        type: 1, // 筛选的优惠劵类型
+        list: [], // 优惠劵列表
+      },
 
       // ========== 顶部 nav + scroll 相关的变量 ==========
       returnShow: true, // 判断顶部 [返回] 是否出现
@@ -256,6 +294,20 @@ export default {
       navList: ['商品','评价','详情'], // 头部 nav 列表
       navActive: 0, // 选中的 navList 下标
 
+    }
+  },
+  computed: mapGetters(['isLogin']),
+  watch: {
+    isLogin: {
+      // TODO 芋艿：测试下，如果登录后，这里的效果
+      handler: function(newV, oldV) {
+        let that = this;
+        if (newV === true) {
+          that.getCartCountFunction()
+          that.isFavoriteExistsFunction()
+        }
+      },
+      deep: true
     }
   },
   onLoad(options) {
@@ -283,7 +335,7 @@ export default {
     this.id = options.id
 
     // 请求后端，加载商品等相关信息
-    this.getGoodsDetails()
+    that.getGoodsDetails()
   },
   methods: {
     test: function(){
@@ -291,11 +343,19 @@ export default {
     },
     getGoodsDetails: function() {
       ProductSpuApi.getSpuDetail(this.id).then(res => {
-        console.log('res的结果', res)
         let spu = res.data
         let skus = res.data.skus
         this.$set(this, 'spu', spu);
-        this.$set(this, 'skuMap', ProductUtil.convertProductSkuMap(skus));
+        this.$set(this.attr, 'properties', convertProductPropertyList(skus))
+        this.$set(this, 'skuMap', convertProductSkuMap(skus))
+
+        // 登录情况下，获得购物车、分享等信息
+        if (this.isLogin) {
+          // 购物车数量
+          this.getCartCountFunction()
+          // 收藏
+          this.isFavoriteExistsFunction()
+        }
 
         // 处理滚动条
         setTimeout(() => {
@@ -310,6 +370,51 @@ export default {
           url: 1
         });
       })
+    },
+    /**
+     * 获取购物车数量
+     *
+     * @param isAnima 是否展示购物车动画和重置属性
+     */
+    getCartCountFunction(isAnima){
+      const isLogin = this.isLogin
+      if (!isLogin) {
+        return
+      }
+      TradeCartApi.getCartCount().then(res => {
+        this.cartCount = res.data
+      })
+    },
+
+    // ========== 收藏相关方法 ==========
+    /**
+     * 获得是否收藏
+     */
+    isFavoriteExistsFunction: function() {
+      ProductFavoriteApi.isFavoriteExists(this.id).then(res => {
+        this.userCollect = res.data
+      })
+    },
+    /**
+     * 收藏 / 取消商品
+     */
+    setCollect: function() {
+      if (!this.isLogin) {
+        toLogin()
+        return
+      }
+
+      // 情况一：取消收藏
+      if (this.userCollect) {
+        ProductFavoriteApi.deleteFavorite(this.id).then(res => {
+          this.$set(this, 'userCollect', false)
+        })
+        // 情况二：添加收藏
+      } else {
+        ProductFavoriteApi.createFavorite(this.id).then(res => {
+          this.$set(this, 'userCollect', true)
+        })
+      }
     },
 
     // ========== 顶部 nav 相关的方法 ==========
@@ -387,6 +492,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+/* 下面我们会解释这些 class 是做什么的 */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 .product-container {
   height: 100%;
   /*返回主页按钮*/

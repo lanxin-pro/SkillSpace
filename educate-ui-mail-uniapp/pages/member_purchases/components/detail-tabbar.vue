@@ -8,7 +8,7 @@
           </view>
           <view class="bottom-cart-icon">
             <view class="cart-number">
-              1
+              {{ cartCount }}
             </view>
           </view>
         </view>
@@ -39,6 +39,10 @@
 export default {
   components: {},
   props: {
+    cartCount: {
+      type: Number,
+      default: ''
+    },
     modelValue: {
       type: Object,
       default() {},
