@@ -12,6 +12,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/sheep/scss/index.scss';
+@import 'static/iconfont/iconfont.css';
 
 </style>

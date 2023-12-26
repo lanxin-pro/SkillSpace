@@ -1,16 +1,147 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [ // pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/dynamic_state/dynamic_state",
+			"style": {
+				"navigationBarTitleText": "动态"
+			}
+		},
+		{
+			"path": "pages/member_purchase/member_purchase",
+			"style": {
+				"navigationBarTitleText": "会员购"
+			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path" : "pages/goods_search/index",
+			"style" :
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
 			}
 		}
 	],
+	"subPackages": [{
+		"root": "pages/users",
+		"name": "users",
+		"pages": [
+			{
+				"path" : "agreement/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "沐智课堂用户使用协议",
+					"titleNView": true
+				}
+			},
+			{
+				"path" : "privacy/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "沐智课堂用户隐私协议",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "login/index",
+				"style": {
+					"navigationBarTitleText": "登录",
+					"titleNView": true
+				}
+			}
+		]
+	},
+	{
+		"root": "pages/member_purchases",
+		"name": "member_purchases",
+		"pages": [
+			{
+				"path" : "shopping-trolley/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "购物车",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path" : "user/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "用户中心",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path" : "goods_details/index",
+				"style" :
+				{
+					"navigationBarTitleText" : "商品详情",
+					"titleNView": true,
+					/* 自定义title */
+					"navigationStyle": "custom"
+				}
+			}
+
+		]
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+		/* 默认title名 */
+		"navigationBarTitleText": "蓝欣",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#F8F8F8",
+		/* 默认关闭titleView */
+		"titleNView": false
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#fb7299",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"iconWidth": "20px",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/images/1-001.png",
+			"selectedIconPath": "static/images/1-002.png",
+			"text": "首页"
+		},
+			{
+				"pagePath": "pages/dynamic_state/dynamic_state",
+				"iconPath": "static/images/2-001.png",
+				"selectedIconPath": "static/images/2-002.png",
+				"text": "动态"
+			},
+			{
+				"pagePath": "pages/member_purchase/member_purchase",
+				"iconPath": "static/images/3-001.png",
+				"selectedIconPath": "static/images/3-002.png",
+				"text": "会员购"
+			},
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
+				"text": "我的"
+			}
+		]
+	},
+	"uniIdRouter": {}
 }
