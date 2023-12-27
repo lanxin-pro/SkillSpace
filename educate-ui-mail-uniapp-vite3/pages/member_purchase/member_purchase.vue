@@ -235,7 +235,7 @@
           </swiper>
         </view>
         <!-- 使用 v-for 进行列表渲染，:key 提供唯一键 -->
-        <block v-for="(item, index) in tempArr" :key="item.id">
+        <block v-for="(item, index) in state.pagination.list" :key="item.id">
           <!-- 使用 v-if 进行条件渲染 -->
           <!--      click.stop可以终止这个事件    -->
           <view v-if="index % 2 === 0" class="content-item" @click.prevent="goDetail(item)">
@@ -275,7 +275,7 @@
         </block>
       </view>
       <view class="content-right">
-        <block v-for="(item, index) in tempArr" :key="item.id">
+        <block v-for="(item, index) in state.pagination.list" :key="item.id">
           <!--      click.stop可以终止这个事件    -->
           <view v-if="index % 2 === 1" class="content-item" @click.prevent="goDetail(item)">
             <!-- 同上，复制左侧的内容 -->
@@ -313,52 +313,122 @@
         </block>
       </view>
 
+    </view>
 
-    </view>
-    <view class='loadingicon acea-row row-center-wrapper' v-if="goodScroll">
-      <!--   加载的时候显示   -->
-      <text class='loading iconfont icon-jiazai' :hidden='!loading' />
-    </view>
-    <view class="mores-txt" v-if="!goodScroll">
-      <text>我是有底线的</text>
-    </view>
+    <uni-load-more v-if="state.pagination.total > 0" :status="state.loadStatus" :content-text="{
+        contentdown: '上拉加载更多',
+      }" @tap="loadMore" />
+
+
   </view>
 </template>
 
 <script setup>
 import {
   onLoad,
-  onPageScroll
+  onPageScroll,
+  onReachBottom
 } from '@dcloudio/uni-app';
-import { getSpuPage } from '@/sheep/api/product/spu.js'
-import { ref } from 'vue'
+import * as ProductSpuApi from '@/sheep/api/product/spu.js'
+import { ref, reactive } from 'vue'
 import * as Util from '@/sheep/utils/util.js'
+import _ from "lodash"
 
-// 会员购页面的 title
-const site_name = ref('会员购 ~')
-// ========== 精品推荐 ===========
-// 商品 精品推荐开关
-const goodScroll = ref(true)
-const loading = ref(false)
-const listActive = ref(0) // 当前选中项
-const goodType = ref(1) //精品推荐 Type
-const params = ref({ //精品推荐分页
-page: 1,
-  limit: 10,
+const state = reactive({
+  pagination: {
+    list: [],
+    total: 0,
+    pageNo: 1,
+    pageSize: 2,
+  },
+  currentSort: undefined,
+  currentOrder: undefined,
+  currentTab: 0, // 当前选中的 tab
+  curFilter: 0, // 当前选中的 list 筛选项
+  showFilter: false,
+  iconStatus: false, // true - 单列布局；false - 双列布局
+  keyword: '',
+  categoryId: 0,
+  tabList: [{
+    name: '综合推荐',
+    list: [{
+      label: '综合推荐'
+    },
+      {
+        label: '价格升序',
+        sort: 'price',
+        order: true,
+      },
+      {
+        label: '价格降序',
+        sort: 'price',
+        order: false,
+      },
+    ],
+  },
+    {
+      name: '销量',
+      sort: 'salesCount',
+      order: false
+    },
+    {
+      name: '新品优先',
+      value: 'createTime',
+      order: false
+    },
+  ],
+  loadStatus: '',
+  leftGoodsList: [], // 双列布局 - 左侧商品
+  rightGoodsList: [], // 双列布局 - 右侧商品
 })
-const tempArr = ref([]) // 精品推荐临时数组
-const iSshowH = ref(false)
 
 const fen2yuan = (price)=> {
   return Util.fen2yuan(price)
 }
 onLoad(() => {
-  console.log('加载啊')
-  getSpuPage().then((res)=>{
-    console.log('快点看结果', res)
-  }).catch((error)=>{
-    console.log('error', error)
+  getList()
+})
+
+const getList = async () => {
+  state.loadStatus = 'loading'
+  const { code, data } = await ProductSpuApi.getSpuPage({
+    pageNo: state.pagination.pageNo,
+    pageSize: state.pagination.pageSize,
+    sortField: state.currentSort,
+    sortAsc: state.currentOrder,
+    categoryId: state.categoryId,
+    keyword: state.keyword
   })
+  if (code !== 0) {
+    return
+  }
+  state.pagination.list = _.concat(state.pagination.list, data.list)
+  state.pagination.total = data.total
+  console.log('state.pagination.list.length', state.pagination.list.length)
+  console.log('state.pagination.total', state.pagination.total)
+  state.loadStatus = state.pagination.list.length < state.pagination.total ? 'more' : 'noMore'
+}
+
+const loadMore = async () => {
+  if (state.loadStatus === 'noMore') {
+    return
+  }
+  state.pagination.pageNo++
+  await getList(state.currentSort, state.currentOrder)
+}
+/**
+ * 前往商品详情
+ *
+ * @param item
+ */
+const goDetail = (item) => {
+  uni.navigateTo({
+    url: `/pages/member_purchases/goods_details/index?id=${item.id}`
+  })
+}
+// 上拉加载更多
+onReachBottom(() => {
+  loadMore()
 })
 </script>
 
@@ -366,16 +436,6 @@ onLoad(() => {
 .continer {
   padding: 20rpx 15rpx;
   background: linear-gradient(rgb(255, 255, 255),rgb(241, 242, 244),rgb(241, 242, 244),rgb(241, 242, 244));
-
-  .mores-txt {
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    height: 40rpx;
-    color: #999;
-    font-size: 24rpx;
-    display: flex;
-  }
 }
 .header-top {
   display: flex;
