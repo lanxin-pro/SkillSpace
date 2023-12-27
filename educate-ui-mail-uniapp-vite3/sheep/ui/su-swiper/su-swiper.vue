@@ -1,10 +1,77 @@
-<!-- 此组件在使用的时候希望能给出seizeHeight属性的值 -->
 <template>
-  <view>2</view>
+  <view>
+    <view class="ui-swiper" :class="[props.mode, props.bg, props.ui]">
+      <swiper
+          :circular="props.circular"
+          :current="state.cur"
+          :autoplay="props.autoplay && !state.videoPlaySataus"
+          :interval="props.interval"
+          :duration="props.duration"
+          @transition="transition"
+          @animationfinish="animationfinish"
+          :style="customStyle"
+          @change="swiperChange"
+      >
+        <swiper-item
+            class="swiper-item"
+            v-for="(item, index) in props.list"
+            :key="index"
+            :class="{ cur: state.cur == index }"
+            @tap="onSwiperItem(item)"
+        >
+          <view class="ui-swiper-main">
+            <image
+                v-if="item.type === 'image'"
+                class="swiper-image"
+                :mode="props.imageMode"
+                :src="item.src"
+                width="100%"
+                height="100%"
+                @load="onImgLoad"
+            ></image>
+
+          </view>
+        </swiper-item>
+      </swiper>
+      <template v-if="!state.videoPlaySataus">
+        <view class="ui-swiper-dot" :class="props.dotStyle" v-if="props.dotStyle == 'tag'">
+          <view
+              class="ui-tag radius-lg"
+              :class="[props.dotCur]"
+              style="pointer-events: none; padding: 0 10rpx"
+          >
+            <view style="transform: scale(0.7)">{{ state.cur + 1 }} / {{ props.list.length }}</view>
+          </view>
+        </view>
+      </template>
+
+    </view>
+  </view>
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+/**
+ * 轮播组件
+ *
+ * @property {Boolean} circular = false  	- 是否采用衔接滑动，即播放到末尾后重新回到开头
+ * @property {Boolean} autoplay = true  	- 是否自动切换
+ * @property {Number} interval = 5000  		- 自动切换时间间隔
+ * @property {Number} duration = 500  		- 滑动动画时长,app-nvue不支持
+ * @property {Array} list = [] 				- 轮播数据
+ * @property {String} ui = ''  				- 样式class
+ * @property {String} mode  				- 模式
+ * @property {String} dotStyle  			- 指示点样式
+ * @property {String} dotCur= 'ui-BG-Main' 	- 当前指示点样式,默认主题色
+ * @property {String} bg  					- 背景
+ * @property {String} height = 300  		- 组件高度
+ * @property {String} imgHeight = 300   	- 图片高度
+ *
+ * @example list = [{url:'跳转路径',urlType:'跳转方式',type:'轮播类型',src:'轮播内容地址',poster:'视频必传'}]
+ */
+
+import { reactive, computed } from 'vue';
+import { clone } from 'lodash';
+
 // 数据
 const state = reactive({
   imgHeight: 0,
@@ -13,29 +80,11 @@ const state = reactive({
   videoPlaySataus: false,
   heightList: [],
 });
-// 自动计算高度
-const customStyle = computed(() => {
-  let height;
 
-  // 固定高度情况
-  if (props.height !== 0) {
-    height = props.height;
-  }
-
-  // 自动高度情况
-  if (props.height === 0) {
-    // 图片预加载占位高度
-    if (state.imgHeight !== 0) {
-      height = state.imgHeight;
-    } else if (props.seizeHeight !== 0) {
-      height = props.seizeHeight;
-    }
-  }
-
-  return {
-    height: height + 'rpx',
-  };
+const refs = reactive({
+  videoRef: {},
 });
+
 // 接收参数
 
 const props = defineProps({
@@ -105,8 +154,95 @@ const props = defineProps({
     type: Number,
     default: 200,
   },
-})
+});
 
+// current 改变时会触发 change 事件
+const swiperChange = (e) => {
+  // Implement swiperChange logic
+  if (e.detail.source !== 'touch' && e.detail.source !== 'autoplay') {
+    return
+  }
+  state.cur = e.detail.current
+  state.videoPlaySataus = false
+}
+const onSwiperItem = () => {
+
+}
+
+const onPreview = () => {
+  if (!props.isPreview) return;
+  let previewImage = clone(props.list);
+  previewImage.forEach((item,index) => {
+    if(item.type === 'video') {
+      previewImage.splice(index, 1);
+    }
+  })
+  uni.previewImage({
+    urls:
+        previewImage.length < 1
+            ? [props.src]
+            : previewImage.reduce((pre, cur) => {
+              pre.push(cur.src);
+              return pre;
+            }, []),
+    current: state.cur,
+    // longPressActions: {
+    //   itemList: ['发送给朋友', '保存图片', '收藏'],
+    //   success: function (data) {
+    //     console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+    //   },
+    //   fail: function (err) {
+    //     console.log(err.errMsg);
+    //   },
+    // },
+  });
+};
+//
+
+// swiper-item 的位置发生改变时会触发 transition
+const transition = (e) => {
+  // #ifdef APP-PLUS
+  state.moveX = e.detail.dx;
+  // #endif
+};
+
+// 动画结束时会触发 animationfinish
+const animationfinish = (e) => {
+  state.moveX = 0;
+};
+
+const videoTimeupdate = (e) => {
+  props.list[state.cur].currentTime = e.detail.currentTime;
+};
+
+// 自动计算高度
+const customStyle = computed(() => {
+  let height;
+
+  // 固定高度情况
+  if (props.height !== 0) {
+    height = props.height;
+  }
+
+  // 自动高度情况
+  if (props.height === 0) {
+    // 图片预加载占位高度
+    if (state.imgHeight !== 0) {
+      height = state.imgHeight;
+    } else if (props.seizeHeight !== 0) {
+      height = props.seizeHeight;
+    }
+  }
+
+  return {
+    height: height + 'rpx',
+  };
+});
+
+// 计算轮播图片最大高度
+function onImgLoad(e) {
+
+}
 </script>
 
 <style lang="scss" scoped>

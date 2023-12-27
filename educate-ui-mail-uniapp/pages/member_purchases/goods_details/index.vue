@@ -143,7 +143,7 @@
           </view>
         </view>
         <view class="empty">
-
+1
         </view>
 
         <view class="commodity-size">

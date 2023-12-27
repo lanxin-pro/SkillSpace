@@ -13,7 +13,6 @@
         </view>
       </view>
     </view>
-
     <!-- 返回键 -->
     <!--     opacity这个属性真的有0.001     -->
     <view id="home" class="home-nav-left acea-row row-center-wrapper iconfont icon-xiangzuo"
@@ -33,25 +32,198 @@
                  :style='"height:" + height + "px;"' @scroll="scroll">
 
       <view id="past0">
-        <view v-for="item of 50">测试区1</view>
+        <!-- 商品轮播图  -->
+        <su-swiper
+            isPreview
+            dotStyle="tag"
+            imageMode="widthFix"
+            :list="[{'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=My5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Mi5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=MDAxLmpwZw==&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NC5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NS5qcGc=&version_id=null'},
+                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Ni5qcGc=&version_id=null'},
+            ]"
+            dotCur="bg-mask-40"
+            :seizeHeight="750"
+        />
       </view>
-      <view id="past1">
-        <view v-for="item of 40">测试区2</view>
+      <view class="amount-area">
+        <view class="money-area-left">
+          <view>
+            <text class="font-weight-bold title">定金</text>
+            <cn-money :size="46" color="#fffff" :money="16.35"  />
+          </view>
+          <view class="optimized-display">
+            <view class="postcoupon">
+              新人劵后 ￥275
+              <text class="iconfont icon-xiangyou" />
+            </view>
+            <view class="original-price">
+              原价￥285
+            </view>
+          </view>
+        </view>
+        <view class="money-area-right">
+          <view class="presell" v-if="true">
+            <view>
+              定金预售
+            </view>
+            <view>
+              距离结束53天
+            </view>
+          </view>
+          <view class="sell-out" v-else>
+            <view>售完为止</view>
+          </view>
+        </view>
+      </view>
+      <view class="property">
+        <view class="coupon-area">
+          <view class="flex">
+            <view class="reduce">
+              满139减10元
+            </view>
+            <view class="reduce">
+              满99减8元
+            </view>
+            <view class="reduce">
+              立减5元
+            </view>
+          </view>
+          <view class="go-get">
+            领劵
+            <text class="iconfont icon-xiangyou" />
+          </view>
+        </view>
+        <view class="newcomer-discount">
+          <view class="new-user-coupon-pack-price-container">
+            <view class="new-user-coupon-pack">
+              <view data-v-a6a54e38="" class="price-symbol">¥</view>
+              <view data-v-a6a54e38="" class="price-2">50</view>
+            </view>
+            <view class="new-user-coupon-pack-content">
+              新人专享礼包，及领取收单包邮
+            </view>
+            <view class="new-user-coupon-pack-receive-btn">立即领取</view>
+          </view>
+
+
+        </view>
+        <view class="commodity-header-area">
+          <view class="commodity-title">
+            <!--       TODO j-sentinel 这里的文字长度应该进行优化       -->
+            ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办我的期待
+          </view>
+          <view class="collect-number">
+            <view class="collect">
+<!--            <view class="collect" @click="setCollect">-->
+              <!--        收藏        -->
+<!--              <text v-if="!userCollect" class="iconfont icon-shoucang"></text>-->
+              <text style="color: #fb759b" class="iconfont icon-shoucang1"></text>
+            </view>
+            <view class="desired-number">
+              <!--       TODO j-sentinel 后期可以优化这里，思考一下怎么进行架构设计         -->
+              3649人想要
+            </view>
+          </view>
+
+        </view>
+        <view class="ranking-list">
+          <view class="ranking-left">
+            <image
+                class="swiper-image"
+                src="@/static/images/member-purchase/project/ranking-list.png"
+            />
+            <text class="character">Myethos榜 No.1</text>
+          </view>
+          <view class="ranking-right">
+            <text class="iconfont icon-xiangyou"></text>
+          </view>
+        </view>
+      </view>
+      <view class="empty">
+
       </view>
 
-      <view id="past2">
-        <view v-for="item of 30">测试区3</view>
+      <view class="commodity-size">
+        <view>
+          <DetailSpecification />
+        </view>
+
+        <view style="margin-top: 20rpx">
+          <DetailProcedure />
+        </view>
+
+        <view class="commodity-category">
+          <view class="tagC-ip">
+            <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZmI4ZGZmODJiMjc1YmQyOWQ2MWNmZTVmNTJhYTQzODYucG5n&version_id=null">
+            <div class="tagC-ip-con">
+              五等分的新娘
+            </div>
+            <div class="tagC-ip-right iconfont icon-xiangyou"></div>
+          </view>
+          <view class="tagC-ip">
+            <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZWU2NTM1MzExZmYxODdkYTE4YjAyNWJkYWExNGY1ZjAuanBn&version_id=null">
+            <div class="tagC-ip-con">
+              <view>
+                FuRyu
+              </view>
+              <view style="color: #7d7d7d;font-size: 18rpx;">
+                综合评分
+                <uni-rate
+                    class="display-inline-block"
+                    :readonly="true"
+                    :size="10"
+                    :value="4.5"
+                    color="#dfe6e4"
+                    active-color="#fa6c9c"
+                />
+              </view>
+
+            </div>
+            <div class="tagC-ip-right iconfont icon-xiangyou"></div>
+          </view>
+
+        </view>
+
+        <DetailCellSafeguard />
+
       </view>
+
+      <view class="detail-comment-card" id="past1">
+        <DetailCommentCard />
+      </view>
+
+      <view class="detail-content-card" id="past2">
+        <DetailContentCard />
+      </view>
+
+
+      <!--   TODO j-sentinel 这里的布局有些问题     -->
+      <view class="pb150" />
+
 
 
 
     </scroll-view>
 
+    <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
+    <!-- 底部导航，详情 tabbar -->
+    <DetailTabbar :cartCount="cartCount" />
+
   </view>
 </template>
 
 <script setup>
-import SuSwiper from '../../../sheep/ui/su-swiper/su-swiper.vue'
+import SuSwiper from '@/sheep/ui/su-swiper/su-swiper.vue'
+import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
+import DetailTabbar from './components/detail-tabbar.vue'
+import DetailSpecification from './components/detail-specification.vue'
+import DetailCellSafeguard from './components/detail-cell-safeguard.vue'
+import DetailProcedure from './components/detail-procedure.vue'
+import DetailCommentCard from './components/detail-comment-card.vue'
+import DetailContentCard from './components/detail-content-card.vue'
 
 import {
   onLoad,
@@ -65,7 +237,7 @@ import {
 } from 'vue'
 import { isEmpty } from 'lodash'
 import * as ProductSpuApi from '@/sheep/api/product/spu.js'
-
+const cartCount = ref(0)
 const state = reactive({
   goodsId: 0,
   // SPU 加载中

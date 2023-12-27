@@ -21,17 +21,15 @@
             @tap="onSwiperItem(item)"
         >
           <view class="ui-swiper-main">
-            <view style="height: inherit;display: flex;align-items: center">
-              <image
-                  v-if="item.type === 'image'"
-                  class="swiper-image"
-                  :mode="imageMode"
-                  :src="item.src"
-                  width="100%"
-                  height="100%"
-                  @load="onImgLoad"
-              />
-            </view>
+            <image
+                v-if="item.type === 'image'"
+                class="swiper-image"
+                :mode="imageMode"
+                :src="item.src"
+                width="100%"
+                height="100%"
+                @load="onImgLoad"
+            />
 
           </view>
         </swiper-item>
