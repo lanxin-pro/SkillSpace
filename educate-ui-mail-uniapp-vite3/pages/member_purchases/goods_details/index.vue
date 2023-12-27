@@ -29,193 +29,191 @@
           v-if="returnShow"
           @tap="returns"
     />
-    <view>
-      <scroll-view :scroll-top="scrollTop" scroll-y='true' scroll-with-animation="true"
-                   :style='"height:" + height + "px;"' @scroll="scroll">
-        <view id="past0">
-          <!-- 商品轮播图  -->
-          <su-swiper
-              isPreview
-              dotStyle="tag"
-              imageMode="widthFix"
-              :list="[{'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=My5qcGc=&version_id=null'},
-                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Mi5qcGc=&version_id=null'},
-                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=MDAxLmpwZw==&version_id=null'},
-                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NC5qcGc=&version_id=null'},
-                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=NS5qcGc=&version_id=null'},
-                      {'type': 'image','src': 'http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=Ni5qcGc=&version_id=null'},
-            ]"
-              dotCur="bg-mask-40"
-              :seizeHeight="750"
-          />
-        </view>
-        <view class="amount-area">
-          <view class="money-area-left">
-            <view>
-              <text class="font-weight-bold title">定金</text>
-              <cn-money :size="46" color="#fffff" :money="16.35"  />
-            </view>
-            <view class="optimized-display">
-              <view class="postcoupon">
-                新人劵后 ￥275
-                <text class="iconfont icon-xiangyou" />
-              </view>
-              <view class="original-price">
-                原价￥285
-              </view>
-            </view>
-          </view>
-          <view class="money-area-right">
-            <view class="presell" v-if="true">
-              <view>
-                定金预售
-              </view>
-              <view>
-                距离结束53天
-              </view>
-            </view>
-            <view class="sell-out" v-else>
-              <view>售完为止</view>
-            </view>
-          </view>
-        </view>
-        <view class="property">
-          <view class="coupon-area">
-            <view class="flex">
-              <view class="reduce">
-                满139减10元
-              </view>
-              <view class="reduce">
-                满99减8元
-              </view>
-              <view class="reduce">
-                立减5元
-              </view>
-            </view>
-            <view class="go-get">
-              领劵
-              <text class="iconfont icon-xiangyou" />
-            </view>
-          </view>
-          <view class="newcomer-discount">
-            <view class="new-user-coupon-pack-price-container">
-              <view class="new-user-coupon-pack">
-                <view data-v-a6a54e38="" class="price-symbol">¥</view>
-                <view data-v-a6a54e38="" class="price-2">50</view>
-              </view>
-              <view class="new-user-coupon-pack-content">
-                新人专享礼包，及领取收单包邮
-              </view>
-              <view class="new-user-coupon-pack-receive-btn">立即领取</view>
-            </view>
+    <scroll-view :scroll-top="scrollTop" scroll-y='true' scroll-with-animation="true"
+                 :style='"height:" + height + "px;"' @scroll="scroll">
 
+      <view id="past0">
+        <view v-for="item of 50">测试区1</view>
+      </view>
+      <view id="past1">
+        <view v-for="item of 40">测试区2</view>
+      </view>
 
-          </view>
-          <view class="commodity-header-area">
-            <view class="commodity-title">
-              <!--       TODO j-sentinel 这里的文字长度应该进行优化       -->
-              ANIPLEX+ 孤独摇滚！ 后女仆Ver.手办我的期待
-            </view>
-            <view class="collect-number">
-              <view class="collect" @click="setCollect">
-                <!--        收藏        -->
-                <text v-if="!userCollect" class="iconfont icon-shoucang"></text>
-                <text v-else style="color: #fb759b" class="iconfont icon-shoucang1"></text>
-              </view>
-              <view class="desired-number">
-                <!--       TODO j-sentinel 后期可以优化这里，思考一下怎么进行架构设计         -->
-                3649人想要
-              </view>
-            </view>
-
-          </view>
-          <view class="ranking-list">
-            <view class="ranking-left">
-              <image
-                  class="swiper-image"
-                  src="@/static/images/member-purchase/project/ranking-list.png"
-              />
-              <text class="character">Myethos榜 No.1</text>
-            </view>
-            <view class="ranking-right">
-              <text class="iconfont icon-xiangyou"></text>
-            </view>
-          </view>
-        </view>
-        <view class="empty">
-
-        </view>
-
-        <view class="commodity-size">
-          <view>
-            <DetailSpecification />
-          </view>
-
-          <view style="margin-top: 20rpx">
-            <DetailProcedure />
-          </view>
-
-          <view class="commodity-category">
-            <view class="tagC-ip">
-              <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZmI4ZGZmODJiMjc1YmQyOWQ2MWNmZTVmNTJhYTQzODYucG5n&version_id=null">
-              <div class="tagC-ip-con">
-                五等分的新娘
-              </div>
-              <div class="tagC-ip-right iconfont icon-xiangyou"></div>
-            </view>
-            <view class="tagC-ip">
-              <img class="tagC-ip-icon" src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZWU2NTM1MzExZmYxODdkYTE4YjAyNWJkYWExNGY1ZjAuanBn&version_id=null">
-              <div class="tagC-ip-con">
-                <view>
-                  FuRyu
-                </view>
-                <view style="color: #7d7d7d;font-size: 18rpx;">
-                  综合评分
-                  <uni-rate
-                      class="display-inline-block"
-                      :readonly="true"
-                      :size="10"
-                      :value="4.5"
-                      color="#dfe6e4"
-                      active-color="#fa6c9c"
-                  />
-                </view>
-
-              </div>
-              <div class="tagC-ip-right iconfont icon-xiangyou"></div>
-            </view>
-
-          </view>
-          <DetailCellSafeguard @top="test" />
-        </view>
-
-        <view class="detail-comment-card" id="past1">
-          <DetailCommentCard />
-        </view>
-
-        <view class="detail-content-card" id="past2">
-          <DetailContentCard />
-        </view>
-
-        <!--   TODO j-sentinel 这里的布局有些问题     -->
-        <view class="pb150" />
+      <view id="past2">
+        <view v-for="item of 30">测试区3</view>
+      </view>
 
 
 
-
-
-      </scroll-view>
-      <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
-      <!-- 底部导航，详情 tabbar -->
-      <DetailTabbar :cartCount="cartCount" />
-    </view>
+    </scroll-view>
 
   </view>
 </template>
 
-<script>
-export default {
-  name: "index"
+<script setup>
+import SuSwiper from '../../../sheep/ui/su-swiper/su-swiper.vue'
+
+import {
+  onLoad,
+  onPageScroll
+} from '@dcloudio/uni-app'
+import {
+  ref,
+  reactive,
+  computed,
+  watch
+} from 'vue'
+import { isEmpty } from 'lodash'
+import * as ProductSpuApi from '@/sheep/api/product/spu.js'
+
+const state = reactive({
+  goodsId: 0,
+  // SPU 加载中
+  skeletonLoading: true,
+  // SPU 信息
+  goodsInfo: {},
+  // 是否展示 SKU 选择弹窗
+  showSelectSku: false,
+  // 选中的 SKU
+  selectedSku: {},
+  // 是否展示 Coupon 优惠劵的弹窗
+  showModel: false,
+  // 可领取的 Coupon 优惠劵的列表
+  couponInfo: [],
+  // 【满减送/限时折扣】是否展示 Activity 营销活动的弹窗
+  showActivityModel: false,
+  // 【满减送/限时折扣】可参与的 Activity 营销活动的列表
+  activityInfo: [],
+  // 【秒杀/拼团/砍价】可参与的 Activity 营销活动的列表
+  activityList: [],
+})
+
+// ========== 顶部 nav + scroll 相关的变量 ==========
+const returnShow = ref(true) // 判断顶部 [返回] 是否出现
+const homeTop = ref(20) // 头部的 top 位置
+const clientHeight = ref("")  // 客户端 height 高度
+const height = ref(0) // 窗口 height 高度
+const scrollY = ref(0) // 滚动的 Y 轴
+const scrollTop = ref(0)  // 滚动条的 top 位置
+const lock = ref(false)  // 是否锁定 scroll 下
+const topArr = ref([]) // 每个 nav 的 top 位置
+const heightArr = ref([]) // 每个 nav 的 height 高度
+const navH = ref("") // 头部 nav 高度
+const navbarRight = ref(0)  // 头部 nav 距离 right 距离
+const opacity = ref(0) // 头部 nav 的透明度
+const navList = ref(['商品','评价','详情']) // 头部 nav 列表
+const navActive = ref(0) // 选中的 navList 下标
+
+const globalData = reactive({
+  navHeight: 0
+})
+
+onLoad( async (options) => {
+  // 非法参数
+  if (!options.id) {
+    state.goodsInfo = null
+    alert('非法参数')
+    return
+  }
+  state.goodsId = options.id
+  const response = await ProductSpuApi.getSpuDetail(state.goodsId)
+
+
+  uni.getSystemInfo({
+    success: function (res) {
+      globalData.navHeight = res.statusBarHeight * (750 / res.windowWidth) + 91;
+    }
+  })
+
+  navH.value = globalData.navHeight
+
+  uni.getSystemInfo({
+    success: ( res ) => {
+      height.value = res.windowHeight
+    }
+  })
+  // 处理滚动条
+  setTimeout(() => {
+    infoScroll()
+  }, 1000);
+
+  console.log(response)
+
+
+})
+
+
+
+// ========== 顶部 nav 相关的方法 ==========
+/**
+ * 处理器滚动条
+ */
+const infoScroll = function() {
+  const topArr = []
+  const heightArr = []
+  for (let i = 0; i < navList.value.length; i++) {
+    // 获取元素
+    let element = document.getElementById("past" + i);
+    // 获取元素的高度
+    let elementHeight = element.offsetHeight
+    // 获取元素相对于文档顶部的总体偏移量
+    let totalOffsetTop = 0
+    while (element) {
+      totalOffsetTop += element.offsetTop
+      element = element.offsetParent
+    }
+    // 元素相对于文档顶部的总体偏移量
+    topArr.push(totalOffsetTop)
+    // 元素的高度
+    heightArr.push(elementHeight)
+    // 每个 nav 的 top 位置
+    topArr.value = topArr
+    // 每个 nav 的 height 高度
+    heightArr.value = heightArr
+  }
+  console.log('高度',topArr.value)
+}
+/**
+ * 后退
+ */
+const returns = function() {
+  uni.navigateBack()
+}
+/**
+ * 滚动
+ *
+ * @param e 滚动事件
+ */
+const scroll = function(e) {
+  console.log('长度', topArr.value)
+  const	scrollYs = e.detail.scrollTop
+  scrollTop.value = scrollYs
+  let opacitys = scrollYs / 400
+  opacitys = opacitys > 0.85 ? 0.85 : opacitys
+  opacity.value = opacitys
+  scrollY.value = scrollYs
+  if (lock.value) {
+    lock.value = false
+    return;
+  }
+  // 设置选中的 nav
+  for (let i = 0; i < topArr.value.length; i++) {
+    if (scrollY.value < topArr.value[i] - (globalData.navHeight / 2) + heightArr.value[i]) {
+      navActive.value = i
+      break
+    }
+  }
+}
+/**
+ * 点击指定 nav bar
+ *
+ * @param index 新的 navList 位置
+ */
+const tap = function(index) {
+  navActive.value = index
+  lock.value = true
+  scrollTop.value = index > 0 ? topArr.value[index] - (globalData.navHeight / 2)
+      : topArr.value[index]
 }
 </script>
 

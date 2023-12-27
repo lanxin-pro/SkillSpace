@@ -328,7 +328,7 @@ import {
   onLoad,
   onPageScroll,
   onReachBottom
-} from '@dcloudio/uni-app';
+} from '@dcloudio/uni-app'
 import * as ProductSpuApi from '@/sheep/api/product/spu.js'
 import { ref, reactive } from 'vue'
 import * as Util from '@/sheep/utils/util.js'

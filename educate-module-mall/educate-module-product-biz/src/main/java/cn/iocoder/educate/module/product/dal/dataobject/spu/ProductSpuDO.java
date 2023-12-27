@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.product.dal.dataobject.spu;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.module.product.dal.dataobject.sku.ProductSkuDO;
+import cn.iocoder.educate.module.product.enums.spu.ProductSpuStatusEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
