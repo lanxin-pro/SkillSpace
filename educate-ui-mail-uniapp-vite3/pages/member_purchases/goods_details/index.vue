@@ -96,6 +96,7 @@ const height = ref(0) // 窗口 height 高度
 const scrollY = ref(0) // 滚动的 Y 轴
 const scrollTop = ref(0)  // 滚动条的 top 位置
 const lock = ref(false)  // 是否锁定 scroll 下
+/* TODO j-sentinel BUG：为什么这里使用ref就无法赋值？？？ */
 const topArr = ref([]) // 每个 nav 的 top 位置
 const heightArr = ref([]) // 每个 nav 的 height 高度
 const navH = ref("") // 头部 nav 高度
@@ -149,8 +150,8 @@ onLoad( async (options) => {
  * 处理器滚动条
  */
 const infoScroll = function() {
-  const topArr = []
-  const heightArr = []
+  const topArray = []
+  const heightArray = []
   for (let i = 0; i < navList.value.length; i++) {
     // 获取元素
     let element = document.getElementById("past" + i);
@@ -163,15 +164,14 @@ const infoScroll = function() {
       element = element.offsetParent
     }
     // 元素相对于文档顶部的总体偏移量
-    topArr.push(totalOffsetTop)
+    topArray.push(totalOffsetTop)
     // 元素的高度
-    heightArr.push(elementHeight)
+    heightArray.push(elementHeight)
     // 每个 nav 的 top 位置
-    topArr.value = topArr
+    topArr.value = topArray
     // 每个 nav 的 height 高度
-    heightArr.value = heightArr
+    heightArr.value = heightArray
   }
-  console.log('高度',topArr.value)
 }
 /**
  * 后退
@@ -185,12 +185,11 @@ const returns = function() {
  * @param e 滚动事件
  */
 const scroll = function(e) {
-  console.log('长度', topArr.value)
   const	scrollYs = e.detail.scrollTop
   scrollTop.value = scrollYs
-  let opacitys = scrollYs / 400
-  opacitys = opacitys > 0.85 ? 0.85 : opacitys
-  opacity.value = opacitys
+  let letOpacity = scrollYs / 400
+  letOpacity = letOpacity > 0.85 ? 0.85 : letOpacity
+  opacity.value = letOpacity
   scrollY.value = scrollYs
   if (lock.value) {
     lock.value = false
