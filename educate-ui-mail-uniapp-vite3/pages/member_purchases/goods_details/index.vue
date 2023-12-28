@@ -224,7 +224,6 @@ import DetailCellSafeguard from './components/detail-cell-safeguard.vue'
 import DetailProcedure from './components/detail-procedure.vue'
 import DetailCommentCard from './components/detail-comment-card.vue'
 import DetailContentCard from './components/detail-content-card.vue'
-
 import {
   onLoad,
   onPageScroll

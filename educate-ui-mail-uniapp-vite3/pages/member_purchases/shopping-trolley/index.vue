@@ -58,14 +58,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import sheep from '@/sheep'
 import DetailTabbar from './components/detail-tabbar.vue'
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
 import SuNumberBox from '@/sheep/ui/su-number-box/su-number-box.vue'
+import {
+  onLoad,
+  onPageScroll
+} from '@dcloudio/uni-app'
+import {
+  ref,
+  reactive,
+  computed,
+  watch
+} from 'vue'
 
 const number = ref(3)
 
-
+onLoad(()=>{
+  const cart = sheep.$store('cart')
+  console.log(cart.list)
+})
 
 </script>
 
