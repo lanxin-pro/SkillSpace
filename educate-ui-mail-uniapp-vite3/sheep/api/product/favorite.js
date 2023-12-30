@@ -1,4 +1,4 @@
-import request from "@/utils/request.js"
+import request from "../../../sheep/request2"
 
 /**
  * 检查是否收藏过商品
@@ -7,8 +7,12 @@ import request from "@/utils/request.js"
  * @returns {*}
  */
 export function isFavoriteExists(spuId) {
-    return request.get('app-api/product/favorite/exits', {
-        spuId
+    return request({
+        url: 'product/favorite/exits',
+        method: 'GET',
+        params: {
+            spuId
+        }
     });
 }
 

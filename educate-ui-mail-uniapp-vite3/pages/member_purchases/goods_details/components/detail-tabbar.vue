@@ -61,7 +61,7 @@ const clickUniNavigateTo = () => {
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 997;
   .tabbar-box {
     padding: 0 5rpx 0 30rpx;
     .tab-barn {

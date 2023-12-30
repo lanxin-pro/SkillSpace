@@ -257,6 +257,7 @@
               <view class="content-item-price">
                 <view class="price-row">
                   <view class="roll-text text-color">新人劵后</view>
+
                   <view class="text-color-price">￥</view>
                   <view class="now-price text-color-price">{{ fen2yuan(item.price) }}</view>
 
@@ -332,6 +333,7 @@ import {
 import * as ProductSpuApi from '@/sheep/api/product/spu.js'
 import { ref, reactive } from 'vue'
 import * as Util from '@/sheep/utils/util.js'
+import CnMoney from "@/sheep/components/cn-money/cn-money.vue";
 import _ from "lodash"
 
 const state = reactive({

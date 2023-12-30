@@ -5,7 +5,8 @@
 			<text class="cn-money-text">{{ rmbText }}</text>
 		</view>
 		<view v-else>
-			<text class="cn-money-unit" v-if="showUnit && unitPosition=='left'">{{ unit }}</text>
+			<text class="cn-money-unit" :style="'fontSize:' + size / 1.5 + 'rpx'"
+            v-if="showUnit && unitPosition=='left'">{{ unit }}</text>
 			<text class="cn-money-text">{{ moneyData }}</text>
 			<text class="cn-money-decimal" v-if="showZeroDecimal || decimalData!='00'">.{{ decimalData }}</text>
 			<text class="cn-money-unit" v-if="showUnit && unitPosition=='right'">{{ unitText }}</text>
@@ -18,7 +19,7 @@ export default {
 	name: 'cnMoney',
 	props: {
 		money: {
-			type: Number,
+			type: [Number, String],
 			default: 0.0
 		},
 		//padding
@@ -96,7 +97,7 @@ export default {
 				this.unitText = '韩元';
 			}else{
 				this.rmbUnit = '人民币';
-				
+
 				this.unitText = '元';
 			}
 		}
@@ -106,7 +107,7 @@ export default {
 	},
 	methods: {
 		splitMoney: function() {
-			var m = this.money;
+			var m = this.money * 1;
 			if (!m) {
 				m = 0.0;
 			}
@@ -174,7 +175,7 @@ export default {
 	justify-content: flex-start;
 
 	.cn-money-unit {
-		font-size: 0.65rem;
+		/*font-size: 0.65rem;*/
 		margin: 0;
 		padding: 0;
 	}

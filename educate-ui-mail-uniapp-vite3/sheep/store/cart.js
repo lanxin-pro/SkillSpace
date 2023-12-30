@@ -14,7 +14,10 @@ const cart = defineStore({
         totalPriceSelected: 0,
     }),
     actions: {
-
+        // 添加购物车
+        async add(goodsInfo) {
+           console.log('添加购物车', goodsInfo)
+        },
     },
     persist: {
         enabled: true,

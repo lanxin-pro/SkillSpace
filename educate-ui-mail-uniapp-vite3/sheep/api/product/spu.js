@@ -3,7 +3,7 @@ import request from "../../../sheep/request2"
 /**
  * 获得商品 SPU 分页
  *
- * @param data
+ * @param params
  * @returns {*}
  */
 export function getSpuPage(params) {

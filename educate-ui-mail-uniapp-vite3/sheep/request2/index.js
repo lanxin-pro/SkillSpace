@@ -80,10 +80,10 @@ http.interceptors.request.use((config) => {
  * @description 响应拦截器
  */
 http.interceptors.response.use((response) => {
-		console.log('请求拦截器3')
+	console.log('这里是相应拦截器', response.data)
 	return Promise.resolve(response.data);
 }, (error) => {
-		console.log('请求拦截器4', error)
+		console.log('这里是相应拦截器的错误处理', error)
 })
 
 const request = (config) => {
