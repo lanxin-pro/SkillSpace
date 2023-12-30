@@ -24,8 +24,10 @@
       <view class="left-info">
         <!-- 头像 -->
         <image class="user-avatar" src="../../../static/images/user-info/noface.jpg" />
-        <view class="user-name">落寞帝妃夜呻吟</view>
+        <view v-if="false" class="user-name">落寞帝妃夜呻吟</view>
+        <view v-else class="user-title" @tap="openAuto">请登录</view>
       </view>
+
       <view class="right-promotion">
         <img src="../../../static/images/member-purchase/user/vane438b1466b3d94bb68dbba5e8609109cd.png" />
       </view>
@@ -178,6 +180,11 @@ const clickRight = () => {
   });
 }
 
+const openAuto = () => {
+  uni.navigateTo({
+    url: '/pages/users/login/index'
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -208,6 +215,11 @@ const clickRight = () => {
       width: 55px;
       height: 55px;
       border-radius: 50%;
+    }
+    .user-title {
+      font-size: 34rpx;
+      font-weight: 600;
+      margin-left: 20rpx;
     }
   }
   .middle-grade {

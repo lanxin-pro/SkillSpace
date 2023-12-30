@@ -1,10 +1,29 @@
-import request from "@/utils/request.js"
+import request2 from "@/sheep/request2/index.js"
 
-/**
- * 获取购物车的数量
- *
- * @returns {*}
- */
-export function getCartCount() {
-    return request.get("app-api/trade/cart/get-count")
+const CartApi = {
+    /**
+     * 添加到购物车中
+     * @param data
+     * @returns {*}
+     */
+    addCart: (data) => {
+        return request2({
+            url: 'trade/cart/add',
+            method: 'POST',
+            data: data,
+            // TODO 芋艿：这里没提示
+            custom: {
+                showSuccess: true,
+                successMsg: '已添加到购物车~',
+            }
+        });
+    },
+    getCartList: () => {
+        return request2({
+            url: 'trade/cart/list',
+            method: 'GET',
+        });
+    },
 }
+
+export default CartApi;

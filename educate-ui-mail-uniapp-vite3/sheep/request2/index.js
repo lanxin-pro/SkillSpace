@@ -80,7 +80,21 @@ http.interceptors.request.use((config) => {
  * @description 响应拦截器
  */
 http.interceptors.response.use((response) => {
-	console.log('这里是相应拦截器', response.data)
+	// 自动设置登陆令牌
+	if (response.header.authorization || response.header.Authorization) {
+		console.log('设置登录令牌')
+	}
+
+	response.config.custom.showLoading && closeLoading();
+	if (response.data.code !== 0) {
+		if (response.config.custom.showError)
+			uni.showToast({
+				title: response.data.msg || '服务器开小差啦,请稍后再试~',
+				icon: 'none',
+				mask: true,
+			});
+		return Promise.resolve(response.data);
+	}
 	return Promise.resolve(response.data);
 }, (error) => {
 		console.log('这里是相应拦截器的错误处理', error)

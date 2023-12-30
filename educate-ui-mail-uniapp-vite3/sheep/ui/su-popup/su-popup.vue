@@ -83,6 +83,7 @@ import keypress from './keypress.js';
  * 	@value message 消息提示
  * 	@value dialog 对话框
  * 	@value share 底部分享示例
+ * 	@value @close 这个属性强烈建议必须给
  * @property {Boolean} animation = [true|false] 是否开启动画
  * @property {Boolean} maskClick = [true|false] 蒙版点击是否关闭弹窗(废弃)
  * @property {Boolean} isMaskClick = [true|false] 蒙版点击是否关闭弹窗
