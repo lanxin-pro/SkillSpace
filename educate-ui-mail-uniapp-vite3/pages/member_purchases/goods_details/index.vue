@@ -189,12 +189,17 @@
 
         <DetailCellSafeguard />
 
+        <!-- 规格与数量弹框 -->
+        <l-select-sku :goodsInfo="state.goodsInfo" :show="state.showSelectSku" @addCart="onAddCart"
+                      @close="state.showSelectSku = false" />
       </view>
 
+<!--   评论   -->
       <view class="detail-comment-card" id="past1">
         <DetailCommentCard />
       </view>
 
+<!--   商品详情   -->
       <view class="detail-content-card" id="past2">
         <DetailContentCard />
       </view>
@@ -210,7 +215,7 @@
 
     <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
     <!-- 底部导航，详情 tabbar -->
-    <DetailTabbar :cartCount="cartCount" />
+    <DetailTabbar :cartCount="cartCount" @addCart="state.showSelectSku = true" />
 
   </view>
 </template>
@@ -236,6 +241,8 @@ import {
 } from 'vue'
 import { isEmpty } from 'lodash'
 import * as ProductSpuApi from '@/sheep/api/product/spu.js'
+import LSelectSku from "@/sheep/components/l-select-sku/l-select-sku"
+
 const cartCount = ref(0)
 const state = reactive({
   goodsId: 0,
@@ -244,6 +251,7 @@ const state = reactive({
   // SPU 信息
   goodsInfo: {},
   // 是否展示 SKU 选择弹窗
+  /* 为了测试方便，这里就先给true */
   showSelectSku: false,
   // 选中的 SKU
   selectedSku: {},
@@ -311,9 +319,12 @@ onLoad( async (options) => {
 
   console.log(response)
 
-
 })
 
+/* 添加购物车 */
+const onAddCart = () => {
+
+}
 
 
 // ========== 顶部 nav 相关的方法 ==========
@@ -347,8 +358,10 @@ const infoScroll = function() {
 /**
  * 后退
  */
-const returns = function() {
-  uni.navigateBack()
+const returns = () => {
+  uni.navigateBack({
+    delta: 1
+  })
 }
 /**
  * 滚动

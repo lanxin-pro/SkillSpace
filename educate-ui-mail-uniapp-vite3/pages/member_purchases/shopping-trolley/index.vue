@@ -10,7 +10,7 @@
           :border="false"
       >
         <template v-slot:left>
-          <text class="iconfont icon-xiangzuo"></text>
+          <text @click="clickLift" class="iconfont icon-xiangzuo"></text>
         </template>
         <template v-slot:right>
           <view class="right-hand-management">管理</view>
@@ -74,12 +74,25 @@ import {
 } from 'vue'
 
 const number = ref(3)
+const state = reactive({
+  editMode: false,
+  list: computed(() => cart.list),
+  selectedList: [],
+  selectedIds: computed(() => cart.selectedIds),
+  isAllSelected: computed(() => cart.isAllSelected),
+  totalPriceSelected: computed(() => cart.totalPriceSelected),
+})
 
 onLoad(()=>{
   const cart = sheep.$store('cart')
   console.log(cart.list)
 })
 
+const clickLift = () => {
+  uni.navigateBack({
+    delta: 1  // 返回的页面数，如果是1，则返回上一级页面
+  })
+}
 </script>
 
 <style scoped lang="scss">

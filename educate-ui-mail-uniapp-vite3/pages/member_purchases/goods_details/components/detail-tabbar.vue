@@ -6,14 +6,14 @@
           <view class="bottom-help-icon">
 
           </view>
-          <view class="bottom-cart-icon">
+          <view @click="clickUniNavigateTo" class="bottom-cart-icon">
             <view class="cart-number">
               {{ cartCount }}
             </view>
           </view>
         </view>
         <view class="right-tab-barn">
-          <view class="bottom-add">
+          <view class="bottom-add" @tap="emits('addCart')">
             加购物车
           </view>
           <view class="pay-in-advance">
@@ -41,8 +41,16 @@ const props = defineProps({
   cartCount: {
     type: Number,
     default: 0,
-  },
+  }
 })
+
+const emits = defineEmits(['addCart'])
+
+const clickUniNavigateTo = () => {
+  uni.navigateTo({
+    url: '/pages/member_purchases/shopping-trolley/index'
+  })
+}
 </script>
 
 <style scoped lang="scss">

@@ -165,12 +165,14 @@
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
 
 const clickLeft = () => {
+  /* 返回 */
   uni.navigateBack({
     delta: 1  // 返回的页面数，如果是1，则返回上一级页面
   })
 }
 
 const clickRight = () => {
+  /* 跳转至tab页面的标识 */
   uni.switchTab({
     url: "/pages/member_purchase/member_purchase"
   });
