@@ -1,4 +1,5 @@
 import { createPinia } from 'pinia'
+/* 持久化组件 */
 import piniaPersist from 'pinia-plugin-persist-uni'
 
 // 自动注入所有pinia模块
@@ -11,7 +12,7 @@ Object.keys(files).forEach((key) => {
 export const setupPinia = (app) => {
     // 创建pinia
     const pinia = createPinia()
-    // 使用pinia
+    // 使用pinia持久化组件
     pinia.use(piniaPersist)
 
     app.use(pinia)

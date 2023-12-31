@@ -98,9 +98,10 @@ const user = defineStore({
     },
     persist: {
         enabled: true,
-        strategies: [{
+        /* 目前不想复刻出BUG了，推测这里的key不一样 */
+        /* strategies: [{
             key: 'user-store',
-        }, ],
+        }, ],*/
     },
 });
 

@@ -17,10 +17,10 @@ const cart = defineStore({
     actions: {
         // 获取购物车列表
         async getList() {
-            console.log('获取购物车列表')
-       /*     const { data, code } = await CartApi.getCartList();
+            const { data, code } = await CartApi.getCartList();
 
             if (code === 0) {
+                // 有效的购物项数组
                 this.list = data.validList
 
                 // 计算各种关联属性
@@ -32,10 +32,11 @@ const cart = defineStore({
                         this.selectedIds.push(item.id);
                         this.totalPriceSelected += item.count * item.sku.price
                     } else {
+                        // 无效的购物项数组
                         this.isAllSelected = false
                     }
                 });
-            }*/
+            }
         },
         // 添加购物车
         async add(goodsInfo) {
@@ -44,6 +45,7 @@ const cart = defineStore({
                 skuId: goodsInfo.id,
                 count: goodsInfo.goods_num,
             });
+            console.log('添加购物车的方法', code)
             // 刷新购物车列表
             if (code === 0) {
                 await this.getList();
@@ -58,11 +60,12 @@ const cart = defineStore({
     },
     persist: {
         enabled: true,
-        strategies: [
+        /* 目前不想复刻出BUG了，推测这里的key不一样 */
+        /* strategies: [
             {
                 key: 'cart-store',
             },
-        ],
+        ],*/
     },
 });
 
