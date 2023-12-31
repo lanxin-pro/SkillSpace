@@ -30,4 +30,16 @@ public interface CartMapper extends BaseMapper<CartDO> {
         return CollUtil.getFirst(result) != null ? MapUtil.getInt(result.get(0), "sumCount") : 0;
     }
 
+    default CartDO selectByUserIdAndSkuId(Long loginUserId, Long skuId) {
+        LambdaQueryWrapper<CartDO> cartDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        cartDOLambdaQueryWrapper.eq(CartDO::getUserId, loginUserId)
+                .eq(CartDO::getSkuId, skuId);
+        return selectOne(cartDOLambdaQueryWrapper);
+    }
+
+    default List<CartDO> selectListByUserId(Long loginUserId) {
+        LambdaQueryWrapper<CartDO> cartDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        cartDOLambdaQueryWrapper.eq(CartDO::getId,loginUserId);
+        return this.selectList(cartDOLambdaQueryWrapper);
+    }
 }

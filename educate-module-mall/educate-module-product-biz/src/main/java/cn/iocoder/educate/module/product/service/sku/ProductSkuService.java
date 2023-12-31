@@ -20,4 +20,19 @@ public interface ProductSkuService {
      */
     List<ProductSkuDO> getSkuListBySpuId(Long spuId);
 
+    /**
+     * 获取商品 SKU 信息
+     *
+     * @param id 编号
+     * @return
+     */
+    ProductSkuDO getSku(Long id);
+
+    /**
+     * 获得商品 SKU 列表
+     *
+     * @param ids 编号
+     * @return 商品sku列表
+     */
+    List<ProductSkuDO> getSkuList(List<Long> ids);
 }

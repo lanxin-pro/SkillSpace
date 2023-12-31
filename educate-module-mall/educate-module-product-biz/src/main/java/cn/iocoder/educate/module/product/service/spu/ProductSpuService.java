@@ -4,6 +4,9 @@ import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.product.controller.app.spu.vo.AppProductSpuPageReqVO;
 import cn.iocoder.educate.module.product.dal.dataobject.spu.ProductSpuDO;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 商品 SPU Service 接口
  *
@@ -27,5 +30,13 @@ public interface ProductSpuService {
      * @return 商品 SPU
      */
     ProductSpuDO getSpu(Long id);
+
+    /**
+     * 获得商品 SPU 列表
+     *
+     * @param ids 编号数组
+     * @return 商品 SPU 列表
+     */
+    List<ProductSpuDO> getSpuList(Collection<Long> ids);
 
 }

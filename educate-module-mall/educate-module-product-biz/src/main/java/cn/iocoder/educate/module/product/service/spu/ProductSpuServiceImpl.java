@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.product.service.spu;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.product.controller.admin.category.vo.ProductCategoryListReqVO;
@@ -12,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,4 +50,13 @@ public class ProductSpuServiceImpl implements ProductSpuService {
     public ProductSpuDO getSpu(Long id) {
         return productSpuMapper.selectById(id);
     }
+
+    @Override
+    public List<ProductSpuDO> getSpuList(Collection<Long> ids) {
+        if(CollUtil.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return productSpuMapper.selectBatchIds(ids);
+    }
+
 }
