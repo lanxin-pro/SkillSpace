@@ -40,6 +40,12 @@ public class AppAuthController {
         return CommonResult.success(true);
     }
 
+    /**
+     *
+     * @param appAuthSmsLoginReqVO
+     * @param terminal 必填字段
+     * @return
+     */
     @PostMapping("/sms-login")
     @Operation(summary = "使用手机 + 验证码登录")
     @PermitAll

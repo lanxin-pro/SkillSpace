@@ -70,6 +70,11 @@ public class MemberUserServiceImpl implements MemberUserService {
         return memberUserMapper.selectByMobile(mobile);
     }
 
+    @Override
+    public MemberUserDO getUser(Long loginUserId) {
+        return memberUserMapper.selectById(loginUserId);
+    }
+
     private MemberUserDO createUser(String mobile, String registerIp, Integer terminal) {
         // 生成密码
         String password = IdUtil.fastSimpleUUID();

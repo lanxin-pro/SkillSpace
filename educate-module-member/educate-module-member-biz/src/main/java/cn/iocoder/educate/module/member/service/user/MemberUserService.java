@@ -62,4 +62,12 @@ public interface MemberUserService {
      */
     MemberUserDO getUserByMobile(String mobile);
 
+    /**
+     * 通过用户 ID 查询用户
+     *
+     * @param loginUserId 用户ID
+     * @return 用户对象信息
+     */
+    MemberUserDO getUser(Long loginUserId);
+
 }

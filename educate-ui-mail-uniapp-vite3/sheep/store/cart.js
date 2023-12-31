@@ -17,7 +17,9 @@ const cart = defineStore({
     actions: {
         // 获取购物车列表
         async getList() {
-            const { data, code } = await CartApi.getCartList();
+            console.log('获取购物车列表')
+       /*     const { data, code } = await CartApi.getCartList();
+
             if (code === 0) {
                 this.list = data.validList
 
@@ -33,7 +35,7 @@ const cart = defineStore({
                         this.isAllSelected = false
                     }
                 });
-            }
+            }*/
         },
         // 添加购物车
         async add(goodsInfo) {
@@ -46,6 +48,12 @@ const cart = defineStore({
             if (code === 0) {
                 await this.getList();
             }
+        },
+
+        // 清空购物车
+        async emptyList() {
+            alert('清空购物车')
+            await this.delete(this.list.map((item) => item.id));
         },
     },
     persist: {

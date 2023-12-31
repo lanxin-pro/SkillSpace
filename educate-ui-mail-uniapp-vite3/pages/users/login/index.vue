@@ -191,9 +191,9 @@ const loginMobile = async () => {
   })
   if (code === 0) {
     // 后退
-   /* uni.navigateBack({
+    uni.navigateBack({
       delta: 1
-    })*/
+    })
   }
 }
 const handleDisagree = () => {

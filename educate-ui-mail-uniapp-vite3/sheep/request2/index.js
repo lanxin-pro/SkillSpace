@@ -4,6 +4,7 @@
  */
 
 import Request from 'luch-request';
+import $store from '@/sheep/store';
 
 const options = {
 	// 显示操作成功消息 默认不显示
@@ -63,13 +64,17 @@ const http = new Request({
  */
 http.interceptors.request.use((config) => {
 	const token = uni.getStorageSync('token');
-	if (token) config.header['Authorization'] = token;
+	if (token) {
+		config.header['Authorization'] = "Bearer " + token;
+	}
 	// TODO 芋艿：特殊处理
 	if (config.url.indexOf('/app-api/') !== -1) {
+		console.log('存在Accept')
 		config.header['Accept'] = '*/*'
-		config.header['tenant-id'] = '1';
-		config.header['terminal'] = '20';
-		config.header['Authorization'] = 'Bearer test247';
+		/* 租户 */
+		config.header['tenant-id'] = '1'
+		/* 终端 必填字段 */
+		config.header['terminal'] = '20'
 	}
 	return config;
 },(error) => {
@@ -80,20 +85,42 @@ http.interceptors.request.use((config) => {
  * @description 响应拦截器
  */
 http.interceptors.response.use((response) => {
+	console.log('响应拦截器response',response)
+	console.log('响应拦截器response.header',response.header)
 	// 自动设置登陆令牌
 	if (response.header.authorization || response.header.Authorization) {
 		console.log('设置登录令牌')
+		alert('设置登录令牌')
+	}
+	// TODO j-sentinel：如果是登录的 API，则自动设置 token
+	if (response.data?.data?.accessToken) {
+		console.log('response2',response)
+		$store('user').setToken(response.data.data.accessToken);
 	}
 
 	response.config.custom.showLoading && closeLoading();
 	if (response.data.code !== 0) {
-		if (response.config.custom.showError)
+		if (response.config.custom.showError) {
 			uni.showToast({
 				title: response.data.msg || '服务器开小差啦,请稍后再试~',
 				icon: 'none',
 				mask: true,
 			});
+		}
 		return Promise.resolve(response.data);
+	}
+	// 成功时的提示
+	console.log('成功前的一个提示')
+	if (
+		( response.data.error === 0 || response.data.code === 0) &&
+		( response.data.msg !== '' || response.config.custom.successMsg !== '' ) &&
+		response.config.custom.showSuccess
+	) {
+		console.log('成功提示')
+		uni.showToast({
+			title: response.config.custom.successMsg || response.data.msg,
+			icon: 'none',
+		});
 	}
 	return Promise.resolve(response.data);
 }, (error) => {
