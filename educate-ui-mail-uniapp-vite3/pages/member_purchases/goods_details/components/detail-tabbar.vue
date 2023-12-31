@@ -13,12 +13,12 @@
           </view>
         </view>
         <view class="right-tab-barn">
-          <view class="bottom-add" @tap="emits('addCart')">
+          <view class="bottom-add" @tap="emits('addCartPopup')">
             加购物车
           </view>
           <view class="pay-in-advance">
             <view class="pay-in">支付定金</view>
-            <cn-money :money="16.35" :size="26" color="#fffff" />
+            <cn-money :money="price" :size="26" color="#fffff" />
           </view>
         </view>
       </view>
@@ -28,6 +28,7 @@
 
 <script setup>
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
+
 /**
  *
  * 底部导航
@@ -41,10 +42,14 @@ const props = defineProps({
   cartCount: {
     type: Number,
     default: 0,
+  },
+  price: {
+    type: Number,
+    default: 0,
   }
 })
 
-const emits = defineEmits(['addCart'])
+const emits = defineEmits(['addCartPopup'])
 
 const clickUniNavigateTo = () => {
   uni.navigateTo({

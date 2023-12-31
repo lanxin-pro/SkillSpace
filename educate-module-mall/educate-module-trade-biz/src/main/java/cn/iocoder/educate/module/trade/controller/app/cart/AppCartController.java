@@ -5,6 +5,7 @@ import cn.iocoder.educate.framework.security.core.annotations.PreAuthenticated;
 import cn.iocoder.educate.framework.security.core.util.SecurityFrameworkUtils;
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartAddReqVO;
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartListRespVO;
+import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartUpdateSelectedReqVO;
 import cn.iocoder.educate.module.trade.service.cart.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +43,14 @@ public class AppCartController {
     public CommonResult<Integer> getCartCount() {
         Long loginUserId = SecurityFrameworkUtils.getLoginUserId();
         return CommonResult.success(cartService.getCartCount(loginUserId));
+    }
+
+    @PutMapping("/update-selected")
+    @Operation(summary = "更新购物车商品选中")
+    @PreAuthenticated
+    public CommonResult<Boolean> updateCartSelected(@Valid @RequestBody AppCartUpdateSelectedReqVO updateReqVO) {
+        cartService.updateCartSelected(SecurityFrameworkUtils.getLoginUserId(), updateReqVO);
+        return CommonResult.success(true);
     }
 
     @PostMapping("/add")

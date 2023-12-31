@@ -39,7 +39,7 @@ const user = defineStore({
 
     actions: {
         // 获取个人信息
-        // TODO 芋艿：整理下；
+        // TODO j-sentinel：整理下；
         async getInfo() {
             const {
                 code,
@@ -75,7 +75,7 @@ const user = defineStore({
         },
 
         // 设置token
-        // TODO 芋艿：整理下；
+        // TODO j-sentinel：整理下；
         setToken(token = '') {
             if (token === '') {
                 this.isLogin = false;
@@ -88,7 +88,7 @@ const user = defineStore({
             return this.isLogin;
         },
         // 登录后
-        // TODO 芋艿：整理下；
+        // TODO j-sentinel：整理下；
         async loginAfter() {
             // 登录后的示例
             console.log('loginAfter方法开始加载用户信息')

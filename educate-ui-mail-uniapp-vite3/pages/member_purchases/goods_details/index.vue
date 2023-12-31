@@ -214,7 +214,11 @@
 
       <!--  <DetailTabbar /> 直接放到scroll-view的外面也是可以的    -->
       <!-- 底部导航，详情 tabbar -->
-      <DetailTabbar :cartCount="cartCount" @addCart="state.showSelectSku = true" />
+      <DetailTabbar
+          :cartCount="cartCount"
+          @addCartPopup="state.showSelectSku = true"
+          :price="fen2yuan(state.goodsInfo.price)"
+      />
     </template>
 
   </view>
@@ -247,7 +251,9 @@ import LSelectSku from "@/sheep/components/l-select-sku/l-select-sku"
 import { formatGoodsSwiper, fen2yuan } from '@/sheep/hooks/useGoods.js'
 import sheep from '@/sheep'
 
-const cartCount = ref(0)
+const cart = sheep.$store('cart')
+
+
 const state = reactive({
   goodsId: 0,
   // SPU 加载中
@@ -290,6 +296,11 @@ const navActive = ref(0) // 选中的 navList 下标
 
 const globalData = reactive({
   navHeight: 0
+})
+
+// 购物车数量
+const cartCount = computed(() => {
+  return cart.list.length
 })
 
 onLoad( async (options) => {

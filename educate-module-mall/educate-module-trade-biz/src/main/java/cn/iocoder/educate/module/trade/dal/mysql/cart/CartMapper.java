@@ -2,12 +2,14 @@ package cn.iocoder.educate.module.trade.dal.mysql.cart;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartUpdateSelectedReqVO;
 import cn.iocoder.educate.module.trade.dal.dataobject.cart.CartDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,14 @@ public interface CartMapper extends BaseMapper<CartDO> {
 
     default List<CartDO> selectListByUserId(Long loginUserId) {
         LambdaQueryWrapper<CartDO> cartDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        cartDOLambdaQueryWrapper.eq(CartDO::getId,loginUserId);
+        cartDOLambdaQueryWrapper.eq(CartDO::getUserId,loginUserId);
         return this.selectList(cartDOLambdaQueryWrapper);
+    }
+
+    default void updateByIds(Collection<Long> ids, Long loginUserId, CartDO updateObj){
+        LambdaQueryWrapper<CartDO> cartDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        cartDOLambdaQueryWrapper.eq(CartDO::getUserId, loginUserId)
+                .in(CartDO::getId, ids);
+        this.update(updateObj, cartDOLambdaQueryWrapper);
     }
 }

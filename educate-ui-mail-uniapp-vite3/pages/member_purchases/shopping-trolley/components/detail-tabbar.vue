@@ -9,11 +9,11 @@
       <view class="footer-right">
         <view class="summation">
           <text style="margin-right: -10rpx;font-size: 26rpx;">合计：</text>
-          <cn-money :money="16.35" :size="28" color="#ee719b" />
+          <cn-money :money="fen2yuan(totalMoney)" :size="28" color="#ee719b" />
         </view>
         <view class="bottom-add">
           <view>
-            结算(0)
+            结算({{ totalNumber }})
           </view>
         </view>
       </view>
@@ -24,7 +24,19 @@
 
 <script setup>
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
+import { fen2yuan } from '@/sheep/hooks/useGoods';
 import { ref, reactive, computed } from 'vue'
+
+const props = defineProps({
+  totalMoney: {
+    type: Number,
+    default: 0,
+  },
+  totalNumber: {
+    type: Number,
+    default: 0,
+  }
+})
 
 const tempOnSelectAll = ref(true)
 const state = reactive({

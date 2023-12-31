@@ -67,7 +67,7 @@ http.interceptors.request.use((config) => {
 	if (token) {
 		config.header['Authorization'] = "Bearer " + token;
 	}
-	// TODO 芋艿：特殊处理
+	// TODO j-sentinel：特殊处理
 	if (config.url.indexOf('/app-api/') !== -1) {
 		console.log('存在Accept')
 		config.header['Accept'] = '*/*'
@@ -131,7 +131,7 @@ const request = (config) => {
 	if (config.url[0] !== '/') {
 		config.url = '/app-api/' + config.url;
 	}
-	// TODO 芋艿：额外拼接
+	// TODO j-sentinel：额外拼接
 	if (config.url.indexOf('/app-api/') >= 0) {
 		// 设置接口地址
 		// config.url = 'http://api-dashboard.yudao.iocoder.cn' + config.url; // 调用【云端】

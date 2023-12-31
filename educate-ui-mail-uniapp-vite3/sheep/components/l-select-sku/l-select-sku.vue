@@ -161,7 +161,20 @@ const onAddCart = () => {
     sheep.$helper.toast('库存不足')
     return
   }
+  // console.log('添加的sku信息',state.selectedSku)
   emits('addCart', state.selectedSku)
+}
+
+// 输入框改变数量
+function onNumberChange(e) {
+  console.log(e)
+  if (e === 0) {
+    return;
+  }
+  if (state.selectedSku.goods_num === e) {
+    return
+  }
+  state.selectedSku.goods_num = e;
 }
 </script>
 

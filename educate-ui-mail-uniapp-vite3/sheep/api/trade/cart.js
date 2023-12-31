@@ -11,7 +11,7 @@ const CartApi = {
             url: 'trade/cart/add',
             method: 'POST',
             data: data,
-            // TODO 芋艿：这里没提示
+            // TODO j-sentinel：这里没提示
             custom: {
                 showSuccess: true,
                 successMsg: '已添加到购物车~',
@@ -24,6 +24,15 @@ const CartApi = {
             method: 'GET',
         });
     },
+
+    updateCartSelected: (data) => {
+        return request2({
+            url: 'trade/cart/update-selected',
+            method: 'PUT',
+            data: data
+        });
+    },
+
 }
 
 export default CartApi;

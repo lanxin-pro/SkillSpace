@@ -5,7 +5,7 @@
           background-color="#ffffff"
           left-icon="left"
           right-icon="cart"
-          :title="'购物车(' + number + ')'"
+          :title="'购物车(' + state.list.length + ')'"
           size="20"
           :border="false"
       >
@@ -22,37 +22,31 @@
 <!--      <view class="domestic-delivery">
         国内到货
       </view>-->
-      <view class="area" v-for="item of 2">
-      <view class="pre-sale-area">
-        <uv-checkbox-group>
-          <uv-checkbox name="1" shape="circle" activeColor="#f55b91" ></uv-checkbox>
-        </uv-checkbox-group>
-      </view>
-      <view class="pre-details-sale-area">
-        <view class="details-imgage">
-          <img src="http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=YmI3YmY0NmFjYmRiZjcwMzlmMDExODJlYzI1Yzg3YmEucG5n&version_id=null" />
+      <view class="area" v-for="item of state.list" :key="item.id">
+        <view class="pre-sale-area">
+          <uv-checkbox-group :value="state.selectedIds" @change="onSelectSingle(item.id)">
+            <uv-checkbox :name="item.id" shape="circle" activeColor="#f55b91"></uv-checkbox>
+          </uv-checkbox-group>
         </view>
-        <view class="pre-details">
-
-          <view class="describe-title display-inline">
-            <view class="presale-sign">
-              预售
-            </view>
-            AniMester大漫匠 少女前线：云图计划 芙洛伦 药心巧克力Ver. 1/7 比例手办比例手办
-          </view>
-          <view class="quantity-operation">
-            <cn-money :money="16.35" :size="36" color="#ee719b" />
-            <view>
-              <su-number-box :min="1" :max="6" :step="1" v-model="number"></su-number-box>
-            </view>
-          </view>
-        </view>
+        <l-goods-item
+            :title="item.spu.name"
+            :img="item.spu.picUrl || item.goods.image"
+            :price="item.sku.price"
+            :skuText="handleSkuText(item)"
+        >
+          <template v-slot:tool>
+            <su-number-box :min="1" :max="item.sku.stock" :step="1" v-model="item.count"
+                           @change="onNumberChange($event, item)"></su-number-box>
+          </template>
+        </l-goods-item>
       </view>
-    </view>
     </view>
 
     <view>
-      <DetailTabbar />
+      <DetailTabbar
+          :total-money="state.totalPriceSelected"
+          :total-number="state.selectedIds?.length"
+      />
     </view>
   </view>
 </template>
@@ -60,7 +54,7 @@
 <script setup>
 import sheep from '@/sheep'
 import DetailTabbar from './components/detail-tabbar.vue'
-import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
+import LGoodsItem from '@/sheep/components/l-goods-item/l-goods-item.vue'
 import SuNumberBox from '@/sheep/ui/su-number-box/su-number-box.vue'
 import {
   onLoad,
@@ -73,6 +67,8 @@ import {
   watch
 } from 'vue'
 
+const cart = sheep.$store('cart')
+
 const number = ref(3)
 const state = reactive({
   editMode: false,
@@ -83,11 +79,30 @@ const state = reactive({
   totalPriceSelected: computed(() => cart.totalPriceSelected),
 })
 
-onLoad(()=>{
-  const cart = sheep.$store('cart')
-  console.log(cart.list)
-})
+/* 值的变化 */
+const handleSkuText = (item) => {
+  console.log(item)
+  return item.sku.properties.length > 1
+      ?
+      /* TODO j-sentinel 这里好像是累加算的目前没有验证 这里我觉得就会有问题，如果有3个property会怎么样？ */
+      // reduce 数组中每个元素valueName 执行累加操作后的最终值
+      item.sku.properties.reduce( (items, items2) => {
+        return items.valueName + ' ' + items2.valueName
+      })
+      :
+      item.sku.properties[0].valueName
+}
 
+/* 单选选中 */
+const onSelectSingle = (id) => {
+  console.log('单选', id)
+  cart.selectSingle(id)
+}
+/* 商品数量发生变化 */
+const onNumberChange = () => {
+
+}
+/* 返回上一页 */
 const clickLift = () => {
   uni.navigateBack({
     delta: 1  // 返回的页面数，如果是1，则返回上一级页面
@@ -115,48 +130,7 @@ const clickLift = () => {
     .pre-sale-area {
       margin-right: 20rpx;
     }
-    .pre-details-sale-area {
-      display: flex;
-      .details-imgage {
-        img {
-          width: 168rpx;
-          height: 168rpx;
-          cursor: pointer;
-          border-radius: 6rpx;
-          background: #f6f7fb
-        }
-      }
-      .pre-details {
-        margin-left: 16rpx;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        .describe-title {
-          margin-left: 4rpx;
-          font-size: 24rpx;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          -webkit-line-clamp: 2; /* 显示的行数 */
-          text-overflow: ellipsis;
-          color: #161616;
-          .presale-sign {
-            font-size: 18rpx;
-            fill: #505050;
-            color: #4e4d53;
-            padding: 4rpx 6rpx;
-            background: #eeeeee;
-            border-radius: 6rpx;
-            display: inline-block;
-          }
-        }
-        .quantity-operation {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      }
-    }
+
   }
 
 }

@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.trade.service.cart;
 
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartAddReqVO;
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartListRespVO;
+import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartUpdateSelectedReqVO;
 
 /**
  * 购物车 Service 接口
@@ -36,4 +37,11 @@ public interface CartService {
      */
     AppCartListRespVO getCartList(Long loginUserId);
 
+    /**
+     * 更新购物车选中状态
+     *
+     * @param loginUserId 用户编号
+     * @param updateSelectedReqVO 更新信息
+     */
+    void updateCartSelected(Long loginUserId, AppCartUpdateSelectedReqVO updateSelectedReqVO);
 }

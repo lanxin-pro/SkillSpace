@@ -27,9 +27,12 @@ const cart = defineStore({
                 this.selectedIds = []
                 this.isAllSelected = true
                 this.totalPriceSelected = 0
+                console.log('totalPriceSelected总价', this.totalPriceSelected)
                 this.list.forEach((item) => {
                     if (item.selected) {
                         this.selectedIds.push(item.id);
+                        console.log('item.count商品总数', item.count)
+                        console.log('item.sku.price单个商品价格', item.sku.price)
                         this.totalPriceSelected += item.count * item.sku.price
                     } else {
                         // 无效的购物项数组
@@ -56,6 +59,17 @@ const cart = defineStore({
         async emptyList() {
             alert('清空购物车')
             await this.delete(this.list.map((item) => item.id));
+        },
+
+        // 单选购物车商品
+        async selectSingle(goodsId) {
+            const { code } = await CartApi.updateCartSelected({
+                ids: [goodsId],
+                selected: !this.selectedIds.includes(goodsId), // selectedIds选中的列表 取反
+            });
+            if (code === 0) {
+                await this.getList()
+            }
         },
     },
     persist: {

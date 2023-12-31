@@ -9,6 +9,7 @@ import cn.iocoder.educate.module.product.api.spu.dto.ProductSpuRespDTO;
 import cn.iocoder.educate.module.product.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartAddReqVO;
 import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartListRespVO;
+import cn.iocoder.educate.module.trade.controller.app.cart.vo.AppCartUpdateSelectedReqVO;
 import cn.iocoder.educate.module.trade.convert.cart.TradeCartConvert;
 import cn.iocoder.educate.module.trade.dal.dataobject.cart.CartDO;
 import cn.iocoder.educate.module.trade.dal.mysql.cart.CartMapper;
@@ -98,6 +99,12 @@ public class CartServiceImpl implements CartService {
 
         // 拼接数据
         return TradeCartConvert.INSTANCE.convertList(carts, spus, skus);
+    }
+
+    @Override
+    public void updateCartSelected(Long loginUserId, AppCartUpdateSelectedReqVO updateSelectedReqVO) {
+        cartMapper.updateByIds(updateSelectedReqVO.getIds(), loginUserId,
+                new CartDO().setSelected(updateSelectedReqVO.getSelected()));
     }
 
     /**
