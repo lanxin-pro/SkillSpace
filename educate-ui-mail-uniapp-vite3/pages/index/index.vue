@@ -18,14 +18,19 @@ export default {
       title: 'Hello',
     }
   },
-  onLoad() {},
+  onShow() {
+    /* 跳转至tab页面的标识 */
+    uni.switchTab({
+      url: "/pages/member_purchase/member_purchase"
+    });
+  },
   methods: {},
 }
 </script>
 
 <style lang="scss">
 .asd {
-  
+
   .a {
 	  color: red;
   }
