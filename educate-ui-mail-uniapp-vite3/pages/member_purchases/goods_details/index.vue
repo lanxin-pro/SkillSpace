@@ -218,6 +218,7 @@
           :cartCount="cartCount"
           @addCartPopup="state.showSelectSku = true"
           :price="fen2yuan(state.goodsInfo.price)"
+          @onConfirm="handleOnConfirm"
       />
     </template>
 
@@ -346,7 +347,12 @@ const onAddCart = (e) => {
   }
   sheep.$store('cart').add(e)
 }
-
+/* 结算 */
+const handleOnConfirm = () => {
+  uni.navigateTo({
+    url: '/pages/order/confirm'
+  })
+}
 
 // ========== 顶部 nav 相关的方法 ==========
 const initPageParameter = () => {

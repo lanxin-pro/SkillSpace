@@ -14,12 +14,6 @@ export default {
         }
       }
     })
-    uni.showToast({
-      title: 'H5直接访问可能会引发一些布局冲突奥~',
-      icon: 'none',
-      mask: true,
-      duration: 3000
-    });
     // #endif
   }
 }

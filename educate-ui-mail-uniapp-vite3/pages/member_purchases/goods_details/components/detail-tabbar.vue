@@ -16,7 +16,7 @@
           <view class="bottom-add" @tap="emits('addCartPopup')">
             加购物车
           </view>
-          <view class="pay-in-advance">
+          <view class="pay-in-advance" @tap="emits('onConfirm')">
             <view class="pay-in">支付定金</view>
             <cn-money :money="price" :size="26" color="#fffff" />
           </view>
@@ -49,7 +49,7 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['addCartPopup'])
+const emits = defineEmits(['addCartPopup','onConfirm'])
 
 const clickUniNavigateTo = () => {
   uni.navigateTo({
