@@ -23,8 +23,9 @@
 
       <view class="left-info">
         <!-- 头像 -->
-        <image class="user-avatar" src="../../../static/images/user-info/noface.jpg" />
-        <view v-if="false" class="user-name">落寞帝妃夜呻吟</view>
+        <image v-if="isLogin" class="user-avatar" :src="userInfo.avatar" />
+        <image v-else class="user-avatar" src="../../../static/images/user-info/noface.jpg" />
+        <view v-if="isLogin" class="user-name">{{ userInfo.nickname }}</view>
         <view v-else class="user-title" @tap="openAuto">请登录</view>
       </view>
 
@@ -165,6 +166,16 @@
 
 <script setup>
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
+import sheep from '@/sheep'
+import { computed } from 'vue'
+
+// 用户信息
+const userInfo = computed(() => sheep.$store('user').userInfo)
+console.log('用户信息', userInfo.value)
+
+// 是否登录
+const isLogin = computed(() => sheep.$store('user').isLogin)
+console.log('登录状态', isLogin.value)
 
 const clickLeft = () => {
   /* 返回 */

@@ -46,6 +46,7 @@
       <DetailTabbar
           :total-money="state.totalPriceSelected"
           :total-number="state.selectedIds?.length"
+          @onConfirm="handleOnConfirm"
       />
     </view>
   </view>
@@ -78,6 +79,12 @@ const state = reactive({
   isAllSelected: computed(() => cart.isAllSelected),
   totalPriceSelected: computed(() => cart.totalPriceSelected),
 })
+/* 结算 */
+const handleOnConfirm = () => {
+  uni.navigateTo({
+    url: '/pages/order/confirm'
+  })
+}
 
 /* 值的变化 */
 const handleSkuText = (item) => {

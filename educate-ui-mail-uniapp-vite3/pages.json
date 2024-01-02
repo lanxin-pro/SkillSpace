@@ -101,7 +101,24 @@
 			}
 
 		]
-	}],
+	},
+		{
+			"root": "pages/order",
+			"name": "order",
+			"pages": [
+				{
+					"path" : "confirm",
+					"style" :
+					{
+						"navigationBarTitleText" : "确认订单",
+						"titleNView": true,
+						/* 自定义title */
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		/* 默认title名 */

@@ -80,6 +80,9 @@ public class MemberUserServiceImpl implements MemberUserService {
         String password = IdUtil.fastSimpleUUID();
         // 插入用户
         MemberUserDO user = new MemberUserDO();
+        // TODO j-sentinel 这里可以考虑给用户默认的用户名和头像，看后续业务是要求怎么给的
+        user.setNickname("用户" + password);
+        user.setAvatar("http://alanxin.cn:55555/api/v1/buckets/educate-mall/objects/download?preview=true&prefix=ZmI4ZGZmODJiMjc1YmQyOWQ2MWNmZTVmNTJhYTQzODYucG5n&version_id=null");
         user.setMobile(mobile);
         // 默认开启
         user.setStatus(CommonStatusEnum.ENABLE.getStatus());

@@ -20,11 +20,13 @@
         </view>
       </view>
       <view class="header-top-right">
-        <navigator url="/pages/member_purchases/shopping-trolley/index" class="display-inline" style="color: rgb(95, 98, 105);">
-          <text class='iconfont icon-gouwuche6 icon-top-right mr20' />
+        <navigator url="/pages/member_purchases/shopping-trolley/index" style="color: rgb(95, 98, 105);">
+          <view class='orientation iconfont icon-gouwuche6 icon-top-right mr20'>
+            <view class="cart-number">{{ cartCount }}</view>
+          </view>
         </navigator>
-        <navigator url="/pages/member_purchases/user/index" class="display-inline" style="color: rgb(95, 98, 105);">
-          <text class='iconfont icon-yonghu3 icon-top-right' />
+        <navigator url="/pages/member_purchases/user/index" style="color: rgb(95, 98, 105);">
+          <view class='iconfont icon-yonghu3 icon-top-right' />
         </navigator>
       </view>
     </view>
@@ -331,10 +333,13 @@ import {
   onReachBottom
 } from '@dcloudio/uni-app'
 import * as ProductSpuApi from '@/sheep/api/product/spu.js'
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import * as Util from '@/sheep/utils/util.js'
 import CnMoney from "@/sheep/components/cn-money/cn-money.vue";
 import _ from "lodash"
+import sheep from '@/sheep'
+
+const cart = sheep.$store('cart')
 
 const state = reactive({
   pagination: {
@@ -418,6 +423,10 @@ const loadMore = async () => {
   state.pagination.pageNo++
   await getList(state.currentSort, state.currentOrder)
 }
+// 购物车数量
+const cartCount = computed(() => {
+  return cart.list.length
+})
 /**
  * 前往商品详情
  *
@@ -468,9 +477,26 @@ onReachBottom(() => {
 
     }
   }
-  .icon-top-right {
-    font-size: 40rpx;
+  .header-top-right {
+    display: flex;
+    .icon-top-right {
+      font-size: 40rpx;
+    }
+    .orientation {
+      position: relative;
+    }
+    .cart-number {
+      position: absolute;
+      top: -13rpx;
+      right: -13rpx;
+      background: #fa7495;
+      font-size: 18rpx;
+      padding: 1rpx 10rpx;
+      border-radius: 14rpx;
+      color: #FFFFFF;
+    }
   }
+
 }
 .search-wrap {
   margin-top: 30rpx;

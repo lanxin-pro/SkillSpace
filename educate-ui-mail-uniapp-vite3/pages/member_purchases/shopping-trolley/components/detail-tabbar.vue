@@ -11,7 +11,7 @@
           <text style="margin-right: -10rpx;font-size: 26rpx;">合计：</text>
           <cn-money :money="fen2yuan(totalMoney)" :size="28" color="#ee719b" />
         </view>
-        <view class="bottom-add">
+        <view class="bottom-add" @tap="emit('onConfirm')">
           <view>
             结算({{ totalNumber }})
           </view>
@@ -37,7 +37,7 @@ const props = defineProps({
     default: 0,
   }
 })
-
+const emit = defineEmits(['onConfirm'])
 const tempOnSelectAll = ref(true)
 const state = reactive({
   editMode: false,
