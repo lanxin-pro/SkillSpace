@@ -473,7 +473,7 @@ const tap = function(index) {
     height: 56rpx;
     line-height: 56rpx;
     /* 目前这个版本我忽视掉了这个    防止uni-popup冲突 */
-  <!--  TODO j-sentinel 为了业务实现，我就先写99   -->
+    /* TODO j-sentinel 为了业务实现，我就先写99 */
     z-index: 99;
     left: 33rpx;
     background: rgba(212, 210, 210, 0.8);
@@ -504,7 +504,7 @@ const tap = function(index) {
     height: 56rpx;
     line-height: 56rpx;
     /* 目前这个版本我忽视掉了这个    防止uni-popup冲突 */
-  <!--  TODO j-sentinel 为了业务实现，我就先写99   -->
+    /* TODO j-sentinel 为了业务实现，我就先写99 */
     z-index: 99;
     right: 33rpx;
     background: rgba(212, 210, 210, 0.8);
