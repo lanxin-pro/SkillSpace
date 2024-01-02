@@ -12,7 +12,11 @@ export function isFavoriteExists(spuId) {
         method: 'GET',
         params: {
             spuId
-        }
+        },
+        custom: {
+            showLoading: false,
+            showError: false,
+        },
     });
 }
 

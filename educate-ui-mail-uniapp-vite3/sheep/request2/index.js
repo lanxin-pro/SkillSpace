@@ -69,7 +69,6 @@ http.interceptors.request.use((config) => {
 	}
 	// TODO j-sentinel：特殊处理
 	if (config.url.indexOf('/app-api/') !== -1) {
-		console.log('存在Accept')
 		config.header['Accept'] = '*/*'
 		/* 租户 */
 		config.header['tenant-id'] = '1'
@@ -85,21 +84,51 @@ http.interceptors.request.use((config) => {
  * @description 响应拦截器
  */
 http.interceptors.response.use((response) => {
-	console.log('响应拦截器response',response)
-	console.log('响应拦截器response.header',response.header)
 	// 自动设置登陆令牌
 	if (response.header.authorization || response.header.Authorization) {
 		console.log('设置登录令牌')
 		alert('设置登录令牌')
 	}
 	// TODO j-sentinel：如果是登录的 API，则自动设置 token
-	if (response.data?.data?.accessToken) {
+/*	if (response.data?.data?.accessToken) {
 		console.log('response2',response)
+		$store('user').setToken(response.data.data.accessToken);
+	}*/
+	// 约定：如果是 /auth/ 下的 URL 地址，并且返回了 accessToken 说明是登录相关的接口，则自动设置登陆令牌
+	if (response.config.url.indexOf('/member/auth/') >= 0 && response.data?.data?.accessToken) {
 		$store('user').setToken(response.data.data.accessToken);
 	}
 
 	response.config.custom.showLoading && closeLoading();
-	if (response.data.code !== 0) {
+
+
+
+
+	// TODO j-sentinel 临时写的登录校验
+	if(response.data.code === 401 && response.config.custom.showError) {
+		const userStore = $store('user');
+		const isLogin = userStore.isLogin;
+		let errorMessage = '网络请求出错';
+		if (isLogin) {
+			errorMessage = '您的登陆已过期';
+		} else {
+			errorMessage = '请先登录';
+		}
+		uni.showToast({
+			title: errorMessage,
+			icon: 'none',
+			mask: true,
+		});
+		uni.navigateTo({
+			url: '/pages/users/login/index'
+		})
+		return
+	}
+
+
+
+
+	if (response.data.error !== 0 && response.data.code !== 0) {
 		if (response.config.custom.showError) {
 			uni.showToast({
 				title: response.data.msg || '服务器开小差啦,请稍后再试~',
@@ -109,8 +138,8 @@ http.interceptors.response.use((response) => {
 		}
 		return Promise.resolve(response.data);
 	}
+
 	// 成功时的提示
-	console.log('成功前的一个提示')
 	if (
 		( response.data.error === 0 || response.data.code === 0) &&
 		( response.data.msg !== '' || response.config.custom.successMsg !== '' ) &&
@@ -124,7 +153,7 @@ http.interceptors.response.use((response) => {
 	}
 	return Promise.resolve(response.data);
 }, (error) => {
-		console.log('这里是相应拦截器的错误处理', error)
+		console.log('aaaaaaaaaaaaaaaaaa这里是相应拦截器的错误处理', error)
 })
 
 const request = (config) => {
@@ -137,6 +166,7 @@ const request = (config) => {
 		// config.url = 'http://api-dashboard.yudao.iocoder.cn' + config.url; // 调用【云端】
 		// config.url = 'https://app.test.huizhizao.vip/prod-api' + config.url; // 调用【云端】
 		config.url = 'http://127.0.0.1:9011/server' + config.url; // 调用【本地】
+		// config.url = 'http://120.46.160.55:9011/server' + config.url;
     // config.url = 'http://yunai.natapp1.cc' + config.url; // 调用【natapp】
 	}
 	return http.middleware(config);
