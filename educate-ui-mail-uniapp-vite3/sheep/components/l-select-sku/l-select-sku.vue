@@ -70,6 +70,10 @@ const props = defineProps({
   show: {
     type: Boolean,
     default: false,
+  },
+  buyOrCard: {
+    type: String,
+    detail: ''
   }
 })
 const state = reactive({
@@ -162,7 +166,7 @@ const onAddCart = () => {
     return
   }
   // console.log('添加的sku信息',state.selectedSku)
-  emits('addCart', state.selectedSku)
+  emits('addCart', state.selectedSku )
 }
 
 // 输入框改变数量

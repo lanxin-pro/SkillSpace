@@ -191,7 +191,8 @@
 
           <!-- 规格与数量弹框 -->
           <l-select-sku :goodsInfo="state.goodsInfo" :show="state.showSelectSku" @addCart="onAddCart"
-                        @close="state.showSelectSku = false" />
+                        :buyOrCard="state.buyOrCard"
+                        @buy="onBuy" @close="state.showSelectSku = false" />
         </view>
 
         <!--   评论   -->
@@ -217,7 +218,7 @@
       <!-- 底部导航，详情 tabbar -->
       <DetailTabbar
           :cartCount="cartCount"
-          @addCartPopup="state.showSelectSku = true"
+          @addCartPopup="handleAddCartPopup"
           :price="fen2yuan(state.goodsInfo.price)"
           @onConfirm="handleOnConfirm"
       />
@@ -277,6 +278,9 @@ const state = reactive({
   activityInfo: [],
   // 【秒杀/拼团/砍价】可参与的 Activity 营销活动的列表
   activityList: [],
+  // TODO j-sentinel 这里后续需要优化，建议写成两个组件哈
+  // 添加购物车还是直接购买
+  buyOrCard: ''
 })
 
 // ========== 顶部 nav + scroll 相关的变量 ==========
@@ -339,21 +343,31 @@ onLoad( async (options) => {
 
 
 })
-
+const handleOnConfirm = () => {
+  state.buyOrCard = 'buy'
+  state.showSelectSku = true
+}
+const handleAddCartPopup = () => {
+  state.buyOrCard = 'card'
+  state.showSelectSku = true
+}
 /* 添加购物车 */
 const onAddCart = (e) => {
-  if (!e.id) {
-    sheep.$helper.toast('请选择商品规格')
-    return;
+  if (state.buyOrCard === 'buy') {
+    uni.navigateTo({
+      url: '/pages/order/confirm'
+    })
+  } else {
+    if (!e.id) {
+      sheep.$helper.toast('请选择商品规格')
+      return;
+    }
+    sheep.$store('cart').add(e)
   }
-  sheep.$store('cart').add(e)
+
+
 }
-/* 结算 */
-const handleOnConfirm = () => {
-  uni.navigateTo({
-    url: '/pages/order/confirm'
-  })
-}
+
 
 // ========== 顶部 nav 相关的方法 ==========
 const initPageParameter = () => {
