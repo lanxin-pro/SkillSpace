@@ -18,6 +18,7 @@
     </view>
 
     <SuPopup
+        :title="propsTitle"
         :show="show"
         type="bottom"
         :showClose="showClose"
@@ -38,6 +39,10 @@ const show = ref(false)
 const showClose = ref(true)
 const props = defineProps({
   title: {
+    type: String,
+    default: ''
+  },
+  propsTitle: {
     type: String,
     default: ''
   }

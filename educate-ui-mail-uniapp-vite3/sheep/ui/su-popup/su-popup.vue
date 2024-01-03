@@ -582,9 +582,9 @@ export default {
     .header {
       height: 10rpx;
     }
+    /* 有title的时候 */
     .header.on {
       margin-bottom: 60rpx;
-      background: red;
     }
 
     /* iphonex 等安全区设置，底部安全区适配 */

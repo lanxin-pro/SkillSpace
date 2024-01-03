@@ -20,7 +20,7 @@
 
 
     <view class="address-box">
-      <DetailCell>
+      <DetailCell props-title="收货地址">
         <template v-slot:middle-content>
             <view class="address-box-header">
               <view class="address-tag">默认</view>
@@ -37,7 +37,12 @@
         </template>
         <template v-slot:su-popup>
           <view class="attention-details">
-            收获地址的更改
+            <view>
+              <uv-checkbox-group :value="agreement">
+                <uv-checkbox size="16" shape="circle" :name="true" activeColor="#f55b91" />
+              </uv-checkbox-group>
+            </view>
+            <view>1</view>
           </view>
         </template>
       </DetailCell>
@@ -98,7 +103,15 @@
           <view>23:59前付款，预计01月19日送达</view>
         </view>
       </view>
+      <view class="final-payment">
+        <view>
+          尾款提示
+        </view>
+        <view>13571082448</view>
+      </view>
     </view>
+
+    <DetailTabbar />
 
 
   </view>
@@ -108,6 +121,8 @@
 import CnMoney from '@/sheep/components/cn-money/cn-money.vue'
 import { fen2yuan } from '@/sheep/hooks/useGoods'
 import DetailCell from "@/pages/member_purchases/goods_details/components/detail-cell.vue"
+import DetailTabbar from './components/detail-tabbar.vue'
+import { ref } from 'vue'
 
 /* 返回上一页 */
 const clickLift = () => {
@@ -115,6 +130,9 @@ const clickLift = () => {
     delta: 1  // 返回的页面数，如果是1，则返回上一级页面
   })
 }
+
+const agreement = ref()
+
 </script>
 
 <style scoped lang="scss">
@@ -143,6 +161,9 @@ const clickLift = () => {
     font-weight: 600;
     font-size: 28rpx;
     margin: 2rpx 0 12rpx;
+  }
+  .attention-details {
+    min-height: 800rpx;
   }
 }
 .spot-commodity {
@@ -248,6 +269,13 @@ const clickLift = () => {
       align-items: end;
       gap: 20rpx;
     }
+  }
+
+  .final-payment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20rpx;
   }
 }
 </style>
