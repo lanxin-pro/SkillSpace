@@ -33,6 +33,7 @@
         <module>educate-spring-boot-starter-desensitize</module>
         <module>educate-spring-boot-starter-excel</module>
         <module>educate-spring-boot-starter-monitor</module>
+        <module>educate-spring-boot-starter-biz-dict</module>
     </modules>
 
     <description>
