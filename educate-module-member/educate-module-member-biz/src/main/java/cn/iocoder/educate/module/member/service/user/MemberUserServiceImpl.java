@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.member.service.user;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
@@ -14,6 +15,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 会员 User Service 实现类
@@ -73,6 +77,19 @@ public class MemberUserServiceImpl implements MemberUserService {
     @Override
     public MemberUserDO getUser(Long loginUserId) {
         return memberUserMapper.selectById(loginUserId);
+    }
+
+    @Override
+    public List<MemberUserDO> getUserListByNickname(String nickname) {
+        return memberUserMapper.selectListByNickname(nickname);
+    }
+
+    @Override
+    public List<MemberUserDO> getUserList(Set<Long> collectUserIds) {
+        if(CollUtil.isEmpty(collectUserIds)) {
+            return Collections.emptyList();
+        }
+        return memberUserMapper.selectBatchIds(collectUserIds);
     }
 
     private MemberUserDO createUser(String mobile, String registerIp, Integer terminal) {

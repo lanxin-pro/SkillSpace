@@ -6,7 +6,9 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.common.util.object.PageUtils;
 import cn.iocoder.educate.module.infra.api.file.FileApi;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
@@ -100,8 +102,12 @@ public class AdminUserServiceImpl implements AdminUserService{
 
     @Override
     public PageResult<AdminUserDO> getUserPage(UserPageReqVO reqVO) {
-        // 分页的pageNo pageSize      分页条件(这个是我想要查询的ids)
-        return adminUserMapper.selectPage(reqVO,getDeptCondition(reqVO.getDeptId()));
+        if(PageParam.PAGE_SIZE_NONE.equals(reqVO.getPageSize())) {
+            return adminUserMapper.selectPage();
+        } else {
+            // 分页的pageNo pageSize      分页条件(这个是我想要查询的ids)
+            return adminUserMapper.selectPage(reqVO, getDeptCondition(reqVO.getDeptId()));
+        }
     }
 
     @Override

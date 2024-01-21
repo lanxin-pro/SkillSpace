@@ -3,7 +3,11 @@ package cn.iocoder.educate.module.system.controller.admin.user;
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.excel.core.util.ExcelUtils;
+import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
+import cn.iocoder.educate.framework.operatelog.core.enums.OperateTypeEnum;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
 import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
@@ -19,7 +23,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,7 +131,7 @@ public class UserController {
     }
 
     @GetMapping("/list-all-simple-dept")
-    @Operation(summary = "获取用户精简信息列表+部门名称", description = "只包含被开启的用户，主要用于前端的下拉选项")
+    @Operation(summary = "获取用户精简信息列表 + 部门名称", description = "只包含被开启的用户，主要用于前端的下拉选项")
     public CommonResult<List<UserSimpleRespVO>> getSimpleUserSimpleDeptList() {
         // 获用户列表，只要开启状态的
         List<AdminUserDO> list = adminUserService.getUserListByStatus(CommonStatusEnum.ENABLE.getStatus());
@@ -143,6 +149,21 @@ public class UserController {
         userList.sort(Comparator.comparing(UserSimpleRespVO::getDeptName));
         // 排序后，返回给前端
         return success(UserConvert.INSTANCE.convertList05(userList));
+    }
+
+    @GetMapping("/export")
+    @Operation(summary = "导出用户组")
+    @PreAuthorize("@lanxin.hasPermission('system:user:export')")
+    @OperateLog(type = OperateTypeEnum.EXPORT)
+    public void exportUserList(@Validated UserPageReqVO exportReqVO,
+                               HttpServletResponse response) throws IOException {
+        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
+        List<AdminUserDO> list = adminUserService.getUserPage(exportReqVO).getList();
+        List<Long> collectDeptIds = list.stream().map(AdminUserDO::getDeptId).collect(Collectors.toList());
+        Map<Long, DeptDO> deptMap = deptService.getDeptMap(collectDeptIds);
+        List<UserExcelRespVO> userExcelRespVOS = UserConvert.INSTANCE.convertList(list, deptMap);
+        // 输出 Excel
+        ExcelUtils.write(response, "用户数据.xls", "数据", UserExcelRespVO.class, userExcelRespVOS);
     }
 
 }

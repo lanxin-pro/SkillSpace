@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.infra.service.logger;
 
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.infra.api.logger.dto.ApiAccessLogCreateReqDTO;
 import cn.iocoder.educate.module.infra.controller.admin.logger.vo.apiaccesslog.ApiAccessLogPageReqVO;
@@ -29,6 +30,10 @@ public class ApiAccessLogServiceImpl implements ApiAccessLogService{
 
     @Override
     public PageResult<ApiAccessLogDO> getApiAccessLogPage(ApiAccessLogPageReqVO pageReqVO) {
-        return apiAccessLogMapper.selectPage(pageReqVO);
+        if(PageParam.PAGE_SIZE_NONE.equals(pageReqVO.getPageSize())) {
+            return apiAccessLogMapper.selectPage();
+        } else {
+            return apiAccessLogMapper.selectPage(pageReqVO);
+        }
     }
 }

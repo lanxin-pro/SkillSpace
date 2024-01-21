@@ -12,12 +12,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/4 11:24
  */
 @Mapper
 public interface ApiAccessLogMapper extends BaseMapper<ApiAccessLogDO> {
+
+    default PageResult<ApiAccessLogDO> selectPage() {
+        // 这里需要进行判断了，特殊：不分页，直接查询全部
+        List<ApiAccessLogDO> apiAccessLogDOS = this.selectList(new LambdaQueryWrapper<>());
+        return new PageResult<>(apiAccessLogDOS, (long) apiAccessLogDOS.size());
+    }
 
     default PageResult<ApiAccessLogDO> selectPage(ApiAccessLogPageReqVO apiAccessLogPageReqVO) {
         LambdaQueryWrapper<ApiAccessLogDO> apiAccessLogDOLambdaQueryWrapper = new LambdaQueryWrapper<>();

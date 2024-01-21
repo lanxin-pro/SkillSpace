@@ -1,11 +1,9 @@
 package cn.iocoder.educate.module.system.convert.user;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.iocoder.educate.module.system.api.user.dto.AdminUserRespDTO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageItemRespVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.profile.UserProfileRespVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserSimpleRespVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserDO;
@@ -13,8 +11,12 @@ import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.dal.post.PostDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Author: j-sentinel
@@ -36,6 +38,17 @@ public interface UserConvert {
     UserProfileRespVO convert03(AdminUserDO bean);
 
     List<UserProfileRespVO.Role> convertList(List<RoleDO> list);
+
+    default List<UserExcelRespVO> convertList(List<AdminUserDO> list, Map<Long, DeptDO> deptMap) {
+        return list.stream().map(user -> {
+            UserExcelRespVO userExcelRespVO = BeanUtil.toBean(user, UserExcelRespVO.class);
+            DeptDO deptDO = deptMap.get(user.getDeptId());
+            if(deptDO != null) {
+                userExcelRespVO.setDeptName(deptDO.getName());
+            }
+            return userExcelRespVO;
+        }).filter(Objects::nonNull).collect(Collectors.toList());
+    }
 
     UserProfileRespVO.Dept convert02(DeptDO bean);
 

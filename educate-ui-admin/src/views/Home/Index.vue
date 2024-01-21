@@ -188,7 +188,7 @@
 </template>
 
 <script setup>
-import { listOperateLog } from "@/api/system/operatelog"
+import { listOperateLog, exportApiAccessLog } from "@/api/system/operatelog"
 import { ref,reactive,onMounted } from 'vue'
 import { parseTime } from '@/utils/ruoyi.js'
 import Pagination from '@/components/Pagination/index.vue'
@@ -196,6 +196,8 @@ import DictTag from '@/components/DictTag/index.vue'
 import OperateLogDetail from '@/views/system/operatelog/OperateLogDetail.vue'
 import CountTo from '@/components/CountTo/index.vue'
 import { dayDateFormatter } from '@/utils/formatTime.js'
+import ELComponent from '@/plugins/modal.js'
+import download from '@/utils/download.js'
 
 const detailRef = ref()
 const queryForm = ref()
@@ -255,6 +257,20 @@ const handleChangeDate = (num)=>{
     queryParams.startTime = value1
   }
   getList()
+}
+// excel的数据导出
+const handleExport = async () => {
+  try {
+    // 导出的二次确认
+    await ELComponent.confirm("是否确认导出数据项")
+    // 发起导出
+    exportLoading.value = true
+    const data = await exportApiAccessLog(queryParams)
+    download.excel(data, 'API 访问日志.xlsx')
+  } catch {
+  } finally {
+    exportLoading.value = false
+  }
 }
 </script>
 

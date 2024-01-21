@@ -3,6 +3,9 @@ package cn.iocoder.educate.module.member.service.user;
 import cn.iocoder.educate.framework.common.enums.TerminalEnum;
 import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 会员用户 Service 接口
  *
@@ -70,4 +73,19 @@ public interface MemberUserService {
      */
     MemberUserDO getUser(Long loginUserId);
 
+    /**
+     * 基于用户昵称，模糊匹配用户列表
+     *
+     * @param nickname 用户昵称，用于模糊匹配
+     * @return 用户信息列表
+     */
+    List<MemberUserDO> getUserListByNickname(String nickname);
+
+    /**
+     * 通过用户 ID 查询用户们
+     *
+     * @param collectUserIds 用户 ID
+     * @return 用户对象信息数组
+     */
+    List<MemberUserDO> getUserList(Set<Long> collectUserIds);
 }

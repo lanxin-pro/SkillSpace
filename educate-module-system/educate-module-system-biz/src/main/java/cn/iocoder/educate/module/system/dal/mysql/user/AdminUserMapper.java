@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.dal.mysql.user;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
@@ -41,11 +42,17 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
                         ArrayUtils.get(userPageReqVO.getCreateTime(),1))
                 .in(CollectionUtil.isNotEmpty(deptIds),AdminUserDO::getDeptId,deptIds)
                 .orderByDesc(AdminUserDO::getId);
+        // TODO 这个需要考虑封装！
         Page<AdminUserDO> mpPage = new Page<>(userPageReqVO.getPageNo(), userPageReqVO.getPageSize());
         Page<AdminUserDO> adminUserDOPage = this.selectPage(mpPage, adminUserDOLambdaQueryWrapper);
         return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
     }
 
+    default PageResult<AdminUserDO> selectPage(){
+        // 这里需要进行判断了，特殊：不分页，直接查询全部
+        List<AdminUserDO> adminUserDOList = this.selectList(new LambdaQueryWrapper<>());
+        return new PageResult<>(adminUserDOList, (long) adminUserDOList.size());
+    }
 
     default List<AdminUserDO> selectListByNickname(String userNickname){
         LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();

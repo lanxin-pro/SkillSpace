@@ -1,5 +1,6 @@
 package cn.iocoder.educate.framework.operatelog.core.enums;
 
+import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

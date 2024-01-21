@@ -15,3 +15,18 @@ export const listOperateLog = (query) => {
         }
     })
 }
+
+/**
+ * 导出API 访问日志
+ *
+ * @param params
+ * @returns {*}
+ */
+export const exportApiAccessLog = (params) => {
+    return request({
+        url: '/infra/api-access-log/export-excel',
+        method: 'get',
+        params,
+        responseType: 'blob'
+    })
+}
