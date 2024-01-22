@@ -102,12 +102,8 @@ public class AdminUserServiceImpl implements AdminUserService{
 
     @Override
     public PageResult<AdminUserDO> getUserPage(UserPageReqVO reqVO) {
-        if(PageParam.PAGE_SIZE_NONE.equals(reqVO.getPageSize())) {
-            return adminUserMapper.selectPage();
-        } else {
-            // 分页的pageNo pageSize      分页条件(这个是我想要查询的ids)
-            return adminUserMapper.selectPage(reqVO, getDeptCondition(reqVO.getDeptId()));
-        }
+        // 分页的pageNo pageSize      分页条件(这个是我想要查询的ids)
+        return adminUserMapper.selectPage(reqVO, getDeptCondition(reqVO.getDeptId()));
     }
 
     @Override

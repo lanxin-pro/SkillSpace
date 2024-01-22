@@ -43,15 +43,14 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
                 .in(CollectionUtil.isNotEmpty(deptIds),AdminUserDO::getDeptId,deptIds)
                 .orderByDesc(AdminUserDO::getId);
         // TODO 这个需要考虑封装！
-        Page<AdminUserDO> mpPage = new Page<>(userPageReqVO.getPageNo(), userPageReqVO.getPageSize());
-        Page<AdminUserDO> adminUserDOPage = this.selectPage(mpPage, adminUserDOLambdaQueryWrapper);
-        return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
-    }
-
-    default PageResult<AdminUserDO> selectPage(){
-        // 这里需要进行判断了，特殊：不分页，直接查询全部
-        List<AdminUserDO> adminUserDOList = this.selectList(new LambdaQueryWrapper<>());
-        return new PageResult<>(adminUserDOList, (long) adminUserDOList.size());
+        if(PageParam.PAGE_SIZE_NONE.equals(userPageReqVO.getPageSize())) {
+            List<AdminUserDO> adminUserDOList = this.selectList(adminUserDOLambdaQueryWrapper);
+            return new PageResult<>(adminUserDOList, (long) adminUserDOList.size());
+        } else {
+            Page<AdminUserDO> mpPage = new Page<>(userPageReqVO.getPageNo(), userPageReqVO.getPageSize());
+            Page<AdminUserDO> adminUserDOPage = this.selectPage(mpPage, adminUserDOLambdaQueryWrapper);
+            return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
+        }
     }
 
     default List<AdminUserDO> selectListByNickname(String userNickname){

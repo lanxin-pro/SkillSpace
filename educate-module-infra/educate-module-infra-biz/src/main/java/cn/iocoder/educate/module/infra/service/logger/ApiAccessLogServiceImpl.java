@@ -30,10 +30,6 @@ public class ApiAccessLogServiceImpl implements ApiAccessLogService{
 
     @Override
     public PageResult<ApiAccessLogDO> getApiAccessLogPage(ApiAccessLogPageReqVO pageReqVO) {
-        if(PageParam.PAGE_SIZE_NONE.equals(pageReqVO.getPageSize())) {
-            return apiAccessLogMapper.selectPage();
-        } else {
-            return apiAccessLogMapper.selectPage(pageReqVO);
-        }
+        return apiAccessLogMapper.selectPage(pageReqVO);
     }
 }

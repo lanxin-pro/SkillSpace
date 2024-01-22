@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.dal.mysql.logger;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.educate.module.infra.controller.admin.logger.vo.apiaccesslog.ApiAccessLogPageReqVO;
@@ -50,9 +51,15 @@ public interface ApiAccessLogMapper extends BaseMapper<ApiAccessLogDO> {
                 .ge(apiAccessLogPageReqVO.getDuration() != null,
                         ApiAccessLogDO::getDuration,apiAccessLogPageReqVO.getDuration())
                 .orderByDesc(ApiAccessLogDO::getId);
-        Page<ApiAccessLogDO> page = new Page<>(apiAccessLogPageReqVO.getPageNo(), apiAccessLogPageReqVO.getPageSize());
-        Page<ApiAccessLogDO> apiAccessLogDOPage = this.selectPage(page, apiAccessLogDOLambdaQueryWrapper);
-        return new PageResult<>(apiAccessLogDOPage.getRecords(),apiAccessLogDOPage.getTotal());
+        if(PageParam.PAGE_SIZE_NONE.equals(apiAccessLogPageReqVO.getPageSize())) {
+            List<ApiAccessLogDO> apiAccessLogDOS = this.selectList(apiAccessLogDOLambdaQueryWrapper);
+            return new PageResult<>(apiAccessLogDOS, (long) apiAccessLogDOS.size());
+        } else {
+            Page<ApiAccessLogDO> page = new Page<>(apiAccessLogPageReqVO.getPageNo(), apiAccessLogPageReqVO.getPageSize());
+            Page<ApiAccessLogDO> apiAccessLogDOPage = this.selectPage(page, apiAccessLogDOLambdaQueryWrapper);
+            return new PageResult<>(apiAccessLogDOPage.getRecords(),apiAccessLogDOPage.getTotal());
+        }
+
     }
 
 }
