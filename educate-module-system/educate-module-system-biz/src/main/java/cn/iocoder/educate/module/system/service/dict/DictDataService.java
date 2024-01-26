@@ -69,4 +69,13 @@ public interface DictDataService {
      */
     DictDataDO getDictData(Long id);
 
+    /**
+     * 获取之i的指定的字典数据
+     *
+     * @param dictType 字典类型
+     * @param value 字典数据值
+     * @return 字典数据
+     */
+    DictDataDO getDictData(String dictType,String value);
+
 }
