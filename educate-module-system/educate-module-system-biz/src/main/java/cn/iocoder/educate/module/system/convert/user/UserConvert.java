@@ -29,6 +29,8 @@ public interface UserConvert {
 
     UserPageItemRespVO convert(AdminUserDO bean);
 
+    AdminUserDO convert(UserImportExcelVO bean);
+
     AdminUserDO convert(UserCreateReqVO bean);
 
     UserPageItemRespVO.Dept convert(DeptDO bean);

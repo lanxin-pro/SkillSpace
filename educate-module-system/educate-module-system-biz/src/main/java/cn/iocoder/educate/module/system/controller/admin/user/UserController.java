@@ -13,14 +13,17 @@ import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
+import cn.iocoder.educate.module.system.enums.common.SexEnum;
 import cn.iocoder.educate.module.system.service.dept.DeptService;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -166,4 +169,35 @@ public class UserController {
         ExcelUtils.write(response, "用户数据.xls", "数据", UserExcelRespVO.class, userExcelRespVOS);
     }
 
+    @GetMapping("/get-import-template")
+    @Operation(summary = "获得导入用户模板")
+    public void importTemplate(HttpServletResponse response) throws IOException {
+        // 手动创建导出 demo
+        List<UserImportExcelVO> userImportExcelVOS = Arrays.asList(
+                UserImportExcelVO.builder().username("j-sentinel").deptId(1L).email("2724650486@qq.com")
+                        .mobile("13571082448").nickname("蓝欣").status(CommonStatusEnum.ENABLE.getStatus())
+                        .sex(SexEnum.MALE.getSex()).build(),
+                UserImportExcelVO.builder().username("j-sentinel").deptId(1L).email("2724650486@qq.com")
+                        .mobile("13571082448").nickname("蓝欣").status(CommonStatusEnum.ENABLE.getStatus())
+                        .sex(SexEnum.MALE.getSex()).build()
+        );
+        // 输出 .xls or .xlsx
+        ExcelUtils.write(response, "用户导入模板.xls", "用户列表", UserImportExcelVO.class, userImportExcelVOS);
+    }
+
+    @PostMapping("/import")
+    @Operation(summary = "导入用户")
+    @Parameters({
+            @Parameter(name = "file", description = "Excel 文件", required = true),
+            @Parameter(name = "updateSupport", description = "是否支持更新，默认为 false", example = "true")
+    })
+    @PreAuthorize("@lanxin.hasPermission('system:user:import')")
+    public CommonResult<UserImportExcelRespVO> importExcel(@RequestParam("file") MultipartFile file,
+                                                      @RequestParam(value = "updateSupport",
+                                                      required = false,
+                                                      defaultValue = "false") Boolean updateSupport) throws Exception {
+        List<UserImportExcelVO> readList = ExcelUtils.read(file, UserImportExcelVO.class);
+        UserImportExcelRespVO userImportExcelRespVO = adminUserService.importUserList(readList, updateSupport);
+        return success(userImportExcelRespVO);
+    }
 }

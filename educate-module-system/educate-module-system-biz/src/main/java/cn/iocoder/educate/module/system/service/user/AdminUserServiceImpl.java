@@ -5,14 +5,13 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.exception.ServiceException;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.object.PageUtils;
 import cn.iocoder.educate.module.infra.api.file.FileApi;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.UserPostDO;
@@ -25,6 +24,7 @@ import cn.iocoder.educate.module.system.service.permission.PermissionService;
 import cn.iocoder.educate.module.system.service.post.PostService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +44,9 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 public class AdminUserServiceImpl implements AdminUserService{
+
+    @Value("${lanxin.system.user.init-password:lanxinyan}")
+    private String userInitPassword;
 
     @Resource
     private AdminUserMapper adminUserMapper;
@@ -217,6 +220,50 @@ public class AdminUserServiceImpl implements AdminUserService{
     @Override
     public String getUserNickname(Long id) {
         return adminUserMapper.selectByNickname(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class) // 添加事务，异常则回滚所有导入
+    public UserImportExcelRespVO importUserList(List<UserImportExcelVO> readList, Boolean isUpdateSupport) {
+        if(CollUtil.isEmpty(readList)){
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_IMPORT_LIST_IS_EMPTY);
+        }
+        // 构建对象
+        UserImportExcelRespVO userImportExcelRespVO = UserImportExcelRespVO.builder().createUsernames(new ArrayList<>())
+                .updateUsernames(new ArrayList<>()).failureUsernames(new LinkedHashMap<>()).build();
+        readList.forEach(importUser -> {
+            // 校验，判断是否有不符合的原因
+            try {
+                // 有id才能进行username的校验
+                validateUserForCreateOrUpdate(null, null, importUser.getMobile(), importUser.getEmail(),
+                        importUser.getDeptId(), null);
+            }catch (ServiceException exception) {
+                // 把每一个的错误都要写上去
+                userImportExcelRespVO.getFailureUsernames().put(importUser.getUsername(), exception.getMessage());
+                return;
+            }
+            // 判断如果不存在，则进行插入
+            AdminUserDO existUser = adminUserMapper.selectByUsername(importUser.getUsername());
+            if (existUser == null) {
+                adminUserMapper.insert(UserConvert.INSTANCE.convert(importUser)
+                        // 设置默认密码及空岗位编号数组
+                        .setPassword(encodePassword(userInitPassword))
+                        .setPostIds(new HashSet<>()));
+                userImportExcelRespVO.getCreateUsernames().add(importUser.getUsername());
+                return;
+            }
+            // 如果存在，判断是否允许更新
+            if (!isUpdateSupport) {
+                userImportExcelRespVO.getFailureUsernames().put(importUser.getUsername(),
+                        ErrorCodeConstants.USER_USERNAME_EXISTS.getMsg());
+                return;
+            }
+            AdminUserDO updateUser = UserConvert.INSTANCE.convert(importUser);
+            updateUser.setId(existUser.getId());
+            adminUserMapper.updateById(updateUser);
+            userImportExcelRespVO.getUpdateUsernames().add(importUser.getUsername());
+        });
+        return userImportExcelRespVO;
     }
 
     /**

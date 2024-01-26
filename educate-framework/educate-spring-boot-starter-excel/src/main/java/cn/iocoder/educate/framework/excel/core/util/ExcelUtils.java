@@ -3,6 +3,7 @@ package cn.iocoder.educate.framework.excel.core.util;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.converters.longconverter.LongStringConverter;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +45,20 @@ public class ExcelUtils {
         response.addHeader("Content-Disposition", "attachment;filename="
                 + URLEncoder.encode(filename, StandardCharsets.UTF_8.name()));
         response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+    }
+
+    /**
+     *
+     * @param file excel文件
+     * @param head 转换的对象
+     * @param <T>
+     * @return
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> List<T> read(MultipartFile file, Class<T> head) throws IOException {
+        return EasyExcel.read(file.getInputStream(), head, null)
+                .autoCloseStream(false)  // 不要自动关闭，交给 Servlet 自己处理
+                .doReadAllSync();
     }
 
 }

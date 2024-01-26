@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.controller.admin.logger.vo.apiaccesslog;
 
 import cn.iocoder.educate.framework.excel.core.annotations.DictFormat;
+import cn.iocoder.educate.framework.excel.core.covert.DictConvert;
 import cn.iocoder.educate.module.system.enums.DictTypeConstants;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -31,7 +32,7 @@ public class ApiAccessLogExcelRespVO {
     private Long userId;
 
     @Schema(description = "用户类型，参见 UserTypeEnum 枚举", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
-    @ExcelProperty(value = "用户类型")
+    @ExcelProperty(value = "用户类型", converter = DictConvert.class)
     @DictFormat(DictTypeConstants.USER_TYPE)
     private Integer userType;
 

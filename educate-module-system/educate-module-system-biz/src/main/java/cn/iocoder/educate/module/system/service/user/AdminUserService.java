@@ -2,9 +2,7 @@ package cn.iocoder.educate.module.system.service.user;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserCreateReqVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
-import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
+import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
 import java.io.InputStream;
@@ -161,4 +159,13 @@ public interface AdminUserService {
      * @return 用户的nickname
      */
     String getUserNickname(Long id);
+
+    /**
+     * 批量导入用户
+     *
+     * @param readList 导入用户列表
+     * @param updateSupport 是否支持更新
+     * @return 导入结果
+     */
+    UserImportExcelRespVO importUserList(List<UserImportExcelVO> readList, Boolean updateSupport);
 }
