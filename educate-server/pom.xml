@@ -90,6 +90,12 @@
         </dependency>
 
         <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-module-course-biz</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
             <version>Hoxton.SR8</version>

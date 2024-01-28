@@ -24,6 +24,7 @@
         <!-- TODO j-sentinel 报错点，目前原因还在审查 -->
         <module>educate-module-mall</module>
         <module>educate-module-member</module>
+        <module>educate-module-course</module>
     </modules>
 
     <name>${project.artifactId}</name>
