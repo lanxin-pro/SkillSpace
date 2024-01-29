@@ -170,6 +170,13 @@ export const DICT_TYPE = {
     MP_AUTO_REPLY_REQUEST_MATCH: 'mp_auto_reply_request_match', // 自动回复请求匹配类型
     MP_MESSAGE_TYPE: 'mp_message_type', // 消息类型
 
+    // ========== COURSE 模块 ==========
+    COURSE_AUTO_TYPE: 'course_auto_type',
+    COURSE_PUBLISH_STATUS: 'course_public_status',
+    COURSE_RECOMMEND: 'course_recommend',
+    COURSE_HOT: 'course_hot',
+    COURSE_TOP: 'course_top',
+
     // ========== MALL - PRODUCT 模块 ==========
     PRODUCT_SPU_STATUS: 'product_spu_status', // 商品 SPU 状态
 
