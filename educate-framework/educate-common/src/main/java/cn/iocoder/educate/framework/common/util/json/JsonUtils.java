@@ -20,7 +20,7 @@ import java.util.List;
  * @Date: 2023/5/14 10:09
  */
 @Slf4j
-@UtilityClass
+// @UtilityClass
 public class JsonUtils {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
