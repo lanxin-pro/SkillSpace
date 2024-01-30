@@ -352,9 +352,9 @@ const submitForm = async () => {
   // 提交请求
   formLoading.value = true
   try {
-    const data = formData.value
+    const data = Object.assign(formData)
     if (formType.value === 'create') {
-      await createCourseOnline(Object.assign(formData))
+      await createCourseOnline(data)
       ELComponent.msgSuccess("创建成功")
     } else {
       await updateCourseOnline(data)

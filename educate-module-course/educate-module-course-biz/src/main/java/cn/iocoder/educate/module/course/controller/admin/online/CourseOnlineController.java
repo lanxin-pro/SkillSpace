@@ -2,9 +2,7 @@ package cn.iocoder.educate.module.course.controller.admin.online;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlinePageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineRespVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.*;
 import cn.iocoder.educate.module.course.convert.online.CourseOnlineConvert;
 import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
 import cn.iocoder.educate.module.course.service.online.CourseOnlineService;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import java.util.Collection;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -57,6 +57,40 @@ public class CourseOnlineController {
     public CommonResult<CourseOnlineRespVO> getOnlineInfo(@RequestParam("id") Long id) {
         CourseOnlineDO onlineInfo = onlineInfoService.getOnlineInfo(id);
         return success(CourseOnlineConvert.INSTANCE.convert(onlineInfo));
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "更新课程信息")
+    @PreAuthorize("@lanxin.hasPermission('course:online:update')")
+    public CommonResult<Boolean> updateOnlineInfo(@Valid @RequestBody CourseOnlineUpdateReqVO updateReqVO) {
+        onlineInfoService.updateOnlineInfo(updateReqVO);
+        return success(true);
+    }
+
+    @PutMapping("/updateStatus")
+    @Operation(summary = "更新课程信息")
+    @PreAuthorize("@lanxin.hasPermission('course:online:updateStatus')")
+    public CommonResult<Boolean> updateStatusOnlineInfo(@Valid @RequestBody CourseOnlineUpdateStatusReqVO updateReqVO) {
+        onlineInfoService.updateStatusOnlineInfo(updateReqVO);
+        return success(true);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除课程信息")
+    @Parameter(name = "id", description = "编号", required = true)
+    @PreAuthorize("@lanxin.hasPermission('course:online:delete')")
+    public CommonResult<Boolean> deleteOnlineInfo(@RequestParam("id") Long id) {
+        onlineInfoService.deleteOnlineInfo(id);
+        return success(true);
+    }
+
+    @DeleteMapping("/delBatch")
+    @Operation(summary = "根据课程ids批量删除课程")
+    @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
+    @PreAuthorize("@lanxin.hasPermission('course:online:delBatch')")
+    public CommonResult<Boolean> deleteOnlineInfo(@RequestParam("ids") Collection<Long> ids) {
+        onlineInfoService.deleteBatchOnlineInfo(ids);
+        return success(true);
     }
 
 }

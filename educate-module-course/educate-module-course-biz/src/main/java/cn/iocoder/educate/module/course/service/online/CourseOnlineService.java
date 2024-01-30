@@ -3,7 +3,11 @@ package cn.iocoder.educate.module.course.service.online;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlinePageReqVO;
 import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateStatusReqVO;
 import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
+
+import java.util.Collection;
 
 /**
  * 课程接口
@@ -35,4 +39,32 @@ public interface CourseOnlineService {
      * @return 课程信息
      */
     CourseOnlineDO getOnlineInfo(Long id);
+
+    /**
+     * 更新课程的章
+     *
+     * @param updateReqVO 更新的内容
+     */
+    void updateOnlineInfo(CourseOnlineUpdateReqVO updateReqVO);
+
+    /**
+     * 删除课程的章
+     *
+     * @param id 删除的id
+     */
+    void deleteOnlineInfo(Long id);
+
+    /**
+     * 批量删除课程的章
+     *
+     * @param ids 批量删除的ids
+     */
+    void deleteBatchOnlineInfo(Collection<Long> ids);
+
+    /**
+     * 更新课程的状态
+     *
+     * @param updateReqVO 更新的内容
+     */
+    void updateStatusOnlineInfo(CourseOnlineUpdateStatusReqVO updateReqVO);
 }

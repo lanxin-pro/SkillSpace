@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>educate-module-video-api</artifactId>
+            <artifactId>educate-module-course-api</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>

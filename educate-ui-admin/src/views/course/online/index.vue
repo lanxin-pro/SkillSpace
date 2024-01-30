@@ -96,7 +96,7 @@
             plain
             size="small"
             type="info"
-            @click="toggleExpandAll()">删除课程</el-button>
+            @click="deleteBatches()">批量删除课程</el-button>
       </el-col>
 
     </el-row>
@@ -144,7 +144,7 @@
               v-model="scope.row.courseType"
               placeholder="请选中课程分类"
               size="small"
-              @change="handleUpdate(scope, 'coursetype')">
+              @change="handleUpdate(scope, 'courseType')">
             <el-option
                 v-for="item in getIntDictOptions(DICT_TYPE.COURSE_AUTO_TYPE)"
                 :key="item.value"
@@ -167,14 +167,14 @@
         <template v-slot="scope">
           <el-switch
               v-model="scope.row.status"
-              :active-value="1"
-              :inactive-value="0"
+              :active-value="0"
+              :inactive-value="1"
               :inline-prompt="true"
               active-color="#FF358E"
               active-text="是"
               inactive-color=""
               inactive-text="否"
-              @change="handleStatusChange(scope.row)"
+              @change="handleUpdate(scope, 'status')"
           />
         </template>
       </el-table-column>
@@ -190,7 +190,7 @@
               active-text="是"
               inactive-color=""
               inactive-text="否"
-              @change="handleStatusChange(scope.row)"
+              @change="handleUpdate(scope, 'comment')"
           />
         </template>
       </el-table-column>
@@ -206,7 +206,7 @@
               active-text="是"
               inactive-color=""
               inactive-text="否"
-              @change="handleStatusChange(scope.row)"
+              @change="handleUpdate(scope, 'isHot')"
           />
         </template>
       </el-table-column>
@@ -266,16 +266,15 @@ import ELComponent from '@/plugins/modal.js'
 import OnlineFormCreateOrUpdate from './OnlineFormCreateOrUpdate.vue'
 import OnlineFormChapterLesson from './OnlineFormChapterLesson.vue'
 import { parseTime } from '@/utils/ruoyi.js'
-import { getCourseOnlineInfo } from '@/api/course/online/index.js'
+import { getCourseOnlineInfo, courseDelete, courseDeleteBatchIds, updateStatusCourseOnline } from '@/api/course/online/index.js'
 import Pagination from '@/components/Pagination/index.vue'
-import DictTag from '@/components/DictTag/index.vue'
 
 // 列表的加载中
 const loading = ref(true)
 // 列表的数据
 const list = ref()
 const queryParams = reactive({
-  name: undefined,
+  title: undefined,
   status: undefined,
   categoryId: undefined,
   categoryType: undefined,
@@ -299,7 +298,6 @@ const getList = async ()=>{
   try {
     const response = await getCourseOnlineInfo(queryParams)
     list.value = response.data.list
-    console.log('数据中的数据', list.value)
     total.value = response.data.total
   } finally {
     loading.value = false
@@ -323,27 +321,52 @@ const handleQuery = ()=>{
 
 /** 重置按钮操作 */
 const resetQuery = () => {
-  // TODO j-sentinel 不知道为什么queryFormRef.value.resetFields()对name查询没有生效
-  queryParams.name = undefined
-  queryParams.pageNo = 1
-  queryFormRef.value.resetFields()
+  // TODO j-sentinel uat这是这里无效
+  queryFormRef.value?.resetFields()
   handleQuery()
 }
 /** 删除按钮操作 */
 const handleDelete = async (row)=>{
   try {
     // 删除的二次确认
-    await ELComponent.confirm(`您确定要删除 ${row.name} 吗？`)
+    await ELComponent.confirm(`您确定要删除 ${row.title} 吗？`)
     // 发起删除
-    await deleteDept(row.id)
+    await courseDelete(row.id)
     ELComponent.msgSuccess('删除成功')
     // 刷新列表
     await getList()
   } catch {}
 }
+const batchIds = ref([])
+/** 批量删除 */
+const deleteBatches = async () => {
+  try {
+    // 删除的二次确认
+    await ELComponent.confirm(`您确定要批量删除编号为 ${batchIds.value} 吗？`)
+    // 发起删除
+    await courseDeleteBatchIds(batchIds.value)
+    ELComponent.msgSuccess('批量删除成功')
+    // 刷新列表
+    await getList()
+  } catch {}
+}
+const handleSelectionChange = (item) => {
+  batchIds.value = item.map( (course) => {
+    return course.id
+  })
+}
 /** 修改状态 */
-const handleStatusChange = (row) => {
-
+const handleUpdate = async (scope, filed) => {
+  try {
+    const params = {}
+    params.id = scope.row.id
+    // 这样写对后台的属性要求非常高
+    params[filed] = scope.row[filed]
+    await updateStatusCourseOnline(params)
+    ELComponent.msgSuccess('更新成功')
+  }catch (err){
+    ELComponent.msgError(err)
+  }
 }
 </script>
 

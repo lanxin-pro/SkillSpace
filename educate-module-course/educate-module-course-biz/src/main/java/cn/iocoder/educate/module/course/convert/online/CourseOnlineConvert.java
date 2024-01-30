@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.course.convert.online;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
 import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineRespVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateStatusReqVO;
 import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -19,6 +21,10 @@ public interface CourseOnlineConvert {
     CourseOnlineRespVO convert(CourseOnlineDO courseOnlineDO);
 
     CourseOnlineDO convert(CourseOnlineCreateReqVO courseOnlineDO);
+
+    CourseOnlineDO convert(CourseOnlineUpdateReqVO courseOnlineDO);
+
+    CourseOnlineDO convert(CourseOnlineUpdateStatusReqVO courseOnlineDO);
 
     PageResult<CourseOnlineRespVO> convertPage(PageResult<CourseOnlineDO> courseOnlineDOPageResult);
 
