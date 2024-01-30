@@ -1,10 +1,16 @@
 package cn.iocoder.educate.module.course.dal.dataobject.online;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author j-sentinel
@@ -35,7 +41,8 @@ public class CourseOnlineDO extends BaseDO {
     /**
      * 主题标签
      */
-    private String tags;
+    @TableField(typeHandler = JsonLongSetTypeHandler.class)
+    private Set<String> tags;
 
     /**
      * 主题缩略描述

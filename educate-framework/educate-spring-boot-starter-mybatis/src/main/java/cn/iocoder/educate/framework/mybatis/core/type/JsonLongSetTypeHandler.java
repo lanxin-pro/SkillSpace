@@ -14,6 +14,7 @@ import java.util.Set;
  * 在我们将字符串反序列化为 Set 并且泛型为 Long 时，如果每个元素的数值太小，会被处理成 Integer 类型，导致可能存在隐性的 BUG。
  *
  * 例如说哦，{@link cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO#postIds} 属性
+ * 例如说哦，{@link cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO#tags} 属性
  *
  * @Author: j-sentinel
  * @Date: 2023/5/12 21:44

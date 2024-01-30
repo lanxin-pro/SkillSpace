@@ -3,6 +3,7 @@ package cn.iocoder.educate.module.course.controller.admin.online.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * @author j-sentinel
@@ -13,6 +14,9 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 public class CourseOnlineRespVO {
 
+    @Schema(description = "课程编号")
+    private Long id;
+
     @Schema(description = "主题标题")
     private String title;
 
@@ -20,7 +24,7 @@ public class CourseOnlineRespVO {
     private String content;
 
     @Schema(description = "主题标签")
-    private String tags;
+    private Set<String> tags;
 
     @Schema(description = "主题缩略描述", example = "啊对对对，你说的对")
     private String description;

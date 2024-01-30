@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.course.service.online;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlinePageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
 import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
 
 /**
@@ -19,4 +20,19 @@ public interface CourseOnlineService {
      */
     PageResult<CourseOnlineDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO);
 
+    /**
+     * 新增课程的章
+     *
+     * @param reqVO 新增的数据
+     * @return id
+     */
+    Long createCourse(CourseOnlineCreateReqVO reqVO);
+
+    /**
+     * 根据id获取课程信息
+     *
+     * @param id 课程id
+     * @return 课程信息
+     */
+    CourseOnlineDO getOnlineInfo(Long id);
 }

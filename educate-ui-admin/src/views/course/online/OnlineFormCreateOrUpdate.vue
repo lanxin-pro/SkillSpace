@@ -23,9 +23,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="课程分类" prop="categoryId">
+            <el-form-item label="课程分类" prop="courseType">
               <el-select
-                  v-model="formData.categoryId"
+                  v-model="formData.courseType"
                   placeholder="请选择课程状态"
                   style="width: 100%"
                   @change="handleCategory">
@@ -196,7 +196,7 @@
             <el-form-item label="课程标签" prop="tags">
               <!--      这里的tags是我重新定义的一个响应式数据          -->
               <el-tag
-                  v-for="(itemTag,index) in tagsList"
+                  v-for="(itemTag, index) in tagsList"
                   class="mr-3"
                   closable
                   size="large"
@@ -253,7 +253,11 @@ import { ref,reactive } from 'vue'
 import { CommonStatusEnum } from '@/utils/constants'
 import Dialog from '@/components/Dialog/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { createCourseOnline, updateCourseOnline } from '@/api/course/online/index.js'
+import {
+  createCourseOnline,
+  updateCourseOnline,
+  getCourseOnlineId
+} from '@/api/course/online/index.js'
 import { listSimplePosts } from '@/api/system/post.js'
 import { listSimpleDepts } from '@/api/system/dept.js'
 import { handleTree,defaultProps } from '@/utils/tree.js'
@@ -271,7 +275,7 @@ const formLoading = ref(false)
 const formType = ref('')
 const formData = reactive({
   title: '', // 课程标题
-  categoryId: 1, // 分类
+  courseType: 1, // 分类
   img: '', // 图片地址
   comments: 0, // 评论人数
   sorted: 0, // 排序
@@ -281,7 +285,7 @@ const formData = reactive({
   price: 0, // 价钱
   realPrice: 0, // 原价
   comment: 1, // 是否允许评论
-  isNew: 0, // 是否最新
+  isNew: 1, // 是否最新
   isHot: 0, // 是否最热
   isPush: 0, // 是否推荐
   goTop: 0, // 是否指定
@@ -293,13 +297,8 @@ const tag = ref()
 const tagsList = ref([])
 // 表单 Ref
 const formRef = ref()
-// 树形结构
-const deptList = ref([])
-// 岗位列表
-const postList = ref([])
 /** 添加标签 */
 const handleAppendTags = (ev)=>{
-  console.log(tag.value)
   if(tag.value){
     const cIndex = tagsList.value.findIndex(item=>{
       return item === tag.value
@@ -307,7 +306,7 @@ const handleAppendTags = (ev)=>{
     if(cIndex === -1){
       tagsList.value.push(tag.value)
       tag.value = ""
-      formData.tags = tagsList.value.join(",")
+      formData.tags = tagsList.value
     }else{
       return ELComponent.msgError("标签已经存在")
     }
@@ -328,19 +327,12 @@ const open = async (type, id) => {
   if (id) {
     formLoading.value = true
     try {
-      const response = await getUser(id)
-      formData.value = response.data
+      const response = await getCourseOnlineId(id)
+      Object.assign(formData, response.data)
     } finally {
       formLoading.value = false
     }
   }
-  // 加载部门树
-  const responseDepts = await listSimpleDepts()
-  deptList.value = handleTree(responseDepts.data)
-  // 加载岗位列表
-  const responsePosts = await listSimplePosts()
-
-  postList.value = responsePosts.data
 }
 // 提供 open 方法，用于打开弹窗
 defineExpose({ open })
@@ -348,7 +340,7 @@ defineExpose({ open })
 /** 提交表单 */
 const emit = defineEmits(['success']) // 定义 success 事件，用于操作成功后的回调
 const submitForm = async () => {
-  console.log('提交的数据', formData)
+  console.log('提交的数据', Object.assign(formData))
   // 校验表单
   if (!formRef){
     return
@@ -362,7 +354,7 @@ const submitForm = async () => {
   try {
     const data = formData.value
     if (formType.value === 'create') {
-      await createCourseOnline(data)
+      await createCourseOnline(Object.assign(formData))
       ELComponent.msgSuccess("创建成功")
     } else {
       await updateCourseOnline(data)
@@ -379,7 +371,7 @@ const submitForm = async () => {
 const resetForm = () => {
   Object.assign(formData, {
     title: '', // 课程标题
-    categoryId: 1, // 分类
+    courseType: 1, // 分类
     img: '', // 图片地址
     comments: 0, // 评论人数
     sorted: 0, // 排序
@@ -388,11 +380,11 @@ const resetForm = () => {
     views: 0, // 浏览数
     price: 0, // 价钱
     realPrice: 0, // 原价
-    comment: 0, // 是否允许评论
-    isNew: 0, // 是否最新
+    comment: 1, // 是否允许评论
+    isNew: 1, // 是否最新
     isHot: 0, // 是否最热
-    isPush: 0, // 是否推荐
-    goTop: 0, // 是否指定
+    isPush: 0, // 是否上传
+    goTop: 0, // 是否置顶
     tags: [], // 标签组
     description: "", // 课程简介
     htmlContent: "" // 课程详情

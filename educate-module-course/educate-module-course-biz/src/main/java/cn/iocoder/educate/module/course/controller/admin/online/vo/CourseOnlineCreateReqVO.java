@@ -1,28 +1,28 @@
 package cn.iocoder.educate.module.course.controller.admin.online.vo;
 
-import cn.iocoder.educate.framework.common.pojo.PageParam;
-
-import cn.iocoder.educate.framework.common.util.date.DateUtils;
-import lombok.*;
+import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.format.annotation.DateTimeFormat;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author j-sentinel
- * @date 2024/1/28 12:50
+ * @date 2024/1/30 11:13
  */
-@Schema(description = "管理后台 - 课程信息分页 Request VO")
+@Schema(description = "管理后台 - 课程信息 Response VO")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CourseOnlinePageReqVO extends PageParam {
-
-    @Schema(description = "搜索关键词，此字段不属于实体类属性")
-    private String keyword;
+public class CourseOnlineCreateReqVO {
 
     @Schema(description = "主题标题")
+    @NotEmpty(message = "主题标题不能为空")
+    @Length(min = 1, max = 30, message = "主题标题长度为 1-30 位")
     private String title;
 
     @Schema(description = "主题内容")
@@ -102,9 +102,5 @@ public class CourseOnlinePageReqVO extends PageParam {
 
     @Schema(description = "是否上传")
     private Integer isPush;
-
-    @Schema(description = "创建时间")
-    @DateTimeFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime[] createTime;
 
 }

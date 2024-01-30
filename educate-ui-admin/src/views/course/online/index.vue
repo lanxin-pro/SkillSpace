@@ -44,7 +44,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="课程类型" prop="category">
+      <el-form-item label="课程类型" prop="categoryId">
         <el-select
             v-model="queryParams.categoryType"
             clearable
@@ -121,9 +121,9 @@
               </div>
               <div class="flex flex-col ml-3">
                 <span class="font-bold">标题：{{ row.title }}</span>
-                <span class="text-sm text-gray-400">编号：{{row.id}}</span>
+                <span class="text-sm text-gray-400">编号：{{ row.id }}</span>
                 <span class="text-sm text-gray-500">
-                      <span class="mr-3">分类：{{row.categoryTitle}}</span>
+                      <span class="mr-3">分类：{{ row.categoryTitle }}</span>
                       <span class="">
                         课程类型：
                         <span v-if="row.courseType == 1" class="text-green-500">基础课</span>
@@ -179,10 +179,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="是否评论" prop="common" width="80">
+      <el-table-column label="是否评论" prop="comment" width="80">
         <template v-slot="scope">
           <el-switch
-              v-model="scope.row.common"
+              v-model="scope.row.comment"
               :active-value="0"
               :inactive-value="1"
               :inline-prompt="true"
@@ -199,8 +199,8 @@
         <template v-slot="scope">
           <el-switch
               v-model="scope.row.isHot"
-              :active-value="0"
-              :inactive-value="1"
+              :active-value="1"
+              :inactive-value="0"
               :inline-prompt="true"
               active-color="#FF358E"
               active-text="是"
@@ -299,6 +299,7 @@ const getList = async ()=>{
   try {
     const response = await getCourseOnlineInfo(queryParams)
     list.value = response.data.list
+    console.log('数据中的数据', list.value)
     total.value = response.data.total
   } finally {
     loading.value = false

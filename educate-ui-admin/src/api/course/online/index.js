@@ -20,7 +20,7 @@ export function getCourseOnlineInfo(query) {
  * @param courseId
  * @returns {*}
  */
-export function getCourseOnline(courseId) {
+export function getCourseOnlineId(courseId) {
     return request({
         url: '/course/online/get?id=' + courseId,
         method: 'get'
