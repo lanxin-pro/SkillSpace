@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.course.dal.dataobject.online;
+package cn.iocoder.educate.module.course.dal.dataobject.chapter;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
@@ -6,21 +6,19 @@ import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 /**
  * @author j-sentinel
  * @date 2024/1/28 11:35
  */
-@TableName("course_online_info")
-@KeySequence("course_online_info_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@TableName("online_course_chapter")
+@KeySequence("online_course_chapter_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CourseOnlineDO extends BaseDO {
+public class CourseChapterDO extends BaseDO {
 
     /**
      * 主键

@@ -1,11 +1,11 @@
-package cn.iocoder.educate.module.course.controller.admin.online;
+package cn.iocoder.educate.module.course.controller.admin.chapter;
 
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.*;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.*;
 import cn.iocoder.educate.module.course.convert.online.CourseOnlineConvert;
-import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
-import cn.iocoder.educate.module.course.service.online.CourseOnlineService;
+import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
+import cn.iocoder.educate.module.course.service.chapter.CourseChapterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import java.util.Collection;
+import java.util.List;
 
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
 
@@ -25,21 +26,29 @@ import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
  * @author j-sentinel
  * @date 2024/1/28 11:25
  */
-@Tag(name = "管理后台 - 课程")
+@Tag(name = "管理后台 - 课程-章")
 @RestController
-@RequestMapping("/course/online")
+@RequestMapping("/course/online/chapter")
 @Validated
-public class CourseOnlineController {
+public class CourseChapterController {
 
     @Resource
-    private CourseOnlineService onlineInfoService;
+    private CourseChapterService onlineInfoService;
 
     @GetMapping("/page")
     @Operation(summary = "/获得课程的分页列表")
     @PreAuthorize("@lanxin.hasPermission('course:online:query')")
     public CommonResult<PageResult<CourseOnlineRespVO>> getDictTypePage(@Valid CourseOnlinePageReqVO dictDataPageReqVO) {
-        PageResult<CourseOnlineDO> courseOnlineDOPageResult = onlineInfoService.getCourseOnlinePage(dictDataPageReqVO);
+        PageResult<CourseChapterDO> courseOnlineDOPageResult = onlineInfoService.getCourseOnlinePage(dictDataPageReqVO);
         return success(CourseOnlineConvert.INSTANCE.convertPage(courseOnlineDOPageResult));
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "/获得课程的分页列表")
+    @PreAuthorize("@lanxin.hasPermission('course:online:query')")
+    public CommonResult<List<CourseOnlineRespVO>> getDictTypeList() {
+        List<CourseChapterDO> courseOnlineDOList = onlineInfoService.getCourseOnlineList();
+        return success(CourseOnlineConvert.INSTANCE.convert(courseOnlineDOList));
     }
 
     @PostMapping("/create")
@@ -55,7 +64,7 @@ public class CourseOnlineController {
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@lanxin.hasPermission('course:online:query')")
     public CommonResult<CourseOnlineRespVO> getOnlineInfo(@RequestParam("id") Long id) {
-        CourseOnlineDO onlineInfo = onlineInfoService.getOnlineInfo(id);
+        CourseChapterDO onlineInfo = onlineInfoService.getOnlineInfo(id);
         return success(CourseOnlineConvert.INSTANCE.convert(onlineInfo));
     }
 

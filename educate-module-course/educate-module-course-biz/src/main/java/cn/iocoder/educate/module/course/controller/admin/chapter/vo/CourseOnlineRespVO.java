@@ -1,28 +1,23 @@
-package cn.iocoder.educate.module.course.controller.admin.online.vo;
+package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 
-import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
+import lombok.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
  * @author j-sentinel
- * @date 2024/1/30 11:13
+ * @date 2024/1/28 12:50
  */
 @Schema(description = "管理后台 - 课程信息 Response VO")
 @Data
 @ToString(callSuper = true)
-public class CourseOnlineCreateReqVO {
+public class CourseOnlineRespVO {
+
+    @Schema(description = "课程编号")
+    private Long id;
 
     @Schema(description = "主题标题")
-    @NotEmpty(message = "主题标题不能为空")
-    @Length(min = 1, max = 30, message = "主题标题长度为 1-30 位")
     private String title;
 
     @Schema(description = "主题内容")
@@ -102,5 +97,8 @@ public class CourseOnlineCreateReqVO {
 
     @Schema(description = "是否上传")
     private Integer isPush;
+
+    @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED, example = "时间戳格式")
+    private LocalDateTime createTime;
 
 }

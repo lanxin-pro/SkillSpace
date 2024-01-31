@@ -1,14 +1,14 @@
-package cn.iocoder.educate.module.course.service.online;
+package cn.iocoder.educate.module.course.service.chapter;
 
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlinePageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlinePageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateStatusReqVO;
 import cn.iocoder.educate.module.course.convert.online.CourseOnlineConvert;
-import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
-import cn.iocoder.educate.module.course.dal.mysql.online.CourseOnlineMapper;
+import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
+import cn.iocoder.educate.module.course.dal.mysql.chapter.CourseChapterMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,26 +23,26 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class CourseOnlineServiceImpl implements CourseOnlineService {
+public class CourseChapterServiceImpl implements CourseChapterService {
 
     @Resource
-    private CourseOnlineMapper courseMapper;
+    private CourseChapterMapper courseMapper;
 
     @Override
-    public PageResult<CourseOnlineDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO) {
+    public PageResult<CourseChapterDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO) {
         return courseMapper.selectPage(dictDataPageReqVO);
     }
 
     @Override
     public Long createCourse(CourseOnlineCreateReqVO reqVO) {
         // TODO 严重 j-sentinel 这里需要进行校验
-        CourseOnlineDO courseOnlineDO = CourseOnlineConvert.INSTANCE.convert(reqVO);
+        CourseChapterDO courseOnlineDO = CourseOnlineConvert.INSTANCE.convert(reqVO);
         courseMapper.insert(courseOnlineDO);
         return courseOnlineDO.getId();
     }
 
     @Override
-    public CourseOnlineDO getOnlineInfo(Long id) {
+    public CourseChapterDO getOnlineInfo(Long id) {
         return courseMapper.selectById(id);
     }
 
@@ -52,7 +52,7 @@ public class CourseOnlineServiceImpl implements CourseOnlineService {
         // 校验唯一性
         validateCourseOnlineExists(updateReqVO.getId());
         // 更新
-        CourseOnlineDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
+        CourseChapterDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
         courseMapper.updateById(convert);
     }
 
@@ -66,9 +66,9 @@ public class CourseOnlineServiceImpl implements CourseOnlineService {
 
     @Override
     public void deleteBatchOnlineInfo(Collection<Long> ids) {
-        List<CourseOnlineDO> collect = ids.stream().map(id -> {
+        List<CourseChapterDO> collect = ids.stream().map(id -> {
             validateCourseExists(id);
-            CourseOnlineDO courseOnlineDO = new CourseOnlineDO();
+            CourseChapterDO courseOnlineDO = new CourseChapterDO();
             return courseOnlineDO.setId(id);
         }).collect(Collectors.toList());
         courseMapper.deleteBatchIds(collect);
@@ -82,15 +82,20 @@ public class CourseOnlineServiceImpl implements CourseOnlineService {
         // 校验唯一性
         validateCourseOnlineExists(updateReqVO.getId());
         // 更新
-        CourseOnlineDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
+        CourseChapterDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
         courseMapper.updateById(convert);
+    }
+
+    @Override
+    public List<CourseChapterDO> getCourseOnlineList() {
+        return courseMapper.findCourseList();
     }
 
     private void validateCourseExists(Long courseId) {
         if(courseId == null){
             return;
         }
-        CourseOnlineDO courseOnlineDO = courseMapper.selectById(courseId);
+        CourseChapterDO courseOnlineDO = courseMapper.selectById(courseId);
         if(courseOnlineDO == null){
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.COURSE_CHAPTER_NOT_EXISTS);
         }

@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.course.controller.admin.online.vo;
+package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

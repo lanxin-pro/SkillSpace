@@ -1,13 +1,14 @@
-package cn.iocoder.educate.module.course.service.online;
+package cn.iocoder.educate.module.course.service.chapter;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlinePageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.online.vo.CourseOnlineUpdateStatusReqVO;
-import cn.iocoder.educate.module.course.dal.dataobject.online.CourseOnlineDO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlinePageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 课程接口
@@ -15,14 +16,14 @@ import java.util.Collection;
  * @author j-sentinel
  * @date 2024/1/28 11:46
  */
-public interface CourseOnlineService {
+public interface CourseChapterService {
 
     /**
      * 获得课程的分页列表
      * @param dictDataPageReqVO 分页请求
      * @return 课程分页列表
      */
-    PageResult<CourseOnlineDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO);
+    PageResult<CourseChapterDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO);
 
     /**
      * 新增课程的章
@@ -38,7 +39,7 @@ public interface CourseOnlineService {
      * @param id 课程id
      * @return 课程信息
      */
-    CourseOnlineDO getOnlineInfo(Long id);
+    CourseChapterDO getOnlineInfo(Long id);
 
     /**
      * 更新课程的章
@@ -67,4 +68,11 @@ public interface CourseOnlineService {
      * @param updateReqVO 更新的内容
      */
     void updateStatusOnlineInfo(CourseOnlineUpdateStatusReqVO updateReqVO);
+
+    /**
+     * 查询全部
+     *
+     * @return 查询全部的状态
+     */
+    List<CourseChapterDO> getCourseOnlineList();
 }
