@@ -266,7 +266,12 @@ import ELComponent from '@/plugins/modal.js'
 import OnlineFormCreateOrUpdate from './OnlineFormCreateOrUpdate.vue'
 import OnlineFormChapterLesson from './OnlineFormChapterLesson.vue'
 import { parseTime } from '@/utils/ruoyi.js'
-import { getCourseOnlineInfo, courseDelete, courseDeleteBatchIds, updateStatusCourseOnline } from '@/api/course/online/index.js'
+import {
+  getCourseOnlineInfo,
+  courseDelete,
+  courseDeleteBatchIds,
+  updateStatusCourseOnline
+} from '@/api/course/online/chapter.js'
 import Pagination from '@/components/Pagination/index.vue'
 
 // 列表的加载中
@@ -311,8 +316,9 @@ const createOrUpdateOpenForm = (type, id)=>{
 }
 /** 新添节操作 */
 const formChapterLessonRef = ref()
-const handleChapterLesson = (type,id, parentId)=>{
-  formChapterLessonRef.value.open(type, id, parentId)
+const handleChapterLesson = (index, row)=>{
+  formChapterLessonRef.value.open(row.title, row.id)
+  formChapterLessonRef.value.loadChapters(row.id)
 }
 /** 搜索按钮操作 */
 const handleQuery = ()=>{

@@ -8,9 +8,19 @@ import request from '@/utils/request'
  */
 export function getCourseOnlineInfo(query) {
     return request({
-        url: '/course/online/page',
+        url: '/course/online/chapter/page',
         method: 'get',
         params: query
+    })
+}
+
+export function findChapterList(courseId) {
+    if(!courseId) {
+        return
+    }
+    return request({
+        url: '/course/online/section/list?courseId=' + courseId,
+        method: 'get'
     })
 }
 
@@ -22,7 +32,7 @@ export function getCourseOnlineInfo(query) {
  */
 export function getCourseOnlineId(courseId) {
     return request({
-        url: '/course/online/get?id=' + courseId,
+        url: '/course/online/section/list',
         method: 'get'
     })
 }
@@ -35,7 +45,7 @@ export function getCourseOnlineId(courseId) {
  */
 export function createCourseOnline(data) {
     return request({
-        url: '/course/online/create',
+        url: '/course/online/chapter/create',
         method: 'post',
         data: data
     })
@@ -49,7 +59,7 @@ export function createCourseOnline(data) {
  */
 export function updateCourseOnline(data) {
     return request({
-        url: '/course/online/update',
+        url: '/course/online/chapter/update',
         method: 'put',
         data: data
     })
@@ -63,7 +73,7 @@ export function updateCourseOnline(data) {
  */
 export function updateStatusCourseOnline(data) {
     return request({
-        url: '/course/online/updateStatus',
+        url: '/course/online/chapter/updateStatus',
         method: 'put',
         data: data
     })
@@ -80,7 +90,7 @@ export function courseDeleteBatchIds(ids) {
         return
     }
     return request({
-        url: '/course/online/delBatch?ids=' + ids,
+        url: '/course/online/chapter/delBatch?ids=' + ids,
         method: 'delete'
     })
 }
@@ -93,7 +103,7 @@ export function courseDeleteBatchIds(ids) {
  */
 export function courseDelete(id) {
     return request({
-        url: '/course/online/delete?id=' + id,
+        url: '/course/online/chapter/delete?id=' + id,
         method: 'delete'
     })
 }

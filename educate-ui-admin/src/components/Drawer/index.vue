@@ -1,6 +1,7 @@
 <template>
   <ElDrawer
       :before-close="handleClose"
+      :with-header="withHeader"
       :close-on-click-modal="true"
       :direction="direction"
       :lock-scroll="lockScroll"
@@ -9,7 +10,7 @@
       destroy-on-close
       v-bind="getBindValue"
   >
-    <template #header>
+    <template v-if="title !== ''" #header>
       <div class="flex justify-between">
         <slot name="title">
           {{ title }}
@@ -40,14 +41,15 @@ const slots = useSlots()
 
 const props = defineProps({
   modelValue: propTypes.bool.def(false),
-  title: propTypes.string.def('Dialog'),
+  title: propTypes.string.def(''),
   scroll: propTypes.bool.def(false), // 是否开启滚动条。如果是的话，按照 maxHeight 设置最大高度
   lockScroll: propTypes.bool.def(false),
   dialogEnableStatus: propTypes.bool.def(false),
   modal: propTypes.bool.def(true),
   // ltr rtl ttb btt
   direction: propTypes.string.def("ltr"),
-  size: propTypes.string.def("70%")
+  size: propTypes.string.def("70%"),
+  withHeader: propTypes.bool.def(true)
 })
 
 /** 关闭提醒 */
