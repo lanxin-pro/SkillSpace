@@ -1,10 +1,10 @@
 package cn.iocoder.educate.module.course.service.chapter;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlinePageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterPageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateStatusReqVO;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 
 import java.util.Collection;
@@ -23,7 +23,7 @@ public interface CourseChapterService {
      * @param dictDataPageReqVO 分页请求
      * @return 课程分页列表
      */
-    PageResult<CourseChapterDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO);
+    PageResult<CourseChapterDO> getCourseOnlinePage(CourseChapterPageReqVO dictDataPageReqVO);
 
     /**
      * 新增课程的章
@@ -31,7 +31,7 @@ public interface CourseChapterService {
      * @param reqVO 新增的数据
      * @return id
      */
-    Long createCourse(CourseOnlineCreateReqVO reqVO);
+    Long createCourse(CourseChapterCreateReqVO reqVO);
 
     /**
      * 根据id获取课程信息
@@ -46,7 +46,7 @@ public interface CourseChapterService {
      *
      * @param updateReqVO 更新的内容
      */
-    void updateOnlineInfo(CourseOnlineUpdateReqVO updateReqVO);
+    void updateOnlineInfo(CourseChapterUpdateReqVO updateReqVO);
 
     /**
      * 删除课程的章
@@ -67,7 +67,7 @@ public interface CourseChapterService {
      *
      * @param updateReqVO 更新的内容
      */
-    void updateStatusOnlineInfo(CourseOnlineUpdateStatusReqVO updateReqVO);
+    void updateStatusOnlineInfo(CourseChapterUpdateStatusReqVO updateReqVO);
 
     /**
      * 查询全部

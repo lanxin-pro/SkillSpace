@@ -1,7 +1,11 @@
 package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
+
+import cn.iocoder.educate.framework.common.util.date.DateUtils;
 import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -9,13 +13,14 @@ import java.util.Set;
  * @author j-sentinel
  * @date 2024/1/28 12:50
  */
-@Schema(description = "管理后台 - 课程信息 Response VO")
+@Schema(description = "管理后台 - 课程信息分页 Request VO")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CourseOnlineRespVO {
+public class CourseChapterPageReqVO extends PageParam {
 
-    @Schema(description = "课程编号")
-    private Long id;
+    @Schema(description = "搜索关键词，此字段不属于实体类属性")
+    private String keyword;
 
     @Schema(description = "主题标题")
     private String title;
@@ -98,7 +103,8 @@ public class CourseOnlineRespVO {
     @Schema(description = "是否上传")
     private Integer isPush;
 
-    @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED, example = "时间戳格式")
-    private LocalDateTime createTime;
+    @Schema(description = "创建时间")
+    @DateTimeFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    private LocalDateTime[] createTime;
 
 }

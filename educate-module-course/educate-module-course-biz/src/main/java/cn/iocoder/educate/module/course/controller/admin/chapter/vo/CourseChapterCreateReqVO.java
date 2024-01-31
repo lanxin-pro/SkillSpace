@@ -1,14 +1,11 @@
 package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 
-import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +15,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 课程信息 Response VO")
 @Data
 @ToString(callSuper = true)
-public class CourseOnlineCreateReqVO {
+public class CourseChapterCreateReqVO {
 
     @Schema(description = "主题标题")
     @NotEmpty(message = "主题标题不能为空")

@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.course.controller.admin.chapter;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.module.course.controller.admin.chapter.vo.*;
-import cn.iocoder.educate.module.course.convert.online.CourseOnlineConvert;
+import cn.iocoder.educate.module.course.convert.chapter.CourseChapterConvert;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 import cn.iocoder.educate.module.course.service.chapter.CourseChapterService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,23 +38,23 @@ public class CourseChapterController {
     @GetMapping("/page")
     @Operation(summary = "/获得课程的分页列表")
     @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<PageResult<CourseOnlineRespVO>> getDictTypePage(@Valid CourseOnlinePageReqVO dictDataPageReqVO) {
+    public CommonResult<PageResult<CourseChapterRespVO>> getDictTypePage(@Valid CourseChapterPageReqVO dictDataPageReqVO) {
         PageResult<CourseChapterDO> courseOnlineDOPageResult = onlineInfoService.getCourseOnlinePage(dictDataPageReqVO);
-        return success(CourseOnlineConvert.INSTANCE.convertPage(courseOnlineDOPageResult));
+        return success(CourseChapterConvert.INSTANCE.convertPage(courseOnlineDOPageResult));
     }
 
     @GetMapping("/list")
     @Operation(summary = "/获得课程的分页列表")
     @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<List<CourseOnlineRespVO>> getDictTypeList() {
+    public CommonResult<List<CourseChapterRespVO>> getDictTypeList() {
         List<CourseChapterDO> courseOnlineDOList = onlineInfoService.getCourseOnlineList();
-        return success(CourseOnlineConvert.INSTANCE.convert(courseOnlineDOList));
+        return success(CourseChapterConvert.INSTANCE.convert(courseOnlineDOList));
     }
 
     @PostMapping("/create")
     @Operation(summary = "新增课程的章")
     @PreAuthorize("@lanxin.hasPermission('course:online:create')")
-    public CommonResult<Long> createCourse(@Valid @RequestBody CourseOnlineCreateReqVO reqVO) {
+    public CommonResult<Long> createCourse(@Valid @RequestBody CourseChapterCreateReqVO reqVO) {
         Long id = onlineInfoService.createCourse(reqVO);
         return success(id);
     }
@@ -63,15 +63,15 @@ public class CourseChapterController {
     @Operation(summary = "获得课程信息")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<CourseOnlineRespVO> getOnlineInfo(@RequestParam("id") Long id) {
+    public CommonResult<CourseChapterRespVO> getOnlineInfo(@RequestParam("id") Long id) {
         CourseChapterDO onlineInfo = onlineInfoService.getOnlineInfo(id);
-        return success(CourseOnlineConvert.INSTANCE.convert(onlineInfo));
+        return success(CourseChapterConvert.INSTANCE.convert(onlineInfo));
     }
 
     @PutMapping("/update")
     @Operation(summary = "更新课程信息")
     @PreAuthorize("@lanxin.hasPermission('course:online:update')")
-    public CommonResult<Boolean> updateOnlineInfo(@Valid @RequestBody CourseOnlineUpdateReqVO updateReqVO) {
+    public CommonResult<Boolean> updateOnlineInfo(@Valid @RequestBody CourseChapterUpdateReqVO updateReqVO) {
         onlineInfoService.updateOnlineInfo(updateReqVO);
         return success(true);
     }
@@ -79,7 +79,7 @@ public class CourseChapterController {
     @PutMapping("/updateStatus")
     @Operation(summary = "更新课程信息")
     @PreAuthorize("@lanxin.hasPermission('course:online:updateStatus')")
-    public CommonResult<Boolean> updateStatusOnlineInfo(@Valid @RequestBody CourseOnlineUpdateStatusReqVO updateReqVO) {
+    public CommonResult<Boolean> updateStatusOnlineInfo(@Valid @RequestBody CourseChapterUpdateStatusReqVO updateReqVO) {
         onlineInfoService.updateStatusOnlineInfo(updateReqVO);
         return success(true);
     }

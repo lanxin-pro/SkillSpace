@@ -2,11 +2,11 @@ package cn.iocoder.educate.module.course.service.chapter;
 
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlinePageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlineUpdateStatusReqVO;
-import cn.iocoder.educate.module.course.convert.online.CourseOnlineConvert;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterPageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.convert.chapter.CourseChapterConvert;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 import cn.iocoder.educate.module.course.dal.mysql.chapter.CourseChapterMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
@@ -29,14 +29,14 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     private CourseChapterMapper courseMapper;
 
     @Override
-    public PageResult<CourseChapterDO> getCourseOnlinePage(CourseOnlinePageReqVO dictDataPageReqVO) {
+    public PageResult<CourseChapterDO> getCourseOnlinePage(CourseChapterPageReqVO dictDataPageReqVO) {
         return courseMapper.selectPage(dictDataPageReqVO);
     }
 
     @Override
-    public Long createCourse(CourseOnlineCreateReqVO reqVO) {
+    public Long createCourse(CourseChapterCreateReqVO reqVO) {
         // TODO 严重 j-sentinel 这里需要进行校验
-        CourseChapterDO courseOnlineDO = CourseOnlineConvert.INSTANCE.convert(reqVO);
+        CourseChapterDO courseOnlineDO = CourseChapterConvert.INSTANCE.convert(reqVO);
         courseMapper.insert(courseOnlineDO);
         return courseOnlineDO.getId();
     }
@@ -47,12 +47,12 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     }
 
     @Override
-    public void updateOnlineInfo(CourseOnlineUpdateReqVO updateReqVO) {
+    public void updateOnlineInfo(CourseChapterUpdateReqVO updateReqVO) {
         // TODO 严重 j-sentinel 这里需要进行校验
         // 校验唯一性
         validateCourseOnlineExists(updateReqVO.getId());
         // 更新
-        CourseChapterDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
+        CourseChapterDO convert = CourseChapterConvert.INSTANCE.convert(updateReqVO);
         courseMapper.updateById(convert);
     }
 
@@ -75,14 +75,14 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     }
 
     @Override
-    public void updateStatusOnlineInfo(CourseOnlineUpdateStatusReqVO updateReqVO) {
+    public void updateStatusOnlineInfo(CourseChapterUpdateStatusReqVO updateReqVO) {
         // TODO 严重 j-sentinel 这里需要进行校验
         // TODO 这里希望来一个专属的status更新的逻辑
         // TODO j-sentinel 这里的状态需要进一步来确定有没有节的信息
         // 校验唯一性
         validateCourseOnlineExists(updateReqVO.getId());
         // 更新
-        CourseChapterDO convert = CourseOnlineConvert.INSTANCE.convert(updateReqVO);
+        CourseChapterDO convert = CourseChapterConvert.INSTANCE.convert(updateReqVO);
         courseMapper.updateById(convert);
     }
 

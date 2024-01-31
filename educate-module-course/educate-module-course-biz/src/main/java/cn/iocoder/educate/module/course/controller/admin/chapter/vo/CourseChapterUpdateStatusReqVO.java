@@ -3,10 +3,6 @@ package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotEmpty;
-import java.util.Set;
 
 /**
  * @author j-sentinel
@@ -15,7 +11,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 课程信息更新 Request VO")
 @Data
 @ToString(callSuper = true)
-public class CourseOnlineUpdateStatusReqVO {
+public class CourseChapterUpdateStatusReqVO {
 
     @Schema(description = "课程编号")
     private Long id;

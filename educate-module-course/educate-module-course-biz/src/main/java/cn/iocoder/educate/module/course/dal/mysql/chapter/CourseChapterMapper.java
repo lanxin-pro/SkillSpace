@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.course.dal.mysql.chapter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseOnlinePageReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterPageReqVO;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -20,7 +20,7 @@ import java.util.List;
 @Mapper
 public interface CourseChapterMapper extends BaseMapper<CourseChapterDO> {
 
-    default PageResult<CourseChapterDO> selectPage(CourseOnlinePageReqVO courseOnlinePageReqVO){
+    default PageResult<CourseChapterDO> selectPage(CourseChapterPageReqVO courseOnlinePageReqVO){
         LambdaQueryWrapper<CourseChapterDO> courseOnlineDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 过滤掉不需要字段
         // TODO j-sentinel 我觉得这个直接写不大优雅，字符串里面的内容后续可以进行优化
