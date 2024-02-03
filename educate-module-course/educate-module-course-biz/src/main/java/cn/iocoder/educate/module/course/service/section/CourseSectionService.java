@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.course.service.section;
 
+import cn.iocoder.educate.module.course.controller.admin.section.vo.CourseSectionRespVO;
 import cn.iocoder.educate.module.course.dal.dataobject.section.CourseSectionDO;
 
 import java.util.List;
@@ -16,6 +17,14 @@ public interface CourseSectionService {
      * @param courseId 课程id
      * @return 章信息
      */
-    List<CourseSectionDO> findCourseSectionList(String courseId);
+    List<CourseSectionRespVO> findCourseChapterList(String courseId);
+
+    /**
+     * 根据章ID查询对应节信息
+     *
+     * @param id 课程的章id
+     * @return
+     */
+    List<CourseSectionRespVO> findCourseSectionList(Long id);
 
 }

@@ -14,7 +14,7 @@ export function getCourseOnlineInfo(query) {
     })
 }
 
-export function findChapterList(courseId) {
+export function findSectionList(courseId) {
     if(!courseId) {
         return
     }

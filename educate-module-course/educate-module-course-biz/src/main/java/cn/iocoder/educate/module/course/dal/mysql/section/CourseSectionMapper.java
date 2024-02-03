@@ -14,13 +14,20 @@ import java.util.List;
 @Mapper
 public interface CourseSectionMapper extends BaseMapper<CourseSectionDO> {
 
-    default List<CourseSectionDO> findCourseSectionList(String courseId){
+    default List<CourseSectionDO> findCourseChapterList(String courseId){
         LambdaQueryWrapper<CourseSectionDO> courseSectionDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         courseSectionDOLambdaQueryWrapper.eq(CourseSectionDO::getCourseId, courseId);
         courseSectionDOLambdaQueryWrapper.eq(CourseSectionDO::getPid, 0);
         // 删除以后，再次调用接口，把删除的放到下面去（前端）
         // TODO j-sentinel 这里其实可以细分权重
         courseSectionDOLambdaQueryWrapper.orderByDesc(CourseSectionDO::getDeleted, CourseSectionDO::getSorted);
+        return this.selectList(courseSectionDOLambdaQueryWrapper);
+    }
+
+    default List<CourseSectionDO> findCourseSectionList(Long id) {
+        LambdaQueryWrapper<CourseSectionDO> courseSectionDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        courseSectionDOLambdaQueryWrapper.eq(CourseSectionDO::getPid, id)
+                .orderByDesc(CourseSectionDO::getSorted, CourseSectionDO::getId);
         return this.selectList(courseSectionDOLambdaQueryWrapper);
     }
 

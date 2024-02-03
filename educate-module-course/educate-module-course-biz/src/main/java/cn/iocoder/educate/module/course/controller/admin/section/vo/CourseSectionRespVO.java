@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -118,5 +119,10 @@ public class CourseSectionRespVO {
     @Schema(description = "是否免费")
     private Integer isFree;
 
+    @Schema(description = "小结信息")
+    private List<CourseSectionRespVO> sectionList;
+
+    @Schema(description = "删除信息")
+    private Boolean deleted;
 
 }
