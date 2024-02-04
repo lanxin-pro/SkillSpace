@@ -1,105 +1,67 @@
 package cn.iocoder.educate.module.course.controller.admin.chapter;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
-import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.*;
-import cn.iocoder.educate.module.course.convert.chapter.CourseChapterConvert;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterRespVO;
+import cn.iocoder.educate.module.course.convert.section.CourseSectionConvert;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 import cn.iocoder.educate.module.course.service.chapter.CourseChapterService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import java.util.Collection;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import static cn.iocoder.educate.framework.common.pojo.CommonResult.success;
-
 
 /**
  * @author j-sentinel
- * @date 2024/1/28 11:25
+ * @date 2024/1/31 19:27
  */
-@Tag(name = "管理后台 - 课程-章")
+@Tag(name = "管理后台 - 课程-章节")
 @RestController
 @RequestMapping("/course/online/chapter")
 @Validated
 public class CourseChapterController {
 
     @Resource
-    private CourseChapterService onlineInfoService;
-
-    @GetMapping("/page")
-    @Operation(summary = "/获得课程的分页列表")
-    @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<PageResult<CourseChapterRespVO>> getDictTypePage(@Valid CourseChapterPageReqVO dictDataPageReqVO) {
-        PageResult<CourseChapterDO> courseOnlineDOPageResult = onlineInfoService.getCourseOnlinePage(dictDataPageReqVO);
-        return success(CourseChapterConvert.INSTANCE.convertPage(courseOnlineDOPageResult));
-    }
+    private CourseChapterService courseSectionService;
 
     @GetMapping("/list")
-    @Operation(summary = "/获得课程的分页列表")
-    @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<List<CourseChapterRespVO>> getDictTypeList() {
-        List<CourseChapterDO> courseOnlineDOList = onlineInfoService.getCourseOnlineList();
-        return success(CourseChapterConvert.INSTANCE.convert(courseOnlineDOList));
+    @Operation(summary = "/查询章节管理列表信息")
+    @PreAuthorize("@lanxin.hasPermission('online:chapter:query')")
+    public CommonResult<List<CourseChapterRespVO>> getDictTypeList(@RequestParam("courseId") String courseId) {
+        // TODO j-sentinel 这里的逻辑需要优化到service层
+        List<CourseChapterRespVO> chapterList = courseSectionService.findCourseChapterList(courseId);
+        if(CollectionUtil.isNotEmpty(chapterList)) {
+            // 把下面的节也全部查询出来
+            chapterList = chapterList.stream().map(chapter -> {
+                List<CourseChapterRespVO> courseSectionList = courseSectionService.findCourseSectionList(chapter.getId());
+                chapter.setSectionList(courseSectionList);
+                return chapter;
+            }).collect(Collectors.toList());
+        }
+        return success(chapterList);
     }
 
-    @PostMapping("/create")
-    @Operation(summary = "新增课程的章")
-    @PreAuthorize("@lanxin.hasPermission('course:online:create')")
-    public CommonResult<Long> createCourse(@Valid @RequestBody CourseChapterCreateReqVO reqVO) {
-        Long id = onlineInfoService.createCourse(reqVO);
-        return success(id);
+    @PostMapping("/saveupdate")
+    @Operation(summary = "/查询章节管理列表信息")
+    @PreAuthorize("@lanxin.hasPermission('online:chapter:save')")
+    public CommonResult<CourseChapterRespVO> saveUpdateChapterLesson(@RequestBody CourseChapterReqVO courseSectionReqVO) {
+        CourseChapterDO courseSectionDO = courseSectionService.saveUpdateChapterLesson(courseSectionReqVO);
+        return success(CourseSectionConvert.INSTANCE.convert(courseSectionDO));
     }
 
     @GetMapping("/get")
-    @Operation(summary = "获得课程信息")
-    @Parameter(name = "id", description = "编号", required = true, example = "1024")
-    @PreAuthorize("@lanxin.hasPermission('course:online:query')")
-    public CommonResult<CourseChapterRespVO> getOnlineInfo(@RequestParam("id") Long id) {
-        CourseChapterDO onlineInfo = onlineInfoService.getOnlineInfo(id);
-        return success(CourseChapterConvert.INSTANCE.convert(onlineInfo));
-    }
-
-    @PutMapping("/update")
-    @Operation(summary = "更新课程信息")
-    @PreAuthorize("@lanxin.hasPermission('course:online:update')")
-    public CommonResult<Boolean> updateOnlineInfo(@Valid @RequestBody CourseChapterUpdateReqVO updateReqVO) {
-        onlineInfoService.updateOnlineInfo(updateReqVO);
-        return success(true);
-    }
-
-    @PutMapping("/updateStatus")
-    @Operation(summary = "更新课程信息")
-    @PreAuthorize("@lanxin.hasPermission('course:online:updateStatus')")
-    public CommonResult<Boolean> updateStatusOnlineInfo(@Valid @RequestBody CourseChapterUpdateStatusReqVO updateReqVO) {
-        onlineInfoService.updateStatusOnlineInfo(updateReqVO);
-        return success(true);
-    }
-
-    @DeleteMapping("/delete")
-    @Operation(summary = "删除课程信息")
-    @Parameter(name = "id", description = "编号", required = true)
-    @PreAuthorize("@lanxin.hasPermission('course:online:delete')")
-    public CommonResult<Boolean> deleteOnlineInfo(@RequestParam("id") Long id) {
-        onlineInfoService.deleteOnlineInfo(id);
-        return success(true);
-    }
-
-    @DeleteMapping("/delBatch")
-    @Operation(summary = "根据课程ids批量删除课程")
-    @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
-    @PreAuthorize("@lanxin.hasPermission('course:online:delBatch')")
-    public CommonResult<Boolean> deleteOnlineInfo(@RequestParam("ids") Collection<Long> ids) {
-        onlineInfoService.deleteBatchOnlineInfo(ids);
-        return success(true);
+    @Operation(summary = "/查询章节管理列表信息")
+    @PreAuthorize("@lanxin.hasPermission('online:chapter:get')")
+    public CommonResult<CourseChapterRespVO> getChapterLessons(@RequestParam("opid") Long opid) {
+        // 本章信息
+        CourseChapterDO chapterLessons = courseSectionService.getChapterLessons(opid);
+        return success(CourseSectionConvert.INSTANCE.convert(chapterLessons));
     }
 
 }

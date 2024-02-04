@@ -1,21 +1,23 @@
-package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
+package cn.iocoder.educate.module.course.controller.admin.course.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 /**
  * @author j-sentinel
- * @date 2024/1/30 11:13
+ * @date 2024/1/30 11:32
  */
-@Schema(description = "管理后台 - 课程信息 Response VO")
+@Schema(description = "管理后台 - 课程信息更新 Request VO")
 @Data
 @ToString(callSuper = true)
-public class CourseChapterCreateReqVO {
+public class CourseUpdateReqVO {
+
+    @Schema(description = "课程编号")
+    private Long id;
 
     @Schema(description = "主题标题")
     @NotEmpty(message = "主题标题不能为空")

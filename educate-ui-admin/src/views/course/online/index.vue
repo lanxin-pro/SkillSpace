@@ -114,10 +114,16 @@
 
       <el-table-column label="标题" prop="name">
         <template #default="{$index, row}">
-          <a :href="row.img" :title="row.title">
+<!--     TODO j-sentinel 这里期望给一个跳转前台的地址     -->
+          <div :title="row.title">
             <div class="flex items-center">
               <div>
-                <el-image :src="row.img" fit="contain" style="width: 100px; height: 100px" />
+                <el-image
+                    :src="row.img"
+                    fit="contain"
+                    style="width: 110px; height: 110px"
+                    @click="handleOpenImgViewVisible(row.img)"
+                />
               </div>
               <div class="flex flex-col ml-3">
                 <span class="font-bold">标题：{{ row.title }}</span>
@@ -135,7 +141,7 @@
                 <span class="text-sm text-red-600">价格：{{row.price}}￥ / <span style="text-decoration: line-through">{{row.realPrice}}￥</span></span>
               </div>
             </div>
-          </a>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="课程类型" prop="address" show-overflow-tooltip width="120">
@@ -250,12 +256,16 @@
     />
 
     <!--  表单弹窗：新增/修改  -->
-    <OnlineFormCreateOrUpdate ref="formCreateRef" @success="getList" />
+    <CourseForm ref="formCreateRef" @success="getList" />
 
     <!--  新增节  -->
-    <OnlineFormChapterLesson ref="formChapterLessonRef" @success="getList" />
+    <ChapterSectionForm ref="formChapterLessonRef" @success="getList" />
 
-
+    <el-image-viewer
+        v-if="imgViewVisible"
+        :url-list="[rea]"
+        @close="imgViewVisible = false"
+    />
   </div>
 </template>
 
@@ -263,15 +273,15 @@
 import { ref,reactive,onMounted,nextTick } from 'vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import ELComponent from '@/plugins/modal.js'
-import OnlineFormCreateOrUpdate from './OnlineFormCreateOrUpdate.vue'
-import OnlineFormChapterLesson from './OnlineFormChapterLesson.vue'
+import CourseForm from './CourseForm.vue'
+import ChapterSectionForm from './ChapterSectionForm.vue'
 import { parseTime } from '@/utils/ruoyi.js'
 import {
   getCourseOnlineInfo,
   courseDelete,
   courseDeleteBatchIds,
   updateStatusCourseOnline
-} from '@/api/course/online/chapter.js'
+} from '@/api/course/online/course.js'
 import Pagination from '@/components/Pagination/index.vue'
 
 // 列表的加载中
@@ -308,7 +318,13 @@ const getList = async ()=>{
     loading.value = false
   }
 }
-
+/** 打开图片缩放 */
+const rea = ref()
+const imgViewVisible = ref(false)
+const handleOpenImgViewVisible = (img) => {
+  imgViewVisible.value = true
+  rea.value = img
+}
 /** 添加/修改操作 */
 const formCreateRef = ref()
 const createOrUpdateOpenForm = (type, id)=>{

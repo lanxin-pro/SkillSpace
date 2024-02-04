@@ -220,8 +220,8 @@ import { ref, reactive, onMounted } from 'vue'
 import { CommonStatusEnum } from '@/utils/constants'
 import Drawer from '@/components/Drawer/index.vue'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { findCourseList } from '@/api/course/online/chapter.js'
-import { findSectionList, saveUpdateChapterLesson, getChapterLessons } from '@/api/course/online/section.js'
+import { findCourseList } from '@/api/course/online/course.js'
+import { findSectionList, saveUpdateChapterLesson, getChapterLessons } from '@/api/course/online/chapter.js'
 import ELComponent from '@/plugins/modal.js'
 
 // 控制展开与关闭

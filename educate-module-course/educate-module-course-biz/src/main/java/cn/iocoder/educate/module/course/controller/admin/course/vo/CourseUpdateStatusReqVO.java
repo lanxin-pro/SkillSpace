@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
+package cn.iocoder.educate.module.course.controller.admin.course.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Schema(description = "管理后台 - 课程信息更新 Request VO")
 @Data
 @ToString(callSuper = true)
-public class CourseChapterUpdateStatusReqVO {
+public class CourseUpdateStatusReqVO {
 
     @Schema(description = "课程编号")
     private Long id;

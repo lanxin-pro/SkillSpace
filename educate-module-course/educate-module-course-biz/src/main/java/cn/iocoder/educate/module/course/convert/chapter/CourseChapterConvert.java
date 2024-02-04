@@ -1,11 +1,11 @@
 package cn.iocoder.educate.module.course.convert.chapter;
 
 import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterRespVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateStatusReqVO;
-import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
+import cn.iocoder.educate.module.course.controller.admin.course.vo.CourseCreateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.course.vo.CourseRespVO;
+import cn.iocoder.educate.module.course.controller.admin.course.vo.CourseUpdateReqVO;
+import cn.iocoder.educate.module.course.controller.admin.course.vo.CourseUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.dal.dataobject.course.CourseDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -20,16 +20,16 @@ public interface CourseChapterConvert {
 
     CourseChapterConvert INSTANCE = Mappers.getMapper(CourseChapterConvert.class);
 
-    CourseChapterRespVO convert(CourseChapterDO courseOnlineDO);
+    CourseRespVO convert(CourseDO courseOnlineDO);
 
-    List<CourseChapterRespVO> convert(List<CourseChapterDO> courseOnlineDO);
+    List<CourseRespVO> convert(List<CourseDO> courseOnlineDO);
 
-    CourseChapterDO convert(CourseChapterCreateReqVO courseOnlineDO);
+    CourseDO convert(CourseCreateReqVO courseOnlineDO);
 
-    CourseChapterDO convert(CourseChapterUpdateReqVO courseOnlineDO);
+    CourseDO convert(CourseUpdateReqVO courseOnlineDO);
 
-    CourseChapterDO convert(CourseChapterUpdateStatusReqVO courseOnlineDO);
+    CourseDO convert(CourseUpdateStatusReqVO courseOnlineDO);
 
-    PageResult<CourseChapterRespVO> convertPage(PageResult<CourseChapterDO> courseOnlineDOPageResult);
+    PageResult<CourseRespVO> convertPage(PageResult<CourseDO> courseOnlineDOPageResult);
 
 }

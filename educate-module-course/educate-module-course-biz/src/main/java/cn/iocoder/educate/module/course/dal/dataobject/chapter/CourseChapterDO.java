@@ -6,40 +6,39 @@ import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Set;
 
 /**
- * 我们对实体类的某个字段自定义了typeHandler，一定要开启autoResultMap=true才能生效
- *
  * @author j-sentinel
- * @date 2024/1/28 11:35
+ * @date 2024/1/31 20:00
  */
-@TableName(value = "online_course_chapter", autoResultMap = true)
-@KeySequence("online_course_chapter_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
+@TableName(value = "online_course_chapter_section", autoResultMap = true)
+@KeySequence("online_course_chapter_section_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CourseChapterDO extends BaseDO {
 
     /**
-     * 主键
+     * 课程节的编号
      */
     @TableId
     private Long id;
 
     /**
-     * 主题标题
+     * 章节标题
      */
     private String title;
 
     /**
-     * 主题内容
+     * 章节内容
      */
     private String content;
 
     /**
-     * 主题标签
+     * 标签
      */
     @TableField(typeHandler = JsonStringSetTypeHandler.class)
     private Set<String> tags;
@@ -50,39 +49,9 @@ public class CourseChapterDO extends BaseDO {
     private String description;
 
     /**
-     * 主题分类ID
-     */
-    private Long categoryId;
-
-    /**
-     * 0普通 1置顶
-     */
-    private Integer goTop;
-
-    /**
-     * 主题浏览次数
-     */
-    private Integer views;
-
-    /**
-     * 0不可以评论 1可以评论
-     */
-    private Integer comment;
-
-    /**
      * html内容
      */
     private String htmlContent;
-
-    /**
-     * 分类标题
-     */
-    private String categoryTitle;
-
-    /**
-     * 是否VIP 1 所有人免费 2 月VIP 3季度会员 4 年VIP 5超级VIP
-     */
-    private Integer vip;
 
     /**
      * 作者头像
@@ -105,39 +74,14 @@ public class CourseChapterDO extends BaseDO {
     private Long userId;
 
     /**
-     * 封面图
+     * 章节ID
      */
-    private String img;
+    private Long pid;
 
     /**
-     * 收藏数
+     * 笔记ID
      */
-    private Integer collects;
-
-    /**
-     * 评论数量
-     */
-    private Integer comments;
-
-    /**
-     * 课程时长
-     */
-    private String courseTimer;
-
-    /**
-     * 原始价格2499
-     */
-    private String price;
-
-    /**
-     * 真实价格1499
-     */
-    private String realPrice;
-
-    /**
-     * 课程类型 1 基础课  2 进阶课  4 面试课  3 实战课程
-     */
-    private Integer courseType;
+    private Long courseId;
 
     /**
      * 排序
@@ -145,23 +89,108 @@ public class CourseChapterDO extends BaseDO {
     private Integer sorted;
 
     /**
-     * 是否活动
+     * 课程时长
      */
-    private String beginer;
+    private String courseTimer;
 
     /**
-     * 是否最新
+     * 课程时长的大小
      */
-    private Integer isNew;
+    private String courseTimerSize;
 
     /**
-     * 是否最热
+     * 课程视频地址
      */
-    private Integer isHot;
+    private String videoLink;
 
     /**
-     * 是否上传
+     * 课程视频文件大小
      */
-    private Integer isPush;
+    private String videoFileSize;
+
+    /**
+     * 视频标签
+     */
+    private String videoTag;
+
+    /**
+     * 视频首图
+     */
+    private String videoFirstImage;
+
+    /**
+     * 视频id
+     */
+    private String videoId;
+
+    /**
+     * 视频播放器高度
+     */
+    private String videoPlayerHeight;
+
+    /**
+     * 视频mp4
+     */
+    private String videoMp4;
+
+    /**
+     * 视频分类id
+     */
+    private String videoCategoryId;
+
+    /**
+     * 视频分类名称
+     */
+    private String videoCategoryTitle;
+
+    /**
+     * 视频播放器宽度
+     */
+    private String videoPlayerWidth;
+
+    /**
+     * 视频格式的地址
+     */
+    private String videoSwfLink;
+
+    /**
+     * 视频原地址
+     */
+    private String videoOriginal;
+
+    /**
+     * 视频df
+     */
+    private String videoDf;
+
+    /**
+     * 视频发送者
+     */
+    private String videoSeed;
+
+    /**
+     * 视频状态
+     */
+    private String videoStatus;
+
+    /**
+     * 视频倍速
+     */
+    private String videoTimes;
+
+    /**
+     * 视频内容
+     */
+    private String videoContext;
+
+    /**
+     * 是否免费
+     */
+    private Integer isFree;
+
+    /**
+     * 删除状态 0 未删除 1 删除
+     */
+    private Boolean isDelete;
 
 }

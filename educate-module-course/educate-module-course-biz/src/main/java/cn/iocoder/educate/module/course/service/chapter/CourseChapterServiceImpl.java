@@ -1,110 +1,87 @@
 package cn.iocoder.educate.module.course.service.chapter;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
-import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterPageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateStatusReqVO;
-import cn.iocoder.educate.module.course.convert.chapter.CourseChapterConvert;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterRespVO;
+import cn.iocoder.educate.module.course.convert.section.CourseSectionConvert;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 import cn.iocoder.educate.module.course.dal.mysql.chapter.CourseChapterMapper;
+import cn.iocoder.educate.module.course.service.course.CourseService;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author j-sentinel
- * @date 2024/1/28 11:46
+ * @date 2024/1/31 19:49
  */
 @Slf4j
 @Service
 public class CourseChapterServiceImpl implements CourseChapterService {
 
     @Resource
-    private CourseChapterMapper courseMapper;
+    private CourseChapterMapper courseSectionMapper;
+
+    @Resource
+    private CourseService courseChapterService;
 
     @Override
-    public PageResult<CourseChapterDO> getCourseOnlinePage(CourseChapterPageReqVO dictDataPageReqVO) {
-        return courseMapper.selectPage(dictDataPageReqVO);
+    public List<CourseChapterRespVO> findCourseChapterList(String courseId) {
+        List<CourseChapterDO> courseChapterList = courseSectionMapper.findCourseChapterList(courseId);
+        return CourseSectionConvert.INSTANCE.convert(courseChapterList);
     }
 
     @Override
-    public Long createCourse(CourseChapterCreateReqVO reqVO) {
-        // TODO 严重 j-sentinel 这里需要进行校验
-        CourseChapterDO courseOnlineDO = CourseChapterConvert.INSTANCE.convert(reqVO);
-        courseMapper.insert(courseOnlineDO);
-        return courseOnlineDO.getId();
+    public List<CourseChapterRespVO> findCourseSectionList(Long id) {
+        List<CourseChapterDO> courseSectionList = courseSectionMapper.findCourseSectionList(id);
+        return CourseSectionConvert.INSTANCE.convert(courseSectionList);
     }
 
     @Override
-    public CourseChapterDO getOnlineInfo(Long id) {
-        return courseMapper.selectById(id);
+    public CourseChapterDO saveUpdateChapterLesson(CourseChapterReqVO courseSectionReqVO) {
+        validateSaveOrUpdateCourse(courseSectionReqVO);
+        CourseChapterDO courseSectionDO = CourseSectionConvert.INSTANCE.convert(courseSectionReqVO);
+        int operation;
+        if(ObjectUtil.isEmpty(courseSectionReqVO.getId())) {
+            operation = courseSectionMapper.insert(courseSectionDO);
+        } else {
+            operation = courseSectionMapper.updateById(courseSectionDO);
+        }
+        boolean flag = SqlHelper.retBool(operation);
+        return flag ? courseSectionDO : null;
     }
 
     @Override
-    public void updateOnlineInfo(CourseChapterUpdateReqVO updateReqVO) {
-        // TODO 严重 j-sentinel 这里需要进行校验
-        // 校验唯一性
-        validateCourseOnlineExists(updateReqVO.getId());
-        // 更新
-        CourseChapterDO convert = CourseChapterConvert.INSTANCE.convert(updateReqVO);
-        courseMapper.updateById(convert);
+    public CourseChapterDO getChapterLessons(Long opid) {
+        // 校验存在
+        return validateChapterLessonsExists(opid);
     }
 
-    @Override
-    public void deleteOnlineInfo(Long courseId) {
-        // 校验课程存在
-        validateCourseExists(courseId);
-        // 删除课程
-        courseMapper.deleteById(courseId);
-    }
+    private void validateSaveOrUpdateCourse(CourseChapterReqVO courseSectionReqVO) {
+        // 指派的course必须存在
+        validateCourseExists(courseSectionReqVO.getCourseId());
 
-    @Override
-    public void deleteBatchOnlineInfo(Collection<Long> ids) {
-        List<CourseChapterDO> collect = ids.stream().map(id -> {
-            validateCourseExists(id);
-            CourseChapterDO courseOnlineDO = new CourseChapterDO();
-            return courseOnlineDO.setId(id);
-        }).collect(Collectors.toList());
-        courseMapper.deleteBatchIds(collect);
-    }
-
-    @Override
-    public void updateStatusOnlineInfo(CourseChapterUpdateStatusReqVO updateReqVO) {
-        // TODO 严重 j-sentinel 这里需要进行校验
-        // TODO 这里希望来一个专属的status更新的逻辑
-        // TODO j-sentinel 这里的状态需要进一步来确定有没有节的信息
-        // 校验唯一性
-        validateCourseOnlineExists(updateReqVO.getId());
-        // 更新
-        CourseChapterDO convert = CourseChapterConvert.INSTANCE.convert(updateReqVO);
-        courseMapper.updateById(convert);
-    }
-
-    @Override
-    public List<CourseChapterDO> getCourseOnlineList() {
-        return courseMapper.findCourseList();
     }
 
     private void validateCourseExists(Long courseId) {
-        if(courseId == null){
-            return;
+        if(ObjectUtil.isEmpty(courseId)) {
+            throw ServiceExceptionUtil.exception(ErrorCodeConstants.COURSE_CHAPTER_ERROR);
         }
-        CourseChapterDO courseOnlineDO = courseMapper.selectById(courseId);
-        if(courseOnlineDO == null){
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.COURSE_CHAPTER_NOT_EXISTS);
-        }
+        // 这里面也会又校验逻辑，复用？
+        courseChapterService.getOnlineInfo(courseId);
     }
 
-    private void validateCourseOnlineExists(Long id) {
-        if (courseMapper.selectById(id) == null) {
+    private CourseChapterDO validateChapterLessonsExists(Long opid) {
+        CourseChapterDO courseSectionDO = courseSectionMapper.selectById(opid);
+        if (courseSectionDO == null) {
             throw ServiceExceptionUtil.exception(ErrorCodeConstants.COURSE_CHAPTER_NOT_EXISTS);
         }
+        return courseSectionDO;
     }
 
 }

@@ -1,78 +1,41 @@
 package cn.iocoder.educate.module.course.service.chapter;
 
-import cn.iocoder.educate.framework.common.pojo.PageResult;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterPageReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterCreateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateReqVO;
-import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterUpdateStatusReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterReqVO;
+import cn.iocoder.educate.module.course.controller.admin.chapter.vo.CourseChapterRespVO;
 import cn.iocoder.educate.module.course.dal.dataobject.chapter.CourseChapterDO;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
- * 课程接口
- *
  * @author j-sentinel
- * @date 2024/1/28 11:46
+ * @date 2024/1/31 19:49
  */
 public interface CourseChapterService {
 
     /**
-     * 获得课程的分页列表
-     * @param dictDataPageReqVO 分页请求
-     * @return 课程分页列表
+     * 根据课程查询对应的章信息
+     *
+     * @param courseId 课程id
+     * @return 章信息
      */
-    PageResult<CourseChapterDO> getCourseOnlinePage(CourseChapterPageReqVO dictDataPageReqVO);
+    List<CourseChapterRespVO> findCourseChapterList(String courseId);
 
     /**
-     * 新增课程的章
+     * 根据章ID查询对应节信息
      *
-     * @param reqVO 新增的数据
-     * @return id
+     * @param id 课程的章id
+     * @return
      */
-    Long createCourse(CourseChapterCreateReqVO reqVO);
+    List<CourseChapterRespVO> findCourseSectionList(Long id);
 
     /**
-     * 根据id获取课程信息
+     * 保存章信息
      *
-     * @param id 课程id
-     * @return 课程信息
+     * @param courseSectionReqVO 章信息
+     * @return 保存的章信息
      */
-    CourseChapterDO getOnlineInfo(Long id);
+    CourseChapterDO saveUpdateChapterLesson(CourseChapterReqVO courseSectionReqVO);
 
-    /**
-     * 更新课程的章
-     *
-     * @param updateReqVO 更新的内容
-     */
-    void updateOnlineInfo(CourseChapterUpdateReqVO updateReqVO);
 
-    /**
-     * 删除课程的章
-     *
-     * @param id 删除的id
-     */
-    void deleteOnlineInfo(Long id);
-
-    /**
-     * 批量删除课程的章
-     *
-     * @param ids 批量删除的ids
-     */
-    void deleteBatchOnlineInfo(Collection<Long> ids);
-
-    /**
-     * 更新课程的状态
-     *
-     * @param updateReqVO 更新的内容
-     */
-    void updateStatusOnlineInfo(CourseChapterUpdateStatusReqVO updateReqVO);
-
-    /**
-     * 查询全部
-     *
-     * @return 查询全部的状态
-     */
-    List<CourseChapterDO> getCourseOnlineList();
+    CourseChapterDO getChapterLessons(Long opid);
 }

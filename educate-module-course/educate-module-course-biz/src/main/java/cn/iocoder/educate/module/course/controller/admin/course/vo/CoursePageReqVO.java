@@ -1,4 +1,4 @@
-package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
+package cn.iocoder.educate.module.course.controller.admin.course.vo;
 
 import cn.iocoder.educate.framework.common.pojo.PageParam;
 
@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class CourseChapterPageReqVO extends PageParam {
+public class CoursePageReqVO extends PageParam {
 
     @Schema(description = "搜索关键词，此字段不属于实体类属性")
     private String keyword;

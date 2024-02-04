@@ -248,7 +248,7 @@ import {
   createCourseOnline,
   updateCourseOnline,
   getCourseOnlineId
-} from '@/api/course/online/chapter.js'
+} from '@/api/course/online/course.js'
 import { listSimplePosts } from '@/api/system/post.js'
 import { listSimpleDepts } from '@/api/system/dept.js'
 import { handleTree,defaultProps } from '@/utils/tree.js'

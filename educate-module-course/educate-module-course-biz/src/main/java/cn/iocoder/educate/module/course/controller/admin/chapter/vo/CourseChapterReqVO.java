@@ -1,11 +1,10 @@
-package cn.iocoder.educate.module.course.controller.admin.section.vo;
+package cn.iocoder.educate.module.course.controller.admin.chapter.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Schema(description = "管理后台 - 课程信息 Response VO")
 @Data
 @ToString(callSuper = true)
-public class CourseSectionReqVO {
+public class CourseChapterReqVO {
 
     @Schema(description = "课程节的编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "20988")
     private Long id;
@@ -124,6 +123,6 @@ public class CourseSectionReqVO {
     private Integer isFree;
 
     @Schema(description = "小结信息")
-    private List<CourseSectionRespVO> sectionList;
+    private List<CourseChapterRespVO> sectionList;
 
 }
