@@ -1,21 +1,22 @@
 package cn.iocoder.educate.module.course.dal.dataobject.chapter;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
-import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
+import cn.iocoder.educate.framework.mybatis.core.type.JsonStringSetTypeHandler;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.Set;
 
 /**
+ * 我们对实体类的某个字段自定义了typeHandler，一定要开启autoResultMap=true才能生效
+ *
  * @author j-sentinel
  * @date 2024/1/28 11:35
  */
-@TableName("online_course_chapter")
+@TableName(value = "online_course_chapter", autoResultMap = true)
 @KeySequence("online_course_chapter_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -40,7 +41,7 @@ public class CourseChapterDO extends BaseDO {
     /**
      * 主题标签
      */
-    @TableField(typeHandler = JsonLongSetTypeHandler.class)
+    @TableField(typeHandler = JsonStringSetTypeHandler.class)
     private Set<String> tags;
 
     /**

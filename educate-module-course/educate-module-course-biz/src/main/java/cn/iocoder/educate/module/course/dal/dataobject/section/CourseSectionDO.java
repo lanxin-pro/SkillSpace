@@ -1,12 +1,11 @@
 package cn.iocoder.educate.module.course.dal.dataobject.section;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
-import cn.iocoder.educate.framework.mybatis.core.type.JsonLongSetTypeHandler;
+import cn.iocoder.educate.framework.mybatis.core.type.JsonStringSetTypeHandler;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,7 +15,7 @@ import java.util.Set;
  * @author j-sentinel
  * @date 2024/1/31 20:00
  */
-@TableName("online_course_section")
+@TableName(value = "online_course_section", autoResultMap = true)
 @KeySequence("online_course_section_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -41,7 +40,7 @@ public class CourseSectionDO extends BaseDO {
     /**
      * 标签
      */
-    @TableField(typeHandler = JsonLongSetTypeHandler.class)
+    @TableField(typeHandler = JsonStringSetTypeHandler.class)
     private Set<String> tags;
 
     /**
@@ -188,5 +187,10 @@ public class CourseSectionDO extends BaseDO {
      * 是否免费
      */
     private Integer isFree;
+
+    /**
+     * 删除状态 0 未删除 1 删除
+     */
+    private Boolean isDelete;
 
 }
