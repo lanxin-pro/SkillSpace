@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.course.service.section;
 
+import cn.iocoder.educate.module.course.controller.admin.section.vo.CourseSectionReqVO;
 import cn.iocoder.educate.module.course.controller.admin.section.vo.CourseSectionRespVO;
 import cn.iocoder.educate.module.course.dal.dataobject.section.CourseSectionDO;
 
@@ -27,4 +28,14 @@ public interface CourseSectionService {
      */
     List<CourseSectionRespVO> findCourseSectionList(Long id);
 
+    /**
+     * 保存章信息
+     *
+     * @param courseSectionReqVO 章信息
+     * @return 保存的章信息
+     */
+    CourseSectionDO saveUpdateChapterLesson(CourseSectionReqVO courseSectionReqVO);
+
+
+    CourseSectionDO getChapterLessons(Long opid);
 }

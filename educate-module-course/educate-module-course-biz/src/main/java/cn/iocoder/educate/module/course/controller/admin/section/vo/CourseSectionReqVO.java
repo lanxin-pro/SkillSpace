@@ -4,18 +4,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 /**
  * @author j-sentinel
- * @date 2024/1/31 20:07
+ * @date 2024/2/4 13:45
  */
 @Schema(description = "管理后台 - 课程信息 Response VO")
 @Data
 @ToString(callSuper = true)
-public class CourseSectionRespVO {
+public class CourseSectionReqVO {
 
     @Schema(description = "课程节的编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "20988")
     private Long id;
@@ -24,6 +26,7 @@ public class CourseSectionRespVO {
     private LocalDateTime createTime;
 
     @Schema(description = "章节标题")
+    @NotEmpty(message = "标题不能为空")
     private String title;
 
     @Schema(description = "章节内容")
@@ -54,6 +57,7 @@ public class CourseSectionRespVO {
     private Long pid;
 
     @Schema(description = "笔记ID", example = "26087")
+    @NotEmpty(message = "指派的课程不能为空")
     private Long courseId;
 
     @Schema(description = "排序")
@@ -121,8 +125,5 @@ public class CourseSectionRespVO {
 
     @Schema(description = "小结信息")
     private List<CourseSectionRespVO> sectionList;
-
-    @Schema(description = "删除状态 0 未删除 1 删除")
-    private Boolean isDelete;
 
 }

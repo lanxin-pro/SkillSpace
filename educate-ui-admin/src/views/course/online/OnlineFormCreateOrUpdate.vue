@@ -195,19 +195,10 @@
           <el-col :span="24">
             <el-form-item label="课程标签" prop="tags">
               <!--      这里的tags是我重新定义的一个响应式数据          -->
-              <el-tag
-                  v-for="(itemTag, index) in tagsList"
-                  class="mr-3"
-                  closable
-                  size="large"
-                  type="success"
-                  @close="handleDelTags(index)">{{ itemTag }}</el-tag>
-              <el-input
-                  v-model.trim="tag"
-                  clearable
-                  placeholder="请输入标签"
-                  style="width: 15%"
-                  @blur="handleAppendTags($event)"></el-input>
+              <TagInputEcho
+                  :tags-list="formData.tags"
+                  @blur="handleAppendTags"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -264,6 +255,7 @@ import { handleTree,defaultProps } from '@/utils/tree.js'
 import ELComponent from '@/plugins/modal.js'
 import Editor from '@/components/Editor/index.vue'
 import UploadImg from '@/components/UploadImg/index.vue'
+import TagInputEcho from '@/components/TagInputEcho/index.vue'
 
 // 弹窗的是否展示
 const dialogVisible = ref(false)
@@ -298,19 +290,8 @@ const tagsList = ref([])
 // 表单 Ref
 const formRef = ref()
 /** 添加标签 */
-const handleAppendTags = (ev)=>{
-  if(tag.value){
-    const cIndex = tagsList.value.findIndex(item=>{
-      return item === tag.value
-    })
-    if(cIndex === -1){
-      tagsList.value.push(tag.value)
-      tag.value = ""
-      formData.tags = tagsList.value
-    }else{
-      return ELComponent.msgError("标签已经存在")
-    }
-  }
+const handleAppendTags = (tagsList)=>{
+  formData.tags = tagsList
 }
 /** 删除标签 */
 const handleDelTags = (index)=>{

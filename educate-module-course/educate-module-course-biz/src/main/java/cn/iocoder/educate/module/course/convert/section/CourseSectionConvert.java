@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.course.convert.section;
 
+import cn.iocoder.educate.module.course.controller.admin.section.vo.CourseSectionReqVO;
 import cn.iocoder.educate.module.course.controller.admin.section.vo.CourseSectionRespVO;
 import cn.iocoder.educate.module.course.dal.dataobject.section.CourseSectionDO;
 import org.mapstruct.Mapper;
@@ -17,6 +18,8 @@ public interface CourseSectionConvert {
     CourseSectionConvert INSTANCE = Mappers.getMapper(CourseSectionConvert.class);
 
     CourseSectionRespVO convert(CourseSectionDO courseSectionDO);
+
+    CourseSectionDO convert(CourseSectionReqVO courseSectionDO);
 
     List<CourseSectionRespVO> convert(List<CourseSectionDO> chapterList);
 

@@ -14,4 +14,6 @@ public interface ErrorCodeConstants {
     // ========== Course 章 模块 1008000000 ==========
     ErrorCode COURSE_CHAPTER_NOT_EXISTS = new ErrorCode(1008000001, "课程的章不存在");
 
+    ErrorCode COURSE_CHAPTER_ERROR = new ErrorCode(1008000002, "指派的课程出现异常");
+
 }
