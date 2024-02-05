@@ -29,7 +29,7 @@ export function saveUpdateChapterLesson(data) {
 /**
  * 保存和修改章节管理
  *
- * @param data
+ * @param opid
  * @returns {*}
  */
 export function getChapterLessons(opid) {

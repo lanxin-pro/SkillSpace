@@ -62,6 +62,12 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         return validateChapterLessonsExists(opid);
     }
 
+    @Override
+    public List<CourseChapterDO> findSectionList(Long chapterId) {
+        validateChapterLessonsExists(chapterId);
+        return courseSectionMapper.findLessonList(chapterId);
+    }
+
     private void validateSaveOrUpdateCourse(CourseChapterReqVO courseSectionReqVO) {
         // 指派的course必须存在
         validateCourseExists(courseSectionReqVO.getCourseId());

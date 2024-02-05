@@ -36,6 +36,19 @@ public interface CourseChapterService {
      */
     CourseChapterDO saveUpdateChapterLesson(CourseChapterReqVO courseSectionReqVO);
 
-
+    /**
+     * 查新章的信息
+     * @param opid
+     * @return
+     */
     CourseChapterDO getChapterLessons(Long opid);
+
+
+    /**
+     * 根据章ID查询对应节信息
+     *
+     * @param chapterId
+     * @return
+     */
+    List<CourseChapterDO> findSectionList(Long chapterId);
 }

@@ -61,7 +61,11 @@ public class CourseChapterController {
     public CommonResult<CourseChapterRespVO> getChapterLessons(@RequestParam("opid") Long opid) {
         // 本章信息
         CourseChapterDO chapterLessons = courseSectionService.getChapterLessons(opid);
-        return success(CourseSectionConvert.INSTANCE.convert(chapterLessons));
+        List<CourseChapterDO> courseChapterDOS = courseSectionService.findSectionList(chapterLessons.getId());
+        CourseChapterRespVO convert = CourseSectionConvert.INSTANCE.convert(chapterLessons);
+        List<CourseChapterRespVO> convert1 = CourseSectionConvert.INSTANCE.convert(courseChapterDOS);
+        convert.setSectionList(convert1);
+        return success(convert);
     }
 
 }

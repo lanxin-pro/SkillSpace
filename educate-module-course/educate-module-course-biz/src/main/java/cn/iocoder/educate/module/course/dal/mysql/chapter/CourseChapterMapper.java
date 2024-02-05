@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface CourseChapterMapper extends BaseMapper<CourseChapterDO> {
 
-    default List<CourseChapterDO> findCourseChapterList(String courseId){
+    default List<CourseChapterDO> findCourseChapterList(String courseId) {
         LambdaQueryWrapper<CourseChapterDO> courseSectionDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         courseSectionDOLambdaQueryWrapper.eq(CourseChapterDO::getCourseId, courseId);
         courseSectionDOLambdaQueryWrapper.eq(CourseChapterDO::getPid, 0);
@@ -29,6 +29,13 @@ public interface CourseChapterMapper extends BaseMapper<CourseChapterDO> {
         courseSectionDOLambdaQueryWrapper.eq(CourseChapterDO::getPid, id)
                 .orderByDesc(CourseChapterDO::getIsDelete, CourseChapterDO::getSorted);
         return this.selectList(courseSectionDOLambdaQueryWrapper);
+    }
+
+    default List<CourseChapterDO> findLessonList(Long chapterId) {
+        LambdaQueryWrapper<CourseChapterDO> courseChapterDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        courseChapterDOLambdaQueryWrapper.eq(CourseChapterDO::getPid, chapterId)
+                .orderByDesc(CourseChapterDO::getIsDelete, CourseChapterDO::getSorted);
+        return this.selectList(courseChapterDOLambdaQueryWrapper);
     }
 
 }

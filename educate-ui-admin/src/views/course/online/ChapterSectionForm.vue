@@ -17,14 +17,15 @@
                 v-for="({isDelete, id, sectionList, title}, index) in chapterList"
                 :class="sectionList.length === 0 ? 'hiddenSvg' : ''"
                 :name="id"
-                @click="handleEditChapter(isDelete, index)"
             >
               <template #title>
                 <div class="chapter-item">
                   <div
-                      :class="[ isDelete ? 'text-red-600' : 'text-black']"
+                      :class="[ isDelete ? 'text-red-600' : 'text-black',
+                      opChapterIndex === index ? 'text-green-400' : '']"
                       :title="`${title},节有（${sectionList.length}）个，ID是：${id}`"
                       class="title"
+                      @click="handleEditChapter(isDelete, index)"
                   >
                     <span>第{{ index + 1 }}章：</span>
                     <span>{{ title }}</span>
@@ -45,7 +46,11 @@
 
               <div v-if="sectionList && sectionList.length > 0" class="pl-3">
                 <ul class="section-item-list">
-                  <li v-for="(lesson, cindex) in sectionList" class="section-item">
+                  <li
+                      v-for="(lesson, cindex) in sectionList"
+                      class="section-item"
+                      @click="handleEditLessonIndex(index, cindex)"
+                  >
                     <a :class="[!lesson.isDelete ? 'text-black' : 'text-red-600']" href="javascript:void(0);">
                       <span>第{{ cindex + 1 }}节：</span>
                       <span>{{ lesson.title }}</span>
@@ -78,16 +83,17 @@
 
 
       <el-col :span="17">
-        <div class="pug-chapter-box">
-          <el-form
-              ref="formRef"
-              v-loading="formLoading"
-              :hide-required-asterisk="true"
-              :model="formData"
-              :rules="rules"
-              label-width="80px"
-          >
-            <!--章编辑-->
+        <el-form
+
+            ref="formRef"
+            v-loading="formChapterLoading"
+            :hide-required-asterisk="true"
+            :model="formData"
+            :rules="rules"
+            label-width="80px"
+        >
+          <div class="pug-chapter-box scrollbar">
+          <!--章编辑-->
             <div class="pug-chapter-form-box">
               <el-divider>
                 <template #default>
@@ -101,8 +107,8 @@
               <div class="py-5">
                 <el-divider content-position="right">
                   <div class="px-2">
-                    <el-button v-if="!expandChapter" size="default" type="success" @click="expandChapter = true">展开</el-button>
-                    <el-button v-else size="default" type="warning" @click="expandChapter = false">收起</el-button>
+                    <el-button v-if="!expandChapter" size="small" type="success" @click="expandChapter = true">展开</el-button>
+                    <el-button v-else size="small" type="warning" @click="expandChapter = false">收起</el-button>
                   </div>
                 </el-divider>
               </div>
@@ -192,22 +198,206 @@
                           size="default"
                           type="primary"
                           @click="handleSaveChapter"
-                      >保存章</el-button>
+                      >添加章</el-button>
                       <el-button
                           v-if="courseForm.chapter.id && !courseForm.chapter.isDelete"
                           icon="edit"
                           size="default"
                           type="primary"
                           @click="handleSaveChapter"
-                      >编辑章</el-button>
+                      >保存章</el-button>
 
                     </el-form-item>
                   </el-col>
                 </el-row>
               </el-container>
             </div>
-          </el-form>
-        </div>
+
+            <!--节编辑-->
+            <div v-show="expandLesson" class="pug-section-form-box">
+              <el-divider>
+                <template #default>
+                  <div class="divider-slot">
+                    <el-icon><Reading /></el-icon>
+                    <span class="section-form-title">节管理（{{ sectionList?.length }}节）</span>
+                    <el-icon><Reading /></el-icon>
+                  </div>
+                </template>
+              </el-divider>
+              <div  class="py-5">
+                <el-divider content-position="right">
+                  <div class="px-2">
+                    <el-button icon="Plus" size="small" type="primary" @click="handleAddSection">添加节</el-button>
+                    <el-button
+                        v-if="sectionActiveName.length === 0"
+                        size="small"
+                        type="success"
+                        @click="sectionExpandAll">
+                      展开
+                    </el-button>
+                    <el-button v-else size="small" type="warning" @click="sectionHideAll">收起</el-button>
+                  </div>
+                </el-divider>
+              </div>
+
+              <el-container style="width:100%;padding: 20px;background: #fff;">
+                <el-collapse v-model="sectionActiveName" style="width:100%;" @change="handleChangeColl">
+                  <el-collapse-item v-for="(lesson, index) in operationSectionList" :name="lesson.id">
+                    <template #title>
+                      <div class="chapter-item" style="width:100%">
+                        <span
+                            :class="[!lesson.isDelete ? 'text-black' : 'text-red-600',
+                            lesson.id === -1 ? 'text-green-400' : '']">
+                          第{{ index + 1 }}节：{{lesson.title}}
+                        </span>
+                        <div v-if="lesson.id !== -1">
+                          <span v-if="lesson.isDelete" class="pr-5" title="删除" @click.stop="handleDel(lesson.id,opChapterIndex)"><el-icon><Delete /></el-icon></span>
+                          <span v-if="!lesson.isDelete" class="pr-5" title="复制" @click.stop="handleCopy(lesson.id,opChapterIndex)"><el-icon><Notification /></el-icon></span>
+                          <span v-if="!lesson.isDelete" class="pr-3" title="删除" @click="handleRemove(lesson.id,opChapterIndex)"><el-icon><CloseBold /></el-icon></span>
+                          <span v-if="lesson.isDelete" class="pr-3" title="恢复" @click="handleReback(lesson.id,opChapterIndex)"><el-icon><CircleCheck /></el-icon></span>
+                        </div>
+                        <div v-else>
+                          <span class="pr-5" title="删除" @click.stop="handleResetLesson"><el-icon><Delete /></el-icon></span>
+                        </div>
+                      </div>
+                    </template>
+                    <el-row :gutter="20" style="width:100%;padding:40px 0;">
+                      <el-col :span="24">
+                        <el-form-item label="节标题">
+                          <el-input v-model="lesson.title" maxlength="100" placeholder="请输入章标题"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="指派的课程" label-width="110">
+                          <el-select
+                              v-model="lesson.courseId"
+                              disabled
+                              placeholder="指派的课程"
+                              @change="handleCourseChange(lesson.courseId,index)"
+                          >
+                            <el-option
+                                v-for="item in courseListOption"
+                                :key="item.id"
+                                :label="item.title"
+                                :value="item.id"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="10">
+                        <el-form-item label="指派章" label-width="70">
+                          <el-select
+                              v-model="lesson.pid"
+                              placeholder="指派章"
+                              style="width:100%"
+                              @change="handleCategory"
+                          >
+                            <el-option
+                                v-for="item in chapterListOption"
+                                :key="item.id"
+                                :label="item.title"
+                                :value="item.id"
+                            ></el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="24">
+                        <el-form-item label="节简介">
+                          <el-input v-model="lesson.description" :rows="4" placeholder="请输入课程简介" type="textarea"></el-input>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="7">
+                        <el-form-item label="是否免费">
+                          <el-radio-group v-model="lesson.isFree">
+                            <el-radio v-for="item in [{label:1,title:'是'},{label:0,title:'否'}]" :key="item.label" :label="item.label">
+                              {{item.title}}
+                            </el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="7">
+                        <el-form-item label="发布状态">
+                          <el-radio-group v-model="lesson.status">
+                            <el-radio
+                                v-for="item in [{id:1, title:'是'}, {id:0,title:'否'}]"
+                                :key="item.id"
+                                :label="item.id"
+                            >
+                              {{item.title}}
+                            </el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="7">
+                        <el-form-item label="是否删除">
+                          <el-radio-group v-model="lesson.isDelete">
+                            <el-radio v-for="item in [{label:1,title:'是'},{label:0,title:'否'}]" :key="item.label" :label="item.label">
+                              {{item.title}}
+                            </el-radio>
+                          </el-radio-group>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="16">
+                        <el-form-item label="播放码">
+                          <el-input v-model="lesson.videoId" maxlength="100" placeholder="播放码"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="时长">
+                          <el-input v-model="lesson.courseTimer" maxlength="100" placeholder="时长"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="16">
+                        <el-form-item label="播放地址">
+                          <el-input v-model="lesson.videoLink" maxlength="100" placeholder="播放地址"></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="24" class="flex">
+                        <el-form-item label="">
+                          <el-button
+                              v-if="lesson.id === -1"
+                              icon="close"
+                              size="default"
+                              type="default"
+                              @click.stop="handleResetLesson"
+                          >
+                            关闭
+                          </el-button>
+                          <el-button
+                              v-if="lesson.id === -1"
+                              icon="edit"
+                              size="default"
+                              type="primary"
+                              @click.stop="handleSaveLesson(index)"
+                          >
+                            保存节
+                          </el-button>
+                          <el-button
+                              v-if="lesson.id !== -1 && !lesson.isDelete"
+                              icon="edit"
+                              size="default"
+                              type="primary"
+                              @click.stop="handleSaveLesson(index)"
+                          >
+                            保存编辑节
+                          </el-button>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-collapse-item>
+                </el-collapse>
+
+              </el-container>
+
+
+            </div>
+          </div>
+        </el-form>
       </el-col>
 
     </el-row>
@@ -240,6 +430,17 @@ const chapterListOption = ref([])
 const chapterActiveName = ref([])
 // 记录章操作的索引
 const opChapterIndex = ref(0)
+const formChapterLoading = ref(false)
+
+// ============ 节属性 ============
+// 控制节编辑(因为添加章的时候，因为还没有id，所以添加节是没有意义的，所以先隐藏)
+const expandLesson = ref(false)
+// 对应的节信息
+const operationSectionList = ref([])
+// 控制节的折叠菜单展开(这里需要的是展开的id)
+const sectionActiveName = ref([1])
+
+
 /* 表单信息 */
 // 综合数据模型
 const mainObj = {
@@ -334,9 +535,14 @@ const handleSaveChapter = async () => {
 /** 添加章 */
 const handleAddChapter = ()=>{
   reset("chapter")
+  // 展开编辑章
+  expandChapter.value = true
+  // 收起编辑节
+  expandLesson.value = false
 }
 /** 编辑章 */
 const handleEditChapter = async (isDelete, index) => {
+  formChapterLoading.value = true
   if(isDelete) {
     ELComponent.msgWarning('此章节已被删除')
     return;
@@ -347,6 +553,28 @@ const handleEditChapter = async (isDelete, index) => {
   const serverResponse = await getChapterLessons(opid)
   // 章信息
   courseForm.chapter = serverResponse.data
+  console.log('serverResponse.data.sectionList', serverResponse.data)
+  // 节信息
+  if(serverResponse.data.sectionList) {
+    operationSectionList.value = serverResponse.data.sectionList
+    console.log('编辑章的时候', operationSectionList.value)
+
+  } else {
+    operationSectionList.value = []
+  }
+  // 打开章编辑的状态
+  expandChapter.value = true
+  // 控制节编辑的状态
+  expandLesson.value = true
+  // 展开第一节进行编辑
+  if(operationSectionList.value && operationSectionList.value.length > 0){
+    sectionActiveName.value = [operationSectionList.value[0].id]
+    // 如果想要展开所有
+    // const lessonIds = lessonList.value.map(c=>c.id)
+    // lessonActiveName.value = lessonIds
+  }
+
+  formChapterLoading.value = false
 }
 /** 添加标签 */
 const handleAppendTags = (tagsList)=>{
@@ -354,6 +582,69 @@ const handleAppendTags = (tagsList)=>{
 }
 
 
+// ====================== 节管理 ======================
+/** 编辑节 -根据索引打开的方式 */
+const handleEditLessonIndex = (index, cindex) => {
+  // 记录编辑章的位置
+  opChapterIndex.value = index
+  // 打开编辑的节信息
+  expandLesson.value = true
+  // 展开编辑章
+  expandChapter.value = false
+  // 数据中的字段
+  let chapter = chapterList.value[index]
+  // 某个章信息
+  courseForm.chapter = chapter
+  // 通过 index 和 cindex 找到章下某个节
+  const lesson = chapterList.value[index].sectionList[cindex]
+  // 章下面的某个节信息
+  operationSectionList.value = [lesson]
+  // 展开编辑的节
+  sectionActiveName.value = [lesson.id]
+}
+/** 新增节信息 */
+const handleAddSection = () => {
+  // 收起章
+  expandChapter.value = false
+  let len = operationSectionList.value.filter(lesson => lesson.id === -1).length
+  // 如果有 > 0的id为-1那就是正在编辑的状态
+  if(len > 0){
+    return ELComponent.msgError("有正在编辑节，操作完毕在进行此操作...")
+  }
+  // 处于编辑状态
+  courseForm.lesson.id = -1
+  // 把当前添加的小节挂载到某个章下面
+  courseForm.lesson.pid = courseForm.chapter.id
+
+  // 编辑的时候新增的节管理先打开
+  sectionActiveName.value = [-1]
+
+  // 添加新节（每次添加新节的时候，我都会给id为-1）
+  operationSectionList.value.push(courseForm.lesson)
+}
+/** 添加节 */
+const handleSaveLesson = async (index) => {
+  const lesson = operationSectionList.value[index]
+  // -1处于新增状态,一定要清空，否则就会就更新了就不对了。
+  if(lesson.id === -1){
+    lesson.id = ""
+  }
+  // 保存节的信息
+  const serverResponse = await saveUpdateChapterLesson(lesson)
+  // 转换成编辑的状态
+  operationSectionList.value[index] = serverResponse.data
+  ELComponent.msgSuccess('保存成功！')
+  // 刷新
+  await loadChapters(courseId.value)
+}
+/** 展开第一个节编辑 */
+const sectionExpandAll = () => {
+
+}
+/** 关闭所有的节编辑 */
+const sectionHideAll = () => {
+  sectionActiveName.value = []
+}
 /** 重置(可以重置章和节) */
 const reset = (name)=>{
   courseForm[name] = {
@@ -385,6 +676,10 @@ const reset = (name)=>{
   background: #f8f8f8;
   padding: 10px 0;
   border-radius: 4px;
+}
+.pug-chapter-box.scrollbar {
+  height: 93vh;
+  overflow: scroll;
 }
 .chapter-item {
   display: flex;
@@ -447,5 +742,14 @@ const reset = (name)=>{
   width:100%;
   padding: 30px 0;
   background:#fff;
+}
+
+.pug-section-form-box .divider-slot .section-form-title {
+  padding: 40px;
+  font-size: x-large;
+  font-weight: bold;
+}
+.pug-section-form-box /deep/ .el-divider__text {
+  background: #f8f8f8;
 }
 </style>
