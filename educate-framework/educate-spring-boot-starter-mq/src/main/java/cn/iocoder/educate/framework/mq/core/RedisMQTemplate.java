@@ -33,7 +33,7 @@ public class RedisMQTemplate {
         try {
             sendMessageBefore(message);
             // 发送消息
-            redisTemplate.convertAndSend(message.getChannel(), JsonUtils.toJsonString(message));
+            redisTemplate.convertAndSend(message.getChannel(), JSONUtil.toJsonStr(message));
         } finally {
             sendMessageAfter(message);
         }
