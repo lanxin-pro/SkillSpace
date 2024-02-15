@@ -78,10 +78,10 @@
       <el-form-item v-if="formData.storage === 20" label="存储 bucket" prop="config.bucket">
         <el-input v-model="formData.config.bucket" placeholder="请输入 bucket" />
       </el-form-item>
-      <el-form-item v-if="formData.storage === 20" label="accessKey" prop="config.accessKey">
+      <el-form-item v-if="formData.storage === 20 || formData.storage === 30" label="accessKey" prop="config.accessKey">
         <el-input v-model="formData.config.accessKey" placeholder="请输入 accessKey" />
       </el-form-item>
-      <el-form-item v-if="formData.storage === 20" label="accessSecret" prop="config.accessSecret">
+      <el-form-item v-if="formData.storage === 20 || formData.storage === 30" label="accessSecret" prop="config.accessSecret">
         <el-input v-model="formData.config.accessSecret" placeholder="请输入 accessSecret" />
       </el-form-item>
       <!-- 通用 -->
