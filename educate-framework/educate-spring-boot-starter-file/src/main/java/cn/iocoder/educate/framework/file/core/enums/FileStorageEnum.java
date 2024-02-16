@@ -3,6 +3,8 @@ package cn.iocoder.educate.framework.file.core.enums;
 import cn.hutool.core.util.ArrayUtil;
 import cn.iocoder.educate.framework.file.core.client.FileClient;
 import cn.iocoder.educate.framework.file.core.client.FileClientConfig;
+import cn.iocoder.educate.framework.file.core.client.aliyun.AliyunFileClient;
+import cn.iocoder.educate.framework.file.core.client.aliyun.AliyunFileClientConfig;
 import cn.iocoder.educate.framework.file.core.client.db.DBFileClient;
 import cn.iocoder.educate.framework.file.core.client.db.DBFileClientConfig;
 import cn.iocoder.educate.framework.file.core.client.local.LocalFileClient;
@@ -26,6 +28,8 @@ public enum FileStorageEnum {
     LOCAL(10, LocalFileClientConfig.class, LocalFileClient.class),
 
     S3(20, S3FileClientConfig.class, S3FileClient.class),
+
+    ALIYUN(30, AliyunFileClientConfig.class, AliyunFileClient.class),
     ;
 
     /**

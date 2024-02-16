@@ -22,6 +22,7 @@
         <module>lab-35-admin-01-adminserver</module>
         <module>lab-35-admin-01-demo-application</module>
         <module>lab-100-lanxin-es-api</module>
+        <module>lab-100-lanxin-es-bilibili</module>
     </modules>
     <packaging>pom</packaging>
 

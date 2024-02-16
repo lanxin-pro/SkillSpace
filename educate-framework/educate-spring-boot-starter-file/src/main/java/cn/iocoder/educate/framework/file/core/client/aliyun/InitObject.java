@@ -1,25 +1,41 @@
-package cn.iocoder.educate.file.video.aliyun;
+package cn.iocoder.educate.framework.file.core.client.aliyun;
 
-import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.profile.DefaultProfile;
+import lombok.Data;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author j-sentinel
  * @date 2024/2/6 16:42
  */
+@Getter
 public class InitObject {
 
+    /**
+     * 账号AK信息请填写(必选)
+     */
+    @Value("${aliyun.accessKeyId}")
+    private String accessKeyId = "<Your accessKeyId>";
+
+    /**
+     * 账号AK信息请填写(必选)
+     */
+    @Value("${aliyun.accessKeySecret}")
+    private String accessKeySecret = "<Your accessKeySecret>";
+
     //读取AccessKey信息
-    public static DefaultAcsClient initVodClient() throws ClientException {
+    public DefaultAcsClient initVodClient() throws ClientException {
         String regionId = "cn-shanghai";
         // 点播服务接入地域
         // 阿里云账号AccessKey拥有所有API的访问权限，建议您使用RAM用户进行API访问或日常运维。
         // 强烈建议不要把AccessKey ID和AccessKey Secret保存到工程代码里，否则可能导致AccessKey泄露，威胁您账号下所有资源的安全。
         // 本示例通过从环境变量中读取AccessKey，来实现API访问的身份验证。运行代码示例前，请配置环境变量ALIBABA_CLOUD_ACCESS_KEY_ID和ALIBABA_CLOUD_ACCESS_KEY_SECRET。
         DefaultProfile profile = DefaultProfile.getProfile(regionId,
-                "LTAI5t9SvAQ2TmXCtsSQLags",
-                "d7X4xCwf6r9hzmPXbIrjdw2GEmuqMD");
+                accessKeyId,
+                accessKeySecret);
         DefaultAcsClient client = new DefaultAcsClient(profile);
         return client;
     }
