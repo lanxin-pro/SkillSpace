@@ -34,6 +34,7 @@
         <module>educate-spring-boot-starter-excel</module>
         <module>educate-spring-boot-starter-monitor</module>
         <module>educate-spring-boot-starter-biz-dict</module>
+        <module>educate-spring-boot-starter-biz-pay</module>
     </modules>
 
     <description>
