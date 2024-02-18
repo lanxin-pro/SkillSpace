@@ -23,7 +23,7 @@ public class HtmlParseUtil {
         a.forEach(System.out::println);
     }
 
-    private static ArrayList<Content> extracted(String keyword) throws IOException {
+    public static ArrayList<Content> extracted(String keyword) throws IOException {
         // 1.获取请求
         String url = "https://search.jd.com/Search?keyword=" + keyword + "&enc=utf-8";
         HashMap<String, String> map = new HashMap<>();

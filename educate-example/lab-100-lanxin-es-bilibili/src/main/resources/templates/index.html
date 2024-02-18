@@ -5,11 +5,10 @@
     <meta charset="utf-8"/>
     <title>狂神说Java-ES仿京东实战</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <script th:src="@{/js/jquery.min.js}"></script>
 </head>
 
 <body class="pg">
-<div class="page">
+<div class="page" id="app">
     <div class=" mallist tmall- page-not-market " id="mallPage">
 
         <!-- 头部搜索 -->
@@ -31,11 +30,11 @@
                                     <div class="mallSearch-input clearfix">
                                         <div class="s-combobox" id="s-combobox-685">
                                             <div class="s-combobox-input-wrap">
-                                                <input aria-haspopup="true" autocomplete="off" class="s-combobox-input" id="mq"
+                                                <input aria-haspopup="true" autocomplete="off" class="s-combobox-input" id="mq" v-model="keyword"
                                                        type="text" value="dd">
                                             </div>
                                         </div>
-                                        <button id="searchbtn" type="submit">搜索</button>
+                                        <button @click.prevent="searchKey" id="searchbtn" type="submit">搜索</button>
                                     </div>
                                 </fieldset>
                             </form>
@@ -86,21 +85,21 @@
                 <!-- 商品详情 -->
                 <div class="view grid-nosku">
 
-                    <div class="product">
+                    <div class="product" v-for="result in results">
                         <div class="product-iWrap">
                             <!--商品封面-->
                             <div class="productImg-wrap">
                                 <a class="productImg">
-                                    <img src="https://img.alicdn.com/bao/uploaded/i1/3899981502/O1CN01q1uVx21MxxSZs8TVn_!!0-item_pic.jpg">
+                                    <img :src="result.img">
                                 </a>
                             </div>
                             <!--价格-->
                             <p class="productPrice">
-                                <em><b>¥</b>2590.00</em>
+                                <em><b>¥</b>{{ result.price }}</em>
                             </p>
                             <!--标题-->
                             <p class="productTitle">
-                                <a> dkny秋季纯色a字蕾丝dd商场同款连衣裙 </a>
+                                <a v-html="result.title"></a>
                             </p>
                             <!-- 店铺名 -->
                             <div class="productShop">
@@ -119,8 +118,25 @@
     </div>
 </div>
 
+<script th:src="@{/js/axios.min.js}"></script>
+<script th:src="@{/js/vue.js}"></script>
 <script>
-
+    new Vue({
+        el: '#app',
+        data: {
+            keyword: '',
+            results: []
+        },
+        methods: {
+            searchKey() {
+                let keyword = this.keyword
+                axios.get(`search/${keyword}/1/20`).then(res => {
+                    console.log(res.data)
+                    this.results = res.data
+                })
+            }
+        }
+    })
 </script>
 
 </body>
