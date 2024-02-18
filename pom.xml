@@ -25,6 +25,7 @@
         <module>educate-module-mall</module>
         <module>educate-module-member</module>
         <module>educate-module-course</module>
+        <module>educate-module-pay</module>
     </modules>
 
     <name>${project.artifactId}</name>

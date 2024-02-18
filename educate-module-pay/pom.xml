@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>skill-space</artifactId>
+        <groupId>cn.iocoder.boot</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>educate-module-pay</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>educate-module-pay-biz</module>
+        <module>educate-module-pay-api</module>
+    </modules>
+
+    <name>${project.artifactId}</name>
+    <description>
+        pay 模块，我们放支付业务，提供业务的支付能力。
+        例如说：商户、应用、支付、退款等等
+    </description>
+
+</project>

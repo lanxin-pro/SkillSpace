@@ -35,6 +35,35 @@ public abstract class AbstractPayClient<Config extends PayClientConfig> implemen
         this.config = config;
     }
 
+    /**
+     * 自定义初始化
+     */
+    protected abstract void doInit();
+
+    /**
+     * 初始化
+     */
+    public final void init() {
+        doInit();
+        log.debug("[init][客户端({}) 初始化完成]", getId());
+    }
+
+    /**
+     * 刷新配置
+     *
+     * @param config 配置
+     */
+    public final void refresh(Config config) {
+        // 判断是否更新
+        if (config.equals(this.config)) {
+            return;
+        }
+        log.info("[refresh][客户端({})发生变化，重新初始化]", getId());
+        this.config = config;
+        // 初始化
+        this.init();
+    }
+
     @Override
     public Long getId() {
         return channelId;
