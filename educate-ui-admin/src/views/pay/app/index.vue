@@ -1,11 +1,11 @@
 <template>
-
+  <div>
+    <ToDay></ToDay>
+  </div>
 </template>
 
-<script>
-export default {
-  name: "app.index"
-}
+<script setup>
+import ToDay from './toDay.vue'
 </script>
 
 <style scoped>
