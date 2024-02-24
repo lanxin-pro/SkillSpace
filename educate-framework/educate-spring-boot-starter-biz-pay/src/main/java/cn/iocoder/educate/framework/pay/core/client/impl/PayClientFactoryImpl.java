@@ -62,6 +62,7 @@ public class PayClientFactoryImpl implements PayClientFactory {
         Assert.notNull(channelEnum, String.format("支付渠道(%s) 为空", channelCode));
         Class<?> payClientClass = clientClass.get(channelEnum);
         Assert.notNull(payClientClass, String.format("支付渠道(%s) Class 为空", channelCode));
+        // 创建客户端的核心语句 方法接受一个类对象作为参数，并使用该类的默认构造函数创建一个新的实例
         return (AbstractPayClient<Config>) ReflectUtil.newInstance(payClientClass, channelId, config);
     }
 

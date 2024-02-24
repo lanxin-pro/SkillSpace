@@ -22,20 +22,24 @@ public enum PayChannelEnum {
      * 微信支付
      */
     public static final String WECHAT = "WECHAT";
+
     /**
      * 支付宝支付
      */
     public static final String ALIPAY = "ALIPAY";
+
     /**
      * 编码
      *
      * 参考 <a href="https://www.pingxx.com/api/支付渠道属性值.html">支付渠道属性值</a>
      */
     private final String code;
+
     /**
      * 名字
      */
     private final String name;
+
     /**
      * 配置类
      */

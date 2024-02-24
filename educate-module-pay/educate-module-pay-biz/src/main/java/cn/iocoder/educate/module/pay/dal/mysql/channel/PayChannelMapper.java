@@ -21,4 +21,16 @@ public interface PayChannelMapper extends BaseMapper<PayChannelDO> {
         return this.selectList(payChannelDOLambdaQueryWrapper);
     }
 
+    default PayChannelDO selectByAppIdAndCode(Long appId, String code) {
+        LambdaQueryWrapper<PayChannelDO> payChannelDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        payChannelDOLambdaQueryWrapper.eq(PayChannelDO::getAppId, appId).eq(PayChannelDO::getCode, code);
+        return this.selectOne(payChannelDOLambdaQueryWrapper);
+    }
+
+    default List<PayChannelDO> selectListByAppId(Long appId, Integer status) {
+        LambdaQueryWrapper<PayChannelDO> payChannelDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        payChannelDOLambdaQueryWrapper.eq(PayChannelDO::getAppId, appId)
+                .eq(PayChannelDO::getStatus, status);
+        return this.selectList(payChannelDOLambdaQueryWrapper);
+    }
 }
