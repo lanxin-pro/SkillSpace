@@ -1,8 +1,9 @@
-package cn.iocoder.educalte.module.pay.dal.dataobject.channel;
+package cn.iocoder.educate.module.pay.dal.dataobject.channel;
 
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.framework.pay.core.client.PayClientConfig;
+import cn.iocoder.educate.framework.pay.core.enums.channel.PayChannelEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

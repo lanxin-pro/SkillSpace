@@ -1,7 +1,7 @@
-package cn.iocoder.educalte.module.pay.service.channel;
+package cn.iocoder.educate.module.pay.service.channel;
 
-import cn.iocoder.educalte.module.pay.dal.dataobject.channel.PayChannelDO;
-import cn.iocoder.educalte.module.pay.dal.mysql.channel.PayChannelMapper;
+import cn.iocoder.educate.module.pay.dal.dataobject.channel.PayChannelDO;
+import cn.iocoder.educate.module.pay.dal.mysql.channel.PayChannelMapper;
 import cn.iocoder.educate.framework.common.util.cache.CacheUtils;
 import cn.iocoder.educate.framework.pay.core.client.PayClient;
 import cn.iocoder.educate.framework.pay.core.client.PayClientFactory;
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 支付渠道 Service 实现类
@@ -47,4 +49,8 @@ public class PayChannelServiceImpl implements PayChannelService {
             });
 
 
+    @Override
+    public List<PayChannelDO> getChannelListByAppIds(Set<Long> appIds) {
+        return payChannelMapper.selectListByAppIds(appIds);
+    }
 }
