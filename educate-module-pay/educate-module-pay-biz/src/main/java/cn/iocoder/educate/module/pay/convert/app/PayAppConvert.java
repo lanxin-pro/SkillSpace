@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,16 @@ public interface PayAppConvert {
 
     default PageResult<PayAppPageItemRespVO> convertPage(PageResult<PayAppDO> pageResult, List<PayChannelDO> channels) {
         PageResult<PayAppPageItemRespVO> voPageResult = convertPage(pageResult);
-        Set<String> collect = channels.stream().map(PayChannelDO::getCode).collect(Collectors.toSet());
+        // 这样分组有非常大的bug，app的id无法对应上，appId有很多个，Code码也有很多个
+        // Set<String> collect = channels.stream().map(PayChannelDO::getCode).collect(Collectors.toSet());
+        Map<Long, Set<String>> appIdChannelMap = channels.stream()
+                // 二级分组
+                .collect(Collectors.groupingBy(PayChannelDO::getAppId,
+                        Collectors.mapping(PayChannelDO::getCode, Collectors.toSet())
+                ));
         voPageResult.getList().forEach(app ->
-                app.setChannelCodes(collect));
+                app.setChannelCodes(appIdChannelMap.get(app.getId()))
+        );
         return voPageResult;
     }
 
