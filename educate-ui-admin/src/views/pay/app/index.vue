@@ -5,7 +5,6 @@
         ref="queryFormRef"
         :inline="true"
         :model="queryParams"
-        class="-mb-15px"
         label-width="68px"
         size="small"
     >
@@ -89,7 +88,7 @@
             <el-button
                 v-else
                 circle
-                icon="check"
+                icon="close"
                 type="danger"
                 @click="openChannelForm(scope.row, PayChannelEnum.ALIPAY_APP.code)"
             >
@@ -335,6 +334,8 @@
         :total="total"
         @pagination="getList"
     />
+
+    <AlipayChannelForm ref="alipayFormRef" @success="getList" />
   </div>
 </template>
 
@@ -346,6 +347,8 @@ import * as AppApi from '@/api/pay/app'
 import AppForm from './components/AppForm.vue'
 import { PayChannelEnum } from '@/utils/constants'
 import { CommonStatusEnum } from '@/utils/constants'
+import Pagination from '@/components/Pagination/index.vue'
+import AlipayChannelForm from './components/channel/AlipayChannelForm.vue'
 
 /** 初始化 **/
 onMounted(async () => {
