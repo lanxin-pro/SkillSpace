@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <BaseInfo></BaseInfo>
 
     <el-row :gutter='20'>
       <el-col :span="8">
@@ -76,6 +77,8 @@
         </el-card>
       </el-col>
     </el-row>
+
+
 
     <el-card class="box-card" style="margin:10px 0;">
       <template #header>
@@ -198,6 +201,7 @@ import CountTo from '@/components/CountTo/index.vue'
 import { dayDateFormatter } from '@/utils/formatTime.js'
 import ELComponent from '@/plugins/modal.js'
 import download from '@/utils/download.js'
+import BaseInfo from './components/BaseInfo.vue'
 
 const detailRef = ref()
 const queryForm = ref()
