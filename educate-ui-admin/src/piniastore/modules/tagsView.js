@@ -55,6 +55,20 @@ export const useTagsViewStore = defineStore('tag-view', {
                 return
             this.cachedViews = cacheMap
         },
+        /** 删除所有缓存和tag */
+        delAllViews() {
+            this.delAllVisitedViews()
+            this.delCachedView()
+        },
+        /** 删除所有tag */
+        delAllVisitedViews() {
+            // const affixTags = this.visitedViews.filter((tag) => tag.meta.affix)
+            this.visitedViews = []
+        },
+        /** 删除缓存 */
+        delCachedView() {
+
+        },
 
     }
 })

@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="16">
     <el-col v-for="(item, index) in infoList" :key="index" class="ivu-mb" v-bind="grid">
-      <el-card :padding="0" shadow="never">
+      <el-card>
         <p slot="header">
           <span style="color: #4d4d4f" v-text="item.title"></span>
           <el-tag style="float: right" type="primary">{{ item.date }}</el-tag>
@@ -15,14 +15,6 @@
             <el-icon :class="Number(item.today_ratio) >= 0 ? ' ' : 'on'" class="iconColor">
               <component :is="Number(item.today_ratio) >= 0 ? 'caret-top' : 'caret-bottom'" />
             </el-icon>
-
-              <i
-                  :class="[
-                  Number(item.today_ratio) >= 0 ? ' ' : 'on',
-                  Number(item.today_ratio) >= 0 ? 'el-icon-caret-top' : 'el-icon-caret-bottom\n',
-                ]"
-                  class="iconColor"
-              />
             </span>
           </div>
           <el-divider />
@@ -45,7 +37,7 @@ export default {
       infoList: [{
         title: '销售额',
         date: '今日',
-        yesterday: 0,
+        yesterday: 600,
         today: 0,
         today_ratio: 20,
         total_name: '本月销售额',
@@ -54,8 +46,8 @@ export default {
         {
           title: '用户访问量',
           date: '今日',
-          yesterday: 0,
-          today: 0,
+          yesterday: 481,
+          today: 123,
           today_ratio: -74.42,
           total_name: '本月访问量',
           total: '6349Pv'
@@ -63,7 +55,7 @@ export default {
         {
           title: '订单量',
           date: '今日',
-          yesterday: 0,
+          yesterday: 1,
           today: 0,
           today_ratio: -100,
           total_name: '本月订单量',
@@ -72,8 +64,8 @@ export default {
         {
           title: '新增用户',
           date: '今日',
-          yesterday: 0,
-          today: 0,
+          yesterday: 51,
+          today: 19,
           today_ratio: -62.74,
           total_name: '本月新增用户',
           total: '747人'

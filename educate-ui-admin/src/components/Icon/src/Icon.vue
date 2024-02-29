@@ -1,6 +1,6 @@
 <template>
-  <ElIcon class="v-icon" :color="color" :size="size" >
-    <span class="iconify" :data-icon="icon"></span>
+  <ElIcon :color="color" :size="size" class="v-icon">
+    <component :is="icon" />
   </ElIcon>
 </template>
 

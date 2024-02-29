@@ -27,6 +27,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import Icon from '@/components/Icon/src/Icon.vue'
 
 const emit = defineEmits(['visibleChange'])
 

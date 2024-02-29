@@ -10,7 +10,7 @@
               <span class="text-orange-500 text-lg font-bold">🎫 视频相关</span>
             </div>
           </template>
-          <div class="text-item" style="display:flex;justify-content:space-between">
+          <div class="text-item" style="display:flex; justify-content:space-between">
             <div>
               <span>视频未发布：</span>
               <CountTo :startVal="1" :endVal="21" />
