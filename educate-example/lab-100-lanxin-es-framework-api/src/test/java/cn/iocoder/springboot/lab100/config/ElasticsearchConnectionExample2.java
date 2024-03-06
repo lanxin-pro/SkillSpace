@@ -1,9 +1,7 @@
 package cn.iocoder.springboot.lab100.config;
 
-import cn.iocoder.springboot.lab100.pojo.User;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.CreateRequest;
-import co.elastic.clients.elasticsearch.core.GetResponse;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
@@ -54,13 +52,8 @@ public class ElasticsearchConnectionExample2 {
 
         // And create the API client
         ElasticsearchClient esClient = new ElasticsearchClient(transport);
-
-        GetResponse<User> response = esClient.get(g -> g
-                        .index("java_test")
-                        .id("UtsasI0BsjvHo9h1qIOo"),
-                User.class
+        esClient.indices().create(c -> c
+                .index("test_version_products")
         );
-
-        System.out.println(response);
     }
 }

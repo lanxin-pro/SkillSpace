@@ -28,28 +28,27 @@ management:
         include: '*'
 
 # Spring Boot Admin 配置项
+
+
+--- #################### 数据库相关配置 ####################
 spring:
   boot:
     admin:
       # Spring Boot Admin Client 客户端的相关配置
       client:
         # 设置 Spring Boot Admin Server 地址
-        url: http://127.0.0.1:9011/server/${spring.boot.admin.context-path}
+        url: http://127.0.0.1:9011/server/admin
         instance:
           # 注册实例时，优先使用 IP [IP, HOST_NAME, CANONICAL_HOST_NAME]
           service-host-type: IP
       # Spring Boot Admin Server 服务端的相关配置
       # 配置 Spring
       context-path: /admin
-
-
-
---- #################### 数据库相关配置 ####################
-spring:
   # 数据源配置项
   autoconfigure:
     exclude:
-      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure # 排除 Druid 的自动配置，使用 dynamic-datasource-spring-boot-starter 配置多数据源
+      # 排除 Druid 的自动配置，使用 dynamic-datasource-spring-boot-starter 配置多数据源
+      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
     druid: # Druid 【监控】相关的全局配置
       web-stat-filter:
@@ -63,14 +62,16 @@ spring:
       filter:
         stat:
           enabled: true
-          log-slow-sql: true # 慢 SQL 记录
+          # 慢 SQL 记录
+          log-slow-sql: true
           slow-sql-millis: 100
           merge-sql: true
         wall:
           config:
             multi-statement-allow: true
     dynamic:
-      druid: # Druid 【连接池】相关的全局配置
+      # Druid 【连接池】相关的全局配置
+      druid:
         initial-size: 5 # 初始连接数
         min-idle: 10 # 最小连接池数量
         max-active: 20 # 最大连接池数量
@@ -268,8 +269,10 @@ aj:
     # verify 接口一分钟内请求数限制
     req-verify-minute-limit: 60
 
-
-
+--- #################### 视频文件s3上传相关配置 ####################
+aliyun:
+  accessKeyId: LTAI5t9SvAQ2TmXCtsSQLags
+  accessKeySecret: d7X4xCwf6r9hzmPXbIrjdw2GEmuqMD
 
 --- #################### 蓝欣相关配置 ####################
 
@@ -282,6 +285,7 @@ lanxin:
       url: http://dashboard.yudao.iocoder.cn
   info:
     version: 1.0.0
+    # 核心配置，启动类会从这里下面的module和server中获取bean
     base-package: cn.iocoder.educate
   # 安全配置
   security:
@@ -310,7 +314,21 @@ lanxin:
     db-schemas: ${spring.datasource.dynamic.datasource.master.name}
     # 前端模版的类型，参见 CodegenFrontTypeEnum 枚举类
     front-type: 20
-
+  system:
+    user:
+      init-password: lanxinyue
+  elasticsearch:
+    rest:
+      # 是否开启 - 默认为true
+      enable: true
+      # 地址
+      uris: 120.46.160.55
+      # 端口
+      port: 9200
+      username: elastic
+      password: dp899556677
+      # 字符集
+      charSet: UTF-8
 # 日志
 educate:
   # java监控
