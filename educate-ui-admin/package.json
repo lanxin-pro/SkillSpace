@@ -45,7 +45,8 @@
     "vue-types": "^5.0.2",
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2",
-    "web-storage-cache": "^1.1.1"
+    "web-storage-cache": "^1.1.1",
+    "xgplayer": "^3.0.1"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",

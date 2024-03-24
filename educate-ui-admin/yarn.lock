@@ -1206,6 +1206,11 @@
   "resolved" "https://registry.npmjs.org/copy-descriptor/-/copy-descriptor-0.1.1.tgz"
   "version" "0.1.1"
 
+"core-js@>=3.12.1":
+  "integrity" "sha512-BTvUrwxVBezj5SZ3f10ImnX2oRByMxql3EimVqMysepbC9EeMUOpLwdy6Eoili2x6E4kf+ZUB5k/+Jv55alPfA=="
+  "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.36.1.tgz"
+  "version" "3.36.1"
+
 "core-util-is@~1.0.0":
   "integrity" "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ=="
   "resolved" "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.3.tgz"
@@ -1294,6 +1299,13 @@
     "es5-ext" "^0.10.50"
     "type" "^1.0.1"
 
+"danmu.js@>=1.1.6":
+  "integrity" "sha512-h5zeZ+3KLGAZGD4DVAH7ejljGBPCsizZKzQvmrV74pXsOaD4bF/MheVP0s/223KN3lx5nE9LRGlcH+/vbArJAA=="
+  "resolved" "https://registry.npmjs.org/danmu.js/-/danmu.js-1.1.7.tgz"
+  "version" "1.1.7"
+  dependencies:
+    "event-emitter" "^0.3.5"
+
 "dayjs@^1.11.3", "dayjs@^1.11.7":
   "integrity" "sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ=="
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.11.7.tgz"
@@ -1352,6 +1364,11 @@
   "resolved" "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz"
   "version" "1.0.0"
 
+"delegate@^3.2.0":
+  "integrity" "sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw=="
+  "resolved" "https://registry.npmjs.org/delegate/-/delegate-3.2.0.tgz"
+  "version" "3.2.0"
+
 "des.js@^1.0.0":
   "integrity" "sha512-Q0I4pfFrv2VPd34/vfLrFOoRmlYj3OV50i7fskps1jZWK1kApMWWT9G6RRUeYedLcBDIhnSDaUvJMb3AhUlaEA=="
   "resolved" "https://registry.npmjs.org/des.js/-/des.js-1.0.1.tgz"
@@ -1380,6 +1397,11 @@
   "integrity" "sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA=="
   "resolved" "https://registry.npmjs.org/domain-browser/-/domain-browser-1.2.0.tgz"
   "version" "1.2.0"
+
+"downloadjs@1.4.7":
+  "integrity" "sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q=="
+  "resolved" "https://registry.npmjs.org/downloadjs/-/downloadjs-1.4.7.tgz"
+  "version" "1.4.7"
 
 "dplayer@^1.27.1":
   "integrity" "sha512-2laBMXs5V1B9zPwJ7eAIw/OBo+Xjvy03i4GHTk3Cg+IWbrq8rKMFO0fFr6ClAYotYOCcFGOvaJDkOZcgKllsCA=="
@@ -1571,6 +1593,11 @@
   dependencies:
     "d" "1"
     "es5-ext" "~0.10.14"
+
+"eventemitter3@^4.0.7":
+  "integrity" "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw=="
+  "resolved" "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz"
+  "version" "4.0.7"
 
 "events@^3.0.0":
   "integrity" "sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q=="
@@ -3138,6 +3165,11 @@
     "get-intrinsic" "^1.0.2"
     "object-inspect" "^1.9.0"
 
+"simple-uploader.js@^0.6.0":
+  "integrity" "sha512-EXN+o+LD6PVnfzTq/usP8k8yYrI6wKrAx8e+fPcPLVzzttonkyn1KT+Ycx5JnPBSnp6lpiVhNG4JhDJucdPnhA=="
+  "resolved" "https://registry.npmjs.org/simple-uploader.js/-/simple-uploader.js-0.6.0.tgz"
+  "version" "0.6.0"
+
 "slate-history@^0.66.0":
   "integrity" "sha512-6MWpxGQZiMvSINlCbMW43E2YBSVMCMCIwQfBzGssjWw4kb0qfvj0pIdblWNRQZD0hR6WHP+dHHgGSeVdMWzfng=="
   "resolved" "https://registry.npmjs.org/slate-history/-/slate-history-0.66.0.tgz"
@@ -3237,6 +3269,11 @@
   "integrity" "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
   "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
   "version" "0.6.1"
+
+"spark-md5@^3.0.2":
+  "integrity" "sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw=="
+  "resolved" "https://registry.npmjs.org/spark-md5/-/spark-md5-3.0.2.tgz"
+  "version" "3.0.2"
 
 "split-string@^3.0.1", "split-string@^3.0.2":
   "integrity" "sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw=="
@@ -3575,6 +3612,13 @@
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
+"vue-simple-uploader@^1.0.1":
+  "integrity" "sha512-HMlSsI6AZ5QUeBDpym+oP/YlfieDDjfndvGFafQlSKiujxxhQ35OItEcuGX4+FQ44iryysAloWS+OnsBB1gvZQ=="
+  "resolved" "https://registry.npmjs.org/vue-simple-uploader/-/vue-simple-uploader-1.0.2.tgz"
+  "version" "1.0.2"
+  dependencies:
+    "simple-uploader.js" "^0.6.0"
+
 "vue-types@^5.0.2":
   "integrity" "sha512-+/5hnQ65XOYqPs+tEUF8GGTJX95UFVH0wPQo71IJJYh5TKMfik2tGKTLkZ42JqAczANA9hGu5FrZmPgxn20nnA=="
   "resolved" "https://registry.npmjs.org/vue-types/-/vue-types-5.0.2.tgz"
@@ -3582,7 +3626,7 @@
   dependencies:
     "is-plain-object" "5.0.0"
 
-"vue@^2.0.0 || ^3.0.0", "vue@^2.6.14 || ^3.3.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.1", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.47", "vue@>= 3.0.0 < 4", "vue@3.3.4":
+"vue@^2.0.0 || ^3.0.0", "vue@^2.6.14 || ^3.3.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.1", "vue@^3.0.5", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.47", "vue@>= 3.0.0 < 4", "vue@>=3.1", "vue@3.3.4":
   "integrity" "sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"
   "version" "3.3.4"
@@ -3701,6 +3745,24 @@
   "integrity" "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="
   "resolved" "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   "version" "1.0.2"
+
+"xgplayer-subtitles@3.0.14":
+  "integrity" "sha512-w6H1h+g3kOI477kv2QBRMZe3M/1dHLXttHBwq4LwKTPGVQ19fLIDGwkfn+HeKwe1ocGDaaq96bS+l+BadnP9TA=="
+  "resolved" "https://registry.npmjs.org/xgplayer-subtitles/-/xgplayer-subtitles-3.0.14.tgz"
+  "version" "3.0.14"
+  dependencies:
+    "eventemitter3" "^4.0.7"
+
+"xgplayer@^3.0.1":
+  "integrity" "sha512-TPS77hUIcM1zVx6FSpGG+OzfMwjwxxWihd+YxVx82DQ22QK60v8TXWSZlWISbmS1+fAlFneesvXDjwy60tC37w=="
+  "resolved" "https://registry.npmjs.org/xgplayer/-/xgplayer-3.0.14.tgz"
+  "version" "3.0.14"
+  dependencies:
+    "danmu.js" ">=1.1.6"
+    "delegate" "^3.2.0"
+    "downloadjs" "1.4.7"
+    "eventemitter3" "^4.0.7"
+    "xgplayer-subtitles" "3.0.14"
 
 "xtend@^4.0.0", "xtend@~4.0.1":
   "integrity" "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="
