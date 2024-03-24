@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: educate-manage #在注册中心显示的名字
+    name: educate-manage # 在注册中心显示的名字
   cloud:
     nacos:
       discovery:
