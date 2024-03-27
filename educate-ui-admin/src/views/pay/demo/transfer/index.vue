@@ -1,5 +1,7 @@
 <template>
-
+  <div>
+    转移
+  </div>
 </template>
 
 <script>
