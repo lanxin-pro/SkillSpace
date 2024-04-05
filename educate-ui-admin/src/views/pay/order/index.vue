@@ -222,9 +222,9 @@ const handleQuery = () => {
 const getList = async () => {
   loading.value = true
   try {
-    const data = await OrderApi.getOrderPage(queryParams)
-    list.value = data.list
-    total.value = data.total
+    const response = await OrderApi.getOrderPage(queryParams)
+    list.value = response.data.list
+    total.value = response.data.total
   } finally {
     loading.value = false
   }
