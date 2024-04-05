@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.pay.service.channel;
 
+import cn.iocoder.educate.framework.pay.core.client.PayClient;
 import cn.iocoder.educate.module.pay.controller.admin.channel.vo.PayChannelCreateReqVO;
 import cn.iocoder.educate.module.pay.controller.admin.channel.vo.PayChannelUpdateReqVO;
 import cn.iocoder.educate.module.pay.dal.dataobject.channel.PayChannelDO;
@@ -70,4 +71,12 @@ public interface PayChannelService {
      * @return 渠道列表
      */
     List<PayChannelDO> getEnableChannelList(Long appId);
+
+    /**
+     * 获得指定编号的支付客户端
+     *
+     * @param id 编号
+     * @return 支付客户端
+     */
+    PayClient getPayClient(Long id);
 }

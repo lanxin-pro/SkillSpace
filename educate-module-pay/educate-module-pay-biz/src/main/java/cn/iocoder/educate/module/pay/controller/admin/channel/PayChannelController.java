@@ -35,14 +35,14 @@ public class PayChannelController {
     private PayChannelService channelService;
 
     @PostMapping("/create")
-    @Operation(summary = "创建支付渠道 ")
+    @Operation(summary = "创建支付渠道")
     @PreAuthorize("@lanxin.hasPermission('pay:channel:create')")
     public CommonResult<Long> createChannel(@Valid @RequestBody PayChannelCreateReqVO createReqVO) {
         return success(channelService.createChannel(createReqVO));
     }
 
     @PutMapping("/update")
-    @Operation(summary = "更新支付渠道 ")
+    @Operation(summary = "更新支付渠道")
     @PreAuthorize("@lanxin.hasPermission('pay:channel:update')")
     public CommonResult<Boolean> updateChannel(@Valid @RequestBody PayChannelUpdateReqVO updateReqVO) {
         channelService.updateChannel(updateReqVO);
@@ -50,7 +50,7 @@ public class PayChannelController {
     }
 
     @DeleteMapping("/delete")
-    @Operation(summary = "删除支付渠道 ")
+    @Operation(summary = "删除支付渠道")
     @Parameter(name = "id", description = "编号", required = true)
     @PreAuthorize("@lanxin.hasPermission('pay:channel:delete')")
     public CommonResult<Boolean> deleteChannel(@RequestParam("id") Long id) {

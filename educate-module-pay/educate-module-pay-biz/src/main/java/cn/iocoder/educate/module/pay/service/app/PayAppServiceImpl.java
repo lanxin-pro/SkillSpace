@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 支付应用 Service 实现类
@@ -25,6 +27,16 @@ public class PayAppServiceImpl implements PayAppService {
     @Override
     public PageResult<PayAppDO> getAppPage(PayAppPageReqVO payAppPageReqVO) {
         return appMapper.selectPage(payAppPageReqVO);
+    }
+
+    @Override
+    public PayAppDO getApp(Long id) {
+        return appMapper.selectById(id);
+    }
+
+    @Override
+    public List<PayAppDO> getAppList(Collection<Long> ids) {
+        return appMapper.selectBatchIds(ids);
     }
 
 }

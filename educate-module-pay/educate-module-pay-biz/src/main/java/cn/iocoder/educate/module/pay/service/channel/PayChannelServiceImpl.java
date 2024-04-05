@@ -123,6 +123,11 @@ public class PayChannelServiceImpl implements PayChannelService {
         return payChannelMapper.selectListByAppId(appId, CommonStatusEnum.ENABLE.getStatus());
     }
 
+    @Override
+    public PayClient getPayClient(Long id) {
+        return clientCache.getUnchecked(id);
+    }
+
     /**
      * 删除缓存
      *

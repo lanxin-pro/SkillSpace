@@ -2,6 +2,7 @@ package cn.iocoder.educate.framework.pay.core.enums.channel;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.iocoder.educate.framework.pay.core.client.PayClientConfig;
+import cn.iocoder.educate.framework.pay.core.client.impl.NonePayClientConfig;
 import cn.iocoder.educate.framework.pay.core.client.impl.alipay.AlipayPayClientConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PayChannelEnum {
 
-    ALIPAY_PC("alipay_pc", "支付宝 PC 网站支付", AlipayPayClientConfig.class);
+    ALIPAY_PC("alipay_pc", "支付宝 PC 网站支付", AlipayPayClientConfig.class),
+
+    WALLET("wallet", "钱包支付", NonePayClientConfig.class);
 
     /**
      * 微信支付
