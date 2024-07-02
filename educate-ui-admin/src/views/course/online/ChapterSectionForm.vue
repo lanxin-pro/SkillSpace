@@ -352,9 +352,93 @@
                           <el-input v-model="lesson.courseTimer" maxlength="100" placeholder="时长"></el-input>
                         </el-form-item>
                       </el-col>
-                      <el-col :span="16">
-                        <el-form-item label="播放地址">
-                          <el-input v-model="lesson.videoLink" maxlength="100" placeholder="播放地址"></el-input>
+                      <el-col :span="24">
+                        <el-form-item
+                            label='视频封面'
+                            label-width='200px'
+                            prop='cover'
+                        >
+
+                          <UploadImg
+                              ref='imguplodRef'
+                              v-model='lesson.videoFirstImage'
+                              @success='handleUploadSuccess'
+                          />
+                        </el-form-item>
+
+                        <el-form-item label='视频信息:' label-width='200px' prop='url'>
+
+                          <div style='display: flex;justify-content: space-between'>
+                            <el-input
+                                v-model='lesson.videoLink'
+                                placeholder='视频原始地址'
+                                style='width: 35%'
+                                title="视频原始地址(B)"
+                            />
+                            <el-input
+                                v-model='lesson.courseTimer'
+                                maxlength='20'
+                                placeholder='原始大小'
+                                style='width: 24%;margin: 0 1%;'
+                                title='视频原始大小(B)'
+                                type='number'
+                            />
+                            <el-button
+                                class="mr5"
+                                icon='Top'
+                                type='primary'
+                                @click='handleOpenUpload'
+                            >
+                              上传
+                            </el-button>
+                            <el-button
+                                class="mr5"
+                                icon='Delete'
+                                type='danger'
+                                @click='handleClearVideo'
+                            >
+                              清空
+                            </el-button>
+                          </div>
+                        </el-form-item>
+                        <el-form-item label='视频权重：' label-width='200px'>
+                          <el-input
+                              v-model='lesson.weight'
+                              maxlength='10'
+                              placeholder='视频权重'
+                              style='width: 49.5%;margin-right: 1%;'
+                              type='number'
+                          />
+                          <el-input
+                              v-model='lesson.secretKey'
+                              maxlength='100'
+                              placeholder='视频秘钥'
+                              style='width: 49.5%;'
+                          />
+                        </el-form-item>
+                        <el-form-item label='标清视频名称：' label-width='200px' prop='stanUrl'>
+                          <el-input v-model='lesson.videoLink' maxlength='200' placeholder='标清视频地址' style='width: 49.5%;margin-right: 1%;'></el-input>
+                          <el-input v-model='lesson.courseTimer' maxlength='20' placeholder='标清大小' style='width: 49.5%'></el-input>
+                        </el-form-item>
+                        <el-form-item label='高清视频名称：' label-width='200px' prop='highUrl'>
+                          <el-input
+                              v-model='lesson.videoLink'
+                              maxlength='200'
+                              placeholder='高清视频地址'
+                              style='width: 49.5%;margin-right: 1%;'
+                          />
+                          <el-input
+                              v-model='lesson.courseTimer'
+                              maxlength='20'
+                              placeholder='高清大小'
+                              style='width: 49.5%'
+                              type='number'
+                          />
+                        </el-form-item>
+                        <el-form-item label='超清视频名称：' label-width='200px' prop='superUrl'>
+                          <el-input v-model='lesson.videoLink' maxlength='200' placeholder='超清视频地址'
+                                    style='width: 49.5%;margin-right: 1%;'></el-input>
+                          <el-input v-model='lesson.courseTimer' maxlength='20' placeholder='超清大小' style='width: 49.5%'></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="24" class="flex">
@@ -401,6 +485,11 @@
       </el-col>
 
     </el-row>
+
+    <VideoUpload
+        ref="videoUploadRef"
+        @success='handleUploadVideoSuccess'
+    />
   </Drawer>
 </template>
 
@@ -413,6 +502,8 @@ import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { findCourseList } from '@/api/course/online/course.js'
 import { findSectionList, saveUpdateChapterLesson, getChapterLessons } from '@/api/course/online/chapter.js'
 import ELComponent from '@/plugins/modal.js'
+import UploadImg from '@/components/UploadImg/index.vue'
+import VideoUpload from '@/components/VideoUpload/index.vue'
 
 // 控制展开与关闭
 const drawerVisible = ref(false)
@@ -439,7 +530,8 @@ const expandLesson = ref(false)
 const operationSectionList = ref([])
 // 控制节的折叠菜单展开(这里需要的是展开的id)
 const sectionActiveName = ref([1])
-
+// 当前节的信息
+const sectionIndex = ref(0)
 
 /* 表单信息 */
 // 综合数据模型
@@ -580,8 +672,21 @@ const handleEditChapter = async (isDelete, index) => {
 const handleAppendTags = (tagsList)=>{
   courseForm.chapter.tags = tagsList
 }
-
-
+const videoUploadRef = ref()
+/** 视频上传 */
+const handleOpenUpload = () => {
+  videoUploadRef.value.expandUpload()
+}
+/** 视频分片上传的返回 */
+const handleUploadVideoSuccess = (data) => {
+  console.log("aaaaaaaaa",data)
+  console.log("sectionIndex", sectionIndex.value)
+  console.log("operationSectionList", operationSectionList.value)
+  operationSectionList.value[sectionIndex.value].videoLink = data.url
+  operationSectionList.value[sectionIndex.value].courseTimer = data.duration
+  operationSectionList.value[sectionIndex.value].courseTimerSize = parseInt(data.duration)
+  operationSectionList.value[sectionIndex.value].videoFirstImage = data.cover
+}
 // ====================== 节管理 ======================
 /** 编辑节 -根据索引打开的方式 */
 const handleEditLessonIndex = (index, cindex) => {
@@ -624,7 +729,9 @@ const handleAddSection = () => {
 }
 /** 添加节 */
 const handleSaveLesson = async (index) => {
+  sectionIndex.value = index
   const lesson = operationSectionList.value[index]
+  console.log('添加节的信息', lesson)
   // -1处于新增状态,一定要清空，否则就会就更新了就不对了。
   if(lesson.id === -1){
     lesson.id = ""

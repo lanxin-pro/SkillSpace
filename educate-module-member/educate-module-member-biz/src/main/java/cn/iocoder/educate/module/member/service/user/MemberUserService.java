@@ -1,6 +1,8 @@
 package cn.iocoder.educate.module.member.service.user;
 
 import cn.iocoder.educate.framework.common.enums.TerminalEnum;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.member.controller.admin.user.vo.MemberUserPageReqVO;
 import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
 
 import java.util.List;
@@ -88,4 +90,12 @@ public interface MemberUserService {
      * @return 用户对象信息数组
      */
     List<MemberUserDO> getUserList(Set<Long> collectUserIds);
+
+    /**
+     * 【管理员】获得会员用户分页
+     *
+     * @param pageReqVO 分页查询
+     * @return 会员用户分页
+     */
+    PageResult<MemberUserDO> getUserPage(MemberUserPageReqVO pageReqVO);
 }

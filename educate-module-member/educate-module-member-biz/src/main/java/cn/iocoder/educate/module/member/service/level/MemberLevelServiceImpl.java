@@ -1,5 +1,6 @@
 package cn.iocoder.educate.module.member.service.level;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,6 +78,14 @@ public class MemberLevelServiceImpl implements MemberLevelService {
     @Override
     public PageResult<MemberLevelDO> getLevelPage(MemberLevelPageReqVO pageReqVO) {
         return memberLevelMapper.selectPage(pageReqVO);
+    }
+
+    @Override
+    public List<MemberLevelDO> getLevelList(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return memberLevelMapper.selectBatchIds(ids);
     }
 
     private void validateLevelHasUser(Long id) {

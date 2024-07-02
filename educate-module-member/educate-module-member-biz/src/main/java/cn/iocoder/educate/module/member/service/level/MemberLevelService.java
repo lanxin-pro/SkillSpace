@@ -6,9 +6,12 @@ import cn.iocoder.educate.module.member.controller.admin.level.vo.level.MemberLe
 import cn.iocoder.educate.module.member.controller.admin.level.vo.level.MemberLevelPageReqVO;
 import cn.iocoder.educate.module.member.controller.admin.level.vo.level.MemberLevelUpdateReqVO;
 import cn.iocoder.educate.module.member.dal.dataobject.level.MemberLevelDO;
+import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
+
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 会员等级 Service 接口
@@ -73,4 +76,11 @@ public interface MemberLevelService {
      */
     PageResult<MemberLevelDO> getLevelPage(MemberLevelPageReqVO pageReqVO);
 
+    /**
+     * 获得会员等级列表
+     *
+     * @param ids 编号
+     * @return 会员等级列表
+     */
+    List<MemberLevelDO> getLevelList(Collection<Long> ids);
 }

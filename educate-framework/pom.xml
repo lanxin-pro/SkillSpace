@@ -36,6 +36,7 @@
         <module>educate-spring-boot-starter-monitor</module>
         <module>educate-spring-boot-starter-biz-dict</module>
         <module>educate-spring-boot-starter-biz-pay</module>
+        <module>educate-spring-boot-starter-ai</module>
     </modules>
 
     <description>

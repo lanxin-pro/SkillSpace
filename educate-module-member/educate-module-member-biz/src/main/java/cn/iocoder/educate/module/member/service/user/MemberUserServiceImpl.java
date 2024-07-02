@@ -3,6 +3,8 @@ package cn.iocoder.educate.module.member.service.user;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
+import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.module.member.controller.admin.user.vo.MemberUserPageReqVO;
 import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
 import cn.iocoder.educate.module.member.dal.mysql.user.MemberUserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +92,11 @@ public class MemberUserServiceImpl implements MemberUserService {
             return Collections.emptyList();
         }
         return memberUserMapper.selectBatchIds(collectUserIds);
+    }
+
+    @Override
+    public PageResult<MemberUserDO> getUserPage(MemberUserPageReqVO pageReqVO) {
+        return memberUserMapper.selectPage(pageReqVO);
     }
 
     private MemberUserDO createUser(String mobile, String registerIp, Integer terminal) {

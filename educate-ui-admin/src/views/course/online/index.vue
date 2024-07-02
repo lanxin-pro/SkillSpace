@@ -37,10 +37,10 @@
             filterable
             placeholder="搜索课程分类"
             value-key="value">
-          <el-option v-for="item in categoryIdList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
+          <el-option v-for="item in categoryList"
+                     :key="item.id"
+                     :label="item.title"
+                     :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -282,6 +282,9 @@ import {
   courseDeleteBatchIds,
   updateStatusCourseOnline
 } from '@/api/course/online/course.js'
+import {
+  findCategoryTree
+} from '@/api/course/category/index.js'
 import Pagination from '@/components/Pagination/index.vue'
 
 // 列表的加载中
@@ -306,6 +309,7 @@ const total = ref(0)
 
 onMounted(async ()=>{
   await getList()
+  await loadCategory()
 })
 
 const getList = async ()=>{
@@ -317,6 +321,12 @@ const getList = async ()=>{
   } finally {
     loading.value = false
   }
+}
+const categoryList = ref([])
+const loadCategory = async () => {
+  const serverResponse = await findCategoryTree()
+  console.log('1', serverResponse)
+  categoryList.value = serverResponse
 }
 /** 打开图片缩放 */
 const rea = ref()

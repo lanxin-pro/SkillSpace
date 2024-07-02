@@ -70,7 +70,7 @@
         <!-- TODO 非常严重的警告 j-sentinel 绝对不能将mq的框架和redis的框架写在同一个子项目当中 -->
 <!--
         <dependency>
-            <groupId>cn.iocoder.boot</groupId>
+            <groupId>cn.iocoder.educate</groupId>
             <artifactId>educate-spring-boot-starter-redis</artifactId>
             <version>${revision}</version>
         </dependency>

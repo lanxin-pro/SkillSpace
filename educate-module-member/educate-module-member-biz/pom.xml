@@ -53,7 +53,7 @@
             <version>${revision}</version>
         </dependency>
 <!--        <dependency>
-            <groupId>cn.iocoder.boot</groupId>
+            <groupId>cn.iocoder.educate</groupId>
             <artifactId>educate-spring-boot-starter-biz-dict</artifactId>
             <version>${revision}</version>
         </dependency>-->
@@ -73,7 +73,7 @@
             <version>${revision}</version>
         </dependency>
    <!--     <dependency>
-            <groupId>cn.iocoder.boot</groupId>
+            <groupId>cn.iocoder.educate</groupId>
             <artifactId>educate-spring-boot-starter-biz-ip</artifactId>
             <version>${revision}</version>
         </dependency>-->
