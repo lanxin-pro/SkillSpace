@@ -131,7 +131,7 @@
           </div>
         </el-form-item>
       </el-col>
-      <el-divider content-position="center">萌新必读</el-divider>
+<!--      <el-divider content-position="center">萌新必读</el-divider>
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
           <div class="flex justify-between w-[100%]">
@@ -147,7 +147,7 @@
             </el-link>
           </div>
         </el-form-item>
-      </el-col>
+      </el-col>-->
     </el-row>
   </el-form>
 </template>
@@ -269,7 +269,9 @@ const handleLogin = async (captchaParams)=>{
         removeTenantName()
       }
       loginData.loginForm.captchaVerification = captchaParams.captchaVerification
-      store.dispatch(loginData.loginForm.loginType === "sms" ? "user/SmsLogin" : "user/Login",loginData.loginForm)
+      pinia.Login(loginData.loginForm)
+      // TODO j-sentinel 这里的SmsLogin到底是谁？
+      // store.dispatch(loginData.loginForm.loginType === "sms" ? "user/SmsLogin" : "user/Login",loginData.loginForm)
           .then(()=>{
           router.push({path: redirect.value || "/"}).catch(()=>{
             console.log("路由error")

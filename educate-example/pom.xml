@@ -17,6 +17,12 @@
         <module>lab-28-task-demo</module>
         <module>lab-28-task-quartz-memory</module>
         <module>lab-28-task-xxl-job</module>
+        <!-- 下面的模块无法运行到主工程当中，虽然不会直接报错，但是判断会于主工程项目发生冲突 -->
+        <module>lab-34-acturator-demo</module>
+        <module>lab-35-admin-01-adminserver</module>
+        <module>lab-35-admin-01-demo-application</module>
+        <module>lab-100-lanxin-es-api</module>
+        <module>lab-100-lanxin-es-bilibili</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -148,7 +148,8 @@ onBeforeUnmount(() => {
 // TODO j-sentinel 并没有解决核心问题，依旧是animation-name不会动态显示，甚至没有
 .dplayer-danmaku .dplayer-danmaku-right.dplayer-danmaku-move {
   will-change: transform;
-  animation-name: slide-in-right;
+  // TODO j-sentinel 2024/1/20 修改成danmaku貌似解决了问题，应该是版本的问题，播放器的作者进行了修复
+  animation-name: danmaku;
   animation-timing-function: linear;
   animation-play-state: paused;
 }

@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.video.service.uploader;
 
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileMergeRespVO;
 
 import java.io.IOException;
 
@@ -31,9 +32,10 @@ public interface VideoUploaderService {
      * @param identifier 文件md5的值
      * @param fileName 文件名字
      * @param totalChunks 拥有多少个分片
-     * @return
-     * @throws IOException
+     *
+     * @return String 返回上传访问路径
+     * @throws Exception
      */
-    boolean mergeChunk(String identifier,String fileName,Integer totalChunks)throws IOException;
+    VideoFileMergeRespVO mergeChunk(String identifier, String fileName, Integer totalChunks)throws Exception;
 
 }

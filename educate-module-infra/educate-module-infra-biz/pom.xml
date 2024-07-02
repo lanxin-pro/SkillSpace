@@ -44,6 +44,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-excel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Web 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
@@ -54,7 +60,7 @@
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>eduacte-spring-boot-starter-mybatis</artifactId>
+            <artifactId>educate-spring-boot-starter-mybatis</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
@@ -64,7 +70,7 @@
         <!-- TODO 非常严重的警告 j-sentinel 绝对不能将mq的框架和redis的框架写在同一个子项目当中 -->
 <!--
         <dependency>
-            <groupId>cn.iocoder.boot</groupId>
+            <groupId>cn.iocoder.educate</groupId>
             <artifactId>educate-spring-boot-starter-redis</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -94,6 +100,17 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 监控相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-monitor</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-server</artifactId> <!-- 实现 Spring Boot Admin Server 服务端 -->
+        </dependency>
 
         <!-- 工具类相关 -->
         <dependency>

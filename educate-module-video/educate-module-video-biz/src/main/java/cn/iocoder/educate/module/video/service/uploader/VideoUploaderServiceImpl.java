@@ -1,10 +1,16 @@
 package cn.iocoder.educate.module.video.service.uploader;
 
+import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.module.infra.api.file.FileApi;
+import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileMergeRespVO;
+import cn.iocoder.educate.module.video.util.VideoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.jboss.marshalling.ByteInputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -84,14 +90,89 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
     }
 
     @Override
-    public boolean mergeChunk(String identifier, String fileName, Integer totalChunks) throws IOException {
-        return mergeChunks(identifier, fileName, totalChunks);
+    public VideoFileMergeRespVO mergeChunk(String identifier, String fileName, Integer totalChunks) throws Exception {
+        String chunkFileFolderPath = getChunkFileFolderPath(identifier);
+        String filePath = getFilePath(identifier, fileName);
+        // 检查分片是否都存在
+        if (checkChunks(chunkFileFolderPath, totalChunks)) {
+            File chunkFileFolder = new File(chunkFileFolderPath);
+            File mergeFile = new File(filePath);
+            File[] chunks = chunkFileFolder.listFiles();
+            // 排序
+            List fileList = Arrays.asList(chunks);
+            Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
+                return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
+            });
+            String videoUrl = "";
+            String videCoverUpload = "";
+            ByteArrayOutputStream outputStream = null;
+            RandomAccessFile randomAccessFileWriter = null;
+            VideoFileMergeRespVO videoFileMergeRespVO = new VideoFileMergeRespVO();
+            try {
+                outputStream = new ByteArrayOutputStream();
+                randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
+                byte[] bytes = new byte[1024];
+                for (File chunk : chunks) {
+                    RandomAccessFile randomAccessFileReader = null;
+                    try {
+                        randomAccessFileReader = new RandomAccessFile(chunk, "r");
+                        int len;
+                        // 每次去添加 1024 k
+                        while ((len = randomAccessFileReader.read(bytes)) != -1) {
+                            // 数据库添加
+                            outputStream.write(bytes, 0, len);
+                            // 本地文件添加
+                            randomAccessFileWriter.write(bytes,0,len);
+                        }
+                        // 关闭流
+                    } catch (Exception e) {
+                        throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_STREAM_ERROR);
+                    } finally {
+                        if(randomAccessFileReader != null){
+                            randomAccessFileReader.close();
+                        }
+                    }
+                }
+                // 获取合并后的完整文件数据
+                byte[] mergedBytes = outputStream.toByteArray();
+
+                // TODO j-sentinel 可以对视频信息的返回合并 例如：视频大小、视频时长、视频帧数等等...
+
+                // 将 mergedBytes 添加到数据库中，调用 createFile 方法
+                videoUrl = fileApi.createFile(fileName, null, mergedBytes);
+                Map<String, Object> map = VideoUtils.fetchMap(mergedBytes);
+                // 将 mergedBytes 添加到数据库中，调用 createFile 方法
+                videCoverUpload = fileApi.createFile(fileName + ".jpg", null, (byte[]) map.get("videoCover"));
+                log.info("[图片上传](mergeChunk)获取封面图片成功，地址为：({})",videCoverUpload);
+                videoFileMergeRespVO.setCover(videCoverUpload);
+                videoFileMergeRespVO.setUrl(videoUrl);
+                videoFileMergeRespVO.setDuration((Integer) map.get("videoTimes"));
+            } finally {
+                if(outputStream != null){
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(randomAccessFileWriter != null){
+                    try {
+                        randomAccessFileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return videoFileMergeRespVO;
+        }
+        throw ServiceExceptionUtil.exception(ErrorCodeConstants.FILE_SHARDING_EMPTY);
     }
 
     /**
      * 分片写入Redis
      *
      * @param chunkDTO
+     * @return
      */
     private synchronized long saveToRedis(VideoFileChunkVO chunkDTO) {
         Set<Integer> uploaded = (Set<Integer>) redisTemplate.opsForHash().get(chunkDTO.getIdentifier(),
@@ -110,55 +191,6 @@ public class VideoUploaderServiceImpl implements VideoUploaderService {
             redisTemplate.opsForHash().put(chunkDTO.getIdentifier(), "uploaded", uploaded);
         }
         return uploaded.size();
-    }
-
-    /**
-     * 合并分片
-     *
-     * @param identifier
-     * @param filename
-     */
-    private boolean mergeChunks(String identifier, String filename, Integer totalChunks) {
-        String chunkFileFolderPath = getChunkFileFolderPath(identifier);
-        String filePath = getFilePath(identifier, filename);
-        // 检查分片是否都存在
-        if (checkChunks(chunkFileFolderPath, totalChunks)) {
-            File chunkFileFolder = new File(chunkFileFolderPath);
-            File mergeFile = new File(filePath);
-            File[] chunks = chunkFileFolder.listFiles();
-            // 排序
-            List fileList = Arrays.asList(chunks);
-            Collections.sort(fileList, (Comparator<File>) (o1, o2) -> {
-                return Integer.parseInt(o1.getName()) - (Integer.parseInt(o2.getName()));
-            });
-            try {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
-                byte[] bytes = new byte[1024];
-                for (File chunk : chunks) {
-                    RandomAccessFile randomAccessFileReader = new RandomAccessFile(chunk, "r");
-                    int len;
-                    // 每次去添加 1024 k
-                    while ((len = randomAccessFileReader.read(bytes)) != -1) {
-                        // 数据库添加
-                        outputStream.write(bytes, 0, len);
-                        // 本地文件添加
-                        randomAccessFileWriter.write(bytes,0,len);
-                    }
-                    randomAccessFileReader.close();
-                }
-                // 获取合并后的完整文件数据
-                byte[] mergedBytes = outputStream.toByteArray();
-                // 将 mergedBytes 添加到数据库中，调用 createFile 方法
-                fileApi.createFile(filename,null,mergedBytes);
-
-                randomAccessFileWriter.close();
-            } catch (Exception e) {
-                return false;
-            }
-            return true;
-        }
-        return false;
     }
 
     /**

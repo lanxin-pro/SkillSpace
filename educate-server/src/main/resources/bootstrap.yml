@@ -3,16 +3,17 @@ server:
 
 spring:
   application:
+    # 在注册中心显示的名字
     name: educate-server
   cloud:
     nacos:
       discovery:
-        server-addr: 47.99.97.14:8848
-        namespace: 0e3f74b9-87ee-4444-9d0f-b71dd1d8cf78
+        server-addr: 120.46.160.55:8848
+        namespace: f86943d6-7c53-4901-bc19-5072027667e4
         register-enabled: false
       config:
-        server-addr: 47.99.97.14:8848
-        namespace: 0e3f74b9-87ee-4444-9d0f-b71dd1d8cf78
+        server-addr: 120.46.160.55:8848
+        namespace: f86943d6-7c53-4901-bc19-5072027667e4
         prefix: educate-server
         file-extension: yml
         shared-dataids: cdn-common.yml

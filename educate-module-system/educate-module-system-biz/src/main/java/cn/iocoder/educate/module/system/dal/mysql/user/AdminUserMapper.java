@@ -2,6 +2,7 @@ package cn.iocoder.educate.module.system.dal.mysql.user;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.UserPageReqVO;
@@ -41,11 +42,16 @@ public interface AdminUserMapper extends BaseMapper<AdminUserDO> {
                         ArrayUtils.get(userPageReqVO.getCreateTime(),1))
                 .in(CollectionUtil.isNotEmpty(deptIds),AdminUserDO::getDeptId,deptIds)
                 .orderByDesc(AdminUserDO::getId);
-        Page<AdminUserDO> mpPage = new Page<>(userPageReqVO.getPageNo(), userPageReqVO.getPageSize());
-        Page<AdminUserDO> adminUserDOPage = this.selectPage(mpPage, adminUserDOLambdaQueryWrapper);
-        return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
+        // TODO 这个需要考虑封装！
+        if(PageParam.PAGE_SIZE_NONE.equals(userPageReqVO.getPageSize())) {
+            List<AdminUserDO> adminUserDOList = this.selectList(adminUserDOLambdaQueryWrapper);
+            return new PageResult<>(adminUserDOList, (long) adminUserDOList.size());
+        } else {
+            Page<AdminUserDO> mpPage = new Page<>(userPageReqVO.getPageNo(), userPageReqVO.getPageSize());
+            Page<AdminUserDO> adminUserDOPage = this.selectPage(mpPage, adminUserDOLambdaQueryWrapper);
+            return new PageResult<>(adminUserDOPage.getRecords(),adminUserDOPage.getTotal());
+        }
     }
-
 
     default List<AdminUserDO> selectListByNickname(String userNickname){
         LambdaQueryWrapper<AdminUserDO> adminUserDOLambdaQueryWrapper = new LambdaQueryWrapper<>();

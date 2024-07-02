@@ -13,6 +13,7 @@ import cn.iocoder.educate.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.educate.framework.web.config.WebProperties;
 import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

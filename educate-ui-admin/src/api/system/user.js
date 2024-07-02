@@ -143,3 +143,18 @@ export function getSimpleUserSimpleDeptList() {
         method: 'get'
     })
 }
+
+/**
+ * 导出用户
+ *
+ * @param params 导出的用户参数
+ * @returns {*}
+ */
+export function exportUser(params) {
+    return request({
+        url: '/system/user/export',
+        method: 'get',
+        params: params,
+        responseType: 'blob'
+    })
+}

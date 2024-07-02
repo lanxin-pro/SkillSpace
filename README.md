@@ -1,3 +1,5 @@
+安装`ffmpeg`，可以参考[https://blog.csdn.net/m0_47449768/article/details/130102406](https://gitee.com/link?target=https%3A%2F%2Fblog.csdn.net%2Fm0_47449768%2Farticle%2Fdetails%2F130102406) linux可以参考[https://blog.csdn.net/wangyongpro/article/details/104036835](https://gitee.com/link?target=https%3A%2F%2Fblog.csdn.net%2Fwangyongpro%2Farticle%2Fdetails%2F104036835) windows安装包已经在源码中提供，linux需要自行下载，安装完ffmpeg重启电脑或者idea和各cmd，否则会出一些问题
+
 ### 系统功能
 
 |     | 功能    | 描述                              |
@@ -55,7 +57,7 @@ ps：核心功能已经实现，正在对接微信小程序中...
 |     | 表单构建     | 拖动表单元素生成相应的 HTML 代码，支持导出 JSON、Vue 文件         |
 | 🚀  | 配置管理     | 对系统动态配置常用参数，支持 SpringBoot 加载                 |
 | ⭐️  | 定时任务     | 在线（添加、修改、删除)任务调度包含执行结果日志                     |
-| 🚀  | 文件服务     | 支持将文件存储到 S3（MinIO、阿里云、腾讯云、七牛云）、本地、FTP、数据库等   | 
+| 🚀  | 文件服务     | 支持将文件存储到 S3（MinIO、阿里云、腾讯云、七牛云）、本地、FTP、数据库等   |
 | 🚀  | API 日志   | 包括 RESTful API 访问日志、异常日志两部分，方便排查 API 相关的问题   |
 |     | MySQL 监控 | 监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈              |
 |     | Redis 监控 | 监控 Redis 数据库的使用情况，使用的 Redis Key 管理           |

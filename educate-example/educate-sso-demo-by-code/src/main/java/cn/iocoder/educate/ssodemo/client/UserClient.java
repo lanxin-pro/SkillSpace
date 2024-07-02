@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class UserClient {
 
-    private static final String BASE_URL = "http://127.0.0.1:48080/admin-api/system/oauth2/user";
+    private static final String BASE_URL = "http://127.0.0.1:9011/server/admin-api/system/oauth2/user";
 
     //    @Resource // 可优化，注册一个 RestTemplate Bean，然后注入
     private final RestTemplate restTemplate = new RestTemplate();

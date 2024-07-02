@@ -29,7 +29,7 @@ public class VideoAdminDO extends BaseDO {
      * 主键
      */
     @TableId
-    private Integer id;
+    private Long id;
 
     /**
      * 模块类型 1：视频 2：漫画 3：动漫
@@ -89,7 +89,7 @@ public class VideoAdminDO extends BaseDO {
     /**
      * 导过来的数据是否同步到es中
      */
-    private Boolean esSync;
+    // private Boolean esSync;
 
     /**
      * 1 视频后台管理系统  2陌陌系统数据 3：移动端创作者中心 4：移动端推片 5：管理端UP主

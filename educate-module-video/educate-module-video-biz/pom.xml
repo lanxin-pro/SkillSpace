@@ -76,7 +76,7 @@
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>eduacte-spring-boot-starter-mybatis</artifactId>
+            <artifactId>educate-spring-boot-starter-mybatis</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -92,6 +92,28 @@
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
+        </dependency>
+
+        <!-- Java获取视频第一帧做为封面图片 -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacpp</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>opencv-platform</artifactId>
+            <version>3.4.1-1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>ffmpeg-platform</artifactId>
+            <version>3.4.2-1.4.1</version>
         </dependency>
 
     </dependencies>

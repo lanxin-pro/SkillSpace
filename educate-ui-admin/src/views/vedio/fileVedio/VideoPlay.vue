@@ -33,15 +33,6 @@ const fileList = ref([])
 const data = ref({ path: '' })
 const uploadRef = ref()
 
-/** 打开弹窗 */
-const open = async () => {
-  dialogVisible.value = true
-}
-// 提供 open 方法，用于打开弹窗
-defineExpose({ open })
-
-const type = ref()
-
 const dplayerObj = reactive({
   video: {
     // 视频地址
@@ -99,6 +90,18 @@ const dplayerObj = reactive({
     },
   ],
 })
+
+/** 打开弹窗 */
+const open = async (data) => {
+  dplayerObj.video.url = data.url
+  dialogVisible.value = true
+}
+// 提供 open 方法，用于打开弹窗
+defineExpose({ open })
+
+const type = ref()
+
+
 </script>
 
 <style scoped>

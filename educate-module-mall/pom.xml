@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>skill-space</artifactId>
+        <groupId>cn.iocoder.boot</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>educate-module-mall</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+
+    <description>
+        商城大模块，由 product 商品、promotion 营销、trade 交易、statistics 统计等组成
+    </description>
+
+    <modules>
+        <module>educate-module-promotion-api</module>
+        <module>educate-module-promotion-biz</module>
+        <module>educate-module-product-api</module>
+        <module>educate-module-product-biz</module>
+        <module>educate-module-statistics-api</module>
+        <module>educate-module-statistics-biz</module>
+        <module>educate-module-trade-api</module>
+        <module>educate-module-trade-biz</module>
+    </modules>
+
+</project>

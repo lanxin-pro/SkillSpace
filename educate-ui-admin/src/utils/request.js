@@ -67,12 +67,16 @@ request.interceptors.request.use(config => {
                 }
             }
         }
+        // 给 get 请求加上时间戳参数，避免从缓存中拿数据
+        // const now = new Date().getTime()
+        // params = params.substring(0, url.length - 1) + `?_t=${now}`
         url = url.slice(0, -1);
         config.params = {};
         config.url = url;
     }
     return config
 },error => {
+    alert(error)
     console.log(error)
     Promise.reject(error)
 })

@@ -1,6 +1,48 @@
 <template>
-  <Dialog v-model="dialogVisible" title="用户导入" width="400">
+  <Dialog v-model="dialogVisible" title="用户导入" width="500">
+    <el-upload
+        ref="uploadRef"
+        v-model:file-list="fileList"
+        :action="importUrl + '?updateSupport=' + updateSupport"
+        :auto-upload="false"
+        :disabled="formLoading"
+        :headers="uploadHeaders"
+        :limit="1"
+        :on-error="submitFormError"
+        :on-exceed="handleExceed"
+        :on-success="submitFormSuccess"
+        accept=".xlsx, .xls"
+        drag
+    >
+      <div class="uploader-context">
+        <div>
+          <font-awesome-icon icon="fa-solid fa-upload" />
+        </div>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </div>
 
+      <template #tip>
+        <div class="el-upload__tip text-center">
+          <div class="el-upload__tip upload-text">
+            <el-checkbox v-model="updateSupport" />
+            是否更新已经存在的用户数据
+          </div>
+          <span>仅允许导入 xls、xlsx 格式文件。</span>
+          <el-link
+              :underline="false"
+              style="font-size: 12px; vertical-align: baseline"
+              type="primary"
+              @click="importTemplate"
+          >
+            下载模板
+          </el-link>
+        </div>
+      </template>
+    </el-upload>
+    <template #footer>
+      <el-button :disabled="formLoading" size="small" type="primary" @click="submitForm">确 定</el-button>
+      <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+    </template>
   </Dialog>
 </template>
 
@@ -40,8 +82,44 @@ const resetForm = () => {
   uploadRef.value?.clearFiles()
 }
 
+/** 提交表单 */
+const submitForm = async () => {
+  if (fileList.value.length === 0) {
+    ELComponent.msgError('请上传文件')
+    return
+  }
+  // 提交请求
+  uploadRef.value.submit()
+}
+
+/** 上传错误提示 */
+const submitFormError = () => {
+  ELComponent.msgError('上传失败，请您重新上传！')
+  formLoading.value = false
+}
+
+/** 文件数超出提示 */
+const handleExceed = () => {
+  ELComponent.msgError('最多只能上传一个文件！')
+}
+
 </script>
 
 <style scoped>
+.uploader-context {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.upload-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.el-upload__text {
+
+}
 
 </style>

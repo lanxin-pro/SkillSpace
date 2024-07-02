@@ -61,10 +61,24 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
-          <el-button size="small" type="text" icon="Edit" @click="openForm('update',scope.row.id)"
-                     v-hasPermi="['system:mail-account:update']">修改</el-button>
-          <el-button size="small" type="text" icon="Delete" @click="handleDelete(scope.row.id)"
-                     v-hasPermi="['system:mail-account:delete']">删除</el-button>
+          <el-button
+              size="small"
+              type="text"
+              icon="Edit"
+              @click="openForm('update',scope.row.id)"
+              v-hasPermi="['system:mail-account:update']"
+          >
+            修改
+          </el-button>
+          <el-button
+              size="small"
+              type="text"
+              icon="Delete"
+              @click="handleDelete(scope.row.id)"
+              v-hasPermi="['system:mail-account:delete']"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

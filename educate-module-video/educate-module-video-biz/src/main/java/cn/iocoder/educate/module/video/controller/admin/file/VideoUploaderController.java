@@ -4,6 +4,7 @@ import cn.iocoder.educate.framework.common.pojo.CommonResult;
 import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkRespVO;
 import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileChunkVO;
+import cn.iocoder.educate.module.video.controller.admin.file.vo.VideoFileMergeRespVO;
 import cn.iocoder.educate.module.video.service.uploader.VideoUploaderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,10 +50,10 @@ public class VideoUploaderController {
 
     @PostMapping("/merge")
     @Operation(summary = "请求合并文件分片")
-    public CommonResult<Boolean> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws IOException {
-        boolean b = videoUploaderService.mergeChunk(chunkDTO.getIdentifier(), chunkDTO.getFilename(),
+    public CommonResult<VideoFileMergeRespVO> mergeChunks(@RequestBody VideoFileChunkVO chunkDTO) throws Exception {
+        VideoFileMergeRespVO videoFileMergeRespVO = videoUploaderService.mergeChunk(chunkDTO.getIdentifier(), chunkDTO.getFilename(),
                 chunkDTO.getTotalChunks());
-        return success(b);
+        return success(videoFileMergeRespVO);
     }
 
 }

@@ -7,10 +7,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 过滤 /admin-api、/app-api 等 API 请求的过滤器
+ *
  * @Author: j-sentinel
  * @Date: 2023/5/9 19:59
- *
- * 过滤 /admin-api、/app-api 等 API 请求的过滤器
  */
 @RequiredArgsConstructor
 public abstract class ApiRequestFilter extends OncePerRequestFilter {

@@ -1,0 +1,13 @@
+lanxin:
+  elasticsearch:
+    rest:
+      # 是否开启 - 默认为true
+      enable: true
+      # 地址
+      uris: 120.46.160.55
+      # 端口
+      port: 9200
+      username: elastic
+      password: dp899556677
+      # 字符集
+      charSet: UTF-8

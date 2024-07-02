@@ -1,0 +1,118 @@
+.line-1 {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+}
+
+.mtm10 {
+	margin: 10rpx 0;
+}
+
+.ml10 {
+	margin-left: 10rpx;
+}
+.ml20 {
+	margin-left: 20rpx;
+}
+.mr10 {
+	margin-right: 10rpx;
+}
+.mr20 {
+	margin-right: 20rpx;
+}
+.pb150 {
+	padding-bottom: 150rpx;
+}
+/* ==================       弹性布局       ==================== */
+.flex {
+	display: flex;
+}
+
+.flex-1 {
+	flex-grow: 1;
+}
+
+.align-items-center {
+	align-items: center;
+}
+
+.justify-content-space-between {
+	justify-content: space-between;
+}
+
+.bg-red {
+	background: red;
+}
+.bg-green {
+	background: green;
+}
+
+.font-weight-bold {
+	font-weight: bold;
+}
+
+.underline-text {
+	text-decoration: underline;
+}
+
+.display-inline {
+	display: inline;
+}
+
+.display-inline-block {
+	display: inline-block;
+}
+
+.color-black {
+	color: black;
+}
+
+.gap10 {
+	gap: 10rpx;
+}
+
+.gap20 {
+	gap: 20rpx;
+}
+
+.gap30 {
+	gap: 30rpx;
+}
+
+.gap40 {
+	gap: 40rpx;
+}
+
+/* ==================       按钮       ==================== */
+.reset-button {
+	padding: 0;
+	margin: 0;
+	font-size: inherit;
+	background-color: transparent;
+	color: inherit;
+	position: relative;
+	border: 0rpx;
+	/* #ifndef APP-NVUE */
+	display: flex;
+	/* #endif */
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	vertical-align: baseline;
+	transform: translate(0, 0);
+}
+
+.reset-button.button-hover {
+	transform: translate(1px, 1px);
+	background: none;
+}
+
+.reset-button::after {
+	border: none;
+}

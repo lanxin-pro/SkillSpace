@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -17,9 +18,10 @@ import java.time.LocalDateTime;
  */
 @Schema(description = "管理后台 - 视频详情分页 Request VO")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class VideoAdminRespVo extends VideoAdminBaseVO {
+public class VideoAdminRespVo {
+
+    @Schema(description = "编号", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
+    private Long id;
 
     @Schema(description = "模块类型 1：视频 2：漫画 3：动漫", example = "2")
     private Byte moduleType;

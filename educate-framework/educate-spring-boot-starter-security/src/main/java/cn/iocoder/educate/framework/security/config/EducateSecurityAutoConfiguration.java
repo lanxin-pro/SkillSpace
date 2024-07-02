@@ -71,7 +71,7 @@ public class EducateSecurityAutoConfiguration {
     }
 
     /**
-     * 使用 Spring Security 的缩写，方便使用
+     * 使用 Spring Security 的缩写，方便使用 通过bean的名称去调用
      *
      * @param permissionApi
      * @return

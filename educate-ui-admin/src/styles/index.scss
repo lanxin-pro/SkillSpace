@@ -25,3 +25,9 @@
     border-left-color: var(--el-color-primary);
   }
 }
+
+/* 在全局样式表中 */
+:root {
+  /* 覆盖 --el-menu-active-color 变量的值 */
+  --el-menu-active-color: #d21c1c; /* 修改为您想要的颜色 */
+}

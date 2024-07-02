@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-import user from './modules/user.js'
 import tagsView from './modules/tagsView.js'
 import app from './modules/app.js'
 import settings from './modules/settings.js'
@@ -8,7 +7,6 @@ import settings from './modules/settings.js'
 const store = createStore({
     // 定义全局状态管理的响应式数据
     modules: {
-        user,
         tagsView,
         app,
         settings

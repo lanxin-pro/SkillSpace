@@ -60,6 +60,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-excel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Web 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
@@ -76,7 +82,7 @@
         <!-- DB 相关 -->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
-            <artifactId>eduacte-spring-boot-starter-mybatis</artifactId>
+            <artifactId>educate-spring-boot-starter-mybatis</artifactId>
             <version>${revision}</version>
         </dependency>
 

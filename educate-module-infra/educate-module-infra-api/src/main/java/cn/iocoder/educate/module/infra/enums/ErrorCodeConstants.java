@@ -34,6 +34,11 @@ public interface ErrorCodeConstants {
     ErrorCode FILE_PATH_EXISTS = new ErrorCode(1001003000, "文件路径已存在");
     ErrorCode FILE_NOT_EXISTS = new ErrorCode(1001003001, "文件不存在");
     ErrorCode FILE_IS_EMPTY = new ErrorCode(1001003002, "文件为空");
+    ErrorCode FILE_SHARDING_STREAM_ERROR = new ErrorCode(1001003003, "文件分片流发生异常");
+    ErrorCode FILE_MERGE_STREAM_ERROR = new ErrorCode(1001003004, "文件合并流发生异常");
+    ErrorCode FILE_SHARDING_EMPTY = new ErrorCode(1001003005, "文件分片数据发生异常");
+    ErrorCode FILE_OVER = new ErrorCode(1001003006, "文件分片宕机，请联系管理员");
+    ErrorCode FILE_OVER_ERROR = new ErrorCode(1001003007, "文件服务器宕机，请联系管理员，错误原因({})");
 
     // ========== 代码生成器 1001004000 ==========
     ErrorCode CODEGEN_TABLE_EXISTS = new ErrorCode(1003001000, "表定义已经存在");

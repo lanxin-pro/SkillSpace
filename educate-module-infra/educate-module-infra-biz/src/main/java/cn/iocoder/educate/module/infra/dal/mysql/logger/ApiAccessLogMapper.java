@@ -1,6 +1,7 @@
 package cn.iocoder.educate.module.infra.dal.mysql.logger;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
 import cn.iocoder.educate.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.educate.module.infra.controller.admin.logger.vo.apiaccesslog.ApiAccessLogPageReqVO;
@@ -12,12 +13,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * @Author: j-sentinel
  * @Date: 2023/5/4 11:24
  */
 @Mapper
 public interface ApiAccessLogMapper extends BaseMapper<ApiAccessLogDO> {
+
+    default PageResult<ApiAccessLogDO> selectPage() {
+        // 这里需要进行判断了，特殊：不分页，直接查询全部
+        List<ApiAccessLogDO> apiAccessLogDOS = this.selectList(new LambdaQueryWrapper<>());
+        return new PageResult<>(apiAccessLogDOS, (long) apiAccessLogDOS.size());
+    }
 
     default PageResult<ApiAccessLogDO> selectPage(ApiAccessLogPageReqVO apiAccessLogPageReqVO) {
         LambdaQueryWrapper<ApiAccessLogDO> apiAccessLogDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -42,9 +51,15 @@ public interface ApiAccessLogMapper extends BaseMapper<ApiAccessLogDO> {
                 .ge(apiAccessLogPageReqVO.getDuration() != null,
                         ApiAccessLogDO::getDuration,apiAccessLogPageReqVO.getDuration())
                 .orderByDesc(ApiAccessLogDO::getId);
-        Page<ApiAccessLogDO> page = new Page<>(apiAccessLogPageReqVO.getPageNo(), apiAccessLogPageReqVO.getPageSize());
-        Page<ApiAccessLogDO> apiAccessLogDOPage = this.selectPage(page, apiAccessLogDOLambdaQueryWrapper);
-        return new PageResult<>(apiAccessLogDOPage.getRecords(),apiAccessLogDOPage.getTotal());
+        if(PageParam.PAGE_SIZE_NONE.equals(apiAccessLogPageReqVO.getPageSize())) {
+            List<ApiAccessLogDO> apiAccessLogDOS = this.selectList(apiAccessLogDOLambdaQueryWrapper);
+            return new PageResult<>(apiAccessLogDOS, (long) apiAccessLogDOS.size());
+        } else {
+            Page<ApiAccessLogDO> page = new Page<>(apiAccessLogPageReqVO.getPageNo(), apiAccessLogPageReqVO.getPageSize());
+            Page<ApiAccessLogDO> apiAccessLogDOPage = this.selectPage(page, apiAccessLogDOLambdaQueryWrapper);
+            return new PageResult<>(apiAccessLogDOPage.getRecords(),apiAccessLogDOPage.getTotal());
+        }
+
     }
 
 }

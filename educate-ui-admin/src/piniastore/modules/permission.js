@@ -31,6 +31,9 @@ export const usePermissionStore = defineStore('admin-permission', {
     persist: true,
     state() {  // 存放的就是模块的变量
         return {
+            // 目前这个是给tag使用的
+            routers: [],
+            // 这个路由暂时无用
             routes: [],
             addRoutes: [],
             sidebarRouters: [], // 左侧边菜单的路由，被 Sidebar/index.vue 使用
@@ -43,6 +46,9 @@ export const usePermissionStore = defineStore('admin-permission', {
         },
         getAddRouters(){
             return flatMultiLevelRoutes(cloneDeep(this.addRouters))
+        },
+        getRouters(){
+            return this.routers
         },
     },
     actions: { // 可以通过actions 方法，改变 state 里面的值。

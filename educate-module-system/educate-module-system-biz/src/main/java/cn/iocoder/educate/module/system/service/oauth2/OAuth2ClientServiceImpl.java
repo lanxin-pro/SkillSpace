@@ -70,9 +70,11 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService{
     public OAuth2ClientDO validOAuthClientFromCache(String clientId, String clientSecret, String authorizedGrantType, Collection<String> scopes, String redirectUri) {
         // 校验客户端存在、且开启
         OAuth2ClientDO oAuth2ClientDO = clientCache.get(clientId);
+        // 校验客户端是否存在
         if (ObjectUtil.isEmpty(oAuth2ClientDO)) {
             throw exception(OAUTH2_CLIENT_NOT_EXISTS);
         }
+        // 校验客户端状态
         if(ObjectUtil.notEqual(oAuth2ClientDO.getStatus(), CommonStatusEnum.ENABLE.getStatus())){
             throw exception(OAUTH2_CLIENT_DISABLE);
         }

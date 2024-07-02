@@ -46,6 +46,12 @@ public class SwaggerProperties {
     /**
      * license
      */
+    @NotEmpty(message = "扫描的 服务条款 不能为空")
+    private String termsOfService;
+
+    /**
+     * license
+     */
     @NotEmpty(message = "扫描的 license 不能为空")
     private String license;
 

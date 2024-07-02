@@ -15,6 +15,7 @@ import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -47,13 +49,20 @@ import static cn.iocoder.educate.framework.common.exception.enums.GlobalErrorCod
  * 全局异常处理器，将 Exception 翻译成 CommonResult + 对应的异常编号
  */
 @Slf4j
-@AllArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
 
     private final String applicationName;
 
     private final ApiErrorLogFrameworkService apiErrorLogFrameworkService;
+
+    public GlobalExceptionHandler(String applicationName, ApiErrorLogFrameworkService apiErrorLogFrameworkService) {
+        this.applicationName = applicationName;
+        this.apiErrorLogFrameworkService = apiErrorLogFrameworkService;
+    }
 
     /**
      * 处理 SpringMVC 请求参数缺失
@@ -192,6 +201,15 @@ public class GlobalExceptionHandler {
         this.createExceptionLog(req, ex);
         // 返回 ERROR CommonResult
         return CommonResult.error(INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getMsg());
+    }
+
+    /**
+     * spring默认上传大小100MB 超出大小捕获异常MaxUploadSizeExceededException
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public CommonResult<?> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        log.error(e.getMessage(), e);
+        return CommonResult.error(INTERNAL_SERVER_ERROR.getCode(),"文件大小超出" + maxFileSize + "限制, 请压缩或降低文件质量! ");
     }
 
     private void createExceptionLog(HttpServletRequest req, Throwable ex) {

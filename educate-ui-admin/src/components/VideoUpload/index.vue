@@ -99,6 +99,12 @@ isCollapseShow.value = true
                           <font-awesome-icon icon="fa-solid fa-xmark" />
                         </span>
 
+                        <p class="fileInfoBox" v-if="!file.completed">
+                          <span class="fileInfoItem">速度：{{ props.formatedAverageSpeed }}</span>
+                          <span class="fileInfoItem">已上传：{{(parseFloat(props.formatedSize) * props.progress).toFixed(1)}}/{{ props.formatedSize }}</span>
+                          <span class="fileInfoItem">剩余时间：{{ props.formatedTimeRemaining }}</span>
+                        </p>
+                        <p class="fileInfoBoxSuccess" v-else>上传成功</p>
 
                       </div>
                     </template>
@@ -303,15 +309,18 @@ const onFileSuccess = async (rootFile, file, response, chunk) => {
   }
   let data = result.data || {}
   if (data) {
-    ELComponent.msgSuccess("上传成功！3")
-    await mergeChunks({
+    const response = await mergeChunks({
       identifier: file.uniqueIdentifier,
       filename: file.name,
       totalChunks: chunk.offset,
     })
-    // data.filesize = fileSize.value || 0
-    // 发送操作成功的事件
-    emit('success',data)
+    // 这里有可能后端发生异常，这里还是await的
+    if(data){
+      ELComponent.msgSuccess("上传成功！3")
+      // data.filesize = fileSize.value || 0
+      // 发送操作成功的事件
+      emit('success',response.data)
+    }
   }
 }
 const onFileError = (rootFile, file, message, chunk) => {

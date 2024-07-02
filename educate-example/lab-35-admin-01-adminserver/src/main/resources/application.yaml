@@ -1,0 +1,26 @@
+spring:
+  mail: # 配置发送告警的邮箱
+    host: smtp.qq.com
+    username: 3455947262@qq.com
+    password: nyqufyrezhuadbgd
+    default-encoding: UTF-8
+    port: 587
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          port: ${spring.mail.port}
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  boot:
+    admin:
+      notify:
+        mail:
+          from: ${spring.mail.username} # 告警发件人
+          to: 3455947262@qq.com # 告警收件人

@@ -28,7 +28,7 @@ public interface CodegenColumnMapper extends BaseMapper<CodegenColumnDO> {
     default List<CodegenColumnDO> selectListByTableId(Long tableId){
         LambdaQueryWrapper<CodegenColumnDO> codegenColumnDOLambdaQueryWrapper = new LambdaQueryWrapper<>();
         codegenColumnDOLambdaQueryWrapper.eq(CodegenColumnDO::getTableId,tableId)
-                .orderByDesc(CodegenColumnDO::getId);
+                .orderByAsc(CodegenColumnDO::getId);
         return selectList(codegenColumnDOLambdaQueryWrapper);
     }
 

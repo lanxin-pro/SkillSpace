@@ -14,14 +14,18 @@
         <!-- Server 主项目 -->
         <module>educate-server</module>
         <!-- 示例项目 -->
-       <!--<module>educate-example</module>-->
+        <!-- !!! 注：educate-example 只建议test环境打开 !!! -->
+        <!--<module>educate-example</module>-->
         <!-- 各种 module 拓展 -->
         <module>educate-module-system</module>
         <module>educate-module-infra</module>
-        <!-- 示例项目 -->
-        <module>educate-example</module>
         <module>educate-module-video</module>
         <module>educate-module-mp</module>
+        <!-- TODO j-sentinel 报错点，目前原因还在审查 -->
+        <module>educate-module-mall</module>
+        <module>educate-module-member</module>
+        <module>educate-module-course</module>
+        <module>educate-module-pay</module>
     </modules>
 
     <name>${project.artifactId}</name>
@@ -29,7 +33,7 @@
     <url>https://github.com/lanxin-pro/SkillSpace</url>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>2.0.0-SNAPSHOT</revision>
         <!-- Maven 相关 -->
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -95,12 +99,36 @@
         </pluginManagement>
     </build>
 
-    <!-- 使用 aliyun 的 Maven 源，提升下载速度 -->
+    <!-- 使用 huawei / aliyun 的 Maven 源，提升下载速度 -->
     <repositories>
+        <repository>
+            <id>huaweicloud</id>
+            <name>huawei</name>
+            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+        </repository>
         <repository>
             <id>aliyunmaven</id>
             <name>aliyun</name>
             <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+
+
+        <!-- SpringAI 内测库 -->
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 </project>

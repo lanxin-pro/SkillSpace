@@ -169,7 +169,7 @@ const handleLogin = async (captchaParams)=>{
       }
       socialLoginForm.captchaVerification = captchaParams.captchaVerification
       // 登录
-      store.dispatch('user/Login',{
+      pinia.Login({
         socialCode: socialLoginForm.code,
         socialState: socialLoginForm.state,
         socialType: socialLoginForm.type,

@@ -3,23 +3,32 @@ package cn.iocoder.educate.module.system.controller.admin.user;
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.educate.framework.common.pojo.CommonResult;
+import cn.iocoder.educate.framework.common.pojo.PageParam;
 import cn.iocoder.educate.framework.common.pojo.PageResult;
+import cn.iocoder.educate.framework.excel.core.util.ExcelUtils;
+import cn.iocoder.educate.framework.operatelog.core.annotations.OperateLog;
+import cn.iocoder.educate.framework.operatelog.core.enums.OperateTypeEnum;
 import cn.iocoder.educate.module.system.controller.admin.user.vo.user.*;
 import cn.iocoder.educate.module.system.convert.dept.DeptConvert;
 import cn.iocoder.educate.module.system.convert.user.UserConvert;
 import cn.iocoder.educate.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
+import cn.iocoder.educate.module.system.enums.common.SexEnum;
 import cn.iocoder.educate.module.system.service.dept.DeptService;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,7 +134,7 @@ public class UserController {
     }
 
     @GetMapping("/list-all-simple-dept")
-    @Operation(summary = "获取用户精简信息列表+部门名称", description = "只包含被开启的用户，主要用于前端的下拉选项")
+    @Operation(summary = "获取用户精简信息列表 + 部门名称", description = "只包含被开启的用户，主要用于前端的下拉选项")
     public CommonResult<List<UserSimpleRespVO>> getSimpleUserSimpleDeptList() {
         // 获用户列表，只要开启状态的
         List<AdminUserDO> list = adminUserService.getUserListByStatus(CommonStatusEnum.ENABLE.getStatus());
@@ -145,4 +154,50 @@ public class UserController {
         return success(UserConvert.INSTANCE.convertList05(userList));
     }
 
+    @GetMapping("/export")
+    @Operation(summary = "导出用户组")
+    @PreAuthorize("@lanxin.hasPermission('system:user:export')")
+    @OperateLog(type = OperateTypeEnum.EXPORT)
+    public void exportUserList(@Validated UserPageReqVO exportReqVO,
+                               HttpServletResponse response) throws IOException {
+        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
+        List<AdminUserDO> list = adminUserService.getUserPage(exportReqVO).getList();
+        List<Long> collectDeptIds = list.stream().map(AdminUserDO::getDeptId).collect(Collectors.toList());
+        Map<Long, DeptDO> deptMap = deptService.getDeptMap(collectDeptIds);
+        List<UserExcelRespVO> userExcelRespVOS = UserConvert.INSTANCE.convertList(list, deptMap);
+        // 输出 Excel
+        ExcelUtils.write(response, "用户数据.xls", "数据", UserExcelRespVO.class, userExcelRespVOS);
+    }
+
+    @GetMapping("/get-import-template")
+    @Operation(summary = "获得导入用户模板")
+    public void importTemplate(HttpServletResponse response) throws IOException {
+        // 手动创建导出 demo
+        List<UserImportExcelVO> userImportExcelVOS = Arrays.asList(
+                UserImportExcelVO.builder().username("j-sentinel").deptId(1L).email("2724650486@qq.com")
+                        .mobile("13571082448").nickname("蓝欣").status(CommonStatusEnum.ENABLE.getStatus())
+                        .sex(SexEnum.MALE.getSex()).build(),
+                UserImportExcelVO.builder().username("j-sentinel").deptId(1L).email("2724650486@qq.com")
+                        .mobile("13571082448").nickname("蓝欣").status(CommonStatusEnum.ENABLE.getStatus())
+                        .sex(SexEnum.MALE.getSex()).build()
+        );
+        // 输出 .xls or .xlsx
+        ExcelUtils.write(response, "用户导入模板.xls", "用户列表", UserImportExcelVO.class, userImportExcelVOS);
+    }
+
+    @PostMapping("/import")
+    @Operation(summary = "导入用户")
+    @Parameters({
+            @Parameter(name = "file", description = "Excel 文件", required = true),
+            @Parameter(name = "updateSupport", description = "是否支持更新，默认为 false", example = "true")
+    })
+    @PreAuthorize("@lanxin.hasPermission('system:user:import')")
+    public CommonResult<UserImportExcelRespVO> importExcel(@RequestParam("file") MultipartFile file,
+                                                      @RequestParam(value = "updateSupport",
+                                                      required = false,
+                                                      defaultValue = "false") Boolean updateSupport) throws Exception {
+        List<UserImportExcelVO> readList = ExcelUtils.read(file, UserImportExcelVO.class);
+        UserImportExcelRespVO userImportExcelRespVO = adminUserService.importUserList(readList, updateSupport);
+        return success(userImportExcelRespVO);
+    }
 }

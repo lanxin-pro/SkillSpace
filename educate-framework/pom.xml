@@ -15,7 +15,7 @@
         <module>educate-common</module>
         <module>educate-spring-boot-starter-web</module>
         <module>educate-spring-boot-starter-banner</module>
-        <module>eduacte-spring-boot-starter-mybatis</module>
+        <module>educate-spring-boot-starter-mybatis</module>
         <module>educate-spring-boot-starter-biz-operatelog</module>
         <module>educate-spring-boot-starter-redis</module>
         <module>educate-spring-boot-starter-captcha</module>
@@ -30,6 +30,13 @@
         <module>educate-spring-boot-starter-biz-error-code</module>
         <module>educate-spring-boot-starter-biz-weixin</module>
         <module>educate-spring-boot-starter-job</module>
+        <module>educate-spring-boot-starter-desensitize</module>
+        <module>educate-spring-boot-starter-elasticsearch</module>
+        <module>educate-spring-boot-starter-excel</module>
+        <module>educate-spring-boot-starter-monitor</module>
+        <module>educate-spring-boot-starter-biz-dict</module>
+        <module>educate-spring-boot-starter-biz-pay</module>
+        <module>educate-spring-boot-starter-ai</module>
     </modules>
 
     <description>

@@ -196,7 +196,7 @@
 
 <script setup>
 import {
-  listUser,resetUserPwd,updateUserStatus,deleteUser
+  listUser, resetUserPwd, updateUserStatus, deleteUser, exportUser
 } from "@/api/system/user"
 import { listSimpleDepts } from "@/api/system/dept"
 import { listSimplePosts } from "@/api/system/post"
@@ -212,6 +212,7 @@ import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
 import ELComponent from '@/plugins/modal.js'
 import { CommonStatusEnum } from '@/utils/constants'
+import download from '@/utils/download'
 
 const dictStore = useDictStore()
 // 遮罩层
@@ -348,7 +349,8 @@ const handleExport = async () => {
     await ELComponent.confirm('是否确认导出所有用户数据项?')
     // 发起导出
     exportLoading.value = true
-
+    const data = await exportUser(queryParams)
+    download.excel(data, '用户数据.xlsx')
   } catch {
   } finally {
     exportLoading.value = false

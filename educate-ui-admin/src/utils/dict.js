@@ -81,6 +81,17 @@ export function getDictData(dictType, value) {
     return undefined
 }
 
+export const getBoolDictOptions = (dictType) => {
+    const dictOption = []
+    const dictOptions = getDictOptions(dictType)
+    dictOptions.forEach((dict) => {
+        dictOption.push({
+            ...dict,
+            value: dict.value + '' === 'true'
+        })
+    })
+    return dictOption
+}
 
 /**
  * 获得字典数据的文本展示
@@ -144,20 +155,24 @@ export const DICT_TYPE = {
     BPM_OA_LEAVE_TYPE: 'bpm_oa_leave_type',
 
     // ========== PAY 模块 ==========
-    PAY_CHANNEL_WECHAT_VERSION: 'pay_channel_wechat_version', // 微信渠道版本
-    PAY_CHANNEL_ALIPAY_SIGN_TYPE: 'pay_channel_alipay_sign_type', // 支付渠道支付宝算法类型
-    PAY_CHANNEL_ALIPAY_MODE: 'pay_channel_alipay_mode', // 支付宝公钥类型
-    PAY_CHANNEL_ALIPAY_SERVER_TYPE: 'pay_channel_alipay_server_type', // 支付宝网关地址
-    PAY_CHANNEL_CODE_TYPE: 'pay_channel_code_type', // 支付渠道编码类型
-    PAY_ORDER_NOTIFY_STATUS: 'pay_order_notify_status', // 商户支付订单回调状态
+    PAY_CHANNEL_CODE: 'pay_channel_code', // 支付渠道编码类型
     PAY_ORDER_STATUS: 'pay_order_status', // 商户支付订单状态
-    PAY_ORDER_REFUND_STATUS: 'pay_order_refund_status', // 商户支付订单退款状态
-    PAY_REFUND_ORDER_STATUS: 'pay_refund_order_status', // 退款订单状态
-    PAY_REFUND_ORDER_TYPE: 'pay_refund_order_type', // 退款订单类别
+    PAY_REFUND_STATUS: 'pay_refund_status', // 退款订单状态
+    PAY_NOTIFY_STATUS: 'pay_notify_status', // 商户支付回调状态
+    PAY_NOTIFY_TYPE: 'pay_notify_type', // 商户支付回调状态
+    PAY_TRANSFER_STATUS: 'pay_transfer_status', // 转账订单状态
+    PAY_TRANSFER_TYPE: 'pay_transfer_type', // 转账订单状态
 
     // ========== MP 模块 ==========
     MP_AUTO_REPLY_REQUEST_MATCH: 'mp_auto_reply_request_match', // 自动回复请求匹配类型
     MP_MESSAGE_TYPE: 'mp_message_type', // 消息类型
+
+    // ========== COURSE 模块 ==========
+    COURSE_AUTO_TYPE: 'course_auto_type',
+    COURSE_PUBLISH_STATUS: 'course_public_status',
+    COURSE_RECOMMEND: 'course_recommend',
+    COURSE_HOT: 'course_hot',
+    COURSE_TOP: 'course_top',
 
     // ========== MALL - PRODUCT 模块 ==========
     PRODUCT_SPU_STATUS: 'product_spu_status', // 商品 SPU 状态

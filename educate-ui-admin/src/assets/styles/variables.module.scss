@@ -38,6 +38,9 @@ $base-sub-menu-hover:#001528;
 
 $base-sidebar-width: 200px;
 
+$extension-menu-background: #282c34;
+
+$extension-menu-color-active: #fcce4b;
 // vite的文档好啊
 // https://cn.vitejs.dev/guide/features.html#import-inlining-and-rebasing
 // the :export directive is the magic sauce for webpack
@@ -46,7 +49,7 @@ $base-sidebar-width: 200px;
   menuColor: $base-menu-color;
   menuLightColor: $base-menu-light-color;
   menuColorActive: $base-menu-color-active;
-  menuBackground: $base-menu-background;
+  menuBackground: $extension-menu-background;
   menuLightBackground: $base-menu-light-background;
   subMenuBackground: $base-sub-menu-background;
   subMenuHover: $base-sub-menu-hover;

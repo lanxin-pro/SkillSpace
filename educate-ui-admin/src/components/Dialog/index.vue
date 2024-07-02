@@ -7,6 +7,7 @@
       :draggable="draggable"
       :lock-scroll="lockScroll"
       v-bind="getBindValue"
+      :before-close="handleClose"
       :align-center="true"
   >
     <template #header>
@@ -43,6 +44,8 @@
 import { propTypes } from '@/utils/propTypes.js'
 import { useSlots,computed,useAttrs,ref,unref,watch,nextTick } from 'vue'
 import { isNumber } from '@/utils/is.js'
+import ELComponent from '@/plugins/modal.js'
+import { ElMessageBox } from 'element-plus'
 
 const slots = useSlots()
 
@@ -54,8 +57,27 @@ const props = defineProps({
   scroll: propTypes.bool.def(false), // 是否开启滚动条。如果是的话，按照 maxHeight 设置最大高度
   maxHeight: propTypes.oneOfType([String, Number]).def('300px'),
   draggable: propTypes.bool.def(true),
-  lockScroll: propTypes.bool.def(false)
+  lockScroll: propTypes.bool.def(false),
+  dialogEnableStatus: propTypes.bool.def(false)
 })
+
+/** 关闭提醒 */
+const handleClose = (done) => {
+  if(props.dialogEnableStatus){
+    ElMessageBox.confirm("您确定要退出吗？您的数据将全部丢失！","系统提示", {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: "error",
+    }).then(() => {
+      done()
+    }).catch(() => {
+      // catch error
+    })
+  } else {
+    // ESC 和 点击弹窗外的关闭事件
+    done()
+  }
+}
 
 const getBindValue = computed(() => {
   const delArr = ['fullscreen', 'title', 'maxHeight']
