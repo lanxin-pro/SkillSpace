@@ -2,6 +2,7 @@ package cn.iocoder.educate.framework.ai.config;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.ai.autoconfigure.openai.OpenAiImageProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -15,5 +16,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "educate.ai")
 public class EducateAiProperties {
 
+    private OpenAiImageProperties openAiImage;
 
 }

@@ -1,0 +1,30 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.iocoder.boot</groupId>
+        <artifactId>skill-space</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>educate-module-ai</artifactId>
+    <!-- 父工程的标识 -->
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>educate-module-ai-api</module>
+        <module>educate-module-ai-biz</module>
+    </modules>
+
+    <name>educate-module-ai</name>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
+
+</project>
