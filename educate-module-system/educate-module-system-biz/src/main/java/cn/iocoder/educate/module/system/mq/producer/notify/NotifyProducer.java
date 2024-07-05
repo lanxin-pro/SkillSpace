@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.system.mq.message.notify.NotifyTemplateRefreshM
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Notify 站内信相关消息的 Producer

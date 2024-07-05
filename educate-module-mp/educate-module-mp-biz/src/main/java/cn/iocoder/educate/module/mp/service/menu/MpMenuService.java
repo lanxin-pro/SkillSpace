@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.mp.service.menu;
 import cn.iocoder.educate.module.mp.controller.admin.menu.vo.MpMenuSaveReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.menu.MpMenuDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

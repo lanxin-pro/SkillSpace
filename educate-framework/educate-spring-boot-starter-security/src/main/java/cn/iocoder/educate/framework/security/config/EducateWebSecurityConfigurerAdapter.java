@@ -7,19 +7,23 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
+import jakarta.annotation.Resource;
+import jakarta.annotation.security.PermitAll;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,7 +39,7 @@ import java.util.Set;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public class EducateWebSecurityConfigurerAdapter {
 
     @Resource
     private ApplicationContext applicationContext;
@@ -63,21 +67,21 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
      * @return
      * @throws Exception
      */
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // 开启跨域访问
-                .cors().and()
+                .cors(Customizer.withDefaults())
                 // CSRF 禁用，因为不使用 Session
-                .csrf().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 // 基于 token 机制，所以不需要 Session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 防止将报头添加到响应中
-                .headers().frameOptions().disable().and()
+                .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 // 一堆自定义的 Spring Security 处理器                认证失败处理类
-                .exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPointImpl())
-                // 权限不够处理器
-                .accessDeniedHandler(new AccessDeniedHandlerImpl());
+                .exceptionHandling(c -> c.authenticationEntryPoint(new AuthenticationEntryPointImpl())
+                        // 权限不够处理器
+                        .accessDeniedHandler(new AccessDeniedHandlerImpl()));
         // 登录暂时不使用 Spring Security 的拓展点，主要考虑一方面拓展多用户、多种登录方式相对复杂，一方面用户的学习成本较高
 
 
@@ -88,35 +92,36 @@ public class EducateWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 // 1.全局共享的规则
                 .authorizeRequests()
                 // 1.1 静态资源，可匿名访问
-                .antMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
+                .requestMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
                 // 1.2 设置 @PermitAll 无需认证  最后转换成字符串数组
-                .antMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
-                .antMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
-                .antMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
-                .antMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll()
+                .requestMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
+                .requestMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
+                .requestMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
+                .requestMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll()
                 // 1.5 验证码captcha 允许匿名访问
-                .antMatchers("/captcha/get", "/captcha/check").permitAll()
+                .requestMatchers("/captcha/get", "/captcha/check").permitAll()
                 // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
-                .antMatchers("/websocket/message").permitAll()
+                .requestMatchers("/websocket/message").permitAll()
                 // TODO j-sentinel swagger文档json格式的测试
                 // Swagger 接口文档
-                .antMatchers("/v3/api-docs/**").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/swagger-resources/**").anonymous()
-                .antMatchers("/webjars/**").anonymous()
-                .antMatchers("/*/api-docs").anonymous()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/swagger-resources/**").anonymous()
+                .requestMatchers("/webjars/**").anonymous()
+                .requestMatchers("/*/api-docs").anonymous()
                 // Spring Boot Actuator 的安全配置
-                .antMatchers("/actuator").anonymous()
-                .antMatchers("/actuator/**").anonymous()
+                .requestMatchers("/actuator").anonymous()
+                .requestMatchers("/actuator/**").anonymous()
                 // Spring Boot Admin Server 的安全配置
-                .antMatchers("/admin").anonymous()
-                .antMatchers("/admin/**").anonymous()
+                .requestMatchers("/admin").anonymous()
+                .requestMatchers("/admin/**").anonymous()
                 // Druid 监控
-                .antMatchers("/druid/**").anonymous()
+                .requestMatchers("/druid/**").anonymous()
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
 
 

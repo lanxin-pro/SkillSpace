@@ -18,7 +18,7 @@ import cn.iocoder.educate.module.system.mq.message.sms.SmsSendMessage;
 import cn.iocoder.educate.module.system.mq.producer.sms.SmsProducer;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

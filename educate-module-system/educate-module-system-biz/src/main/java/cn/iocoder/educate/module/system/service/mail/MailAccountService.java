@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.mail.vo.account.MailAcc
 import cn.iocoder.educate.module.system.controller.admin.mail.vo.account.MailAccountUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailAccountDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

@@ -1,7 +1,7 @@
 package cn.iocoder.educate.module.infra.api.logger;
 
 import cn.iocoder.educate.module.infra.api.logger.dto.ApiErrorLogCreateReqDTO;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @Author: 董伟豪

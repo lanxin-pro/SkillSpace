@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.system.service.auth;
 import cn.iocoder.educate.module.system.controller.admin.auth.vo.*;
 import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @Author: 董伟豪

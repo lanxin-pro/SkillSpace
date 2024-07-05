@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.dict.DictDataDO;
 import cn.iocoder.educate.module.system.service.dict.DictDataService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @author j-sentinel

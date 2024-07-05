@@ -2,7 +2,7 @@ package cn.iocoder.educate.module.system.api.logger;
 
 import cn.iocoder.educate.module.system.api.logger.dto.OperateLogCreateReqDTO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @Author: 董伟豪

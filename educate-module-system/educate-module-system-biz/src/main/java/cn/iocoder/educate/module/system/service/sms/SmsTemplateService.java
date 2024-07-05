@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.sms.vo.template.SmsTemp
 import cn.iocoder.educate.module.system.controller.admin.sms.vo.template.SmsTemplateUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsTemplateDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 /**

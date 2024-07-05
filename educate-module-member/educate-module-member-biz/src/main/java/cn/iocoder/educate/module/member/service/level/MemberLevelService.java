@@ -8,7 +8,7 @@ import cn.iocoder.educate.module.member.controller.admin.level.vo.level.MemberLe
 import cn.iocoder.educate.module.member.dal.dataobject.level.MemberLevelDO;
 import cn.iocoder.educate.module.member.dal.dataobject.user.MemberUserDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;

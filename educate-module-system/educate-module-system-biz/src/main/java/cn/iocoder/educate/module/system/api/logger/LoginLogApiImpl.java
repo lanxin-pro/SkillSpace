@@ -4,7 +4,7 @@ import cn.iocoder.educate.module.system.api.logger.dto.LoginLogCreateReqDTO;
 import cn.iocoder.educate.module.system.service.logger.LoginLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 登录日志的 API 实现类

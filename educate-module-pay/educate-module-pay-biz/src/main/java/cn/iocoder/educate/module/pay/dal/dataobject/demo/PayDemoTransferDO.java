@@ -2,7 +2,7 @@ package cn.iocoder.educate.module.pay.dal.dataobject.demo;
 
 import cn.iocoder.educate.framework.mybatis.core.dataobject.BaseDO;
 import cn.iocoder.educate.module.pay.dal.dataobject.app.PayAppDO;
-import cn.iocoder.yudao.module.pay.enums.transfer.PayTransferTypeEnum;
+import cn.iocoder.educate.module.pay.enums.transfer.PayTransferTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

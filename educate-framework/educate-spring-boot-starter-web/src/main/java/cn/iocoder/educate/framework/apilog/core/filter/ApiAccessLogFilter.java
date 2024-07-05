@@ -3,7 +3,6 @@ package cn.iocoder.educate.framework.apilog.core.filter;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.map.MapBuilder;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONUtil;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLog;
 import cn.iocoder.educate.framework.apilog.core.service.ApiAccessLogFrameworkService;
@@ -15,10 +14,10 @@ import cn.iocoder.educate.framework.web.core.util.WebFrameworkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -47,8 +46,8 @@ public class ApiAccessLogFilter extends ApiRequestFilter {
         // 获取开始时间
         LocalDateTime beginTime = LocalDateTime.now();
         // 提前获得参数，避免 XssFilter 过滤处理
-        Map<String, String> queryString = ServletUtil.getParamMap(request);
-        String requestBody = ServletUtils.isJsonRequest(request) ? ServletUtil.getBody(request) : null;
+        Map<String, String> queryString = ServletUtils.getParamMap(request);
+        String requestBody = ServletUtils.isJsonRequest(request) ? ServletUtils.getBody(request) : null;
 
         try {
             // 继续过滤器，这里会报错？？？
@@ -109,7 +108,7 @@ public class ApiAccessLogFilter extends ApiRequestFilter {
         accessLog.setRequestParams(JSONUtil.toJsonStr(requestParams));
         accessLog.setRequestMethod(request.getMethod());
         accessLog.setUserAgent(ServletUtils.getUserAgent(request));
-        accessLog.setUserIp(ServletUtil.getClientIP(request));
+        accessLog.setUserIp(ServletUtils.getClientIP(request));
         // 持续时间
         accessLog.setBeginTime(beginTime);
         accessLog.setEndTime(LocalDateTime.now());

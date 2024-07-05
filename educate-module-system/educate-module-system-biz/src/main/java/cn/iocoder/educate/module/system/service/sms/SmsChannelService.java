@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChann
 import cn.iocoder.educate.module.system.controller.admin.sms.vo.channel.SmsChannelUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sms.SmsChannelDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

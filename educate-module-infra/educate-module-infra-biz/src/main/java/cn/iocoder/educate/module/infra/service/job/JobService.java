@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.infra.controller.admin.job.vo.job.JobUpdateReqV
 import cn.iocoder.educate.module.infra.dal.dataobject.job.JobDO;
 import org.quartz.SchedulerException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * 定时任务 Service 接口

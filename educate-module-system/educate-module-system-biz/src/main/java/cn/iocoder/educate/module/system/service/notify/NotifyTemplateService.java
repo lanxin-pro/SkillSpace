@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.notify.vo.template.Noti
 import cn.iocoder.educate.module.system.controller.admin.notify.vo.template.NotifyTemplateUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.notify.NotifyTemplateDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Map;
 
 /**

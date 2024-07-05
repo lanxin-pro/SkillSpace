@@ -8,7 +8,7 @@ import cn.iocoder.educate.module.mp.controller.admin.account.vo.MpAccountUpdateR
 import cn.iocoder.educate.module.mp.dal.dataobject.account.MpAccountDO;
 import cn.iocoder.educate.module.mp.enums.ErrorCodeConstants;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

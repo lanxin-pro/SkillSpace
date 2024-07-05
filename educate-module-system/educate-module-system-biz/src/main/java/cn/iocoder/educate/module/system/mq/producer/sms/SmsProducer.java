@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.system.mq.message.sms.SmsSendMessage;
 import cn.iocoder.educate.module.system.mq.message.sms.SmsTemplateRefreshMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 /**

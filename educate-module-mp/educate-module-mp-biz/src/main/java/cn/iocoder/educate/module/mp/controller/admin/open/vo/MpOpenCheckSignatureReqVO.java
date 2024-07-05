@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.mp.controller.admin.open.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * @Author: j-sentinel

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
@@ -44,7 +44,7 @@ public class EducateElasticsearchConfigurationTest {
         System.out.println(response);
     }
 
-    @org.junit.Test
+    @Test
     public void a() throws IOException {
         // 指定Elasticsearch集群的主机和端口
         String hostname = "http://120.46.160.55:9200";

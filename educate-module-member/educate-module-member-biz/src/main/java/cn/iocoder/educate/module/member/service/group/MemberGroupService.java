@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.member.controller.admin.group.vo.MemberGroupPag
 import cn.iocoder.educate.module.member.controller.admin.group.vo.MemberGroupUpdateReqVO;
 import cn.iocoder.educate.module.member.dal.dataobject.group.MemberGroupDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 

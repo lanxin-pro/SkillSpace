@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.service.mail.MailAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 针对 {@link MailAccountRefreshMessage} 的消费者

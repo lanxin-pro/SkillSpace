@@ -24,7 +24,7 @@ import cn.iocoder.educate.module.system.enums.oauth2.OAuth2ClientConstants;
 import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Objects;
 
 import static cn.iocoder.educate.module.member.enums.ErrorCodeConstants.AUTH_MOBILE_USED;

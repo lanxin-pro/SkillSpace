@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.mail.vo.template.MailTe
 import cn.iocoder.educate.module.system.controller.admin.mail.vo.template.MailTemplateUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.mail.MailTemplateDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 

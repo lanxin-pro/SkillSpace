@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.system.service.logger.OperateLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

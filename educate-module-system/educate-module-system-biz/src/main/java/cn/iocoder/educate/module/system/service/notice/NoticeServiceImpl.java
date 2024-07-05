@@ -11,7 +11,7 @@ import cn.iocoder.educate.module.system.dal.mysql.notice.NoticeMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 通知公告 Service 实现类

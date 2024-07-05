@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.pay.enums;
+package cn.iocoder.educate.module.pay.enums;
 
 /**
  * Pay 字典类型的枚举类

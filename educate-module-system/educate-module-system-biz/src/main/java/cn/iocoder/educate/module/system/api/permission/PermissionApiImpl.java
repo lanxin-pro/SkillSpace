@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.system.api.permission;
 import cn.iocoder.educate.module.system.service.permission.PermissionService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 权限 API 实现类

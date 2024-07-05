@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.system.mq.producer.permission;
 import cn.iocoder.educate.framework.mq.core.RedisMQTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Menu 菜单相关消息的 Producer

@@ -4,7 +4,7 @@ import cn.iocoder.educate.module.infra.api.logger.dto.ApiAccessLogCreateReqDTO;
 import cn.iocoder.educate.module.infra.service.logger.ApiAccessLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

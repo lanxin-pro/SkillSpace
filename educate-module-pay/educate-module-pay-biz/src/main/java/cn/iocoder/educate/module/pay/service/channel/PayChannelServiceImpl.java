@@ -15,19 +15,19 @@ import cn.iocoder.educate.module.pay.dal.mysql.channel.PayChannelMapper;
 import cn.iocoder.educate.framework.common.util.cache.CacheUtils;
 import cn.iocoder.educate.framework.pay.core.client.PayClient;
 import cn.iocoder.educate.framework.pay.core.client.PayClientFactory;
-import cn.iocoder.yudao.module.pay.enums.ErrorCodeConstants;
+import cn.iocoder.educate.module.pay.enums.ErrorCodeConstants;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
-import static cn.iocoder.yudao.module.pay.enums.ErrorCodeConstants.CHANNEL_NOT_FOUND;
+import static cn.iocoder.educate.module.pay.enums.ErrorCodeConstants.CHANNEL_NOT_FOUND;
 
 /**
  * 支付渠道 Service 实现类

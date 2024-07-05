@@ -55,7 +55,7 @@ Bean Validation 和我们很久以前学习过的 JPA 一样，只提供规范�
 > 艿艿：对 JPA 不了的胖友，可以看看 [《芋道 Spring Boot JPA 入门》](http://www.iocoder.cn/Spring-Boot/JPA/?self) 一文。
 
 - 在 [Bean Validation API](https://mvnrepository.com/artifact/javax.validation/validation-api) 中，定义了 Bean Validation 相关的接口，并没有具体实现。
-- 在 [`javax.validation.constraints`](https://github.com/eclipse-ee4j/beanvalidation-api/tree/master/src/main/java/javax/validation/constraints) 包下，定义了一系列的校验注解。例如说，[`@NotNull`](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/src/main/java/javax/validation/constraints/NotNull.java)、[`@NotEmpty`](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/src/main/java/javax/validation/constraints/NotEmpty.java) 。
+- 在 [`jakarta.validation.constraints`](https://github.com/eclipse-ee4j/beanvalidation-api/tree/master/src/main/java/javax/validation/constraints) 包下，定义了一系列的校验注解。例如说，[`@NotNull`](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/src/main/java/javax/validation/constraints/NotNull.java)、[`@NotEmpty`](https://github.com/eclipse-ee4j/beanvalidation-api/blob/master/src/main/java/javax/validation/constraints/NotEmpty.java) 。
 
 实现 Bean Validation 规范的数据校验框架，主要有：
 

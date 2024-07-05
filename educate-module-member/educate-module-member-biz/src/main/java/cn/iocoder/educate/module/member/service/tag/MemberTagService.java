@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.member.controller.admin.tag.vo.MemberTagPageReq
 import cn.iocoder.educate.module.member.controller.admin.tag.vo.MemberTagUpdateReqVO;
 import cn.iocoder.educate.module.member.dal.dataobject.tag.MemberTagDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 

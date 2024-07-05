@@ -3,7 +3,7 @@ package cn.iocoder.educate.module.pay.controller.admin.order.vo;
 import cn.iocoder.educate.framework.excel.core.annotations.DictFormat;
 import cn.iocoder.educate.framework.excel.core.covert.DictConvert;
 import cn.iocoder.educate.framework.excel.core.covert.MoneyConvert;
-import cn.iocoder.yudao.module.pay.enums.DictTypeConstants;
+import cn.iocoder.educate.module.pay.enums.DictTypeConstants;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 

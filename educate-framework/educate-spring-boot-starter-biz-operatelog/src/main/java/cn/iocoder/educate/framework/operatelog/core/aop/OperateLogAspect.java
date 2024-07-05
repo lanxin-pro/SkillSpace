@@ -28,9 +28,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
@@ -164,7 +164,7 @@ public class OperateLogAspect {
         // 补全请求信息
         operateLogObj.setRequestMethod(request.getMethod());
         operateLogObj.setRequestUrl(request.getRequestURI());
-        operateLogObj.setUserIp(ServletUtil.getClientIP(request));
+        operateLogObj.setUserIp(ServletUtils.getClientIP(request));
         operateLogObj.setUserAgent(ServletUtils.getUserAgent(request));
     }
 

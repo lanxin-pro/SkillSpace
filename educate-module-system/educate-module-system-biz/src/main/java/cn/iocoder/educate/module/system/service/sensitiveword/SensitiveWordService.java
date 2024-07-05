@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.system.controller.admin.sensitiveword.vo.Sensit
 import cn.iocoder.educate.module.system.controller.admin.sensitiveword.vo.SensitiveWordUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.sensitiveword.SensitiveWordDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 

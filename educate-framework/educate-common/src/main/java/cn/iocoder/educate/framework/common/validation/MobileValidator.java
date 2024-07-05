@@ -1,10 +1,11 @@
 package cn.iocoder.educate.framework.common.validation;
 
 import cn.hutool.core.util.StrUtil;
-import cn.iocoder.educate.framework.common.util.validation.ValidationUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import cn.iocoder.educate.framework.common.util.validation.ValidationUtils;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 
 /**
  * @Author: j-sentinel

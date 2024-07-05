@@ -4,7 +4,7 @@ import cn.iocoder.educate.framework.mq.core.RedisMQTemplate;
 import cn.iocoder.educate.module.system.mq.message.sensitiveword.SensitiveWordRefreshMessage;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 敏感词相关的 Producer

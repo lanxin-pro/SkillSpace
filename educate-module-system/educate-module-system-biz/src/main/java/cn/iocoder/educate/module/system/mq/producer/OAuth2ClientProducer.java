@@ -4,7 +4,7 @@ import cn.iocoder.educate.framework.mq.core.RedisMQTemplate;
 import cn.iocoder.educate.module.system.mq.message.auth.OAuth2ClientRefreshMessage;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * OAuth 2.0 客户端相关消息的 Producer

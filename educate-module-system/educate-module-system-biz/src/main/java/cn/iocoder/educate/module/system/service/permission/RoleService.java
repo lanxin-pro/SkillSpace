@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.system.controller.admin.permission.vo.role.Role
 import cn.iocoder.educate.module.system.dal.dataobject.permission.RoleDO;
 import org.springframework.lang.Nullable;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 

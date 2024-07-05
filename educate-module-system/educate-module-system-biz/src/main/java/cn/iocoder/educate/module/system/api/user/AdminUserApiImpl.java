@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.educate.module.system.service.user.AdminUserService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Admin 用户 API 实现类

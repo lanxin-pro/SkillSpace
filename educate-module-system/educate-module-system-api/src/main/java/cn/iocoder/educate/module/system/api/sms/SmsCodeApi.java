@@ -4,7 +4,7 @@ import cn.iocoder.educate.framework.common.exception.ServiceException;
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeSendReqDTO;
 import cn.iocoder.educate.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @Author: 董伟豪

@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialPageR
 import cn.iocoder.educate.module.mp.controller.admin.material.vo.MpMaterialUploadPermanentReqVO;
 import cn.iocoder.educate.module.mp.dal.dataobject.material.MpMaterialDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;

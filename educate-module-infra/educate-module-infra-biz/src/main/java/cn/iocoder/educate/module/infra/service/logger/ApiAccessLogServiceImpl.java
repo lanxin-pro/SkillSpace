@@ -9,7 +9,7 @@ import cn.iocoder.educate.module.infra.dal.dataobject.logger.ApiAccessLogDO;
 import cn.iocoder.educate.module.infra.dal.mysql.logger.ApiAccessLogMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

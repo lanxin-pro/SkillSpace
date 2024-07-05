@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.pay.enums.transfer;
+package cn.iocoder.educate.module.pay.enums.transfer;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.iocoder.educate.framework.common.core.IntArrayValuable;

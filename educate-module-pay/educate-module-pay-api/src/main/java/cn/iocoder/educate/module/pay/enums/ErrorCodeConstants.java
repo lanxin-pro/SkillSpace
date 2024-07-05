@@ -1,4 +1,4 @@
-package cn.iocoder.yudao.module.pay.enums;
+package cn.iocoder.educate.module.pay.enums;
 
 import cn.iocoder.educate.framework.common.exception.ErrorCode;
 

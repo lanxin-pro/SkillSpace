@@ -17,8 +17,8 @@ import cn.iocoder.educate.module.system.framework.sms.SmsCodeProperties;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
-import javax.servlet.ServletException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 

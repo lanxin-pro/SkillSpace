@@ -2,17 +2,21 @@ package cn.iocoder.educate.framework.common.util.servlet;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.json.JSONUtil;
+import cn.iocoder.educate.framework.common.util.json.JsonUtils;
+import com.alibaba.ttl.TransmittableThreadLocal;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * @Author: j-sentinel
@@ -29,13 +33,13 @@ public class ServletUtils {
      */
     @SuppressWarnings("deprecation") // 必须使用 APPLICATION_JSON_UTF8_VALUE，否则会乱码
     public static void writeJSON(HttpServletResponse response, Object object) {
-        String content = JSONUtil.toJsonStr(object);
-        ServletUtil.write(response, content, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        String content = JsonUtils.toJsonString(object);
+        JakartaServletUtil.write(response, content, MediaType.APPLICATION_JSON_UTF8_VALUE);
     }
 
     /**
      * 返回附件
-     *
+     * TODO j-sentinel 2024/7/5 更改为 jakarta 包
      * @param response 响应
      * @param filename 文件名
      * @param content 附件内容
@@ -97,7 +101,24 @@ public class ServletUtils {
         if (request == null) {
             return null;
         }
-        return ServletUtil.getClientIP(request);
+        return JakartaServletUtil.getClientIP(request);
     }
+
+    public static String getClientIP(HttpServletRequest request) {
+        return JakartaServletUtil.getClientIP(request);
+    }
+
+    public static String getBody(HttpServletRequest request) {
+        // 只有在 json 请求在读取，因为只有 CacheRequestBodyFilter 才会进行缓存，支持重复读取
+        if (isJsonRequest(request)) {
+            return JakartaServletUtil.getBody(request);
+        }
+        return null;
+    }
+
+    public static Map<String, String> getParamMap(HttpServletRequest request) {
+        return JakartaServletUtil.getParamMap(request);
+    }
+
 
 }

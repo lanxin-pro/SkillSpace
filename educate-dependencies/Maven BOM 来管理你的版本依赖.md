@@ -34,7 +34,7 @@ BOM本质上是一个普通的POM文件，区别是对于使用方而言，生�
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <spring.version>4.3.15.RELEASE</spring.version>
     </properties>
 

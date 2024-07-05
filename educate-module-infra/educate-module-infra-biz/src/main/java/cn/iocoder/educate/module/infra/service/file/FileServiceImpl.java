@@ -12,7 +12,7 @@ import cn.iocoder.educate.module.infra.dal.dataobject.file.FileDO;
 import cn.iocoder.educate.module.infra.dal.mysql.file.FileMapper;
 import cn.iocoder.educate.module.infra.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.File;
 
 /**

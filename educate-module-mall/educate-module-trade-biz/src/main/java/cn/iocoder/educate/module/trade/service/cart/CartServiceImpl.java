@@ -15,7 +15,7 @@ import cn.iocoder.educate.module.trade.dal.dataobject.cart.CartDO;
 import cn.iocoder.educate.module.trade.dal.mysql.cart.CartMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

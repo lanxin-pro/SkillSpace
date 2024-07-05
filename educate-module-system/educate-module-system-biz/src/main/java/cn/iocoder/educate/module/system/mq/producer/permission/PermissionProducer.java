@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.system.mq.message.permission.RoleMenuRefreshMes
 import cn.iocoder.educate.module.system.mq.message.permission.UserRoleRefreshMessage;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * Permission 权限相关消息的 Producer

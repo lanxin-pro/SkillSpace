@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.pay.controller.admin.channel.vo.PayChannelCreat
 import cn.iocoder.educate.module.pay.controller.admin.channel.vo.PayChannelUpdateReqVO;
 import cn.iocoder.educate.module.pay.dal.dataobject.channel.PayChannelDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 

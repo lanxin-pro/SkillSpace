@@ -5,8 +5,8 @@ import cn.iocoder.educate.framework.common.validation.Mobile;
 import cn.iocoder.educate.module.system.enums.sms.SmsSceneEnum;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 短信验证码的使用 Request DTO

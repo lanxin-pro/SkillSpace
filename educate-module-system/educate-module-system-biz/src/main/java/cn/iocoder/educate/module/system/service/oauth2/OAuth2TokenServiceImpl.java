@@ -16,7 +16,7 @@ import cn.iocoder.educate.module.system.dal.mysql.oauth2.OAuth2RefreshTokenMappe
 import cn.iocoder.educate.module.system.dal.redis.oauth2.OAuth2AccessTokenRedisDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;

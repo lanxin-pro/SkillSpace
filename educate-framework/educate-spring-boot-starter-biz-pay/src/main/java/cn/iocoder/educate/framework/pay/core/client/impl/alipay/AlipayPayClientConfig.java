@@ -2,8 +2,8 @@ package cn.iocoder.educate.framework.pay.core.client.impl.alipay;
 
 import cn.iocoder.educate.framework.pay.core.client.PayClientConfig;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * 支付宝的 PayClientConfig 实现类

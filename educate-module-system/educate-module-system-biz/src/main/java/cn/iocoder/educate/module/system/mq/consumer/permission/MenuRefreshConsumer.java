@@ -5,7 +5,7 @@ import cn.iocoder.educate.module.system.mq.producer.permission.MenuRefreshMessag
 import cn.iocoder.educate.module.system.service.permission.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

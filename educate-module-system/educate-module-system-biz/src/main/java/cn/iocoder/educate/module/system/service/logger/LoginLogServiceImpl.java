@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.logger.LoginLogDO;
 import cn.iocoder.educate.module.system.dal.mysql.logger.LoginLogMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

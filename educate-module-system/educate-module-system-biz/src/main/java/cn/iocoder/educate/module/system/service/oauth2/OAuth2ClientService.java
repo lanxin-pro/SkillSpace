@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2
 import cn.iocoder.educate.module.system.controller.admin.oauth2.vo.client.OAuth2ClientUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2ClientDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

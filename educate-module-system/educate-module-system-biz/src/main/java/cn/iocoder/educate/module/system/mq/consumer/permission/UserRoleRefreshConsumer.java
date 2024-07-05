@@ -6,7 +6,7 @@ import cn.iocoder.educate.module.system.service.permission.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * @Author: j-sentinel

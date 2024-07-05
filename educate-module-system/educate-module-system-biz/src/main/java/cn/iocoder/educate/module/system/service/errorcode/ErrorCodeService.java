@@ -7,7 +7,7 @@ import cn.iocoder.educate.module.system.controller.admin.errorcode.vo.ErrorCodeP
 import cn.iocoder.educate.module.system.controller.admin.errorcode.vo.ErrorCodeUpdateReqVO;
 import cn.iocoder.educate.module.system.dal.dataobject.errorcode.ErrorCodeDO;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

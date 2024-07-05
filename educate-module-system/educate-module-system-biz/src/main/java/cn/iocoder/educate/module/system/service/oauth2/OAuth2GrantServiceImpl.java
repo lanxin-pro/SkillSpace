@@ -9,7 +9,7 @@ import cn.iocoder.educate.module.system.dal.dataobject.oauth2.OAuth2CodeDO;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 /**
