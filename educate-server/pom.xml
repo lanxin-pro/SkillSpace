@@ -47,16 +47,25 @@
             <artifactId>educate-spring-boot-starter-banner</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-web</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-module-statistics-biz</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-module-infra-biz</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-module-system-biz</artifactId>
@@ -86,19 +95,16 @@
             <artifactId>educate-module-promotion-biz</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-module-product-biz</artifactId>
             <version>${revision}</version>
         </dependency>
+
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-module-trade-biz</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.iocoder.boot</groupId>
-            <artifactId>educate-module-statistics-biz</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -129,7 +135,7 @@
             <version>${revision}</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
@@ -137,13 +143,13 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- 新的版本如果不添加这个依赖无法找到bootstrap，新版默认关闭了
          No spring.config.import property has been defined -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--防止报错Error creating bean with name 'requestMappingHandlerAdapter' defined in class path resource-->
         <dependency>

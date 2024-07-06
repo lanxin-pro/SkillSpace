@@ -1,2 +1,3 @@
 cn.iocoder.educate.framework.mybatis.config.EducateMybatisAutoConfiguration
 cn.iocoder.educate.framework.mybatis.config.IdTypeEnvironmentPostProcessor
+cn.iocoder.educate.framework.mybatis.datasource.EducateDataSourceAutoConfiguration

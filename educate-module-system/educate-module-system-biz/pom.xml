@@ -48,11 +48,13 @@
             <version>${revision}</version>
         </dependency>
 
+<!--TODO j-sentinel 临时注解，此starter目前有错误-->
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-biz-social</artifactId>
             <version>${revision}</version>
         </dependency>
+
 
         <dependency>
             <groupId>cn.iocoder.boot</groupId>

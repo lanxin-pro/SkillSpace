@@ -2,7 +2,7 @@ package cn.iocoder.educate.module.infra.service.db;
 
 import cn.iocoder.educate.module.infra.dal.dataobject.db.DataSourceConfigDO;
 import cn.iocoder.educate.module.infra.dal.mysql.db.DataSourceConfigMapper;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
+import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;

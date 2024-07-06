@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.educate.framework.common.exception.util.ServiceExceptionUtil;
 import cn.iocoder.educate.framework.common.util.http.HttpUtils;
 import cn.iocoder.educate.framework.common.util.json.JsonUtils;
-import cn.iocoder.educate.framework.social.core.EducateAuthRequestFactory;
 import cn.iocoder.educate.module.system.api.social.dto.SocialUserBindReqDTO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserBindDO;
 import cn.iocoder.educate.module.system.dal.dataobject.social.SocialUserDO;
@@ -12,12 +11,13 @@ import cn.iocoder.educate.module.system.dal.mysql.social.SocialUserBindMapper;
 import cn.iocoder.educate.module.system.dal.mysql.social.SocialUserMapper;
 import cn.iocoder.educate.module.system.enums.ErrorCodeConstants;
 import cn.iocoder.educate.module.system.enums.social.SocialTypeEnum;
+import com.xingyuv.jushauth.model.AuthCallback;
+import com.xingyuv.jushauth.model.AuthResponse;
+import com.xingyuv.jushauth.model.AuthUser;
+import com.xingyuv.jushauth.request.AuthRequest;
+import com.xingyuv.jushauth.utils.AuthStateUtils;
+import com.xingyuv.justauth.AuthRequestFactory;
 import lombok.extern.slf4j.Slf4j;
-import me.zhyd.oauth.model.AuthCallback;
-import me.zhyd.oauth.model.AuthResponse;
-import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.request.AuthRequest;
-import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -40,8 +40,13 @@ public class SocialUserServiceImpl implements SocialUserService{
     /**
      * 由于自定义了 EducateAuthRequestFactory 无法覆盖默认的 AuthRequestFactory，所以只能注入它
      */
+/*  废弃版本
     @Resource
     private EducateAuthRequestFactory educateAuthRequestFactory;
+    */
+
+    @Resource
+    private AuthRequestFactory authRequestFactory;
 
     @Resource
     private SocialUserMapper socialUserMapper;
@@ -54,7 +59,8 @@ public class SocialUserServiceImpl implements SocialUserService{
         // 保存在数据库中的字段应该更加的准确
         String source = SocialTypeEnum.valueOfType(type).getSource();
         // 获得对应的 AuthRequest 实现
-        AuthRequest authRequest = educateAuthRequestFactory.get(source);
+        // AuthRequest authRequest = educateAuthRequestFactory.get(source);
+        AuthRequest authRequest = authRequestFactory.get(source);
         // 生成跳转地址
         String authorizeUri = authRequest.authorize(AuthStateUtils.createState());
         return HttpUtils.replaceUrlQuery(authorizeUri, "redirect_uri", redirectUri);
@@ -168,7 +174,9 @@ public class SocialUserServiceImpl implements SocialUserService{
      */
     private AuthUser getAuthUser(Integer type, String code, String state) {
         // 给Type 可以返回标识
-        AuthRequest authRequest = educateAuthRequestFactory.get(SocialTypeEnum.valueOfType(type).getSource());
+        // AuthRequest authRequest = educateAuthRequestFactory.get(SocialTypeEnum.valueOfType(type).getSource());
+        AuthRequest authRequest = authRequestFactory.get(SocialTypeEnum.valueOfType(type).getSource());
+
         // 构建
         AuthCallback authCallback = AuthCallback.builder()
                 .code(code).state(state).build();
