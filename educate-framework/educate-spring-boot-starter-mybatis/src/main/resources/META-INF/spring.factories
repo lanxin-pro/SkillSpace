@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.iocoder.educate.framework.mybatis.config.EducateMybatisAutoConfiguration,\
-cn.iocoder.educate.framework.mybatis.config.IdTypeEnvironmentPostProcessor
-

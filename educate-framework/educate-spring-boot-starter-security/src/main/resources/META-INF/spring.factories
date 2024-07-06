@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.iocoder.educate.framework.security.config.EducateWebSecurityConfigurerAdapter,\
-cn.iocoder.educate.framework.security.config.EducateSecurityAutoConfiguration\

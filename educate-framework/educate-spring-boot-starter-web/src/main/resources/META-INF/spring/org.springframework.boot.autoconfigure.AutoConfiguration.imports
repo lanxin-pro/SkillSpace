@@ -1,0 +1,4 @@
+cn.iocoder.educate.framework.swagger.config.EducateSwaggerAutoConfiguration
+cn.iocoder.educate.framework.apilog.config.EducateApiLogAutoConfiguration
+cn.iocoder.educate.framework.web.config.EducateWebAutoConfiguration
+cn.iocoder.educate.framework.jackson.config.EducateJacksonAutoConfiguration
