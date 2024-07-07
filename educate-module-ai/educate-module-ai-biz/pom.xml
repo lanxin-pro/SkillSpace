@@ -9,7 +9,14 @@
 
     <artifactId>educate-module-ai-biz</artifactId>
 
-    <name>educate-module-ai-biz</name>
+    <name>${project.artifactId}</name>
+
+    <description>
+        ai 模块下，接入 LLM 大模型，支持聊天、绘图、音乐、写作、思维脑图等功能。
+        目前已接入各种模型，不限于：
+        国内：通义千问、文心一言、讯飞星火
+        国外：OpenAI、Ollama、Midjourney、StableDiffusion、Suno
+    </description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -20,9 +27,51 @@
     <dependencies>
         <dependency>
             <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-module-ai-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
             <artifactId>educate-spring-boot-starter-ai</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-biz-tenant</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- DB 相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-mybatis</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Job 相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-job</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Test 测试相关 -->
+        <dependency>
+            <groupId>cn.iocoder.boot</groupId>
+            <artifactId>educate-spring-boot-starter-test</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 

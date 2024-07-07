@@ -24,8 +24,11 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import jakarta.annotation.Resource;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.web.util.pattern.PathPattern;
+
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 自定义的 Spring Security 配置适配器实现
@@ -90,35 +93,37 @@ public class EducateWebSecurityConfigurerAdapter {
 
         httpSecurity
                 // 1.全局共享的规则
-                .authorizeRequests()
-                // 1.1 静态资源，可匿名访问
-                .requestMatchers(HttpMethod.GET,"/*.html","/**/*.html","/*/css","/**/*.css","/*.js","/**/*.js").permitAll()
-                // 1.2 设置 @PermitAll 无需认证  最后转换成字符串数组
-                .requestMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
-                .requestMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
-                .requestMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
-                .requestMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll()
-                // 1.5 验证码captcha 允许匿名访问
-                .requestMatchers("/captcha/get", "/captcha/check").permitAll()
-                // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
-                .requestMatchers("/websocket/message").permitAll()
-                // TODO j-sentinel swagger文档json格式的测试
-                // Swagger 接口文档
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/swagger-ui.html").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/swagger-resources/**").anonymous()
-                .requestMatchers("/webjars/**").anonymous()
-                .requestMatchers("/*/api-docs").anonymous()
-                // Spring Boot Actuator 的安全配置
-                .requestMatchers("/actuator").anonymous()
-                .requestMatchers("/actuator/**").anonymous()
-                // Spring Boot Admin Server 的安全配置
-                .requestMatchers("/admin").anonymous()
-                .requestMatchers("/admin/**").anonymous()
-                // Druid 监控
-                .requestMatchers("/druid/**").anonymous()
-                .anyRequest().authenticated();
+                .authorizeHttpRequests(c -> c
+                        // 1.1 静态资源，可匿名访问
+                        .requestMatchers(HttpMethod.GET,"/*.html","/*.css","/*.js").permitAll()
+                        // 1.2 设置 @PermitAll 无需认证  最后转换成字符串数组
+                        .requestMatchers(HttpMethod.GET, permitAllUrls.get(HttpMethod.GET).toArray(new String[0])).permitAll()
+                        .requestMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
+                        .requestMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll()
+                        // 1.5 验证码captcha 允许匿名访问
+                        .requestMatchers("/captcha/get", "/captcha/check").permitAll()
+                        // 1.6 webSocket 允许匿名访问 @PreAuthenticated是声明App用户不用登录的接口
+                        .requestMatchers("/websocket/message").permitAll()
+                        // TODO j-sentinel swagger文档json格式的测试
+                        // Swagger 接口文档
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-resources/**").anonymous()
+                        .requestMatchers("/webjars/**").anonymous()
+                        .requestMatchers("/*/api-docs").anonymous()
+                        // Spring Boot Actuator 的安全配置
+                        .requestMatchers("/actuator").anonymous()
+                        .requestMatchers("/actuator/**").anonymous()
+                        // Spring Boot Admin Server 的安全配置
+                        .requestMatchers("/admin").anonymous()
+                        .requestMatchers("/admin/**").anonymous()
+                        // Druid 监控
+                        .requestMatchers("/druid/**").anonymous()
+                        .anyRequest().authenticated()
+                );
+
 
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
@@ -139,11 +144,16 @@ public class EducateWebSecurityConfigurerAdapter {
             if (!handlerMethod.hasMethodAnnotation(PermitAll.class)) {
                 continue;
             }
-            if (entry.getKey().getPatternsCondition() == null) {
+            // 这里判断的是requestMapping路径是否为空
+            if (entry.getKey().getPathPatternsCondition() == null) {
                 continue;
             }
             // 返回接口方法
-            Set<String> urls = entry.getKey().getPatternsCondition().getPatterns();
+            // Set<String> urls = entry.getKey().getPatternsCondition().getPatterns();
+
+            Set<String> urls = entry.getKey().getPathPatternsCondition().getPatterns()
+                    .stream().map(PathPattern::getPatternString)
+                    .collect(Collectors.toSet());
             // 根据请求方法，添加到 result 结果
             entry.getKey().getMethodsCondition().getMethods().forEach(requestMethod -> {
                 switch (requestMethod) {
