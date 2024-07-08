@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 【MPJBaseMapper】联表查询的扩展
+ *
  * @author j-sentinel
  * @date 2024/1/22 10:52
  */

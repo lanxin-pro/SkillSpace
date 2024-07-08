@@ -35,7 +35,10 @@ public class BeanUtils {
         if (source == null) {
             return null;
         }
-        return source.stream().map(s -> toBean(s, targetType)).filter(Objects::nonNull).collect(Collectors.toList());
+        return source.stream()
+                .map(s -> toBean(s, targetType))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     public static <S, T> List<T> toBean(List<S> source, Class<T> targetType, Consumer<T> peek) {
